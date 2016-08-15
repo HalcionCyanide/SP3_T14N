@@ -1,7 +1,16 @@
 #include "GraphicsEntity.h"
 #include <assert.h>
+#include <fstream>
+#include <sstream>
 
 std::string GraphicsEntity::id_ = "Graphics";
+
+void convertStringToUpperCaps(std::string &theString)
+{
+    for (std::string::iterator it = theString.begin(), end = theString.end(); it != end; ++it) {
+        (*it) = toupper(*it);
+    }
+}
 
 GraphicsEntity::GraphicsEntity()
     : SceneEntity()
@@ -45,7 +54,7 @@ void GraphicsEntity::Init()
     glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glAlphaFunc(GL_GREATER, 0.1);
+	glAlphaFunc(GL_GREATER, 0.1f);
 	glEnable(GL_ALPHA_TEST);
 
     glGenVertexArrays(1, &m_vertexArrayID);
@@ -146,8 +155,9 @@ void GraphicsEntity::Init()
     Mesh* newMesh = MeshBuilder::GenerateAxes("reference", 1000.f, 1000.f, 1000.f);
 	meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	newMesh = MeshBuilder::GenerateText("text", 16, 16);
-	newMesh->textureArray[0] = LoadTGA("Image//ExportedFont.tga");
+    assert(loadingMeshDriven("Image//MeshDriven.csv"));
+	//newMesh = MeshBuilder::GenerateText("text", 16, 16);
+	//newMesh->textureArray[0] = LoadTGA("Image//ExportedFont.tga");
 	newMesh->textureID = LoadTGA("Image//ExportedFont.tga"); // <- Working one
 	meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
@@ -423,3 +433,69 @@ void GraphicsEntity::SetHUD(const bool& m_bHUDmode)
         }
     }
 }
+
+bool GraphicsEntity::loadingMeshDriven(const std::string &fileLocation)
+{
+    std::ifstream file(fileLocation.c_str());
+    if (file.is_open())
+    {
+        std::string data = "";
+        std::map<std::string, std::string> meshesStuff;
+        std::vector<std::string> theKeys;
+        std::vector<std::string> theValues;
+        std::map<std::string, GLuint> targaStuff;
+        while (getline(file, data))
+        {
+            if (data == "")
+                continue;
+            std::string token;
+            std::istringstream iss(data);
+            if (meshesStuff.empty())
+            {
+                while (getline(iss, token, ','))
+                {
+                    convertStringToUpperCaps(token);
+                    meshesStuff.insert(std::pair<std::string, std::string>(token, ""));
+                    theKeys.push_back(token);
+                }
+            }
+            else {
+                while (getline(iss, token, ','))
+                {
+                    theValues.push_back(token);
+                }
+                std::vector<std::string>::iterator it;
+                it = std::find(theKeys.begin(), theKeys.end(), "NAME");
+                size_t pos = it - theKeys.begin();
+                std::string theName = theValues[pos];
+                Mesh *newMesh = nullptr;
+                it = std::find(theKeys.begin(), theKeys.end(), "NAME");
+                pos = it - theKeys.begin();
+                convertStringToUpperCaps(theValues[pos]);
+                float r = 0, g = 0, b = 0;
+                std::string arrayOfTextures[4], objectFile;
+                if (theValues[pos] == "TEXT") {
+                    it = std::find(theKeys.begin(), theKeys.end(), "TEXTURE1");
+                    pos = it - theKeys.begin();
+                    arrayOfTextures[0] = theValues[pos];
+                    newMesh = MeshBuilder::GenerateText(theName, 16, 16);
+                    newMesh->textureID = LoadTGA(arrayOfTextures[0].c_str());
+                    newMesh->textureArray[0] = newMesh->textureID;
+                }
+                else if (theValues[pos] == "QUAD") {
+
+                }
+                else if (theValues[pos] == "3DOBJECT") {
+
+                }
+                else {
+                    continue;
+                }
+                meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+            }
+        }
+        return true;
+    }
+    return false;
+}
+
