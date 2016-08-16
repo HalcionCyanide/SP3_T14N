@@ -117,6 +117,9 @@
     <ClCompile Include="Source\GameObject.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\UI_Element.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Scene_System.h">
@@ -214,6 +217,9 @@
     </ClInclude>
     <ClInclude Include="Source\questManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UI_Element.h">
+      <Filter>Header Files\Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

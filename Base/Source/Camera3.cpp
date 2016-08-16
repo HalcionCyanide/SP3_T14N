@@ -70,7 +70,7 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	CurrentCameraRotation.SetZero();
 	MinimumCameraRotation.Set(-89, -360, -35);
 	MaximumCameraRotation.Set(89, 360, 35);
-	RelativeMouseSensitivity = 2;
+	RelativeMouseSensitivity = 5;
 
 	CameraBaseWalkSpeed = CameraMaxWalkSpeed = CameraCurrentWalkSpeed = 16.0f;
 
