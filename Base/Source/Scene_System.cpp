@@ -5,6 +5,7 @@ void Scene_System::Init()
 {
     //currScene = nullptr;
     graphics_scene = nullptr;
+	cSS_InputManager = new InputManager();
 }
 
 void Scene_System::Update(double dt)
@@ -83,9 +84,28 @@ void Scene_System::clearEverything()
     graphics_scene->Exit();
     delete graphics_scene;
     graphics_scene = nullptr;
+
+	if (cSS_InputManager)
+		delete cSS_InputManager;
 	
 	while (!SceneHistory.empty())
 	{
 		SceneHistory.pop();
 	}
+}
+
+void Scene_System::SetUIDimensions(const float &width, const float &height)
+{
+	cSS_UIWidth = width;
+	cSS_UIHeight = height;
+}
+
+float Scene_System::GetUIWidth()
+{
+	return cSS_UIWidth;
+}
+
+float Scene_System::GetUIHeight()
+{
+	return cSS_UIHeight;
 }

@@ -88,11 +88,6 @@ void Camera3::UpdateStatus(const unsigned char key, const bool status)
 	//myKeys[key] = status;
 }
 
-void Camera3::SetKeyList(InputManager* IM)
-{
-	KeyList = IM;
-}
-
 /****************************************************************************/
 /*!
 \brief
@@ -103,7 +98,7 @@ Method where values are changed
 /****************************************************************************/
 void Camera3::Update(float dt)
 {
-	CameraRotationSpeed = Application::cA_WindowWidth / Application::cA_WindowHeight * RelativeMouseSensitivity;
+	CameraRotationSpeed = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * RelativeMouseSensitivity;
 	Application::cA_CurrentTerrainY += CameraBobVal;
 	MovementValues.SetZero();
 	//cameraMovement(dt);
@@ -134,25 +129,26 @@ void Camera3::Update(float dt)
 		}
 		DecomposePlayerInertia(dt);
 	}
+	if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
 	DecomposeMouseInertia(dt);
 
-	if (KeyList->GetKeyValue('W'))
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('W'))
 	{
 		Walk(dt);
 	}
-	if (KeyList->GetKeyValue('S'))
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('S'))
 	{
 		Walk(-dt);
 	}
-	if (KeyList->GetKeyValue('A'))
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('A'))
 	{
 		Strafe(-dt);
 	}
-	if (KeyList->GetKeyValue('D'))
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('D'))
 	{
 		Strafe(dt);
 	}
-	if (KeyList->GetKeyValue(' '))
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue(' '))
 	{
 		Jump(dt);
 	}
@@ -168,7 +164,7 @@ void Camera3::Update(float dt)
 	UpdateCameraPosition();
 	UpdateCameraVectors();
 	
-	if (KeyList->GetKeyValue('R'))
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('R'))
 	{
 		Reset();
 	}
@@ -186,25 +182,25 @@ void Camera3::DecomposePlayerInertia(float dt)
 	{
 		CameraVelocity.z = 0;
 	}
-	if (!KeyList->GetKeyValue('S')){
+	if (!Scene_System::accessing().cSS_InputManager->GetKeyValue('S')){
 		if (CameraVelocity.x <= 0){
 			CameraVelocity.x += CameraMaxWalkSpeed * RateOfDecomposition * (float)dt;
 			C_BackwardMovement(dt);
 		}
 	}
-	if (!KeyList->GetKeyValue('W')){
+	if (!Scene_System::accessing().cSS_InputManager->GetKeyValue('W')){
 		if (CameraVelocity.x >= 0){
 			CameraVelocity.x -= CameraMaxWalkSpeed * RateOfDecomposition * (float)dt;
 			C_ForwardMovement(dt);
 		}
 	}
-	if (!KeyList->GetKeyValue('A')){
+	if (!Scene_System::accessing().cSS_InputManager->GetKeyValue('A')){
 		if (CameraVelocity.z <= 0){
 			CameraVelocity.z += CameraMaxWalkSpeed * RateOfDecomposition * (float)dt;
 			C_LeftMovement(dt);
 		}
 	}
-	if (!KeyList->GetKeyValue('D')){
+	if (!Scene_System::accessing().cSS_InputManager->GetKeyValue('D')){
 		if (CameraVelocity.z >= 0){
 			CameraVelocity.z -= CameraMaxWalkSpeed * RateOfDecomposition * (float)dt;
 			C_RightMovement(dt);
@@ -216,7 +212,7 @@ void Camera3::DecomposeMouseInertia(float dt)
 {
 	float C_Rot_Accel = 0.5f;
 	float MaxRotSpeed = C_Rot_Accel;// *1.5f;
-	Yaw_Velocity += C_Rot_Accel * dt * Application::cA_CameraYaw;
+	Yaw_Velocity += C_Rot_Accel * dt * Scene_System::accessing().cSS_InputManager->cIM_CameraYaw;
 	Yaw_Velocity = Math::Clamp(Yaw_Velocity, -MaxRotSpeed, MaxRotSpeed);
 	if (Yaw_Velocity) {
 		Yaw(dt);
@@ -224,7 +220,7 @@ void Camera3::DecomposeMouseInertia(float dt)
 		Yaw_Velocity -= Yaw_Velocity * dt;
 	}
 
-	Pitch_Velocity += C_Rot_Accel * dt * Application::cA_CameraPitch;
+	Pitch_Velocity += C_Rot_Accel * dt * Scene_System::accessing().cSS_InputManager->cIM_CameraPitch;
 	Pitch_Velocity = Math::Clamp(Pitch_Velocity, -MaxRotSpeed, MaxRotSpeed);
 	if (Pitch_Velocity){
 		Pitch(dt);
@@ -348,7 +344,7 @@ Turn left
 ********************************************************************************/
 void Camera3::TurnLeft(const float dt)
 {
-	CurrentCameraRotation.y += Yaw_Velocity * Application::cA_CameraYaw * (float)(dt)* CameraRotationSpeed;
+	CurrentCameraRotation.y += Yaw_Velocity * Scene_System::accessing().cSS_InputManager->cIM_CameraYaw * (float)(dt)* CameraRotationSpeed;
 }
 
 /********************************************************************************
@@ -356,7 +352,7 @@ Turn right
 ********************************************************************************/
 void Camera3::TurnRight(const float dt)
 {
-	CurrentCameraRotation.y -= Yaw_Velocity * Application::cA_CameraYaw * (float)(dt)* CameraRotationSpeed;
+	CurrentCameraRotation.y -= Yaw_Velocity * Scene_System::accessing().cSS_InputManager->cIM_CameraYaw * (float)(dt)* CameraRotationSpeed;
 }
 
 /********************************************************************************
@@ -364,14 +360,14 @@ LookUp
 ********************************************************************************/
 void Camera3::LookUp(const float dt)
 {
-	CurrentCameraRotation.x += Application::cA_CameraPitch * (float)(dt)* CameraRotationSpeed;
+	CurrentCameraRotation.x += Scene_System::accessing().cSS_InputManager->cIM_CameraPitch * (float)(dt)* CameraRotationSpeed;
 }
 /********************************************************************************
 LookDown
 ********************************************************************************/
 void Camera3::LookDown(const float dt)
 {
-	CurrentCameraRotation.x += Application::cA_CameraPitch * (float)(dt)* CameraRotationSpeed;
+	CurrentCameraRotation.x += Scene_System::accessing().cSS_InputManager->cIM_CameraPitch * (float)(dt)* CameraRotationSpeed;
 }
 
 /********************************************************************************
@@ -379,9 +375,9 @@ Pitch. You can add in a deadzone here.
 ********************************************************************************/
 void Camera3::Pitch(const float dt)
 {
-	if (Application::cA_CameraPitch > 0.0)
+	if (Scene_System::accessing().cSS_InputManager->cIM_CameraPitch > 0.0)
 		LookUp(dt);
-	else if (Application::cA_CameraPitch < 0.0)
+	else if (Scene_System::accessing().cSS_InputManager->cIM_CameraPitch < 0.0)
 		LookDown(dt);
 }
 /********************************************************************************
@@ -389,9 +385,9 @@ Yaw. You can add in a deadzone here.
 ********************************************************************************/
 void Camera3::Yaw(const float dt)
 {
-	if (Application::cA_CameraYaw > 0.0)
+	if (Scene_System::accessing().cSS_InputManager->cIM_CameraYaw > 0.0)
 		TurnRight(dt);
-	else if (Application::cA_CameraYaw < 0.0)
+	else if (Scene_System::accessing().cSS_InputManager->cIM_CameraYaw < 0.0)
 		TurnLeft(dt);
 }
 /********************************************************************************
