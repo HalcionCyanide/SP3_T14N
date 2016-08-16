@@ -31,4 +31,3 @@ ipch/
 *.exe
 *.out
 *.app
-Base/Shader/Shadow.fragmentshader
