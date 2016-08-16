@@ -3,6 +3,7 @@
 
 #include "Scene_2.h"
 #include "Map.h"
+#include "GameObject.h"
 
 std::string Scene_1::id_ = "Scene 1";
 
@@ -80,13 +81,11 @@ void Scene_1::Init()
 	{
 		BManager.AddHMapBillboard("Tree", m_heightMap, TerrainScale, Vector3((float)i * 10.f), Vector3(10.f, 20.f, 10.f), Vector3(), camera.position);
 	}
-    std::vector<GenericEntity*> bunchOfRenderingStuff;
+
     CMap *theMap = dynamic_cast<CMap*>(theInteractiveMap);
     theMap = new CMap();
     theMap->setName("scene 1 logic map");
-    theMap->LoadMap("Image//MapTest.csv", m_heightMap, TerrainScale, bunchOfRenderingStuff);
-    for (auto it : bunchOfRenderingStuff)
-        delete it;
+    theMap->LoadMap("Image//MapTest.csv", m_heightMap, TerrainScale, testingRenderingStuff);
 }
 
 void Scene_1::Update(float dt)
@@ -294,6 +293,15 @@ void Scene_1::RenderPassMain()
 
 	SceneGraphics->RenderMesh("reference", false);
 
+    //<!> will remove soon <!>
+    for (auto it : testingRenderingStuff)
+    {
+        GameObject *the3DObject = dynamic_cast<GameObject*>(it);
+        if (the3DObject)
+            the3DObject->Render();
+    }
+    //<!> will remove soon <!>
+
 	SceneGraphics->SetHUD(true);
 	SceneGraphics->RenderMeshIn2D("reference", false, 100, 400, 300);
 
@@ -337,4 +345,8 @@ void Scene_1::Exit()
 {
     if (theInteractiveMap)
         delete theInteractiveMap;
+    //<!> will remove soon <!>
+    for (auto it : testingRenderingStuff)
+        delete it;
+    //<!> will remove soon <!>
 }

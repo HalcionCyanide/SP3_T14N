@@ -3,6 +3,8 @@
 #include <sstream>
 #include "GraphicsEntity.h"
 #include <assert.h>
+#include "GameObject.h"
+#include "Scene_System.h"
 
 #ifndef MAX_NUM_POINTS
 #define MAX_NUM_POINTS sizeof(points_4) / sizeof(int)
@@ -49,7 +51,8 @@ bool CMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &theH
 {
     //<?>
     int theLineCounter = 0;
-    
+    GraphicsEntity *theGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
+
     std::ifstream file(mapName.c_str());
     assert(file.is_open());
     int i = 0, k = 0;
@@ -91,6 +94,15 @@ bool CMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &theH
             {
                 it->second.push_back(token[0]);
             }
+            else if (token.find("C") != std::string::npos)
+            {
+                it->second.push_back(token[0]);
+                GameObject *theCube = new GameObject();
+                std::string theNumbers = token.substr(2);
+                theCube->SetRotation(stof(theNumbers), Vector3(0, 1, 0));
+                theCube->SetMesh(*theGraphics->meshList.find("cube")->second);
+                theRenderingStuff.push_back(theCube);
+            }
             else {
                 it->second.push_back(' ');
             }
@@ -105,7 +117,10 @@ bool CMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &theH
     tileSizeXYZ.z = terrainSize.z / theNumOfTiles_MapHeight;
     //<?>
 
-    
+    for (std::vector<GenericEntity*>::iterator it = theRenderingStuff.begin(), end = theRenderingStuff.end(); it != end; ++it)
+    {
+
+    }
 
     return true;
 }
