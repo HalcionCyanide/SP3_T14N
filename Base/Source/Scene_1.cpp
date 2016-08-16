@@ -87,7 +87,6 @@ void Scene_1::Init()
     theMap->LoadMap("Image//MapTest.csv", m_heightMap, TerrainScale, bunchOfRenderingStuff);
     for (auto it : bunchOfRenderingStuff)
         delete it;
-    //Hello Sek Heng here
 }
 
 void Scene_1::Update(float dt)
