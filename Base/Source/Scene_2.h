@@ -42,8 +42,6 @@ private:
 	void RenderSkyplane();
 	void RenderSkybox();
 
-	void InitGroundBillBoard(GLuint texture, float Xsize, float Ysize, float Xpos, float Zpos);
-
 	const float SkyboxSize = 1000;
 
 	std::vector<Billboard> StaticBillBoardVec;
