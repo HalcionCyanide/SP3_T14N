@@ -105,11 +105,17 @@
     <ClCompile Include="Source\BillboardManager.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\questManager.cpp">
-      <Filter>Source Files\Systems</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Quest.cpp">
-      <Filter>Source Files\Classes</Filter>
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\questManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Boundary.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject.cpp">
+      <Filter>Source Files\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -197,19 +203,17 @@
     <ClInclude Include="Source\Scene_2.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
-<<<<<<< .merge_file_a06628
     <ClInclude Include="Source\Boundary.h">
-      <Filter>Header Files\Scenes</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameObject.h">
-      <Filter>Header Files\Scenes</Filter>
-=======
-    <ClInclude Include="Source\questManager.h">
-      <Filter>Header Files\Systems</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Quest.h">
-      <Filter>Header Files\Classes</Filter>
->>>>>>> .merge_file_a08044
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\questManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

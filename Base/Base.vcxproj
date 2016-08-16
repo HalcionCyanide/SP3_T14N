@@ -14,8 +14,10 @@
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Billboard.cpp" />
     <ClCompile Include="Source\BillboardManager.cpp" />
+    <ClCompile Include="Source\Boundary.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Camera3.cpp" />
+    <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\InputManager.cpp" />
     <ClCompile Include="Source\DepthFBO.cpp" />
     <ClCompile Include="Source\GraphicsEntity.cpp" />

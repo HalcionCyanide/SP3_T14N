@@ -25,50 +25,6 @@ private:
 	Mtx44 Rotation;
 };
 
-GameObject::GameObject()
-{
-}
-
-GameObject::~GameObject()
-{
-}
-
-void GameObject::SetObject(Mesh* object)
-{
-	this->Object = object;
-}
-
-void GameObject::SetPos(Vector3 pos)
-{
-	this->Pos = pos;
-}
-
-void GameObject::SetScale(Vector3 scale)
-{
-	this->Scale = scale;
-}
-
-void GameObject::SetRotation(float rotatingValue, Vector3 rotationAxis)
-{
-	this->Rotation.SetToRotation(rotatingValue, rotationAxis.x, rotationAxis.y, rotationAxis.z);
-}
-
-Vector3 GameObject::GetPos(void)
-{
-	return this->Pos;
-}
-
-Vector3 GameObject::GetScale(void)
-{
-	return this->Scale;
-}
-
-Mtx44 GameObject::GetRotation(void)
-{
-	return this->Rotation;
-}
-
-
 
 
 #endif
