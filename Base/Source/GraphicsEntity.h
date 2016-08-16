@@ -131,6 +131,7 @@ public:
 
 private:
     bool m_bIsInOrthogonalMode;
+    bool loadingMeshDriven(const std::string &fileLocation);
 };
 
 #endif

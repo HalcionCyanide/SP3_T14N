@@ -1,7 +1,16 @@
 #include "GraphicsEntity.h"
 #include <assert.h>
+#include <fstream>
+#include <sstream>
 
 std::string GraphicsEntity::id_ = "Graphics";
+
+void convertStringToUpperCaps(std::string &theString)
+{
+    for (std::string::iterator it = theString.begin(), end = theString.end(); it != end; ++it) {
+        (*it) = toupper(*it);
+    }
+}
 
 GraphicsEntity::GraphicsEntity()
     : SceneEntity()
@@ -45,7 +54,7 @@ void GraphicsEntity::Init()
     glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glAlphaFunc(GL_GREATER, 0.1);
+	glAlphaFunc(GL_GREATER, 0.1f);
 	glEnable(GL_ALPHA_TEST);
 
     glGenVertexArrays(1, &m_vertexArrayID);
@@ -146,19 +155,20 @@ void GraphicsEntity::Init()
     Mesh* newMesh = MeshBuilder::GenerateAxes("reference", 1000.f, 1000.f, 1000.f);
 	meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	newMesh = MeshBuilder::GenerateText("text", 16, 16);
-	newMesh->textureArray[0] = LoadTGA("Image//ExportedFont.tga");
-	newMesh->textureID = LoadTGA("Image//ExportedFont.tga"); // <- Working one
-	meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+    assert(loadingMeshDriven("Image//MeshDriven.csv"));
+	//newMesh = MeshBuilder::GenerateText("text", 16, 16);
+	//newMesh->textureArray[0] = LoadTGA("Image//ExportedFont.tga");
+	//newMesh->textureID = LoadTGA("Image//ExportedFont.tga"); // <- Working one
+	//meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	newMesh = MeshBuilder::GenerateOBJ("DualTexQuad", "OBJ//DualSidedTexQuad.obj");
-	meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+	//newMesh = MeshBuilder::GenerateOBJ("DualTexQuad", "OBJ//DualSidedTexQuad.obj");
+	//meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	newMesh = MeshBuilder::GenerateQuad("quad", Color(1, 1, 1), 1.f);
-	meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+	//newMesh = MeshBuilder::GenerateQuad("quad", Color(1, 1, 1), 1.f);
+	//meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	newMesh = MeshBuilder::GenerateCube("cube", Color(1, 1, 1), 1.f);
-	meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+	//newMesh = MeshBuilder::GenerateCube("cube", Color(1, 1, 1), 1.f);
+	//meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 }
 
 void GraphicsEntity::Update(float dt)
@@ -423,3 +433,114 @@ void GraphicsEntity::SetHUD(const bool& m_bHUDmode)
         }
     }
 }
+
+bool GraphicsEntity::loadingMeshDriven(const std::string &fileLocation)
+{
+    std::ifstream file(fileLocation.c_str());
+    if (file.is_open())
+    {
+        std::string data = "";
+        std::vector<std::string> theKeys;
+        std::vector<std::string> theValues;
+        std::map<std::string, GLuint> targaStuff;
+        while (getline(file, data))
+        {
+            if (data == "")
+                continue;
+            std::string token;
+            std::istringstream iss(data);
+            if (theKeys.empty())
+            {   //Get the keys from CSV
+                while (getline(iss, token, ','))
+                {
+                    convertStringToUpperCaps(token);
+                    theKeys.push_back(token);
+                }
+            }
+            else {  //Begin getting all the values from the CSV
+                while (getline(iss, token, ','))
+                {
+                    theValues.push_back(token);
+                }
+                //NAME
+                std::vector<std::string>::iterator it;
+                it = std::find(theKeys.begin(), theKeys.end(), "NAME");
+                size_t pos = it - theKeys.begin();
+                std::string theName = theValues[pos];
+                //NAME
+                Mesh *newMesh = nullptr;
+                //COLORS
+                float r = 0, g = 0, b = 0;
+                it = std::find(theKeys.begin(), theKeys.end(), "COLORR");
+                pos = it - theKeys.begin();
+                if (theValues[pos] == "")
+                    r = 1;
+                else
+                    r = stof(theValues[pos]);
+                it = std::find(theKeys.begin(), theKeys.end(), "COLORG");
+                pos = it - theKeys.begin();
+                if (theValues[pos] == "")
+                    g = 1;
+                else
+                    g = stof(theValues[pos]);
+                it = std::find(theKeys.begin(), theKeys.end(), "COLORB");
+                pos = it - theKeys.begin();
+                if (theValues[pos] == "")
+                    b = 1;
+                else
+                    b = stof(theValues[pos]);
+                //COLORS
+                //OBJECTYPE
+                it = std::find(theKeys.begin(), theKeys.end(), "OBJECTTYPE");
+                pos = it - theKeys.begin();
+                convertStringToUpperCaps(theValues[pos]);
+                //OBJECTYPE
+                std::string objectFile;
+                if (theValues[pos] == "TEXT") {
+                    newMesh = MeshBuilder::GenerateText(theName, 16, 16);
+                }
+                else if (theValues[pos] == "QUAD") {
+                    newMesh = MeshBuilder::GenerateQuad(theName, Color(r, g, b), 1.f);
+                }
+                else if (theValues[pos] == "3DOBJECT") {
+                    it = std::find(theKeys.begin(), theKeys.end(), "OBJECTFILE");
+                    pos = it - theKeys.begin();
+                    newMesh = MeshBuilder::GenerateOBJ(theName, theValues[pos]);
+                }
+                else if (theValues[pos] == "CUBE") {
+                    newMesh = MeshBuilder::GenerateCube(theName, Color(r, g, b));
+                }
+                else {
+                    continue;
+                }
+                //TEXTURES
+                for (unsigned num = 0; num < Mesh::MAX_TEXTURES; ++num)
+                {
+                    std::ostringstream ss;
+                    ss << "TEXTURE" << num + 1;
+                    it = std::find(theKeys.begin(), theKeys.end(), ss.str());
+                    pos = it - theKeys.begin();
+                    if (theValues[pos] == "" || theValues[pos] == "\n" || theValues[pos] == "\r")
+                        continue;
+                    std::map<std::string, GLuint>::iterator it = targaStuff.find(theValues[pos]);
+                    if (it != targaStuff.end())
+                    {
+                        newMesh->textureArray[num] = it->second;
+                    }
+                    else {
+                        newMesh->textureArray[num] = LoadTGA(theValues[pos].c_str());
+                        targaStuff.insert(std::pair<std::string, GLuint>(theValues[pos], newMesh->textureArray[num]));
+                    }
+                    if (num == 0)
+                        newMesh->textureID = newMesh->textureArray[num];
+                }
+                //TEXTURES
+                meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+                theValues.clear();
+            }
+        }
+        return true;
+    }
+    return false;
+}
+
