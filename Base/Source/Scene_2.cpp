@@ -64,6 +64,13 @@ void Scene_2::Init()
 	newMesh = MeshBuilder::GenerateQuad("ParticleW", Color(1, 1, 1));
 	newMesh->textureArray[0] = LoadTGA("Image//ParticleWhite.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+
+	GameObject* test = new GameObject();
+	test->Init("test", Vector3(15, 0, 15), Vector3(5, 5, 5), 0.0f, Vector3(1, 0, 0), true);
+	test->SetPos(Vector3(test->GetPos().x, TerrainYScale * ReadHeightMap(m_heightMap, (test->GetPos().x / TerrainXScale), (test->GetPos().z / TerrainXScale)) + test->GetScale().y * 0.5f, test->GetPos().z));
+	newMesh = MeshBuilder::GenerateCube("Cube", Color(1, 1, 1), 1.0f);
+	test->SetMesh(*newMesh);
+	ObjectVec.push_back(test);
 }
 
 void Scene_2::Update(float dt)
@@ -137,6 +144,10 @@ void Scene_2::RenderShadowCasters()
 			SceneGraphics->RenderMesh((*it)->GetMeshName(), false);
 			modelStack->PopMatrix();
 		}
+	}
+	for (auto itt : ObjectVec)
+	{
+		itt->Render();
 	}
 }
 

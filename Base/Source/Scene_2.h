@@ -9,6 +9,7 @@
 #include "Utility.h"
 #include <vector>
 #include "BillboardManager.h"
+#include "GameObject.h"
 
 class Scene_2 : public SceneEntity
 {
@@ -46,6 +47,8 @@ private:
 	std::vector<Billboard> StaticBillBoardVec;
 	std::vector<Vector3> TreePosVec;
 	BillboardManager BManager;
+
+	std::vector<GameObject*> ObjectVec;
 
     double framerates;
 };
