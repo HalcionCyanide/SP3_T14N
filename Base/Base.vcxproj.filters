@@ -114,9 +114,6 @@
     <ClCompile Include="Source\Quest.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Map.cpp">
-    <ClCompile Include="Source\UI_Element.cpp">
-      <Filter>Source Files\Classes</Filter>
     <ClCompile Include="Source\BillboardManager.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
@@ -224,9 +221,6 @@
     <ClInclude Include="Source\Quest.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Map.h">
-    <ClInclude Include="Source\UI_Element.h">
-      <Filter>Header Files\Classes</Filter>
     <ClInclude Include="Source\questManager.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>

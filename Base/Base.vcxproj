@@ -24,7 +24,6 @@
     <ClCompile Include="Source\LoadHmap.cpp" />
     <ClCompile Include="Source\LoadOBJ.cpp" />
     <ClCompile Include="Source\LoadTGA.cpp" />
-    <ClCompile Include="Source\Map.cpp" />
     <ClCompile Include="Source\Quest.cpp" />
     <ClCompile Include="Source\questManager.cpp" />
     <ClCompile Include="Source\Scene_1.cpp" />
@@ -57,7 +56,6 @@
     <ClInclude Include="Source\LoadHmap.h" />
     <ClInclude Include="Source\LoadOBJ.h" />
     <ClInclude Include="Source\LoadTGA.h" />
-    <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\Quest.h" />
     <ClInclude Include="Source\questManager.h" />
     <ClInclude Include="Source\Scene_1.h" />
