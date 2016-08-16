@@ -97,6 +97,13 @@ void Scene_1::Init()
 	InitGroundBillBoard(TreeTex, 0.f, 0.01f, 0.f, 0.f);
 
     theInteractiveMap = new CMap();
+    CMap *sceneMap = dynamic_cast<CMap*>(theInteractiveMap);
+    std::vector<GenericEntity*> theRederingStuff;
+    sceneMap->setName("Scene 1 Map");
+    sceneMap->Init();
+    sceneMap->LoadMap("Image//MapTest.csv", m_heightMap, theRederingStuff);
+    for (auto it : theRederingStuff)
+        delete it;
 }
 
 void Scene_1::InitGroundBillBoard(GLuint texture, float Xsize, float Ysize, float Xpos, float Zpos)

@@ -22,9 +22,9 @@ void CMap::Init(const int &theTileSize)
     this->theTileSize = theTileSize;
 }
 
-bool CMap::LoadMap(const std::string &mapName, std::vector<GenericEntity*> &theRenderingStuff)
+bool CMap::LoadMap(const std::string &mapName, std::vector<unsigned char> &theHeightMap, std::vector<GenericEntity*> &theRenderingStuff)
 {
-    if (LoadFile(mapName, theRenderingStuff) == true)
+    if (LoadFile(mapName, theHeightMap, theRenderingStuff) == true)
     {
         printf("Map (%s) has been successfully loaded!\n", mapName.c_str());
         return true;
@@ -33,7 +33,7 @@ bool CMap::LoadMap(const std::string &mapName, std::vector<GenericEntity*> &theR
     return false;
 }
 
-bool CMap::LoadFile(const std::string &mapName, std::vector<GenericEntity*> &theRenderingStuff)
+bool CMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &theHeightMap, std::vector<GenericEntity*> &theRenderingStuff)
 {
     int theLineCounter = 0;
     int theMaxNumOfColumns = 0;
