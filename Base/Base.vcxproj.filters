@@ -123,6 +123,9 @@
     <ClCompile Include="Source\InputManager.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Map.cpp">
+      <Filter>Header Files\Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Scene_System.h">
@@ -223,6 +226,9 @@
     </ClInclude>
     <ClInclude Include="Source\questManager.h">
       <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Map.h">
+      <Filter>Header Files\Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

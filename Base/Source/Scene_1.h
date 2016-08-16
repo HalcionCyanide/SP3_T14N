@@ -45,4 +45,6 @@ private:
 	BillboardManager BManager;
 
     double framerates;
+
+    GenericEntity *theInteractiveMap;
 };
