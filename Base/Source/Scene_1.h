@@ -50,4 +50,6 @@ private:
 	std::vector<Vector3> TreePosVec;
 
     double framerates;
+
+    GenericEntity *theInteractiveMap;
 };

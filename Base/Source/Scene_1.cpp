@@ -2,6 +2,7 @@
 #include <sstream>
 
 #include "Scene_2.h"
+#include "Map.h"
 
 std::string Scene_1::id_ = "Scene 1";
 
@@ -11,6 +12,7 @@ Scene_1::Scene_1()
 	SceneInputManager = nullptr;
     framerates = 0;
     setName(id_);
+    theInteractiveMap = nullptr;
 }
 
 Scene_1::~Scene_1()
@@ -93,6 +95,8 @@ void Scene_1::Init()
 		InitGroundBillBoard(TreeTex, 20.f + Math::RandFloatMinMax(0.f, 5.f), 30.f + Math::RandFloatMinMax(0.f, 3.f), -40.f + i * 55.f, 130.f +	Math::RandFloatMinMax(-15.f, 15.f));
 	}
 	InitGroundBillBoard(TreeTex, 0.f, 0.01f, 0.f, 0.f);
+
+    theInteractiveMap = new CMap();
 }
 
 void Scene_1::InitGroundBillBoard(GLuint texture, float Xsize, float Ysize, float Xpos, float Zpos)
@@ -339,4 +343,6 @@ void Scene_1::Exit()
 {
 	if (SceneInputManager)
 		delete SceneInputManager;
+    if (theInteractiveMap)
+        delete theInteractiveMap;
 }
