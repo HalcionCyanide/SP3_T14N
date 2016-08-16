@@ -47,6 +47,7 @@ bool CMap::LoadMap(const std::string &mapName, std::vector<unsigned char> &theHe
 
 bool CMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GenericEntity*> &theRenderingStuff)
 {
+    //<?>
     int theLineCounter = 0;
     
     std::ifstream file(mapName.c_str());
@@ -90,6 +91,7 @@ bool CMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &theH
 
     tileSizeXYZ.x = terrainSize.x / theNumOfTiles_MapWidth;
     tileSizeXYZ.z = terrainSize.z / theNumOfTiles_MapHeight;
+    //<?>
 
     return true;
 }
