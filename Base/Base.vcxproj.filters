@@ -191,6 +191,12 @@
     <ClInclude Include="Source\Scene_2.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Boundary.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\GPass.fragmentshader">

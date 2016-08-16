@@ -37,8 +37,10 @@
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Billboard.h" />
     <ClInclude Include="Source\BillboardManager.h" />
+    <ClInclude Include="Source\Boundary.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Camera3.h" />
+    <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\InputManager.h" />
     <ClInclude Include="Source\DepthFBO.h" />
     <ClInclude Include="Source\DetectMemoryLeak.h" />
