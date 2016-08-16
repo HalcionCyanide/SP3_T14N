@@ -43,21 +43,9 @@ void questManager::readFile(const std::string fileName)
 	{
 		while (file.good())
 		{
-			std::getline(file, temp, ',');
+			std::getline(file, temp);
 			tempQuest.setName(temp);
 			temp.clear();
-
-			std::getline(file, temp);
-			if (temp == "capture")
-			{
-				tempQuest.setType(Quest::quest_capture);
-			}
-			else if (temp == "fetch")
-			{
-				tempQuest.setType(Quest::quest_fetch);
-			}
-			temp.clear();
-
 			allQuests.push_back(tempQuest);
 		}
 	}
