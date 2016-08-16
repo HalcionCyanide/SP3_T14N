@@ -9,7 +9,6 @@ std::string Scene_1::id_ = "Scene 1";
 Scene_1::Scene_1()
     : SceneEntity()
 {
-	SceneInputManager = nullptr;
     framerates = 0;
     setName(id_);
     theInteractiveMap = nullptr;
@@ -23,7 +22,6 @@ Scene_1::~Scene_1()
 void Scene_1::Init()
 {
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
-	SceneInputManager = new InputManager();
 
 	// Set Terrain Size
 	TerrainScale.Set(700.f, 100.f, 700.f);
@@ -33,7 +31,6 @@ void Scene_1::Init()
     projectionStack->LoadMatrix(perspective);
 
 	camera.Init(Vector3(0, 0, -5), Vector3(0,0,0), Vector3(0, 1, 0));
-	camera.SetKeyList(SceneInputManager);
 
 	// Initiallise Model Specific Meshes Here
 	Mesh* newMesh = MeshBuilder::GenerateTerrain("terrain", "Image//heightmap5.raw", m_heightMap);
@@ -94,9 +91,8 @@ void Scene_1::Init()
 
 void Scene_1::Update(float dt)
 {
-    GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
+	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
     SceneGraphics->Update(dt);
-	SceneInputManager->HandleUserInput();
 
 	//Update Camera's Minimum Possible & Current Y Pos
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera.position.x / TerrainScale.x, camera.position.z / TerrainScale.z) + camera.PlayerHeight;
@@ -112,10 +108,20 @@ void Scene_1::Update(float dt)
 
     framerates = 1 / dt;
 
-	if (SceneInputManager->GetKeyValue('2'))
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
     {
 		Scene_System::accessing().SwitchScene(Scene_2::id_);
     }
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
+	{
+		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+		Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0;
+		Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0;
+	}
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('0'))
+	{
+		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+	}
 
 	BManager.UpdateContainer(dt, camera.position);
 
@@ -149,13 +155,13 @@ void Scene_1::RenderShadowCasters()
 		if ((*it)->Active)
 		{
 			float TimeRatio = 1;
-			if ((*it)->LifeTime != -1)
-				TimeRatio = 1.1f - (*it)->CurrentTime / (*it)->LifeTime;
+			if ((*it)->GetLifeTime() != -1)
+				TimeRatio = 1.1f - (*it)->GetCurrTime() / (*it)->GetLifeTime();
 			modelStack->PushMatrix();
-			modelStack->Translate((*it)->Position.x, (*it)->Position.y, (*it)->Position.z);
-			modelStack->Rotate(Math::RadianToDegree(atan2(camera.position.x - (*it)->Position.x, camera.position.z - (*it)->Position.z)), 0, 1, 0);
-			modelStack->Scale(TimeRatio * (*it)->Dimensions.x, TimeRatio *(*it)->Dimensions.y, TimeRatio *(*it)->Dimensions.z);
-			SceneGraphics->RenderMesh((*it)->MeshName, false);
+			modelStack->Translate((*it)->GetPosition().x, (*it)->GetPosition().y, (*it)->GetPosition().z);
+			modelStack->Rotate(Math::RadianToDegree(atan2(camera.position.x - (*it)->GetPosition().x, camera.position.z - (*it)->GetPosition().z)), 0, 1, 0);
+			modelStack->Scale(TimeRatio * (*it)->GetDimensions().x, TimeRatio *(*it)->GetDimensions().y, TimeRatio *(*it)->GetDimensions().z);
+			SceneGraphics->RenderMesh((*it)->GetMeshName(), false);
 			modelStack->PopMatrix();
 		}
 	}
@@ -238,7 +244,7 @@ void Scene_1::RenderPassMain()
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	SceneGraphics->m_renderPass = GraphicsEntity::RENDER_PASS::RENDER_PASS_MAIN;
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, Application::cA_WindowWidth, Application::cA_WindowHeight);
+	glViewport(0, 0, (GLsizei)Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth, (GLsizei)Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -301,6 +307,16 @@ void Scene_1::RenderPassMain()
 	ss << "CVel:" << camera.CameraVelocity;
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
+
+	ss.str("");
+	ss << "Mouse Position:" << Scene_System::accessing().cSS_InputManager->GetMousePosition();
+	ss.precision(3);
+	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
+	SceneGraphics->SetHUD(false);
+
+	ss.str("9, 0 - Toggle Mouse Modes");
+	ss.precision(3);
+	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
 	SceneGraphics->SetHUD(false);
 
 }
@@ -319,8 +335,6 @@ void Scene_1::Render()
 
 void Scene_1::Exit()
 {
-	if (SceneInputManager)
-		delete SceneInputManager;
     if (theInteractiveMap)
         delete theInteractiveMap;
 }

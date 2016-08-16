@@ -23,7 +23,6 @@ public:
     virtual void Render();
     virtual void Exit();
 
-	InputManager *SceneInputManager;
 	Camera3 camera;
 
 

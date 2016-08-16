@@ -90,9 +90,6 @@
     <ClCompile Include="Source\GraphicsEntity.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\InputManager.cpp">
-      <Filter>Source Files\Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Scene_1.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
@@ -121,6 +118,12 @@
     <ClCompile Include="Source\UI_Element.cpp">
       <Filter>Source Files\Classes</Filter>
     <ClCompile Include="Source\BillboardManager.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BillboardManager.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InputManager.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
   </ItemGroup>
