@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Billboard.cpp" />
+    <ClCompile Include="Source\BillboardManager.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Camera3.cpp" />
     <ClCompile Include="Source\InputManager.cpp" />

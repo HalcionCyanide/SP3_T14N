@@ -10,7 +10,7 @@ public:
 
 	BillboardManager(){ FetchB(); };
 
-	void UpdateContainer(float dt){
+	void UpdateContainer(float dt, Vector3 CameraPosition){
 		for (std::vector<Billboard*>::iterator it = BillboardContainer.begin(); it != BillboardContainer.end(); it++)
 		{
 			Billboard* B = *it;

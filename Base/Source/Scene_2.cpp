@@ -118,11 +118,7 @@ void Scene_2::Update(float dt)
 		float RandScale = Math::RandFloatMinMax(2, 3);
 		BManager.AddBillboard(Vector3(Math::RandFloatMinMax(-5, 5), Math::RandFloatMinMax(-5, 5), Math::RandFloatMinMax(-5, 5)), Vector3(RandScale, RandScale, RandScale), Vector3(Math::RandFloatMinMax(-5, 5), Math::RandFloatMinMax(-5, 5), Math::RandFloatMinMax(-5, 5)), camera.position, 2);
 	}
-	for (unsigned int i = 0; i < BManager.BillboardContainer.size(); i++)
-	{
-		BManager.BillboardContainer[i]->PlayerPosition = camera.position;
-	}
-	BManager.UpdateContainer(dt);
+	BManager.UpdateContainer(dt, camera.position);
 
 	camera.Update(dt);
 }
