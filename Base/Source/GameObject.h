@@ -41,5 +41,4 @@ private:
 	bool Active = true;
 
 };
-
 #endif
