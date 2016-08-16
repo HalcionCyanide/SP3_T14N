@@ -433,7 +433,7 @@ bool GraphicsEntity::loadingMeshDriven(const std::string &fileLocation)
         std::map<std::string, GLuint> targaStuff;
         while (getline(file, data))
         {
-            if (data == "")
+            if (data == "" || data == "\n" || data == "\r")
                 continue;
             std::string token;
             std::istringstream iss(data);

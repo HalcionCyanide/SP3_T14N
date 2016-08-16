@@ -1,10 +1,59 @@
 [01
-Capture 10 Ghosts!
-Capture 15 Ghosts!
-Capture 20 Ghosts!
+Capture 10 Monsters!
+Capture 15 Monsters!
+Capture 20 Monsters!
+Capture 25 Monsters!
+Capture 30 Monsters!
 ]
 [02
-Meet the ArchMage.
-Encounter your first Ghost!
-Successfully capture a ghost.
+Achieve a rating of 20 or higher.
+Achieve a rating of 40 or higher.
+Achieve a rating of 60 or higher.
+Achieve a rating of 80 or higher.
+]
+[03
+Capture a monster.
+Report to the Guard Captain.
+Storm the castle.
+Capture the Reaper.
+Leave the town and reach the village.
+Find the villagers.
+Search the graveyard.
+Return the Rosary to the Church.
+Go back to the graveyard.
+Capture the Manticore.
+Leave the village.
+Talk to the Mysterious Stranger.
+Return to the Castle for instructions.
+Reach the Cursed Woods.
+Capture the Skull Knight.
+Capture the Balrog.
+]
+[04
+Mine the rocks.
+Chop the wood.
+Bring them back to the carpenter.
+Mine the rocks.
+Chop the wood.
+Bring them back to the carpenter.
+Rebuild the Homes.
+Mine the rocks.
+Chop the wood.
+Bring them back to the carpenter.
+Mine the rocks.
+Chop the wood.
+Bring them back to the carpenter.
+Rebuild the Gate.
+]
+[05 //takes place at town 3
+Put out all the cursed fires around the Crypt.
+]
+[06
+Find a Map piece.
+Find a Map piece.
+Find a Map piece.
+Find a Map piece.
+Speak to the royal cartographer.
+Go to the location mentioned.
+Capture the Pandora's Box.
 ]
