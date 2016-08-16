@@ -50,42 +50,40 @@ bool CMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &theH
     int theLineCounter = 0;
     
     std::ifstream file(mapName.c_str());
-    if (file.is_open())
+    assert(file.is_open());
+    int i = 0, k = 0;
+    while (file.good())
     {
-        int i = 0, k = 0;
-        while (file.good())
+        std::string aLineOfText = "";
+        getline(file, aLineOfText);
+
+        if (aLineOfText == "")
+            continue;
+
+        std::string token;
+        std::istringstream iss(aLineOfText);
+        theScreenMap.insert(std::pair< unsigned, std::vector<unsigned char> >(theLineCounter, std::vector<unsigned char>()));
+        std::map<unsigned, std::vector<unsigned char>>::iterator it = theScreenMap.find((unsigned)theLineCounter);
+        unsigned num_Column = 0;
+        while (getline(iss, token, ','))
         {
-            std::string aLineOfText = "";
-            getline(file, aLineOfText);
-
-            if (aLineOfText == "")
-                continue;
-
-            std::string token;
-            std::istringstream iss(aLineOfText);
-            theScreenMap.insert(std::pair< unsigned, std::vector<unsigned char> >(theLineCounter, std::vector<unsigned char>()));
-            std::map<unsigned, std::vector<unsigned char>>::iterator it = theScreenMap.find((unsigned)theLineCounter);
-            unsigned num_Column = 0;
-            while (getline(iss, token, ','))
-            {
-                if (token == "9999") {
-                    for (int num = 0; num < MAX_NUM_POINTS; ++num)
-                    {
-                        if (points_4[num] == nullptr) {
-                            points_4[num] = new unsigned(num_Column);
-                            break;
-                        }
-                        else if (num == MAX_NUM_POINTS - 1)
-                            assert(true == false);
+            if (token == "9999") {
+                for (int num = 0; num < MAX_NUM_POINTS; ++num)
+                {
+                    if (points_4[num] == nullptr) {
+                        points_4[num] = new unsigned(num_Column);
+                        break;
                     }
+                    else if (num == MAX_NUM_POINTS - 1)
+                        assert(true == false);
                 }
-                else {
-                    it->second.push_back(' ');
-                }
-                ++num_Column;
             }
-            theLineCounter++;
+            else {
+                it->second.push_back(' ');
+            }
+            ++num_Column;
         }
+        theLineCounter++;
     }
     theNumOfTiles_MapWidth = theScreenMap.begin()->second.size();
     theNumOfTiles_MapHeight = theLineCounter;
