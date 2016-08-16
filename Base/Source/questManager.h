@@ -1,17 +1,18 @@
 #pragma once
 #include "Quest.h"
+#include "GenericSystem.h"
 #include <fstream>
 #include <sstream>
-class questManager
+class questManager : public GenericSystem
 {
 public:
 	questManager();
-	~questManager();
+	virtual ~questManager();
 
-	void readFile(const std::string);
-	void readDescFile(const std::string);
-	void print();
-	void printQuestwithID(int ID);
+	virtual void readFile(const std::string);
+	virtual void readDescFile(const std::string);
+	virtual void print();
+	virtual void printQuestwithID(int ID);
 
 	std::vector<Quest> allQuests;
 	Quest tempQuest;

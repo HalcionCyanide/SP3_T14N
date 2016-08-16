@@ -105,6 +105,12 @@
     <ClCompile Include="Source\BillboardManager.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\questManager.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Quest.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Scene_System.h">
@@ -191,6 +197,12 @@
     <ClInclude Include="Source\Scene_2.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Source\questManager.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Quest.h">
+      <Filter>Header Files\Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\GPass.fragmentshader">
@@ -205,5 +217,9 @@
     <None Include="Shader\Shadow.vertexshader">
       <Filter>Shader</Filter>
     </None>
+    <None Include="Source\questData.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Source\questDesc.txt" />
   </ItemGroup>
 </Project>

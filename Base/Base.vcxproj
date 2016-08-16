@@ -22,6 +22,8 @@
     <ClCompile Include="Source\LoadHmap.cpp" />
     <ClCompile Include="Source\LoadOBJ.cpp" />
     <ClCompile Include="Source\LoadTGA.cpp" />
+    <ClCompile Include="Source\Quest.cpp" />
+    <ClCompile Include="Source\questManager.cpp" />
     <ClCompile Include="Source\Scene_1.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Mesh.cpp" />
@@ -49,6 +51,8 @@
     <ClInclude Include="Source\LoadHmap.h" />
     <ClInclude Include="Source\LoadOBJ.h" />
     <ClInclude Include="Source\LoadTGA.h" />
+    <ClInclude Include="Source\Quest.h" />
+    <ClInclude Include="Source\questManager.h" />
     <ClInclude Include="Source\Scene_1.h" />
     <ClInclude Include="Source\Material.h" />
     <ClInclude Include="Source\Mesh.h" />
@@ -67,6 +71,10 @@
     <None Include="Shader\GPass.vertexshader" />
     <None Include="Shader\Shadow.fragmentshader" />
     <None Include="Shader\Shadow.vertexshader" />
+    <None Include="Source\questData.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Source\questDesc.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9B172635-4E2B-46F1-A403-08F4194D00F5}</ProjectGuid>
