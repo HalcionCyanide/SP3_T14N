@@ -79,6 +79,18 @@ bool CMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &theH
                         assert(true == false);
                 }
             }
+            else if (token.find("H") != std::string::npos)
+            {
+                it->second.push_back(token[0]);
+            }
+            else if (token.find("G") != std::string::npos)
+            {
+                it->second.push_back(token[0]);
+            }
+            else if (token.find("T") != std::string::npos)
+            {
+                it->second.push_back(token[0]);
+            }
             else {
                 it->second.push_back(' ');
             }
@@ -92,6 +104,8 @@ bool CMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &theH
     tileSizeXYZ.x = terrainSize.x / theNumOfTiles_MapWidth;
     tileSizeXYZ.z = terrainSize.z / theNumOfTiles_MapHeight;
     //<?>
+
+    
 
     return true;
 }
