@@ -47,14 +47,14 @@ void GraphicsEntity::Init()
     // Accept fragment if it closer to the camera than the former one
     glDepthFunc(GL_LESS);
 
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glAlphaFunc(GL_GREATER, 0.1f);
+	glAlphaFunc(GL_GREATER, (GLclampf)0.1f);
 	glEnable(GL_ALPHA_TEST);
 
     glGenVertexArrays(1, &m_vertexArrayID);
@@ -156,18 +156,10 @@ void GraphicsEntity::Init()
 	meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
     assert(loadingMeshDriven("Image//MeshDriven.csv"));
-	//newMesh = MeshBuilder::GenerateText("text", 16, 16);
-	//newMesh->textureArray[0] = LoadTGA("Image//ExportedFont.tga");
-	//newMesh->textureID = LoadTGA("Image//ExportedFont.tga"); // <- Working one
-	//meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+	newMesh = MeshBuilder::GenerateQuad("ayylmao", Color(1, 1, 1));
+	newMesh->textureArray[0] = LoadTGA("Image//weed.tga");
+	meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	//newMesh = MeshBuilder::GenerateOBJ("DualTexQuad", "OBJ//DualSidedTexQuad.obj");
-	//meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-
-	//newMesh = MeshBuilder::GenerateQuad("quad", Color(1, 1, 1), 1.f);
-	//meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-
-	
 }
 
 void GraphicsEntity::Update(float dt)
@@ -275,23 +267,28 @@ void GraphicsEntity::RenderMeshIn2D(Mesh &mesh, const bool &enableLight, const f
     modelStack->PushMatrix();
     modelStack->LoadIdentity();
     modelStack->Translate(x, y, 0);
-    modelStack->Scale(size, size, size);
 
+    modelStack->Scale(size, size, size);
     Mtx44 MVP, modelView, modelView_inverse_transpose;
 
     MVP = projectionStack->Top() * viewStack->Top() * modelStack->Top();
     glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
-    if (mesh.textureArray[0] > 0)
-    {
-        glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, mesh.textureArray[0]);
-        glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
-    }
-    else
-    {
-        glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 0);
-    }
+	for (int i = 0; i < Mesh::MAX_TEXTURES; ++i)
+	{
+		if (mesh.textureArray[i] > 0)
+		{
+			//theres texture lets load it!!
+			glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED + i], 1);
+			glActiveTexture(GL_TEXTURE0 + i);
+			glBindTexture(GL_TEXTURE_2D, mesh.textureArray[i]);
+			glUniform1i(m_parameters[U_COLOR_TEXTURE + i], i);
+		}
+		else
+		{
+
+			glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED + i], 0);
+		}
+	}
 	glUniform1i(m_parameters[U_LIGHTENABLED], enableLight);
     mesh.Render();
     if (mesh.textureArray[0] > 0 || mesh.textureID > 0)
@@ -390,14 +387,6 @@ void GraphicsEntity::RenderMeshIn2D(const std::string &meshName, const bool &ena
 {
 	std::map<std::string, Mesh*>::iterator it = meshList.find(meshName);
 	assert(it != meshList.end());
-	RenderMeshIn2D(*it->second, enableLight, size, x, y);
-}
-
-void GraphicsEntity::RenderTextureIn2D(GLuint texture, const bool &enableLight, const float &size, const float &x, const float &y)
-{
-	std::map<std::string, Mesh*>::iterator it = meshList.find("quad");
-	assert(it != meshList.end());
-	//*it->second->textureArray[0] = texture;
 	RenderMeshIn2D(*it->second, enableLight, size, x, y);
 }
 

@@ -118,8 +118,6 @@ public:
 	virtual void RenderMeshIn2D(const std::string &meshName, const bool &enableLight, const float &size = 1.0f, const float &x = 0.0f, const float &y = 0.0f);
 	virtual void RenderMesh(const std::string &meshName, const bool &enableLight);
 
-	virtual void RenderTextureIn2D(GLuint texture, const bool &enableLight, const float &size = 1.0f, const float &x = 0.0f, const float &y = 0.0f);
-
     void SetHUD(const bool& m_bHUDmode);
 
 	// My stuff

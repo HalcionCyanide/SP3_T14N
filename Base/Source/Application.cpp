@@ -163,10 +163,14 @@ void Application::Run()
 	SecondScene->Init();
 	Scene_System::accessing().AddScene(*SecondScene);
 
+	// Active Window Detection
+	HWND hwnd = GetActiveWindow();
+
 	//Main Loop
 	while (!glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE))
 	{
-		Update(); 
+		if (hwnd == GetActiveWindow())
+			Update(); 
 		Scene_System::accessing().getCurrScene().Render();
 		//Swap buffers
 		glfwSwapBuffers(m_window);
@@ -180,18 +184,14 @@ void Application::Run()
 
 void Application::Update()
 {
-	// Active Window Detection
-	HWND hwnd = GetActiveWindow();
-
 	// Get the elapsed time
 	m_dElaspedTime = m_timer.getElapsedTime();
 
 	// Update threads
 	m_dAccumulatedTime_ThreadOne += m_dElaspedTime;
-	if (m_dAccumulatedTime_ThreadOne > 1 / frameTime && (hwnd == GetActiveWindow()))
+	if (m_dAccumulatedTime_ThreadOne > 1 / frameTime)
 	{
 		GetMouseUpdate();
-		//GetKeyboardUpdate();
 		Scene_System::accessing().getCurrScene().Update((float)m_dElaspedTime);
 		m_dAccumulatedTime_ThreadOne = 0.0;
 	}

@@ -111,7 +111,11 @@
     <ClCompile Include="Source\Quest.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Source\Map.cpp">
+=======
+    <ClCompile Include="Source\UI_Element.cpp">
+>>>>>>> a505d462d5c3bebec5e14f2ff47ae4a644379600
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -206,7 +210,11 @@
     <ClInclude Include="Source\Quest.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Source\Map.h">
+=======
+    <ClInclude Include="Source\UI_Element.h">
+>>>>>>> a505d462d5c3bebec5e14f2ff47ae4a644379600
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
   </ItemGroup>
