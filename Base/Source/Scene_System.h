@@ -6,6 +6,10 @@
 #include "SceneEntity.h"
 #include <map>
 #include <stack>
+#include "InputManager.h"
+
+class InputManager;
+
 class Scene_System : public GenericSystem, public SingletonTemplate<Scene_System>
 {
 public:
@@ -24,11 +28,21 @@ public:
 	virtual void setGraphics_Scene(SceneEntity&);
     virtual void clearEverything();
 
+	void SetUIDimensions(const float &width, const float &height);
+
+	float GetUIWidth();
+	float GetUIHeight();
+
+	InputManager *cSS_InputManager;
+
 private:
+	float cSS_UIWidth = 0;
+	float cSS_UIHeight = 0;
+
 	std::stack<SceneEntity* > SceneHistory;
 
     std::map<std::string, SceneEntity*> theSceneList;
-    SceneEntity /**currScene,*/ *graphics_scene;
+    SceneEntity *graphics_scene;
 };
 
 #endif

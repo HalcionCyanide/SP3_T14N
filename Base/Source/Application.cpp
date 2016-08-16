@@ -20,8 +20,6 @@ GLFWwindow* m_window;
 const unsigned char FPS = 60; // FPS of this game
 const unsigned int frameTime = 1000 / FPS; // time for each frame
 
-float Application::cA_CameraYaw = 0.0, Application::cA_CameraPitch = 0.0;
-int Application::cA_WindowWidth = 800, Application::cA_WindowHeight = 600;
 float Application::cA_MinimumTerrainY = 0, Application::cA_CurrentTerrainY = 0;
 
 ISoundEngine* Application::theSoundEngine = NULL;
@@ -51,23 +49,6 @@ bool Application::IsKeyPressed(unsigned short key)
 	return ((GetAsyncKeyState(key) & 0x8001) != 0);
 }
 
-bool Application::GetMouseUpdate()
-{
-	//New Version for use with my camera version
-	//Lock the cursor's position to the center of the screen.
-	int moveX = cA_WindowWidth / 2;
-	int moveY = cA_WindowHeight / 2;
-	POINT mousePosition;
-	GetCursorPos(&mousePosition);
-	SetCursorPos(moveX, moveY);
-	
-	//Calculate the difference between the cursor coordinates between frames
-	cA_CameraYaw = static_cast<float>(mousePosition.x - moveX);
-	cA_CameraPitch = static_cast<float>(mousePosition.y - moveY);
-
-	return false;
-}
-
 Application::Application()
 {
 	Application::theSoundEngine = NULL;
@@ -84,6 +65,9 @@ Application::~Application()
 
 void Application::Init()
 {
+	// Initialize the default values of the Scene_System
+	Scene_System::accessing().Init();
+
 	//Start Sound Engine with Default params
 	theSoundEngine = createIrrKlangDevice();
 	theSoundEngine->setSoundVolume(0.25f);
@@ -110,6 +94,7 @@ void Application::Init()
 	const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());	//Obtain Width and Height values from the monitor;
 	cA_WindowWidth = mode->width;
 	cA_WindowHeight = mode->height;
+	Scene_System::accessing().cSS_InputManager->SetScreenSize((float)cA_WindowWidth, (float)cA_WindowHeight);
 	m_window = glfwCreateWindow(cA_WindowWidth, cA_WindowHeight, "SP3 Framework", NULL, NULL); // Create a window with attained values.
 
 	//If the window couldn't be created
@@ -142,15 +127,17 @@ void Application::Init()
 	m_dAccumulatedTime_ThreadOne = 0.0;
 	m_dAccumulatedTime_ThreadTwo = 0.0;
 
-	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);	// Hides the cursor within the window
+	//glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);	// Hides the cursor within the window
 }
 
 void Application::Run()
 {
     m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
 
-	// Initialize the default values of the Scene_System
-	Scene_System::accessing().Init();
+	float ScreenHeight = 100; // <!>
+	float ScreenWidth = ScreenHeight * ((float)cA_WindowWidth / (float)cA_WindowHeight);
+	Scene_System::accessing().SetUIDimensions(ScreenWidth, ScreenHeight);
+
 	GraphicsEntity* SceneGraphics = new GraphicsEntity();
 	SceneGraphics->Init();
 	Scene_System::accessing().setGraphics_Scene(*SceneGraphics);
@@ -169,6 +156,9 @@ void Application::Run()
 	//Main Loop
 	while (!glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE))
 	{
+		if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode) 
+			glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+		else glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		if (hwnd == GetActiveWindow())
 			Update(); 
 		Scene_System::accessing().getCurrScene().Render();
@@ -191,17 +181,17 @@ void Application::Update()
 	m_dAccumulatedTime_ThreadOne += m_dElaspedTime;
 	if (m_dAccumulatedTime_ThreadOne > 1 / frameTime)
 	{
-		GetMouseUpdate();
+		Scene_System::accessing().cSS_InputManager->UpdateMouse();
 		Scene_System::accessing().getCurrScene().Update((float)m_dElaspedTime);
 		m_dAccumulatedTime_ThreadOne = 0.0;
 	}
 
-	//m_dAccumulatedTime_ThreadTwo += m_dElaspedTime;
-	//if (m_dAccumulatedTime_ThreadTwo > 0.5)
-	//{
-	//	// Segment Update Calls If Need Be
-	//	m_dAccumulatedTime_ThreadTwo = 0.0;
-	//}
+	m_dAccumulatedTime_ThreadTwo += m_dElaspedTime;
+	if (m_dAccumulatedTime_ThreadTwo > 1 / frameTime)
+	{
+		Scene_System::accessing().cSS_InputManager->HandleUserInput();
+		m_dAccumulatedTime_ThreadTwo = 0.0;
+	}
 }
 
 void Application::Exit()

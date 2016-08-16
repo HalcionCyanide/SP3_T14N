@@ -12,7 +12,7 @@ Class to define camera
 #define CAMERA_3_H
 
 #include "Camera.h"
-#include "InputManager.h"
+#include "Scene_System.h"
 
 /****************************************************************************/
 /*!
@@ -44,10 +44,8 @@ public:
 	virtual void UpdateStatus(const unsigned char key, const bool status = true);
 
 	Vector3 CameraVelocity;
-	void SetKeyList(InputManager*);
 
 private:
-	InputManager* KeyList;
 
 	Vector3 view;
 

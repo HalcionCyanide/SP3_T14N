@@ -4,7 +4,7 @@
 #include "timer.h"
 #include "DetectMemoryLeak.h"
 #include <string>
-
+#include "Vector3.h"
 #include "irrklang.h"
 using namespace irrklang;
 #pragma comment(lib, "../irrKlang-1.5.0/lib/Win32-visualStudio/irrKlang.lib")
@@ -35,16 +35,11 @@ public:
 
 	static bool IsKeyPressed(unsigned short key);
 
-	bool GetMouseUpdate();
-
 	// Stored Window Values
-	static int cA_WindowHeight, cA_WindowWidth;
+	int cA_WindowHeight, cA_WindowWidth;
 
 	// Stored Camera Values
-	static float cA_CameraYaw, cA_CameraPitch;
 	static float cA_MinimumTerrainY, cA_CurrentTerrainY;
-
-	bool GetKeyboardUpdate();
 
 	static ISoundEngine* theSoundEngine;
 	static ISound* Sound_Footstep;
