@@ -44,27 +44,27 @@ void Scene_1::Init()
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	newMesh = MeshBuilder::GenerateQuad("SB_Left", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
+	newMesh->textureArray[0] = LoadTGA("Image//Ocean_Left_S.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	newMesh = MeshBuilder::GenerateQuad("SB_Right", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
+	newMesh->textureArray[0] = LoadTGA("Image//Ocean_Right_S.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	newMesh = MeshBuilder::GenerateQuad("SB_Top", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
+	newMesh->textureArray[0] = LoadTGA("Image//Ocean_Top_S.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	newMesh = MeshBuilder::GenerateQuad("SB_Bottom", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
+	newMesh->textureArray[0] = LoadTGA("Image//Ocean_Down_S.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	newMesh = MeshBuilder::GenerateQuad("SB_Front", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
+	newMesh->textureArray[0] = LoadTGA("Image//Ocean_Front_S.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	newMesh = MeshBuilder::GenerateQuad("SB_Back", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
+	newMesh->textureArray[0] = LoadTGA("Image//Ocean_Back_S.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	//TEST Tree Init
@@ -273,13 +273,15 @@ void Scene_1::RenderPassMain()
 	modelStack->LoadIdentity();
 
 	//RenderTerrain();
-	RenderSkyplane();
-
+	//RenderSkyplane();
+	RenderSkybox();
 	RenderShadowCasters();
 
 	SceneGraphics->RenderMesh("reference", false);
 
 	SceneGraphics->SetHUD(true);
+	SceneGraphics->RenderMeshIn2D("reference", false, 100, 400, 300);
+
 	std::ostringstream ss;
 	ss.str("");
 	ss << "Scene 1 - FPS:" << framerates;

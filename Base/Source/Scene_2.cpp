@@ -64,10 +64,9 @@ void Scene_2::Init()
 	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	newMesh = MeshBuilder::GenerateQuad("ayylmao", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//weed.tga");
+	newMesh = MeshBuilder::GenerateQuad("ParticleW", Color(1, 1, 1));
+	newMesh->textureArray[0] = LoadTGA("Image//ParticleWhite.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-
 }
 
 void Scene_2::Update(float dt)
@@ -98,8 +97,8 @@ void Scene_2::Update(float dt)
 	int RandAmount = Math::RandIntMinMax(0, 3);
 	for (int i = 0; i < RandAmount; ++i)
 	{
-		float RandScale = Math::RandFloatMinMax(2, 3);
-		BManager.AddParticle("ayylmao", Vector3(Math::RandFloatMinMax(-5, 5), Math::RandFloatMinMax(-5, 5), Math::RandFloatMinMax(-5, 5)), Vector3(RandScale, RandScale, RandScale), Vector3(Math::RandFloatMinMax(-5, 5), Math::RandFloatMinMax(-5, 5), Math::RandFloatMinMax(-5, 5)), camera.position, 2);
+		float RandScale = Math::RandFloatMinMax(1.f, 2.f);
+		BManager.AddParticle("ParticleW", Vector3(Math::RandFloatMinMax(-5, 5), camera.position.y + Math::RandFloatMinMax(-5, 5), Math::RandFloatMinMax(-5, 5)), Vector3(RandScale, RandScale, RandScale), Vector3(Math::RandFloatMinMax(-5, 5), Math::RandFloatMinMax(-5, 5), Math::RandFloatMinMax(-5, 5)), camera.position, 2);
 	}
 	BManager.UpdateContainer(dt, camera.position);
 
@@ -132,9 +131,11 @@ void Scene_2::RenderShadowCasters()
 	{
 		if ((*it)->Active)
 		{
+			float TimeRatio = 1;
+			if ((*it)->LifeTime != -1)
+				TimeRatio = 1.1f - (*it)->CurrentTime / (*it)->LifeTime;
 			modelStack->PushMatrix();
-			float TimeRatio = 1.1f - (*it)->CurrentTime / (*it)->LifeTime;
-			modelStack->Translate((*it)->Position.x, camera.position.y + (*it)->Position.y, (*it)->Position.z);
+			modelStack->Translate((*it)->Position.x, (*it)->Position.y, (*it)->Position.z);
 			modelStack->Rotate(Math::RadianToDegree(atan2(camera.position.x - (*it)->Position.x, camera.position.z - (*it)->Position.z)), 0, 1, 0);
 			modelStack->Scale(TimeRatio * (*it)->Dimensions.x, TimeRatio *(*it)->Dimensions.y, TimeRatio *(*it)->Dimensions.z);
 			SceneGraphics->RenderMesh((*it)->MeshName, false);
