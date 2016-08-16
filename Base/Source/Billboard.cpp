@@ -3,7 +3,8 @@
 bool Billboard::CheckLife()
 {
 	// Still active if Liftime exceeds.
-	//if (LifeTime == -1) return true;
+	if (LifeTime == -1) 
+		return true;
 	return CurrentTime < LifeTime;
 }
 
