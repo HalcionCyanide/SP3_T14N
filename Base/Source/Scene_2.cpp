@@ -70,23 +70,6 @@ void Scene_2::Init()
 
 }
 
-void Scene_2::InitGroundBillBoard(GLuint texture, float Xsize, float Ysize, float Xpos, float Zpos)
-{
-	if (!texture) //Proper error check
-		return;
-	Mesh* mesh = MeshBuilder::GenerateOBJ("DualTexQuad", "OBJ//DualSidedTexQuad.obj");
-	mesh->textureArray[0] = texture;
-	mesh->material.kShininess = 0.f;
-	mesh->material.kAmbient.Set(0.8f, 0.8f, 0.8f);
-	//Add these code just after glDisable(GL_DEPTH_TEST);
-	float Y_Val = Ysize / 2 + TerrainYScale * ReadHeightMap(m_heightMap, Xpos / TerrainXScale, Zpos / TerrainXScale);
-	if (Y_Val > 20)
-	{
-		Billboard B(Vector3(Xpos, Y_Val, Zpos), Vector3(Xsize, Ysize, Xsize), camera.position, mesh);
-		StaticBillBoardVec.push_back(B);
-	}
-}
-
 void Scene_2::Update(float dt)
 {
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
@@ -116,7 +99,7 @@ void Scene_2::Update(float dt)
 	for (int i = 0; i < RandAmount; ++i)
 	{
 		float RandScale = Math::RandFloatMinMax(2, 3);
-		BManager.AddBillboard(Vector3(Math::RandFloatMinMax(-5, 5), Math::RandFloatMinMax(-5, 5), Math::RandFloatMinMax(-5, 5)), Vector3(RandScale, RandScale, RandScale), Vector3(Math::RandFloatMinMax(-5, 5), Math::RandFloatMinMax(-5, 5), Math::RandFloatMinMax(-5, 5)), camera.position, 2);
+		BManager.AddParticle("ayylmao", Vector3(Math::RandFloatMinMax(-5, 5), Math::RandFloatMinMax(-5, 5), Math::RandFloatMinMax(-5, 5)), Vector3(RandScale, RandScale, RandScale), Vector3(Math::RandFloatMinMax(-5, 5), Math::RandFloatMinMax(-5, 5), Math::RandFloatMinMax(-5, 5)), camera.position, 2);
 	}
 	BManager.UpdateContainer(dt, camera.position);
 
@@ -154,10 +137,9 @@ void Scene_2::RenderShadowCasters()
 			modelStack->Translate((*it)->Position.x, camera.position.y + (*it)->Position.y, (*it)->Position.z);
 			modelStack->Rotate(Math::RadianToDegree(atan2(camera.position.x - (*it)->Position.x, camera.position.z - (*it)->Position.z)), 0, 1, 0);
 			modelStack->Scale(TimeRatio * (*it)->Dimensions.x, TimeRatio *(*it)->Dimensions.y, TimeRatio *(*it)->Dimensions.z);
-			SceneGraphics->RenderMesh("ayylmao", false);
+			SceneGraphics->RenderMesh((*it)->MeshName, false);
 			modelStack->PopMatrix();
 		}
-
 	}
 }
 
@@ -291,7 +273,7 @@ void Scene_2::RenderPassMain()
 	SceneGraphics->SetHUD(true);
 	std::ostringstream ss;
 	ss.str("");
-	ss << "Scene 1 - FPS:" << framerates;
+	ss << "Scene 2 - FPS:" << framerates;
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 25);
 	SceneGraphics->SetHUD(false);
