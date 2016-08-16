@@ -236,7 +236,7 @@ void Camera3::CameraTiltMotion(double dt, bool Moving)
 	float TiltAmount = CameraCurrentWalkSpeed / 60.f;
 	float BobSpeed = CamTiltSpeed /2.f;
 	float BobAmount = CameraCurrentWalkSpeed / 300.f;
-	if (Moving)
+	if (Moving && cos(Math::DegreeToRadian(abs(CurrentCameraRotation.x))) > 0.3f )
 	{
 		if (!TiltDir && CurrentCameraRotation.z >= TiltAmount){ TiltDir = true; }
 		else if (TiltDir && CurrentCameraRotation.z <= -TiltAmount){ TiltDir = false; }
