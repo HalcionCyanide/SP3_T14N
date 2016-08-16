@@ -1,0 +1,10 @@
+[01
+Capture 10 Ghosts!
+Capture 15 Ghosts!
+Capture 20 Ghosts!
+]
+[02
+Meet the ArchMage.
+Encounter your first Ghost!
+Successfully capture a ghost.
+]

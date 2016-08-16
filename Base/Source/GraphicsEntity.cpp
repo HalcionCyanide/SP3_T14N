@@ -167,8 +167,7 @@ void GraphicsEntity::Init()
 	//newMesh = MeshBuilder::GenerateQuad("quad", Color(1, 1, 1), 1.f);
 	//meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	//newMesh = MeshBuilder::GenerateCube("cube", Color(1, 1, 1), 1.f);
-	//meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+	
 }
 
 void GraphicsEntity::Update(float dt)

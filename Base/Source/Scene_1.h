@@ -33,8 +33,7 @@ private:
 
 	//Heightmap stuff
 	std::vector<unsigned char> m_heightMap;
-	float TerrainYScale = 100.f;
-	float TerrainXScale = 700.f;
+	Vector3 TerrainScale;
 
 	// Additional Calls
 	void RenderShadowCasters();
@@ -42,12 +41,9 @@ private:
 	void RenderSkyplane();
 	void RenderSkybox();
 
-	void InitGroundBillBoard(GLuint texture, float Xsize, float Ysize, float Xpos, float Zpos);
-
 	const float SkyboxSize = 1000;
 
-	std::vector<Billboard> StaticBillBoardVec;
-	std::vector<Vector3> TreePosVec;
+	BillboardManager BManager;
 
     double framerates;
 };

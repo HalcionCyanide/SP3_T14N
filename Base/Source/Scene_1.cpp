@@ -23,6 +23,9 @@ void Scene_1::Init()
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	SceneInputManager = new InputManager();
 
+	// Set Terrain Size
+	TerrainScale.Set(700.f, 100.f, 700.f);
+
     Mtx44 perspective;
     perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
     projectionStack->LoadMatrix(perspective);
@@ -71,45 +74,12 @@ void Scene_1::Init()
 	newMesh->textureArray[0] = TreeTex;
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	Application::cA_MinimumTerrainY = TerrainYScale * ReadHeightMap(m_heightMap, camera.position.x / TerrainXScale, camera.position.z / TerrainXScale) + camera.PlayerHeight;
+	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera.position.x / TerrainScale.x, camera.position.z / TerrainScale.z) + camera.PlayerHeight;
 	Application::cA_CurrentTerrainY = Application::cA_MinimumTerrainY;
 
 	for (int i = 0; i < 8; i++)
 	{
-		InitGroundBillBoard(TreeTex, 20.f + Math::RandFloatMinMax(0.f, 5.f), 30.f + Math::RandFloatMinMax(0.f, 3.f), -30.f + i * 55.f, -210.f + Math::RandFloatMinMax(-15.f, 15.f));
-		InitGroundBillBoard(TreeTex, 20.f + Math::RandFloatMinMax(0.f, 5.f), 30.f + Math::RandFloatMinMax(0.f, 3.f), -40.f + i * 55.f, -180.f + Math::RandFloatMinMax(-15.f, 15.f));
-		InitGroundBillBoard(TreeTex, 20.f + Math::RandFloatMinMax(0.f, 5.f), 30.f + Math::RandFloatMinMax(0.f, 3.f), -60.f + i * 55.f, -150.f + Math::RandFloatMinMax(-15.f, 15.f));
-		InitGroundBillBoard(TreeTex, 20.f + Math::RandFloatMinMax(0.f, 5.f), 30.f + Math::RandFloatMinMax(0.f, 3.f), -70.f + i * 55.f, -130.f + Math::RandFloatMinMax(-15.f, 15.f));
-		InitGroundBillBoard(TreeTex, 20.f + Math::RandFloatMinMax(0.f, 5.f), 30.f + Math::RandFloatMinMax(0.f, 3.f), -70.f + i * 55.f, -110.f + Math::RandFloatMinMax(-15.f, 15.f));
-		InitGroundBillBoard(TreeTex, 20.f + Math::RandFloatMinMax(0.f, 5.f), 30.f + Math::RandFloatMinMax(0.f, 3.f), -50.f + i * 55.f, -90.f +	Math::RandFloatMinMax(-15.f, 15.f));
-		InitGroundBillBoard(TreeTex, 20.f + Math::RandFloatMinMax(0.f, 5.f), 30.f + Math::RandFloatMinMax(0.f, 3.f), -40.f + i * 55.f, -70.f +	Math::RandFloatMinMax(-15.f, 15.f));
-		InitGroundBillBoard(TreeTex, 20.f + Math::RandFloatMinMax(0.f, 5.f), 30.f + Math::RandFloatMinMax(0.f, 3.f), -10.f + i * 55.f, -50.f +	Math::RandFloatMinMax(-15.f, 15.f));
-		InitGroundBillBoard(TreeTex, 20.f + Math::RandFloatMinMax(0.f, 5.f), 30.f + Math::RandFloatMinMax(0.f, 3.f), -20.f + i * 55.f, -30.f +	Math::RandFloatMinMax(-15.f, 15.f));
-		InitGroundBillBoard(TreeTex, 20.f + Math::RandFloatMinMax(0.f, 5.f), 30.f + Math::RandFloatMinMax(0.f, 3.f), -30.f + i * 55.f, 0.f +	Math::RandFloatMinMax(-15.f, 15.f));
-		InitGroundBillBoard(TreeTex, 20.f + Math::RandFloatMinMax(0.f, 5.f), 30.f + Math::RandFloatMinMax(0.f, 3.f), -40.f + i * 55.f, 30.f +	Math::RandFloatMinMax(-15.f, 15.f));
-		InitGroundBillBoard(TreeTex, 20.f + Math::RandFloatMinMax(0.f, 5.f), 30.f + Math::RandFloatMinMax(0.f, 3.f), -30.f + i * 55.f, 40.f +	Math::RandFloatMinMax(-15.f, 15.f));
-		InitGroundBillBoard(TreeTex, 20.f + Math::RandFloatMinMax(0.f, 5.f), 30.f + Math::RandFloatMinMax(0.f, 3.f), -60.f + i * 55.f, 70.f +	Math::RandFloatMinMax(-15.f, 15.f));
-		InitGroundBillBoard(TreeTex, 20.f + Math::RandFloatMinMax(0.f, 5.f), 30.f + Math::RandFloatMinMax(0.f, 3.f), -30.f + i * 55.f, 90.f +	Math::RandFloatMinMax(-15.f, 15.f));
-		InitGroundBillBoard(TreeTex, 20.f + Math::RandFloatMinMax(0.f, 5.f), 30.f + Math::RandFloatMinMax(0.f, 3.f), -40.f + i * 55.f, 130.f +	Math::RandFloatMinMax(-15.f, 15.f));
-	}
-	InitGroundBillBoard(TreeTex, 0.f, 0.01f, 0.f, 0.f);
-}
-
-void Scene_1::InitGroundBillBoard(GLuint texture, float Xsize, float Ysize, float Xpos, float Zpos)
-{
-	if (!texture) //Proper error check
-		return;
-	Mesh* mesh = MeshBuilder::GenerateOBJ("DualTexQuad", "OBJ//DualSidedTexQuad.obj");
-	mesh->textureArray[0] = texture;
-	mesh->material.kShininess = 0.f;
-	mesh->material.kDiffuse.Set(0.8f, 0.8f, 0.8f);
-	mesh->material.kAmbient.Set(1.f,1.f,1.f);
-	//Add these code just after glDisable(GL_DEPTH_TEST);
-	float Y_Val = Ysize / 2 + TerrainYScale * ReadHeightMap(m_heightMap, Xpos / TerrainXScale, Zpos / TerrainXScale);
-	if (Y_Val > 20)
-	{
-		Billboard B(Vector3(Xpos, Y_Val, Zpos), Vector3(Xsize, Ysize, Xsize), camera.position, mesh);
-		StaticBillBoardVec.push_back(B);
+		BManager.AddHMapBillboard("Tree", m_heightMap, TerrainScale, Vector3((float)i * 10.f), Vector3(10.f, 20.f, 10.f), Vector3(), camera.position);
 	}
 }
 
@@ -120,7 +90,7 @@ void Scene_1::Update(float dt)
 	SceneInputManager->HandleUserInput();
 
 	//Update Camera's Minimum Possible & Current Y Pos
-	Application::cA_MinimumTerrainY = TerrainYScale * ReadHeightMap(m_heightMap, camera.position.x / TerrainXScale, camera.position.z / TerrainXScale) + camera.PlayerHeight;
+	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera.position.x / TerrainScale.x, camera.position.z / TerrainScale.z) + camera.PlayerHeight;
 
 	if (!(Application::cA_CurrentTerrainY - Application::cA_MinimumTerrainY <= Math::EPSILON && Application::cA_MinimumTerrainY - Application::cA_CurrentTerrainY <= Math::EPSILON))
 	{
@@ -138,12 +108,7 @@ void Scene_1::Update(float dt)
 		Scene_System::accessing().SwitchScene(Scene_2::id_);
     }
 
-	for (unsigned int i = 0; i < StaticBillBoardVec.size(); i++)
-	{
-		StaticBillBoardVec[i].PlayerPosition = camera.position;
-	}
-	std::sort(&StaticBillBoardVec[0], &StaticBillBoardVec[StaticBillBoardVec.size() - 1]);
-
+	BManager.UpdateContainer(dt, camera.position);
 
 	camera.Update(dt);
 }
@@ -152,7 +117,7 @@ void Scene_1::RenderTerrain()
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	modelStack->PushMatrix();
-	modelStack->Scale(TerrainXScale, TerrainYScale, TerrainXScale);
+	modelStack->Scale(TerrainScale.x, TerrainScale.y, TerrainScale.z);
 	SceneGraphics->RenderMesh("terrain", true);
 	modelStack->PopMatrix();
 }
@@ -170,14 +135,20 @@ void Scene_1::RenderShadowCasters()
 {
 	RenderTerrain();
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
-	for (unsigned int i = 0; i < StaticBillBoardVec.size() - 1; i++)
+	for (std::vector<Billboard*>::iterator it = BManager.BillboardContainer.begin(); it != BManager.BillboardContainer.end(); ++it)
 	{
-		modelStack->PushMatrix();
-		modelStack->Translate(StaticBillBoardVec[i].Position.x, StaticBillBoardVec[i].Position.y, StaticBillBoardVec[i].Position.z);
-		modelStack->Rotate(Math::RadianToDegree(atan2(camera.position.x - StaticBillBoardVec[i].Position.x, camera.position.z - StaticBillBoardVec[i].Position.z)), 0, 1, 0);
-		modelStack->Scale(StaticBillBoardVec[i].Dimensions.x, StaticBillBoardVec[i].Dimensions.y, StaticBillBoardVec[i].Dimensions.x);
-		SceneGraphics->RenderMesh("Tree", true);
-		modelStack->PopMatrix();
+		if ((*it)->Active)
+		{
+			float TimeRatio = 1;
+			if ((*it)->LifeTime != -1)
+				TimeRatio = 1.1f - (*it)->CurrentTime / (*it)->LifeTime;
+			modelStack->PushMatrix();
+			modelStack->Translate((*it)->Position.x, (*it)->Position.y, (*it)->Position.z);
+			modelStack->Rotate(Math::RadianToDegree(atan2(camera.position.x - (*it)->Position.x, camera.position.z - (*it)->Position.z)), 0, 1, 0);
+			modelStack->Scale(TimeRatio * (*it)->Dimensions.x, TimeRatio *(*it)->Dimensions.y, TimeRatio *(*it)->Dimensions.z);
+			SceneGraphics->RenderMesh((*it)->MeshName, false);
+			modelStack->PopMatrix();
+		}
 	}
 }
 

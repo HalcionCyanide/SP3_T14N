@@ -1,16 +1,12 @@
 #include "BillboardManager.h"
 #include <algorithm>
 
-BillboardManager::BillboardManager()
-{ 
-	FetchB(); 
-};
-
-void BillboardManager::UpdateContainer(float dt, Vector3 CameraPosition){
+void BillboardManager::UpdateContainer(float dt, const Vector3 &CameraPosition){
 	for (std::vector<Billboard*>::iterator it = BillboardContainer.begin(); it != BillboardContainer.end(); it++)
 	{
 		Billboard* B = *it;
 		B->Active = B->CheckLife();
+		B->PlayerPosition = CameraPosition;
 		if (B->Active)
 		{
 			B->CurrentTime += dt;
@@ -44,13 +40,39 @@ Billboard* BillboardManager::FetchB()
 	return B;
 }
 
-void BillboardManager::AddBillboard(Vector3 Position, Vector3 Dimensions, Vector3 Velocity, Vector3 PlayerPosition, float LifeTime)
+void BillboardManager::AddParticle(const std::string& MeshName, const Vector3& Position, const Vector3& Dimensions, const Vector3& Velocity, const Vector3& PlayerPosition, const float& LifeTime)
 {
 	Billboard* B = FetchB();
+	B->MeshName = MeshName;
 	B->Position = Position;
 	B->Dimensions = Dimensions;
 	B->Velocity = Velocity;
 	B->PlayerPosition = PlayerPosition;
 	B->CurrentTime = 0;
 	B->LifeTime = LifeTime;
+}
+
+void BillboardManager::AddHMapBillboard(const std::string& MeshName, std::vector<unsigned char>& heightMap, const Vector3& TerrainScale, const Vector3& Position, const Vector3& Dimensions, const Vector3& Velocity, const Vector3& PlayerPosition)
+{
+	Billboard* B = FetchB();
+	B->MeshName = MeshName;
+	B->Position = Position;
+	B->Position.y = Dimensions.y * 0.5f + TerrainScale.y * ReadHeightMap(heightMap, Position.x / TerrainScale.x, Position.z / TerrainScale.z);
+	B->Dimensions = Dimensions;
+	B->Velocity = Velocity;
+	B->PlayerPosition = PlayerPosition;
+	B->CurrentTime = 0;
+	B->LifeTime = -1;
+}
+
+void BillboardManager::AddBillboard(const std::string& MeshName, const Vector3& Position, const Vector3& Dimensions, const Vector3& Velocity, const Vector3& PlayerPosition)
+{
+	Billboard* B = FetchB();
+	B->MeshName = MeshName;
+	B->Position = Position;
+	B->Dimensions = Dimensions;
+	B->Velocity = Velocity;
+	B->PlayerPosition = PlayerPosition;
+	B->CurrentTime = 0;
+	B->LifeTime = -1;
 }
