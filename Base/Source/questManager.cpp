@@ -25,9 +25,9 @@ void questManager::print()
 	int i = 0;
 	for (std::vector<Quest*>::iterator it = allQuests.begin(); it < allQuests.end(); it++)
 	{
-		if (*allQuests[i].getActive())
+		if (allQuests[i]->getActive())
 		{
-			std::cout << allQuests[i] << std::endl;
+			std::cout << *allQuests[i] << std::endl;
 			i++;
 		}
 	}
