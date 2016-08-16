@@ -1,30 +1,45 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
-#include "GraphicsEntity.h"
+#include "GenericEntity.h"
+#include "Vector3.h"
+#include "Mtx44.h"
+#include "Mesh.h"
+#include <string>
 
 class GameObject : public GenericEntity
 {
 public:
-	GameObject();
-	~GameObject();
+	GameObject(){};
+	GameObject(const std::string &name, const Vector3 &pos, const Vector3 &scale, const float &rotatingValue, const Vector3 &rotationAxis, const bool &active) :
+		Pos(pos), Scale(scale), Active(active) {
+		setName(name);
+		SetRotation(rotatingValue, rotationAxis);
+	};
+	virtual ~GameObject(){};
 
-	void SetObject(Mesh* object);
+	virtual void Init(const std::string &name, const Vector3 &pos, const Vector3 &scale, const float &rotatingValue, const Vector3 &rotationAxis, const bool &active);
+	virtual void Render();
 
-	void SetPos(Vector3 pos);
-	void SetScale(Vector3 scale);
-	void SetRotation(float rotatingValue, Vector3 rotationAxis);
+	virtual void SetMesh(Mesh &meshObject);
+	virtual void SetPos(const Vector3 &pos);
+	virtual void SetScale(const Vector3 &scale);
+	virtual void SetRotation(const float &rotatingValue, const Vector3 &rotationAxis);
+	virtual void SetActive(const bool &active);
 
-	Vector3 GetPos(void);
-	Vector3 GetScale(void);
-	Mtx44 GetRotation(void);
+	Mesh& GetMesh();
+	Vector3 GetPos();
+	Vector3 GetScale();
+	Mtx44 GetRotation();
+	bool GetActive();
 
 private:
-	Mesh* Object;
+
+	Mesh* MeshObject = nullptr;
 	Vector3 Pos, Scale;
 	Mtx44 Rotation;
+	bool Active = true;
+
 };
-
-
 
 #endif
