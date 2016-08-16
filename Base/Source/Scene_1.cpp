@@ -2,6 +2,7 @@
 #include <sstream>
 
 #include "Scene_2.h"
+#include "Map.h"
 
 std::string Scene_1::id_ = "Scene 1";
 
@@ -11,6 +12,7 @@ Scene_1::Scene_1()
 	SceneInputManager = nullptr;
     framerates = 0;
     setName(id_);
+    theInteractiveMap = nullptr;
 }
 
 Scene_1::~Scene_1()
@@ -81,6 +83,13 @@ void Scene_1::Init()
 	{
 		BManager.AddHMapBillboard("Tree", m_heightMap, TerrainScale, Vector3((float)i * 10.f), Vector3(10.f, 20.f, 10.f), Vector3(), camera.position);
 	}
+    std::vector<GenericEntity*> bunchOfRenderingStuff;
+    CMap *theMap = dynamic_cast<CMap*>(theInteractiveMap);
+    theMap = new CMap();
+    theMap->setName("scene 1 logic map");
+    theMap->LoadMap("Image//MapTest.csv", m_heightMap, TerrainScale, bunchOfRenderingStuff);
+    for (auto it : bunchOfRenderingStuff)
+        delete it;
 }
 
 void Scene_1::Update(float dt)
@@ -310,4 +319,6 @@ void Scene_1::Exit()
 {
 	if (SceneInputManager)
 		delete SceneInputManager;
+    if (theInteractiveMap)
+        delete theInteractiveMap;
 }
