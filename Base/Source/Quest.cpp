@@ -12,16 +12,6 @@ Quest::~Quest()
 {
 }
 
-Quest::questType Quest::getType()
-{
-	return type;
-}
-
-void Quest::setType(Quest::questType temp)
-{
-	type = temp;
-}
-
 std::string Quest::getName()
 {
 	return questName;
@@ -116,12 +106,6 @@ std::ostream& operator<<(std::ostream& os, const Quest& quest)
 		os << "ID #" << quest.id << " " << quest.questName << "\n";
 
 		os << quest.questDesc.at(quest.currentStage) << "\n";
-
-		switch (quest.type)
-		{
-		case Quest::quest_capture: os << "capture"; break;
-		case Quest::quest_fetch: os << "fetch"; break;
-		}
 
 		return os;
 	}
