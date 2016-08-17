@@ -6,6 +6,7 @@ PlayerObject::PlayerObject()
 {
     m_bJumping = false;
     JumpVel = JUMPMAXSPEED = JUMPACCEL = 0;
+    m_ElapsedTime = 0;
 }
 
 PlayerObject::~PlayerObject()
@@ -15,6 +16,7 @@ PlayerObject::~PlayerObject()
 
 void PlayerObject::Update(double dt)
 {
+    m_ElapsedTime = dt;
     if (Scene_System::accessing().cSS_InputManager->GetKeyValue('W'))
     {
 
@@ -30,6 +32,11 @@ void PlayerObject::Update(double dt)
     if (Scene_System::accessing().cSS_InputManager->GetKeyValue('D'))
     {
 
+    }
+
+    if (MovementValues.IsZero() == false)
+    {
+        MovementValues.SetZero();
     }
 }
 
@@ -52,5 +59,6 @@ void PlayerObject::setAccel(const Vector3 &theacceleration)
 
 void PlayerObject::walkDirection(const float &degree, const float &byHowMuch)
 {
-
+    MovementValues.x += (float)(sin(Math::DegreeToRadian(RotationAngle + degree)) * vel_.x * m_ElapsedTime * byHowMuch);
+    MovementValues.z += (float)(cos(Math::DegreeToRadian(RotationAngle + degree)) * vel_.x * m_ElapsedTime * byHowMuch);
 }

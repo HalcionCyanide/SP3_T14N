@@ -21,4 +21,5 @@ protected:
     float JumpVel;
     float JUMPMAXSPEED, JUMPACCEL;
     bool m_bJumping;
+    double m_ElapsedTime;
 };

@@ -37,7 +37,7 @@ public:
 
 	GameObject& operator= (const GameObject& object);
 
-private:
+protected:
 
 	Mesh* MeshObject = nullptr;
 	Vector3 Pos, Scale;
