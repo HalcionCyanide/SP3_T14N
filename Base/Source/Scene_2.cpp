@@ -33,34 +33,6 @@ void Scene_2::Init()
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	newMesh = MeshBuilder::GenerateSkyPlane("skyplane", Color(1, 1, 1), 34, 500.0f, 2000.0f, 1.0f, 1.0f);
-	newMesh->textureArray[0] = LoadTGA("Image//ClearSkyUp2.tga");
-	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-
-	newMesh = MeshBuilder::GenerateQuad("SB_Left", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
-	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-
-	newMesh = MeshBuilder::GenerateQuad("SB_Right", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
-	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-
-	newMesh = MeshBuilder::GenerateQuad("SB_Top", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
-	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-
-	newMesh = MeshBuilder::GenerateQuad("SB_Bottom", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
-	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-
-	newMesh = MeshBuilder::GenerateQuad("SB_Front", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
-	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-
-	newMesh = MeshBuilder::GenerateQuad("SB_Back", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
-	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-
 	newMesh = MeshBuilder::GenerateQuad("ParticleW", Color(1, 1, 1));
 	newMesh->textureArray[0] = LoadTGA("Image//ParticleWhite.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));

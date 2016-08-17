@@ -55,7 +55,7 @@ void GraphicsEntity::Init()
     glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glAlphaFunc(GL_GREATER, (GLclampf)0.1f);
+	//glAlphaFunc(GL_GREATER, (GLclampf)0.1f);
 	glEnable(GL_ALPHA_TEST);
 
     glGenVertexArrays(1, &m_vertexArrayID);
@@ -159,6 +159,34 @@ void GraphicsEntity::Init()
     assert(loadingMeshDriven("Image//MeshDriven.csv"));
 	newMesh = MeshBuilder::GenerateQuad("ayylmao", Color(1, 1, 1));
 	newMesh->textureArray[0] = LoadTGA("Image//weed.tga");
+	meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+
+	newMesh = MeshBuilder::GenerateSkyPlane("skyplane", Color(1, 1, 1), 34, 500.0f, 2000.0f, 1.0f, 1.0f);
+	newMesh->textureArray[0] = LoadTGA("Image//ClearSkyUp2.tga");
+	meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+
+	newMesh = MeshBuilder::GenerateQuad("SB_Left", Color(1, 1, 1));
+	newMesh->textureArray[0] = LoadTGA("Image//Ocean_Left_S.tga");
+	meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+
+	newMesh = MeshBuilder::GenerateQuad("SB_Right", Color(1, 1, 1));
+	newMesh->textureArray[0] = LoadTGA("Image//Ocean_Right_S.tga");
+	meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+
+	newMesh = MeshBuilder::GenerateQuad("SB_Top", Color(1, 1, 1));
+	newMesh->textureArray[0] = LoadTGA("Image//Ocean_Top_S.tga");
+	meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+
+	newMesh = MeshBuilder::GenerateQuad("SB_Bottom", Color(1, 1, 1));
+	newMesh->textureArray[0] = LoadTGA("Image//Ocean_Down_S.tga");
+	meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+
+	newMesh = MeshBuilder::GenerateQuad("SB_Front", Color(1, 1, 1));
+	newMesh->textureArray[0] = LoadTGA("Image//Ocean_Front_S.tga");
+	meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+
+	newMesh = MeshBuilder::GenerateQuad("SB_Back", Color(1, 1, 1));
+	newMesh->textureArray[0] = LoadTGA("Image//Ocean_Back_S.tga");
 	meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 }
@@ -543,3 +571,49 @@ bool GraphicsEntity::loadingMeshDriven(const std::string &fileLocation)
     return false;
 }
 
+void GraphicsEntity::RenderMeshIn2D(Mesh &mesh, const bool &enableLight, const float &sizeX, const float &sizeY, const float &x, const float &y)
+{
+	viewStack->PushMatrix();
+	viewStack->LoadIdentity();
+	modelStack->PushMatrix();
+	modelStack->LoadIdentity();
+	modelStack->Translate(x, y, 0);
+
+	modelStack->Scale(sizeX, sizeY, 1);
+	Mtx44 MVP, modelView, modelView_inverse_transpose;
+
+	MVP = projectionStack->Top() * viewStack->Top() * modelStack->Top();
+	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+	for (int i = 0; i < Mesh::MAX_TEXTURES; ++i)
+	{
+		if (mesh.textureArray[i] > 0)
+		{
+			//theres texture lets load it!!
+			glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED + i], 1);
+			glActiveTexture(GL_TEXTURE0 + i);
+			glBindTexture(GL_TEXTURE_2D, mesh.textureArray[i]);
+			glUniform1i(m_parameters[U_COLOR_TEXTURE + i], i);
+		}
+		else
+		{
+
+			glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED + i], 0);
+		}
+	}
+	glUniform1i(m_parameters[U_LIGHTENABLED], enableLight);
+	mesh.Render();
+	if (mesh.textureArray[0] > 0 || mesh.textureID > 0)
+	{
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+	modelStack->PopMatrix();
+	viewStack->PopMatrix();
+}
+
+void GraphicsEntity::RenderMeshIn2D(const std::string &meshName, const bool &enableLight, const float &sizeX, const float &sizeY, const float &x, const float &y)
+{
+	std::map<std::string, Mesh*>::iterator it = meshList.find(meshName);
+	assert(it != meshList.end());
+	RenderMeshIn2D(*it->second, enableLight, sizeX, sizeY, x, y);
+}

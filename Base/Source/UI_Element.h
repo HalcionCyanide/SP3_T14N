@@ -4,28 +4,40 @@
 #include "GenericEntity.h"
 #include "Vector3.h"
 #include "Boundary.h"
-
-class Boundary;
+#include "Mesh.h"
+#include <string>
 
 class UI_Element : public GenericEntity
 {
 public:
-	UI_Element();
+	enum UI_TYPES
+	{
+		UI_UNASSIGNED,
+		UI_LOGO,
+		UI_BUTTON_L_TO_SCRN,
+		UI_BUTTON_T_TO_SCRN,
+		UI_BUTTON_R_TO_SCRN,
+		UI_BUTTON_B_TO_SCRN,
+	};
+
+	UI_Element(const UI_Element::UI_TYPES& UI_Type, const std::string& name, const Vector3& Position, const Vector3& Dimensions, const Vector3& TargetPosition);
 	virtual ~UI_Element();
 
+	bool Active = false;
 	Vector3 Position;
 	Vector3 Dimensions;
-	Vector3 Velocity;
+	UI_TYPES UI_Type = UI_UNASSIGNED;
 
-	Boundary UI_Bounds;
+	virtual void Init(const std::string& name, const Vector3& Position, const Vector3& Dimensions, const Vector3& TargetPosition);
+	virtual void Update(float dt);
+	virtual void Render();
+	virtual void Exit();
 
-	virtual void Init() = 0;
-	virtual void Update(float dt) = 0;
-	virtual void Render() = 0;
-	virtual void Exit() = 0;
+	Vector3 TargetPosition;
 
 private:
-
+	Mesh* StoredMesh = nullptr;
+	Boundary UI_Bounds;
 };
 
 

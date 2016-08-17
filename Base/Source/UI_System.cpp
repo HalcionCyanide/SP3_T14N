@@ -15,18 +15,31 @@ void UI_System::Init()
 
 }
 
-void UI_System::Update(float dt)
+void UI_System::Update(double dt)
 {
-
+	for (std::vector<UI_Element*>::iterator it = cUIS_ElementContainer.begin(); it != cUIS_ElementContainer.end(); ++it)
+	{
+		if ((*it)->Active)
+			(*it)->Update((float)dt);
+	}
 }
 
 void UI_System::Render()
 {
-
+	for (std::vector<UI_Element*>::iterator it = cUIS_ElementContainer.begin(); it != cUIS_ElementContainer.end(); ++it)
+	{
+		if ((*it)->Active)
+			(*it)->Render();
+	}
 }
 
 void UI_System::Exit()
 {
-
+	for (std::vector<UI_Element*>::iterator it = cUIS_ElementContainer.begin(); it != cUIS_ElementContainer.end(); ++it)
+		(*it)->Exit();
 }
 
+void UI_System::AddUIElement(const UI_Element::UI_TYPES& UI_Type, const std::string& name, const Vector3& Position, const Vector3& Dimension, const Vector3& TargetPosition)
+{
+	cUIS_ElementContainer.push_back(new UI_Element(UI_Type, name, Position, Dimension, TargetPosition));
+}

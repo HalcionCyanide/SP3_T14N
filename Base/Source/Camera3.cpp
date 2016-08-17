@@ -101,7 +101,6 @@ void Camera3::Update(float dt)
 	CameraRotationSpeed = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * RelativeMouseSensitivity;
 	Application::cA_CurrentTerrainY += CameraBobVal;
 	MovementValues.SetZero();
-	//cameraMovement(dt);
 	if (Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT))
 	{
 		CameraMaxWalkSpeed = CameraBaseWalkSpeed * 2;
@@ -130,7 +129,7 @@ void Camera3::Update(float dt)
 		DecomposePlayerInertia(dt);
 	}
 	if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
-	DecomposeMouseInertia(dt);
+		DecomposeMouseInertia(dt);
 
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('W'))
 	{
@@ -148,11 +147,10 @@ void Camera3::Update(float dt)
 	{
 		Strafe(dt);
 	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue(' '))
+	if (!CameraIsLocked && Scene_System::accessing().cSS_InputManager->GetKeyValue(' '))
 	{
 		Jump(dt);
 	}
-
 	if (m_bJumping == false)
 	{
 		position.y = Application::cA_CurrentTerrainY;
@@ -163,11 +161,6 @@ void Camera3::Update(float dt)
 	UpdateJump(dt);
 	UpdateCameraPosition();
 	UpdateCameraVectors();
-	
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('R'))
-	{
-		Reset();
-	}
 }
 
 void Camera3::DecomposePlayerInertia(float dt)
@@ -279,7 +272,8 @@ void Camera3::Reset()
 
 void Camera3::UpdateCameraAngles(double dt)
 {
-	CameraTiltMotion(dt, MovementValues.x || MovementValues.y || MovementValues.z);
+	if (!CameraIsLocked)
+		CameraTiltMotion(dt, MovementValues.x || MovementValues.y || MovementValues.z);
 	CurrentCameraRotation.x = Math::Clamp(CurrentCameraRotation.x, MinimumCameraRotation.x, MaximumCameraRotation.x);
 	CurrentCameraRotation.z = Math::Clamp(CurrentCameraRotation.z, MinimumCameraRotation.z, MaximumCameraRotation.z);
 	if (MaximumCameraRotation.y < 360 && MinimumCameraRotation.y < 360)
@@ -306,8 +300,8 @@ void Camera3::UpdateCameraVectors()
 void Camera3::UpdateCameraPosition()
 {
 	//Include Bounds Check Here
-	
-	position += MovementValues;
+	if (!CameraIsLocked)
+		position += MovementValues;
 }
 
 void Camera3::CheckPositionUpdate(const Boundary &object, const Boundary &player)

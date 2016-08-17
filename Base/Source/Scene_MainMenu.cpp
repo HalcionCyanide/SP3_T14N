@@ -1,46 +1,44 @@
-#include "Scene_1.h"
+#include "Scene_MainMenu.h"
 #include <sstream>
 
+#include "Scene_1.h"
 #include "Scene_2.h"
 #include "GameMap.h"
 #include "GameObject.h"
 
-std::string Scene_1::id_ = "Scene 1";
+std::string Scene_MainMenu::id_ = "Scene Main Menu";
 
-Scene_1::Scene_1()
-    : SceneEntity()
+Scene_MainMenu::Scene_MainMenu()
+	: SceneEntity()
 {
-    framerates = 0;
-    setName(id_);
-    theInteractiveMap = nullptr;
+	framerates = 0;
+	setName(id_);
+	theInteractiveMap = nullptr;
 }
 
-Scene_1::~Scene_1()
+Scene_MainMenu::~Scene_MainMenu()
 {
 
 }
 
-void Scene_1::Init()
+void Scene_MainMenu::Init()
 {
-    GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
+	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 
 	// Set Terrain Size
 	TerrainScale.Set(700.f, 100.f, 700.f);
 
-    Mtx44 perspective;
-    perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
-    projectionStack->LoadMatrix(perspective);
+	Mtx44 perspective;
+	perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
+	projectionStack->LoadMatrix(perspective);
 
-	camera.Init(Vector3(0, 5, -5), Vector3(0,5,0), Vector3(0, 1, 0));
+	camera.Init(Vector3(5, 30, -31), Vector3(5, 30, -5), Vector3(0, 1, 0));
+	camera.CameraIsLocked = true;
 
 	// Initiallise Model Specific Meshes Here
 	Mesh* newMesh = MeshBuilder::GenerateTerrain("terrain", "Image//heightmap5.raw", m_heightMap);
 	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
-	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-
-	newMesh = MeshBuilder::GenerateSkyPlane("skyplane", Color(1, 1, 1), 34, 500.0f, 2000.0f, 1.0f, 1.0f);
-	newMesh->textureArray[0] = LoadTGA("Image//ClearSkyUp2.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	newMesh = MeshBuilder::GenerateQuad("TFB_Logo", Color(1, 1, 1));
@@ -61,19 +59,13 @@ void Scene_1::Init()
 	{
 		BManager.AddHMapBillboard("Tree", m_heightMap, TerrainScale, Vector3((float)i * 10.f), Vector3(10.f, 20.f, 10.f), Vector3(), camera.position);
 	}
-
-    theInteractiveMap = new GameMap();
-    GameMap *theMap = dynamic_cast<GameMap*>(theInteractiveMap);
-    theMap->setName("scene 1 logic map");
-    theMap->LoadMap("Image//MapTest.csv", m_heightMap, TerrainScale, testingRenderingStuff);
-
-	TestPos.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 0);
+	UI_Sys.AddUIElement(UI_Element::UI_LOGO, "TFB_Logo", Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 2.f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 2.f, 1), Vector3(700, 700, 1), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.75f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.75f, 1));
 }
 
-void Scene_1::Update(float dt)
+void Scene_MainMenu::Update(float dt)
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
-    SceneGraphics->Update(dt);
+	SceneGraphics->Update(dt);
 
 	//Update Camera's Minimum Possible & Current Y Pos
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera.position.x / TerrainScale.x, camera.position.z / TerrainScale.z) + camera.PlayerHeight;
@@ -86,36 +78,35 @@ void Scene_1::Update(float dt)
 			Application::cA_CurrentTerrainY -= RateofChangeY;
 		}
 	}
-	Vector3 Center(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 2, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight / 2, 0);
-	if (TestPos != Center)
-	{
-		Vector3 DV = (TestPos - Center);
-		TestPos -= DV * dt;
-	}
 
-    framerates = 1 / dt;
+	framerates = 1 / dt;
 
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
-    {
+	{
+		Scene_System::accessing().SwitchScene(Scene_1::id_);
+	}
+	else if (Scene_System::accessing().cSS_InputManager->GetKeyValue('3'))
+	{
 		Scene_System::accessing().SwitchScene(Scene_2::id_);
-    }
+	}
+
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
 	{
 		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
 		Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0;
 		Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0;
 	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('0'))
+	else if(Scene_System::accessing().cSS_InputManager->GetKeyValue('0'))
 	{
 		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
 	}
 
 	BManager.UpdateContainer(dt, camera.position);
-
+	UI_Sys.Update(dt);
 	camera.Update(dt);
 }
 
-void Scene_1::RenderTerrain()
+void Scene_MainMenu::RenderTerrain()
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	modelStack->PushMatrix();
@@ -124,16 +115,7 @@ void Scene_1::RenderTerrain()
 	modelStack->PopMatrix();
 }
 
-void Scene_1::RenderSkyplane()
-{
-	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
-	modelStack->PushMatrix();
-	modelStack->Translate(500, 1800, -500);
-	SceneGraphics->RenderMesh("skyplane", false);
-	modelStack->PopMatrix();
-}
-
-void Scene_1::RenderShadowCasters()
+void Scene_MainMenu::RenderShadowCasters()
 {
 	RenderTerrain();
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
@@ -154,7 +136,7 @@ void Scene_1::RenderShadowCasters()
 	}
 }
 
-void Scene_1::RenderSkybox()
+void Scene_MainMenu::RenderSkybox()
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	//left
@@ -202,7 +184,7 @@ void Scene_1::RenderSkybox()
 	modelStack->PopMatrix();
 }
 
-void Scene_1::RenderPassGPass()
+void Scene_MainMenu::RenderPassGPass()
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	SceneGraphics->m_renderPass = GraphicsEntity::RENDER_PASS::RENDER_PASS_PRE;
@@ -226,7 +208,7 @@ void Scene_1::RenderPassGPass()
 	RenderShadowCasters();
 }
 
-void Scene_1::RenderPassMain()
+void Scene_MainMenu::RenderPassMain()
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	SceneGraphics->m_renderPass = GraphicsEntity::RENDER_PASS::RENDER_PASS_MAIN;
@@ -274,28 +256,27 @@ void Scene_1::RenderPassMain()
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack->LoadIdentity();
 
-	//RenderTerrain();
-	//RenderSkyplane();
 	RenderSkybox();
 	RenderShadowCasters();
 
 	SceneGraphics->RenderMesh("reference", false);
 
-    //<!> will remove soon <!>
-    for (auto it : testingRenderingStuff)
-    {
-        GameObject *the3DObject = dynamic_cast<GameObject*>(it);
-        if (the3DObject)
-            the3DObject->Render();
-    }
-    //<!> will remove soon <!>
+	//<!> will remove soon <!>
+	for (auto it : testingRenderingStuff)
+	{
+		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
+		if (the3DObject)
+			the3DObject->Render();
+	}
+	//<!> will remove soon <!>
 
 	SceneGraphics->SetHUD(true);
-	SceneGraphics->RenderMeshIn2D("TFB_Logo", false, 1000, TestPos.x, TestPos.y);
+
+	UI_Sys.Render();
 
 	std::ostringstream ss;
 	ss.str("");
-	ss << "Scene 1 - FPS:" << framerates;
+	ss << "Scene Main Menu - FPS:" << framerates;
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 25);
 
@@ -308,12 +289,12 @@ void Scene_1::RenderPassMain()
 	ss << "Mouse Position:" << Scene_System::accessing().cSS_InputManager->GetMousePosition();
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
-    //<!> Removing soon
-    ss.str("");
-    ss << "CPos:" << camera.position;
-    ss.precision(3);
-    SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 125);
-    //<!> Removing soon
+	//<!> Removing soon
+	ss.str("");
+	ss << "CPos:" << camera.position;
+	ss.precision(3);
+	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 125);
+	//<!> Removing soon
 	SceneGraphics->SetHUD(false);
 
 	ss.str("9, 0 - Toggle Mouse Modes");
@@ -322,7 +303,7 @@ void Scene_1::RenderPassMain()
 
 }
 
-void Scene_1::Render()
+void Scene_MainMenu::Render()
 {
 	//*********************************
 	//		PRE RENDER PASS
@@ -334,15 +315,15 @@ void Scene_1::Render()
 	RenderPassMain();
 }
 
-void Scene_1::Exit()
+void Scene_MainMenu::Exit()
 {
-    if (theInteractiveMap)
-        delete theInteractiveMap;
-    //<!> will remove soon <!>
-    for (auto it : testingRenderingStuff)
-    {
-        if (it)
-            delete it;
-    }
-    //<!> will remove soon <!>
+	if (theInteractiveMap)
+		delete theInteractiveMap;
+	//<!> will remove soon <!>
+	for (auto it : testingRenderingStuff)
+	{
+		if (it)
+			delete it;
+	}
+	//<!> will remove soon <!>
 }

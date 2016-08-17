@@ -129,6 +129,9 @@
     <ClCompile Include="Source\Boundary.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scene_MainMenu.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Scene_System.h">
@@ -234,6 +237,9 @@
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="Source\Boundary.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene_MainMenu.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
