@@ -347,6 +347,9 @@ void Scene_1::Exit()
         delete theInteractiveMap;
     //<!> will remove soon <!>
     for (auto it : testingRenderingStuff)
-        delete it;
+    {
+        if (it)
+            delete it;
+    }
     //<!> will remove soon <!>
 }

@@ -89,7 +89,14 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
             if (itLegend != bunchOfLegends.end())
             {
                 GameObject *the3Dobject = dynamic_cast<GameObject*>(itLegend->second);
-
+                GameObject *aCopyOfIt = new GameObject(*the3Dobject);
+                aCopyOfIt->SetPos(Vector3((float)theLineCounter, 0, (float)num_Column));
+                if (token.size() > 1)
+                {
+                    std::string strRotation = token.substr(2);
+                    aCopyOfIt->SetRotation(stof(strRotation), Vector3(0, 1, 0));
+                }
+                theRenderingStuff.push_back(aCopyOfIt);
                 it->second.push_back(itLegend->first);
             }
             else 
