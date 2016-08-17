@@ -174,8 +174,8 @@ float getShadowEffect(float cosTheta)
 	}
 	return visibility;
 
-	// Poisson Shadow Sampling
-	/*float visibility = 1.0;
+	/*// Poisson Shadow Sampling
+	float visibility = 1.0;
 	float bias = 0.0015 * tan(acos(cosTheta));
 	float SampleSpread = 1800 - ((shadowSamplingCount - 8) * 25); // How near samples are to one another, nearer = more
 	int SampleCount = shadowSamplingCount;//64; // <- School com not capable  // How many samples to use

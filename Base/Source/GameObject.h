@@ -16,6 +16,14 @@ public:
 		setName(name);
 		SetRotation(rotatingValue, rotationAxis);
 	};
+	GameObject(const GameObject* &Object){ 
+		this->MeshObject = Object->MeshObject;
+		this->Pos = Object->Pos;
+		this->Scale = Object->Scale;
+		this->RotationAngle = Object->RotationAngle;
+		this->Active = Object->Active;
+	};
+	
 	virtual ~GameObject(){};
 
 	virtual void Init(const std::string &name, const Vector3 &pos, const Vector3 &scale, const float &rotatingValue, const Vector3 &rotationAxis, const bool &active);
@@ -30,14 +38,16 @@ public:
 	Mesh& GetMesh();
 	Vector3 GetPos();
 	Vector3 GetScale();
-	Mtx44 GetRotation();
+	float GetRotation();
 	bool GetActive();
+
+	GameObject& operator= (GameObject* object);
 
 private:
 
 	Mesh* MeshObject = nullptr;
 	Vector3 Pos, Scale;
-	Mtx44 Rotation;
+	float RotationAngle;
 	bool Active = true;
 
 };
