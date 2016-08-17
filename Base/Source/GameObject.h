@@ -16,12 +16,12 @@ public:
 		setName(name);
 		SetRotation(rotatingValue, rotationAxis);
 	};
-	GameObject(const GameObject* &Object){ 
-		this->MeshObject = Object->MeshObject;
-		this->Pos = Object->Pos;
-		this->Scale = Object->Scale;
-		this->RotationAngle = Object->RotationAngle;
-		this->Active = Object->Active;
+	GameObject(const GameObject &Object){ 
+		this->MeshObject = Object.MeshObject;
+		this->Pos = Object.Pos;
+		this->Scale = Object.Scale;
+		this->RotationAngle = Object.RotationAngle;
+		this->Active = Object.Active;
 	};
 	
 	virtual ~GameObject(){};
@@ -41,7 +41,7 @@ public:
 	float GetRotation();
 	bool GetActive();
 
-	GameObject& operator= (GameObject* object);
+	GameObject& operator= (const GameObject& object);
 
 private:
 

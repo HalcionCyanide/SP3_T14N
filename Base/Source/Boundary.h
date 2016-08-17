@@ -8,7 +8,7 @@ class Boundary
 public:
 	Boundary(){};
 	Boundary(GameObject* object){
-		StoreValues(object);
+		//StoreValues(object);
 	}
 	Boundary(const Boundary* &bounds){
 		if (this != bounds)

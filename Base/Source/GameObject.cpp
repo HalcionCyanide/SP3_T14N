@@ -75,14 +75,12 @@ void GameObject::Render()
 	}
 }
 
-GameObject& GameObject::operator= (GameObject* object)
+GameObject& GameObject::operator= (const GameObject &object)
 {
-	if (this != object)
-	{
-		this->MeshObject = object->MeshObject;
-		this->Pos = object->Pos;
-		this->Scale = object->Scale;
-		this->RotationAngle = object->RotationAngle;
-		this->Active = object->Active;
-	}
+	this->MeshObject = object.MeshObject;
+	this->Pos = object.Pos;
+	this->Scale = object.Scale;
+	this->RotationAngle = object.RotationAngle;
+	this->Active = object.Active;
+    return *this;
 }
