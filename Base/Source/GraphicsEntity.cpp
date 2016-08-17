@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <fstream>
 #include <sstream>
+#include "Scene_System.h"
 
 std::string GraphicsEntity::id_ = "Graphics";
 
@@ -406,7 +407,7 @@ void GraphicsEntity::SetHUD(const bool& m_bHUDmode)
             m_bIsInOrthogonalMode = true;
             glDisable(GL_DEPTH_TEST);
             Mtx44 ortho;
-            ortho.SetToOrtho(0, 800, 0, 600, -10, 10);
+			ortho.SetToOrtho(0, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth, 0, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, -10, 10);
             projectionStack->PushMatrix();
             projectionStack->LoadMatrix(ortho);
         }

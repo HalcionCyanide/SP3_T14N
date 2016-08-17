@@ -67,6 +67,10 @@ void Scene_1::Init()
 	newMesh->textureArray[0] = LoadTGA("Image//Ocean_Back_S.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
+	newMesh = MeshBuilder::GenerateQuad("TFB_Logo", Color(1, 1, 1));
+	newMesh->textureArray[0] = LoadTGA("Image//TFB_Logo.tga");
+	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+
 	//TEST Tree Init
 	GLuint TreeTex = LoadTGA("Image//Tree.tga");
 
@@ -86,6 +90,8 @@ void Scene_1::Init()
     theMap = new CMap();
     theMap->setName("scene 1 logic map");
     theMap->LoadMap("Image//MapTest.csv", m_heightMap, TerrainScale, testingRenderingStuff);
+
+	TestPos.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 0);
 }
 
 void Scene_1::Update(float dt)
@@ -103,6 +109,12 @@ void Scene_1::Update(float dt)
 		{
 			Application::cA_CurrentTerrainY -= RateofChangeY;
 		}
+	}
+	Vector3 Center(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 2, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight / 2, 0);
+	if (TestPos != Center)
+	{
+		Vector3 DV = (TestPos - Center);
+		TestPos -= DV * dt;
 	}
 
     framerates = 1 / dt;
@@ -303,7 +315,7 @@ void Scene_1::RenderPassMain()
     //<!> will remove soon <!>
 
 	SceneGraphics->SetHUD(true);
-	SceneGraphics->RenderMeshIn2D("reference", false, 100, 400, 300);
+	SceneGraphics->RenderMeshIn2D("TFB_Logo", false, 1000, TestPos.x, TestPos.y);
 
 	std::ostringstream ss;
 	ss.str("");
