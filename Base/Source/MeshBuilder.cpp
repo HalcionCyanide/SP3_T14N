@@ -283,30 +283,19 @@ Mesh* MeshBuilder::GenerateCircle(const std::string &meshName, Color color, unsi
 	std::vector<Vertex> vertex_buffer_data;
 	std::vector<GLuint> index_buffer_data;
 	Vertex v;
-	float radius = 1;
+	float radius = 1.f;
 	float increments = 360.0f / numSlices;
-	for (int theta = 0; theta <= 360; theta += increments) //top
+	for (float theta = 0.f; theta <= 360; theta += increments) //top
 	{
-		v.pos.Set(0, radius * CircleX(theta), radius * CircleZ(theta));
+		v.pos.Set(0.f, radius * CircleX(theta), radius * CircleZ(theta));
 		v.color = color;
-		v.normal.Set(0, 1, 0);
+		v.normal.Set(0.f, 1, 0.f);
 		vertex_buffer_data.push_back(v);
-		v.pos.Set(0, 0, 0);
+		v.pos.Set(0.f, 0.f, 0.f);
 		v.color = color;
-		v.normal.Set(0, 1, 0);
+		v.normal.Set(0.f, 1, 0.f);
 		vertex_buffer_data.push_back(v);
 	}
-	//for (int theta = 0; theta <= 360; theta += increments) //bottom
-	//{
-	//	v.pos.Set(0, -0.01, 0);
-	//	v.color = color;
-	//	v.normal.Set(0, -1, 0);
-	//	vertex_buffer_data.push_back(v);
-	//	v.color = color;
-	//	v.pos.Set(radius * CircleX(theta), -0.01, radius * CircleZ(theta));
-	//	v.normal.Set(0, -1, 0);
-	//	vertex_buffer_data.push_back(v);
-	//}
 	for (unsigned i = 0; i < vertex_buffer_data.size(); ++i)
 	{
 		index_buffer_data.push_back(2 * i);

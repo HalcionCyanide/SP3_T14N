@@ -30,7 +30,7 @@ void Scene_1::Init()
     perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
     projectionStack->LoadMatrix(perspective);
 
-	camera.Init(Vector3(0, 0, -5), Vector3(0,0,0), Vector3(0, 1, 0));
+	camera.Init(Vector3(0, 5, -5), Vector3(0,5,0), Vector3(0, 1, 0));
 
 	// Initiallise Model Specific Meshes Here
 	Mesh* newMesh = MeshBuilder::GenerateTerrain("terrain", "Image//heightmap5.raw", m_heightMap);

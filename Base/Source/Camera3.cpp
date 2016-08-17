@@ -67,10 +67,10 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	right.Normalize();
 	this->up = defaultUp = right.Cross(view).Normalized();
 
-	CurrentCameraRotation.SetZero();
 	MinimumCameraRotation.Set(-89, -360, -35);
 	MaximumCameraRotation.Set(89, 360, 35);
-	RelativeMouseSensitivity = 5;
+	CurrentCameraRotation.SetZero();
+	RelativeMouseSensitivity = 3;
 
 	CameraBaseWalkSpeed = CameraMaxWalkSpeed = CameraCurrentWalkSpeed = 16.0f;
 
@@ -79,7 +79,7 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	JumpVel = 0.0f;
 	JUMPMAXSPEED = 60.0f;
 	JUMPACCEL = 250.0f;
-	GRAVITY = -200.0f;
+	GRAVITY = -180.0f;
 }
 
 // Update Camera status
