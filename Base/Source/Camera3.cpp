@@ -21,7 +21,7 @@ Constructor for Camera
 /****************************************************************************/
 
 Camera3::Camera3()
-	: CameraVelocity(0,0,0)
+	: CameraVelocity(0, 0, 0), ObjectVec(nullptr)
 {
 }
 
@@ -86,6 +86,11 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 void Camera3::UpdateStatus(const unsigned char key, const bool status)
 {
 	//myKeys[key] = status;
+}
+
+void Camera3::SetObjectVector(std::vector<GameObject*> &ObjectVec)
+{
+	this->ObjectVec = &ObjectVec;
 }
 
 /****************************************************************************/
@@ -305,19 +310,35 @@ void Camera3::UpdateCameraVectors()
 
 void Camera3::UpdateCameraPosition()
 {
-	//Include Bounds Check Here
-	
+	if (ObjectVec)
+	{
+		Boundary* temp = new Boundary();
+		//Include Bounds Check Here
+		temp->CalculateValues(position + MovementValues, Vector3(2, PlayerHeight, 2));
+		for (std::vector<GameObject*>::iterator it = ObjectVec->begin(); it != ObjectVec->end(); ++it)
+		{
+			CheckPositionUpdate((*it)->GetBoundary(), *temp);
+		}
+	}
 	position += MovementValues;
 }
 
 void Camera3::CheckPositionUpdate(const Boundary &object, const Boundary &player)
 {
-	//Boundary* temp = new Boundary(player);
-	//temp->CalculateValues()
-	//if (object.CheckCollision(object, player))
-	//{
-
-	//}
+	if (ObjectVec)
+	{
+		if (object.CheckCollision(player))
+		{
+			if (object.GetPosition().x > player.GetPosition().x)
+				MovementValues.x = 0; //= (object.GetPosition() - object.GetScale()).x - (player.GetPosition() + player.GetScale()).x;
+			else if (object.GetPosition().x < player.GetPosition().x)
+				MovementValues.x = 0;// = (player.GetPosition() - player.GetScale()).x - (object.GetPosition() + object.GetScale()).x;
+			if (object.GetPosition().z > player.GetPosition().z)
+				MovementValues.z = 0; //= (object.GetPosition() - object.GetScale()).z - (player.GetPosition() + player.GetScale()).z;
+			else if (object.GetPosition().z < player.GetPosition().z)
+				MovementValues.z = 0; //= (player.GetPosition() - player.GetScale()).z - (object.GetPosition() + object.GetScale()).z;
+		}
+	}
 }
 
 void Camera3::C_ForwardMovement(const float dt)
