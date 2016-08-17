@@ -49,6 +49,8 @@ public:
 
 	Vector3 CameraVelocity;
 
+	bool CameraIsLocked = false;
+
 private:
 
 	Vector3 view;

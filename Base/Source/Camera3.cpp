@@ -153,7 +153,7 @@ void Camera3::Update(float dt)
 	{
 		Strafe(dt);
 	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue(' '))
+	if (!CameraIsLocked &&Scene_System::accessing().cSS_InputManager->GetKeyValue(' '))
 	{
 		Jump(dt);
 	}
@@ -284,7 +284,8 @@ void Camera3::Reset()
 
 void Camera3::UpdateCameraAngles(double dt)
 {
-	CameraTiltMotion(dt, MovementValues.x || MovementValues.y || MovementValues.z);
+	if (!CameraIsLocked)
+		CameraTiltMotion(dt, MovementValues.x || MovementValues.y || MovementValues.z);
 	CurrentCameraRotation.x = Math::Clamp(CurrentCameraRotation.x, MinimumCameraRotation.x, MaximumCameraRotation.x);
 	CurrentCameraRotation.z = Math::Clamp(CurrentCameraRotation.z, MinimumCameraRotation.z, MaximumCameraRotation.z);
 	if (MaximumCameraRotation.y < 360 && MinimumCameraRotation.y < 360)
@@ -320,7 +321,8 @@ void Camera3::UpdateCameraPosition()
 			CheckPositionUpdate((*it)->GetBoundary(), *temp);
 		}
 	}
-	position += MovementValues;
+	if (!CameraIsLocked)
+		position += MovementValues;
 }
 
 void Camera3::CheckPositionUpdate(const Boundary &object, const Boundary &player)

@@ -3,6 +3,7 @@
 #include "Scene_System.h"
 #include "GraphicsEntity.h"
 
+#include "Scene_MainMenu.h"
 #include "Scene_1.h"
 #include "Scene_2.h"
 #include "SceneBattle.h"
@@ -146,6 +147,10 @@ void Application::Run()
 	GraphicsEntity* SceneGraphics = new GraphicsEntity();
 	SceneGraphics->Init();
 	Scene_System::accessing().setGraphics_Scene(*SceneGraphics);
+
+	Scene_MainMenu *MainMenuScene = new Scene_MainMenu();
+	MainMenuScene->Init();
+	Scene_System::accessing().AddScene(*MainMenuScene);
 
 	Scene_1 *FirstScene = new Scene_1();
 	FirstScene->Init();

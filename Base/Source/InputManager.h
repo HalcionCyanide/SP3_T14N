@@ -19,7 +19,7 @@ public:
 	void SetScreenSize(float, float);
 
 	float cIM_ScreenWidth, cIM_ScreenHeight;
-	float cIM_CameraYaw, cIM_CameraPitch;
+	float cIM_CameraYaw = 0, cIM_CameraPitch = 0;
 	bool cIM_inMouseMode = false;
 
 private:
