@@ -6,10 +6,16 @@ Quest::Quest()
 	questName = "";
 	currentStage = 0;
 	active = false;
+	completed = false;
 }
 
 Quest::~Quest()
 {
+}
+
+int Quest::getID()
+{
+	return id;
 }
 
 std::string Quest::getName()
@@ -36,48 +42,14 @@ void Quest::nextStage()
 {
 	if (active)
 	{
-		try
+		if (currentStage < getMaxStages())
 		{
-			if (currentStage < getMaxStages())
-			{
-				currentStage++;
-			}
-			else
-			{
-				throw 0;
-			}
+			currentStage++;
 		}
-		catch (int a)
+		else
 		{
-			if (a == 0)
-			{
-				std::cout << "Max Quest Stage detected! Ignoring input, reverting to last known valid stage." << std::endl;
-			}
-		}
-	}
-}
-
-void Quest::setStage(int stage)
-{
-	if (active)
-	{
-		try
-		{
-			if (stage < getMaxStages())
-			{
-				currentStage = stage;
-			}
-			else
-			{
-				throw 0;
-			}
-		}
-		catch (int a)
-		{
-			if (a == 0)
-			{
-				std::cout << "Invalid quest Stage detected! Ignoring input, reverting to last known valid stage." << std::endl;
-			}
+			active = false;
+			completed = true;
 		}
 	}
 }
@@ -97,17 +69,21 @@ void Quest::setActive(bool temp)
 	active = temp;
 }
 
+bool Quest::getComplete()
+{
+	return completed;
+}
+
+void Quest::setComplete(bool temp)
+{
+	completed = temp;
+}
+
 std::ostream& operator<<(std::ostream& os, const Quest& quest)
 {
-	if (quest.active)
-	{
-		Quest tempQuest = quest;
+	os << quest.questName << "\n";
 
-		os << "ID #" << quest.id << " " << quest.questName << "\n";
+	os << quest.questDesc.at(quest.currentStage) << "\n";
 
-		os << quest.questDesc.at(quest.currentStage) << "\n";
-
-		return os;
-	}
 	return os;
 }

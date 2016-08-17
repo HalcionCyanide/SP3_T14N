@@ -157,10 +157,7 @@ void GraphicsEntity::Init()
 	meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
     assert(loadingMeshDriven("Image//MeshDriven.csv"));
-	newMesh = MeshBuilder::GenerateQuad("ayylmao", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//weed.tga");
-	meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-
+    ExportedFont = meshList.find("text")->second;
 }
 
 void GraphicsEntity::Update(float dt)
@@ -228,6 +225,33 @@ void GraphicsEntity::RenderText(Mesh& mesh, const std::string &text, Color &colo
     glEnable(GL_DEPTH_TEST);
 }
 
+void GraphicsEntity::RenderText(const std::string &text, Color &color)
+{
+    if (ExportedFont->textureArray[0] <= 0/* || mesh.textureID <= 0*/)
+        return;
+
+    glDisable(GL_DEPTH_TEST);
+    glUniform1i(m_parameters[U_TEXT_ENABLED], 1);
+    glUniform3fv(m_parameters[U_TEXT_COLOR], 1, &color.r);
+    glUniform1i(m_parameters[U_LIGHTENABLED], 0);
+    glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, ExportedFont->textureArray[0]);
+    glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+    for (unsigned i = 0; i < text.length(); ++i)
+    {
+        Mtx44 characterSpacing;
+        characterSpacing.SetToTranslation(i * 1.0f, 0, 0); //1.0f is the spacing of each character, you may change this value
+        Mtx44 MVP = projectionStack->Top() * viewStack->Top() * modelStack->Top() * characterSpacing;
+        glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+
+        ExportedFont->Render((unsigned)text[i] * 6, 6);
+    }
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glUniform1i(m_parameters[U_TEXT_ENABLED], 0);
+    glEnable(GL_DEPTH_TEST);
+}
+
 void GraphicsEntity::RenderTextOnScreen(Mesh& mesh, const std::string &text, Color &color, const float &size, const float &x, const float &y)
 {
     if (mesh.textureArray[0] <= 0)
@@ -254,6 +278,39 @@ void GraphicsEntity::RenderTextOnScreen(Mesh& mesh, const std::string &text, Col
         glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
 
         mesh.Render((unsigned)text[i] * 6, 6);
+    }
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glUniform1i(m_parameters[U_TEXT_ENABLED], 0);
+    modelStack->PopMatrix();
+    viewStack->PopMatrix();
+}
+
+void GraphicsEntity::RenderTextOnScreen(const std::string &text, Color &color, const float &size, const float &x, const float &y)
+{
+    if (ExportedFont->textureArray[0] <= 0)
+        return;
+
+    viewStack->PushMatrix();
+    viewStack->LoadIdentity();
+    modelStack->PushMatrix();
+    modelStack->LoadIdentity();
+    modelStack->Translate(x, y, 0);
+    modelStack->Scale(size, size, size);
+    glUniform1i(m_parameters[U_TEXT_ENABLED], 1);
+    glUniform3fv(m_parameters[U_TEXT_COLOR], 1, &color.r);
+    glUniform1i(m_parameters[U_LIGHTENABLED], 0);
+    glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, ExportedFont->textureArray[0]);
+    glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+    for (unsigned i = 0; i < text.length(); ++i)
+    {
+        Mtx44 characterSpacing;
+        characterSpacing.SetToTranslation(i * 1.0f + 0.5f, 0.5f, 0); //1.0f is the spacing of each character, you may change this value
+        Mtx44 MVP = projectionStack->Top() * viewStack->Top() * modelStack->Top() * characterSpacing;
+        glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+
+        ExportedFont->Render((unsigned)text[i] * 6, 6);
     }
     glBindTexture(GL_TEXTURE_2D, 0);
     glUniform1i(m_parameters[U_TEXT_ENABLED], 0);

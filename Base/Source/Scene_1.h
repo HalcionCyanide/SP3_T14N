@@ -9,6 +9,7 @@
 #include "Utility.h"
 #include <vector>
 #include "BillboardManager.h"
+#include "GameObject.h"
 
 class Scene_1 : public SceneEntity
 {
@@ -50,6 +51,6 @@ private:
 
     GenericEntity *theInteractiveMap;
     //<!> will remove soon <!>
-    std::vector<GenericEntity*> testingRenderingStuff;
+    std::vector<GameObject*> testingRenderingStuff;
     //<!> will remove soon <!>
 };
