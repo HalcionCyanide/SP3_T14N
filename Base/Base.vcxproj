@@ -25,6 +25,8 @@
     <ClCompile Include="Source\LoadOBJ.cpp" />
     <ClCompile Include="Source\LoadTGA.cpp" />
     <ClCompile Include="Source\GameMap.cpp" />
+    <ClCompile Include="Source\NPC.cpp" />
+    <ClCompile Include="Source\NPCManager.cpp" />
     <ClCompile Include="Source\Quest.cpp" />
     <ClCompile Include="Source\questManager.cpp" />
     <ClCompile Include="Source\Scene_1.cpp" />
@@ -59,6 +61,8 @@
     <ClInclude Include="Source\LoadOBJ.h" />
     <ClInclude Include="Source\LoadTGA.h" />
     <ClInclude Include="Source\GameMap.h" />
+    <ClInclude Include="Source\NPC.h" />
+    <ClInclude Include="Source\NPCManager.h" />
     <ClInclude Include="Source\Quest.h" />
     <ClInclude Include="Source\questManager.h" />
     <ClInclude Include="Source\Scene_1.h" />

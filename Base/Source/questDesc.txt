@@ -71,3 +71,10 @@ Speak to the Village Chief.
 Report to the Guard Captain.
 Return to the Cursed Woods.
 ]
+[09
+Speak to the Guard Captain.
+Pass the note to the Noble Lady.
+Speak to the Guard Captain.
+Buy the Fresh Flower from a Merchant.
+Give the Fresh Flower to the Noble Lady.
+]

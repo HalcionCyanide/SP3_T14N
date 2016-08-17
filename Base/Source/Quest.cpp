@@ -6,6 +6,7 @@ Quest::Quest()
 	questName = "";
 	currentStage = 0;
 	active = false;
+	completed = false;
 }
 
 Quest::~Quest()

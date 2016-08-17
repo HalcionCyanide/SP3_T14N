@@ -17,4 +17,3 @@ public:
 	std::vector<Quest> completedQuests;
 	Quest tempQuest;
 };
-
