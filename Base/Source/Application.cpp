@@ -5,6 +5,11 @@
 
 #include "Scene_1.h"
 #include "Scene_2.h"
+#include "SceneBattle.h"
+#include "SceneOpenField.h"
+#include "SceneTown1.h"
+#include "SceneTown2.h"
+#include "SceneTown3.h"
 
 //Include GLEW
 #include <GL/glew.h>
