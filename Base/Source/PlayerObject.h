@@ -1,7 +1,6 @@
 #pragma once
 
 #include "GameObject.h"
-#include "Scene_System.h"
 
 class PlayerObject : public GameObject
 {
@@ -9,6 +8,15 @@ public:
     PlayerObject();
     virtual ~PlayerObject();
 
+    virtual void Update(double dt);
+
+    virtual void SetJump(const float &speed, const float &max_speed, const float &accel);
+    virtual void setVel(const Vector3 &theSpeed);
+    virtual void setAccel(const Vector3 &theacceleration);
+
 protected:
-    Vector3 vel_, accel;
+    Vector3 vel_, accel_, MovementValues;
+    float JumpVel;
+    float JUMPMAXSPEED, JUMPACCEL;
+    bool m_bJumping;
 };

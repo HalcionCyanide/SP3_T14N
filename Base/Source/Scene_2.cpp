@@ -42,6 +42,7 @@ void Scene_2::Init()
 	Player->Init("Player", camera.position - Vector3(0, camera.PlayerHeight, 0) , Vector3(2, 1, 2), 0.0f, Vector3(1, 0, 0), true);
 	std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find("cube");
 	Player->SetMesh(*it->second);
+    Player->setName("PLayer 1");
 
 	GameObject* ObjectA = new GameObject();
 	ObjectA->Init("ObjectA", Vector3(15, 0, 15), Vector3(5, 5, 5), 0.0f, Vector3(1, 0, 0), true);
