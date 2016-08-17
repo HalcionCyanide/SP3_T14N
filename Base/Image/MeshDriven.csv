@@ -1,4 +1,4 @@
-Name,ObjectType,ObjectFile,ColorR,ColorG,ColorB,texture1,texture2,texture3,texture4
+Name,ObjectType,ObjectFile,ColorR,ColorG,ColorB,texture1,texture2,numRows,numColumns
 text,Text,,,,,Image//ExportedFont.tga,,,
 DualTexQuad,3dObject,OBJ//DualSidedTexQuad.obj,,,,,,,
 quad,quad,,1,1,1,,,,
