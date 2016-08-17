@@ -318,7 +318,7 @@ void Camera3::UpdateCameraPosition()
 		temp->CalculateValues(position + MovementValues, Vector3(2, PlayerHeight, 2));
 		for (std::vector<GameObject*>::iterator it = ObjectVec->begin(); it != ObjectVec->end(); ++it)
 		{
-			CheckPositionUpdate((*it)->GetBoundary(), *temp);
+			CheckPositionUpdate( *(*it)->GetBoundary(), *temp);
 		}
 	}
 	if (!CameraIsLocked)

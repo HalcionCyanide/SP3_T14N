@@ -33,7 +33,7 @@ public:
 	Vector3 GetScale()const;
 	float GetRotation()const;
 	bool GetActive()const;
-	Boundary GetBoundary()const;
+	Boundary* GetBoundary()const;
 
 	GameObject& operator= (const GameObject& object);
 
@@ -43,7 +43,7 @@ private:
 	Vector3 Pos, Scale;
 	float RotationAngle;
 	bool Active = true;
-	Boundary Bounds;
+	Boundary* Bounds = new Boundary();
 };
 
 #endif
