@@ -87,8 +87,10 @@ void Scene_2::Update(float dt)
 	}
 	BManager.UpdateContainer(dt, camera.position);
 
+    //<!>What i want here is camera following the Player, not player following the camera <!>
 	Player->SetPos(camera.position - Vector3(0,camera.PlayerHeight - 2));
 	Player->SetRotation(camera.CurrentCameraRotation.y, Vector3(0, 1, 0));
+    //<!>What i want here is camera following the Player, not player following the camera <!>
 
 	camera.Update(dt);
 }
