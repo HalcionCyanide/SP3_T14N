@@ -1,16 +1,16 @@
-#ifndef MAP_H
-#define MAP_H
+#ifndef GAME_MAP_H
+#define GAME_MAP_H
 
 #include "GenericEntity.h"
 #include <vector>
 #include <map>
 #include "Vector3.h"
 
-class CMap : public GenericEntity
+class GameMap : public GenericEntity
 {
 public:
-    CMap(void);
-    virtual ~CMap(void);
+    GameMap(void);
+    virtual ~GameMap(void);
 
     //virtual void Init(const int &theTileSize = 25);
     virtual bool LoadMap(const std::string &mapName, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GenericEntity*> &theRenderingStuff);
@@ -33,6 +33,11 @@ protected:
 
     virtual bool LoadFile(const std::string &mapName, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GenericEntity*> &theRenderingStuff);
     Vector3 tileSizeXYZ;
+
+private:
+    static std::map<unsigned char, GenericEntity*> bunchOfLegends;
+    bool loadThoseLegends(const std::string &fileName);
+    void convertStringToUpperCaps(std::string &theString);
 };
 
 #endif

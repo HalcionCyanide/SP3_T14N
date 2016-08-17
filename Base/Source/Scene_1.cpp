@@ -2,7 +2,7 @@
 #include <sstream>
 
 #include "Scene_2.h"
-#include "Map.h"
+#include "GameMap.h"
 #include "GameObject.h"
 
 std::string Scene_1::id_ = "Scene 1";
@@ -82,8 +82,8 @@ void Scene_1::Init()
 		BManager.AddHMapBillboard("Tree", m_heightMap, TerrainScale, Vector3((float)i * 10.f), Vector3(10.f, 20.f, 10.f), Vector3(), camera.position);
 	}
 
-    CMap *theMap = dynamic_cast<CMap*>(theInteractiveMap);
-    theMap = new CMap();
+    theInteractiveMap = new GameMap();
+    GameMap *theMap = dynamic_cast<GameMap*>(theInteractiveMap);
     theMap->setName("scene 1 logic map");
     theMap->LoadMap("Image//MapTest.csv", m_heightMap, TerrainScale, testingRenderingStuff);
 }
