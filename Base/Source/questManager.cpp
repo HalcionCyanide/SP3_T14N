@@ -9,13 +9,13 @@ questManager::~questManager()
 {
 }
 
-void questManager::printQuestwithID(const int& i)
+void questManager::printQuestwithID(const int i)
 {
-	if (allQuests[i - 1]->getActive())
+	if (allQuests[i - 1].getActive())
 	{
 		if (i != 0)
 		{
-			std::cout << *allQuests[i - 1] << std::endl;
+			std::cout << allQuests[i - 1] << std::endl;
 		}
 	}
 }
@@ -23,17 +23,17 @@ void questManager::printQuestwithID(const int& i)
 void questManager::print()
 {
 	int i = 0;
-	for (std::vector<Quest*>::iterator it = allQuests.begin(); it < allQuests.end(); it++)
+	for (std::vector<Quest>::iterator it = allQuests.begin(); it < allQuests.end(); it++)
 	{
-		if (allQuests[i]->getActive())
+		if (allQuests[i].getActive())
 		{
-			std::cout << *allQuests[i] << std::endl;
+			std::cout << allQuests[i] << std::endl;
 			i++;
 		}
 	}
 }
 
-void questManager::readFile(const std::string& fileName)
+void questManager::readFile(const std::string fileName)
 {
 	std::string temp;
 
@@ -44,14 +44,14 @@ void questManager::readFile(const std::string& fileName)
 		while (file.good())
 		{
 			std::getline(file, temp);
-			tempQuest->setName(temp);
+			tempQuest.setName(temp);
 			temp.clear();
 			allQuests.push_back(tempQuest);
 		}
 	}
 }
 
-void questManager::readDescFile(const std::string& fileName)
+void questManager::readDescFile(const std::string fileName)
 {
 	std::string temp;
 	int currQuestAt = 0;
@@ -70,7 +70,7 @@ void questManager::readDescFile(const std::string& fileName)
 			{
 				temp.clear();
 				std::getline(fileStream, temp);
-				allQuests.at(currQuestAt)->getDesc().push_back(temp);
+				allQuests.at(currQuestAt).getDesc().push_back(temp);
 			}
 			else if (temp[0] == ']')
 			{
@@ -78,7 +78,7 @@ void questManager::readDescFile(const std::string& fileName)
 			}
 			else
 			{
-				allQuests.at(currQuestAt)->getDesc().push_back(temp);
+				allQuests.at(currQuestAt).getDesc().push_back(temp);
 			}
 			temp.clear();
 		}
