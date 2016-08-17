@@ -6,10 +6,7 @@
 #include "GameObject.h"
 #include "Scene_System.h"
 #include <algorithm>
-
-#ifndef MAX_NUM_POINTS
-#define MAX_NUM_POINTS sizeof(points_4) / sizeof(int)
-#endif
+#include "LoadHmap.h"
 
 std::map<unsigned char, GenericEntity*> GameMap::bunchOfLegends;
 
@@ -20,8 +17,6 @@ GameMap::GameMap(void)
 {
     theScreenMap.clear();
     tileSizeXYZ.SetZero();
-    for (int num = 0; num < MAX_NUM_POINTS; ++num)
-        points_4[num] = nullptr;
 
     if (bunchOfLegends.empty())
     {
@@ -32,11 +27,6 @@ GameMap::GameMap(void)
 GameMap::~GameMap(void)
 {
     theScreenMap.clear();
-    for (int num = 0; num < MAX_NUM_POINTS; ++num)
-    {
-        if (points_4[num])
-            delete points_4[num];
-    }
     if (bunchOfLegends.empty() == false)
     {
         for (auto it : bunchOfLegends)
@@ -45,11 +35,6 @@ GameMap::~GameMap(void)
     }
 }
 
-//void GameMap::Init(const int &theTileSize)
-//{
-//    this->theTileSize = theTileSize;
-//}
-//
 bool GameMap::LoadMap(const std::string &mapName, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GenericEntity*> &theRenderingStuff)
 {
     if (LoadFile(mapName, theHeightMap, terrainSize, theRenderingStuff) == true)
@@ -90,7 +75,7 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
             {
                 GameObject *the3Dobject = dynamic_cast<GameObject*>(itLegend->second);
                 GameObject *aCopyOfIt = new GameObject(*the3Dobject);
-                aCopyOfIt->SetPos(Vector3((float)theLineCounter, 0, (float)num_Column));
+                aCopyOfIt->SetPos(Vector3((float)num_Column, 0, (float)theLineCounter));
                 if (token.size() > 1)
                 {
                     std::string strRotation = token.substr(2);
@@ -114,7 +99,16 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
 
     for (std::vector<GenericEntity*>::iterator it = theRenderingStuff.begin(), end = theRenderingStuff.end(); it != end; ++it)
     {
-
+        GameObject *the3DObj = dynamic_cast<GameObject*>(*it);
+        the3DObj->SetPos(Vector3(
+            ((the3DObj->GetPos().x - ((float)theNumOfTiles_MapWidth / 2.f)) * tileSizeXYZ.x) + (tileSizeXYZ.x * 0.5f),
+            0,
+            (-(the3DObj->GetPos().z - ((float)theNumOfTiles_MapHeight / 2.f)) * tileSizeXYZ.z) - (tileSizeXYZ.z * 0.5f)
+            ));
+        the3DObj->SetPos(Vector3(the3DObj->GetPos().x,
+            terrainSize.y * ReadHeightMap(theHeightMap, the3DObj->GetPos().x / terrainSize.x, the3DObj->GetPos().z / terrainSize.z),
+            the3DObj->GetPos().z
+            ));
     }
 
     return true;

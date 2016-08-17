@@ -20,9 +20,6 @@ public:
     int getNumOfTiles_MapWidth(void);		// Get the number of tiles for width of the map
 
     std::map< unsigned, std::vector<unsigned char> > theScreenMap;
-
-    unsigned *points_4[4];
-
     Vector3 getTileSize3D();
 
 protected:

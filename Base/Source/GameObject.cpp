@@ -5,7 +5,7 @@
 GameObject::GameObject()
     : GenericEntity()
 {
-
+    RotationAngle = 0;
 }
 
 GameObject::GameObject(const std::string &name, const Vector3 &pos, const Vector3 &scale, const float &rotatingValue, const Vector3 &rotationAxis, const bool &active) :

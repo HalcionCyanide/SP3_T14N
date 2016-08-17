@@ -320,12 +320,17 @@ void Scene_1::RenderPassMain()
 	ss << "Mouse Position:" << Scene_System::accessing().cSS_InputManager->GetMousePosition();
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
+    //<!> Removing soon
+    ss.str("");
+    ss << "CPos:" << camera.position;
+    ss.precision(3);
+    SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 125);
+    //<!> Removing soon
 	SceneGraphics->SetHUD(false);
 
 	ss.str("9, 0 - Toggle Mouse Modes");
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
-	SceneGraphics->SetHUD(false);
 
 }
 
