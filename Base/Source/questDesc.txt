@@ -20,16 +20,15 @@ Leave the town and reach the village.
 Find the villagers.
 Search the graveyard.
 Return the Rosary to the Church.
-Go back to the graveyard.
+Cleanse the graveyard.
 Capture the Manticore.
 Leave the village.
 Talk to the Mysterious Stranger.
 Return to the Castle for instructions.
 Reach the Cursed Woods.
-Capture the Skull Knight.
 Capture the Balrog.
 ]
-[04
+[04 //REQUIRED FOR MAIN STORY (T1)
 Mine the rocks.
 Chop the wood.
 Bring them back to the carpenter.
@@ -45,7 +44,7 @@ Chop the wood.
 Bring them back to the carpenter.
 Rebuild the Gate.
 ]
-[05 //takes place at town 3
+[05 //AFFECTS MAIN STORY (T3)
 Put out all the cursed fires around the Crypt.
 ]
 [06
@@ -56,4 +55,26 @@ Find a Map piece.
 Speak to the royal cartographer.
 Go to the location mentioned.
 Capture the Pandora's Box.
+]
+[07 //REQUIRED FOR MAIN STORY (T2)
+Bring the Rosary to the Church Priest.
+Speak to the Guard Captain.
+Return to the graveyard.
+]
+[08 //REQUIRED FOR MAIN STORY (T3)
+Speak to the Village Chief.
+Achieve a rating of 70 or higher.
+Capture the Skull Knight.
+Speak to the Village Chief.
+Purchase a Blood Vial.
+Speak to the Village Chief.
+Report to the Guard Captain.
+Return to the Cursed Woods.
+]
+[09
+Speak to the Guard Captain.
+Pass the note to the Noble Lady.
+Speak to the Guard Captain.
+Buy the Fresh Flower from a Merchant.
+Give the Fresh Flower to the Noble Lady.
 ]

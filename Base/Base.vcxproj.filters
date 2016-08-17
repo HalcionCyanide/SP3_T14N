@@ -129,20 +129,11 @@
     <ClCompile Include="Source\Boundary.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SceneTown1.cpp">
-      <Filter>Source Files\Scenes</Filter>
+    <ClCompile Include="Source\NPC.cpp">
+      <Filter>Source Files\Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SceneTown2.cpp">
-      <Filter>Source Files\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SceneTown3.cpp">
-      <Filter>Source Files\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SceneOpenField.cpp">
-      <Filter>Source Files\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SceneBattle.cpp">
-      <Filter>Source Files\Scenes</Filter>
+    <ClCompile Include="Source\NPCManager.cpp">
+      <Filter>Source Files\Systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -251,20 +242,11 @@
     <ClInclude Include="Source\Boundary.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SceneTown1.h">
-      <Filter>Header Files\Scenes</Filter>
+    <ClInclude Include="Source\NPC.h">
+      <Filter>Header Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SceneTown2.h">
-      <Filter>Header Files\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SceneTown3.h">
-      <Filter>Header Files\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SceneOpenField.h">
-      <Filter>Header Files\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SceneBattle.h">
-      <Filter>Header Files\Scenes</Filter>
+    <ClInclude Include="Source\NPCManager.h">
+      <Filter>Header Files\Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
