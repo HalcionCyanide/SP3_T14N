@@ -28,6 +28,7 @@
     <ClCompile Include="Source\GameMap.cpp" />
     <ClCompile Include="Source\NPC.cpp" />
     <ClCompile Include="Source\NPCManager.cpp" />
+    <ClCompile Include="Source\PlayerObject.cpp" />
     <ClCompile Include="Source\Quest.cpp" />
     <ClCompile Include="Source\questManager.cpp" />
     <ClCompile Include="Source\SceneBattle.cpp" />
@@ -71,6 +72,7 @@
     <ClInclude Include="Source\GameMap.h" />
     <ClInclude Include="Source\NPC.h" />
     <ClInclude Include="Source\NPCManager.h" />
+    <ClInclude Include="Source\PlayerObject.h" />
     <ClInclude Include="Source\Quest.h" />
     <ClInclude Include="Source\questManager.h" />
     <ClInclude Include="Source\SceneBattle.h" />

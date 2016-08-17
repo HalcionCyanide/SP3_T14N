@@ -156,6 +156,9 @@
     <ClCompile Include="Source\Commands.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PlayerObject.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Scene_System.h">
@@ -288,6 +291,9 @@
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
     <ClInclude Include="Source\Commands.h">
+      <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlayerObject.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
   </ItemGroup>

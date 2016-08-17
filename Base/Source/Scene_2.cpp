@@ -2,6 +2,7 @@
 #include <sstream>
 
 #include "Scene_1.h"
+#include "PlayerObject.h"
 
 std::string Scene_2::id_ = "Scene 2";
 
@@ -37,7 +38,7 @@ void Scene_2::Init()
 	newMesh->textureArray[0] = LoadTGA("Image//ParticleWhite.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	Player = new GameObject();
+	Player = new PlayerObject();
 	Player->Init("Player", camera.position - Vector3(0, camera.PlayerHeight, 0) , Vector3(2, 1, 2), 0.0f, Vector3(1, 0, 0), true);
 	std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find("cube");
 	Player->SetMesh(*it->second);
