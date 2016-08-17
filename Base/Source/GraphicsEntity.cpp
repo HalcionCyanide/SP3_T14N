@@ -358,6 +358,46 @@ void GraphicsEntity::RenderMeshIn2D(Mesh &mesh, const bool &enableLight, const f
     viewStack->PopMatrix();
 }
 
+void GraphicsEntity::RenderMeshIn2D(Mesh &mesh, const bool &enableLight, const float &sizeX, const float &sizeY, const float &x, const float &y)
+{
+    viewStack->PushMatrix();
+    viewStack->LoadIdentity();
+    modelStack->PushMatrix();
+    modelStack->LoadIdentity();
+    modelStack->Translate(x, y, 0);
+
+    modelStack->Scale(sizeX, sizeY, 1);
+    Mtx44 MVP, modelView, modelView_inverse_transpose;
+
+    MVP = projectionStack->Top() * viewStack->Top() * modelStack->Top();
+    glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+    for (int i = 0; i < Mesh::MAX_TEXTURES; ++i)
+    {
+        if (mesh.textureArray[i] > 0)
+        {
+            //theres texture lets load it!!
+            glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED + i], 1);
+            glActiveTexture(GL_TEXTURE0 + i);
+            glBindTexture(GL_TEXTURE_2D, mesh.textureArray[i]);
+            glUniform1i(m_parameters[U_COLOR_TEXTURE + i], i);
+        }
+        else
+        {
+
+            glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED + i], 0);
+        }
+    }
+    glUniform1i(m_parameters[U_LIGHTENABLED], enableLight);
+    mesh.Render();
+    if (mesh.textureArray[0] > 0 || mesh.textureID > 0)
+    {
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+
+    modelStack->PopMatrix();
+    viewStack->PopMatrix();
+}
+
 void GraphicsEntity::RenderMesh(Mesh &mesh, const bool &enableLight)
 {
     Mtx44 MVP, modelView, modelView_inverse_transpose;
@@ -446,6 +486,13 @@ void GraphicsEntity::RenderMeshIn2D(const std::string &meshName, const bool &ena
 	std::map<std::string, Mesh*>::iterator it = meshList.find(meshName);
 	assert(it != meshList.end());
 	RenderMeshIn2D(*it->second, enableLight, size, x, y);
+}
+
+void GraphicsEntity::RenderMeshIn2D(const std::string &meshName, const bool &enableLight, const float &sizeX, const float &sizeY, const float &x, const float &y)
+{
+    std::map<std::string, Mesh*>::iterator it = meshList.find(meshName);
+    assert(it != meshList.end());
+    RenderMeshIn2D(*it->second, enableLight, sizeX, sizeY, x, y);
 }
 
 void GraphicsEntity::RenderMesh(const std::string &meshName, const bool &enableLight)
