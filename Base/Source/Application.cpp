@@ -155,6 +155,22 @@ void Application::Run()
 	SecondScene->Init();
 	Scene_System::accessing().AddScene(*SecondScene);
 
+    SceneTown1* town1 = new SceneTown1();
+    town1->Init();
+    Scene_System::accessing().AddScene(*town1);
+
+    SceneTown2* town2 = new SceneTown2();
+    town2->Init();
+    Scene_System::accessing().AddScene(*town2);
+
+    SceneTown3* town3 = new SceneTown3();
+    town3->Init();
+    Scene_System::accessing().AddScene(*town3);
+
+    SceneOpenField* openfield = new SceneOpenField();
+    openfield->Init();
+    Scene_System::accessing().AddScene(*openfield);
+
 	// Active Window Detection
 	HWND hwnd = GetActiveWindow();
 
