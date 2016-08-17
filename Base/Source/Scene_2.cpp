@@ -43,6 +43,7 @@ void Scene_2::Init()
 	std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find("cube");
 	Player->SetMesh(*it->second);
     Player->setName("PLayer 1");
+    Player->SetRotation(camera.CurrentCameraRotation.y, Vector3(0, 1, 0));
 
 	GameObject* ObjectA = new GameObject();
 	ObjectA->Init("ObjectA", Vector3(15, 0, 15), Vector3(5, 5, 5), 0.0f, Vector3(1, 0, 0), true);
@@ -90,9 +91,9 @@ void Scene_2::Update(float dt)
     //<!>What i want here is camera following the Player, not player following the camera <!>
 	Player->SetPos(camera.position - Vector3(0,camera.PlayerHeight - 2));
 	Player->SetRotation(camera.CurrentCameraRotation.y, Vector3(0, 1, 0));
+	camera.Update(dt);
     //<!>What i want here is camera following the Player, not player following the camera <!>
 
-	camera.Update(dt);
 }
 
 void Scene_2::RenderTerrain()

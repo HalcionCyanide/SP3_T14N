@@ -1,9 +1,9 @@
 #include "Commands.h"
 
-unsigned char ForwardCommand::theKey = 'w';
-unsigned char BackCommand::theKey = 's';
-unsigned char RightCommand::theKey = 'a';
-unsigned char LeftCommand::theKey = 'd';
+unsigned char ForwardCommand::theKey = 'W';
+unsigned char BackCommand::theKey = 'S';
+unsigned char RightCommand::theKey = 'A';
+unsigned char LeftCommand::theKey = 'D';
 
 ForwardCommand::ForwardCommand()
 {

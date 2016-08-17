@@ -15,6 +15,8 @@ public:
     virtual void setAccel(const Vector3 &theacceleration);
 
 protected:
+    virtual void walkDirection(const float &degree, const float &byHowMuch);
+
     Vector3 vel_, accel_, MovementValues;
     float JumpVel;
     float JUMPMAXSPEED, JUMPACCEL;
