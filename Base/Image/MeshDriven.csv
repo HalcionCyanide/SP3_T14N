@@ -1,6 +1,7 @@
-Name,ObjectType,ObjectFile,ColorR,ColorG,ColorB,texture1,texture2,texture3,texture4
+Name,ObjectType,ObjectFile,ColorR,ColorG,ColorB,texture1,texture2,numRows,numColumns
 text,Text,,,,,Image//ExportedFont.tga,,,
 DualTexQuad,3dObject,OBJ//DualSidedTexQuad.obj,,,,,,,
 quad,quad,,1,1,1,,,,
 cube,cube,,1,1,1,,,,
-treebillboard,quad,,1,1,1,Image//Tree.tga,,,
+small_house,3dObject,OBJ//smallhouse.obj,,,,Image//smallhouseUV.tga,,,
+small_house2,3dObject,OBJ//smallhouse2.obj,,,,Image//smallhouse2UV.tga,,,

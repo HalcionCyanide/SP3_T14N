@@ -23,7 +23,7 @@ bool Boundary::CheckCollision(const Boundary &object, const Boundary &player)con
 
 bool Boundary::CheckCollision2D(const Boundary &object, const Vector3 &point)const
 {
-	return ((object.GetMaxValues().x > point.x || point.x > object.GetMinValues.x) &&
+	return ((object.GetMaxValues().x > point.x || point.x > object.GetMinValues().x) &&
 		(object.GetMaxValues().y > point.y || point.y > object.GetMinValues().y));
 }
 

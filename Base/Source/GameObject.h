@@ -11,10 +11,11 @@
 class GameObject : public GenericEntity
 {
 public:
-	GameObject(){};
-	GameObject(const std::string &name, const Vector3 &pos, const Vector3 &scale, const float &rotatingValue, const Vector3 &rotationAxis, const bool &active);
-	GameObject(const GameObject &Object);
-	
+
+	GameObject();
+    GameObject(const std::string &name, const Vector3 &pos, const Vector3 &scale, const float &rotatingValue, const Vector3 &rotationAxis, const bool &active);
+    GameObject(GameObject &Object);
+
 	virtual ~GameObject(){};
 
 	virtual void Init(const std::string &name, const Vector3 &pos, const Vector3 &scale, const float &rotatingValue, const Vector3 &rotationAxis, const bool &active);
@@ -34,7 +35,7 @@ public:
 	bool GetActive()const;
 	Boundary GetBoundary()const;
 
-	GameObject& operator= (GameObject* object);
+	GameObject& operator= (const GameObject& object);
 
 private:
 

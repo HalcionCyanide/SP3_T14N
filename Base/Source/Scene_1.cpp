@@ -2,7 +2,7 @@
 #include <sstream>
 
 #include "Scene_2.h"
-#include "Map.h"
+#include "GameMap.h"
 #include "GameObject.h"
 
 std::string Scene_1::id_ = "Scene 1";
@@ -67,6 +67,10 @@ void Scene_1::Init()
 	newMesh->textureArray[0] = LoadTGA("Image//Ocean_Back_S.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
+	newMesh = MeshBuilder::GenerateQuad("TFB_Logo", Color(1, 1, 1));
+	newMesh->textureArray[0] = LoadTGA("Image//TFB_Logo.tga");
+	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+
 	//TEST Tree Init
 	GLuint TreeTex = LoadTGA("Image//Tree.tga");
 
@@ -82,10 +86,12 @@ void Scene_1::Init()
 		BManager.AddHMapBillboard("Tree", m_heightMap, TerrainScale, Vector3((float)i * 10.f), Vector3(10.f, 20.f, 10.f), Vector3(), camera.position);
 	}
 
-    CMap *theMap = dynamic_cast<CMap*>(theInteractiveMap);
-    theMap = new CMap();
+    theInteractiveMap = new GameMap();
+    GameMap *theMap = dynamic_cast<GameMap*>(theInteractiveMap);
     theMap->setName("scene 1 logic map");
     theMap->LoadMap("Image//MapTest.csv", m_heightMap, TerrainScale, testingRenderingStuff);
+
+	TestPos.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 0);
 }
 
 void Scene_1::Update(float dt)
@@ -103,6 +109,12 @@ void Scene_1::Update(float dt)
 		{
 			Application::cA_CurrentTerrainY -= RateofChangeY;
 		}
+	}
+	Vector3 Center(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 2, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight / 2, 0);
+	if (TestPos != Center)
+	{
+		Vector3 DV = (TestPos - Center);
+		TestPos -= DV * dt;
 	}
 
     framerates = 1 / dt;
@@ -303,7 +315,7 @@ void Scene_1::RenderPassMain()
     //<!> will remove soon <!>
 
 	SceneGraphics->SetHUD(true);
-	SceneGraphics->RenderMeshIn2D("reference", false, 100, 400, 300);
+	SceneGraphics->RenderMeshIn2D("TFB_Logo", false, 1000, TestPos.x, TestPos.y);
 
 	std::ostringstream ss;
 	ss.str("");
@@ -320,12 +332,17 @@ void Scene_1::RenderPassMain()
 	ss << "Mouse Position:" << Scene_System::accessing().cSS_InputManager->GetMousePosition();
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
+    //<!> Removing soon
+    ss.str("");
+    ss << "CPos:" << camera.position;
+    ss.precision(3);
+    SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 125);
+    //<!> Removing soon
 	SceneGraphics->SetHUD(false);
 
 	ss.str("9, 0 - Toggle Mouse Modes");
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
-	SceneGraphics->SetHUD(false);
 
 }
 
@@ -347,6 +364,9 @@ void Scene_1::Exit()
         delete theInteractiveMap;
     //<!> will remove soon <!>
     for (auto it : testingRenderingStuff)
-        delete it;
+    {
+        if (it)
+            delete it;
+    }
     //<!> will remove soon <!>
 }

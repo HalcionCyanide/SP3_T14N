@@ -2,24 +2,27 @@
 #include "Scene_System.h"
 #include "GraphicsEntity.h"
 
-GameObject::GameObject(const std::string &name, const Vector3 &pos, const Vector3 &scale, const float &rotatingValue, const Vector3 &rotationAxis, const bool &active)
+GameObject::GameObject()
+    : GenericEntity()
 {
-	SetPos(pos);
-	SetScale(scale);
-	SetActive(active);
-	setName(name);
-	SetRotation(rotatingValue, rotationAxis);
-	SetBounds();
-};
+    RotationAngle = 0;
+}
 
-GameObject::GameObject(const GameObject &object)
+GameObject::GameObject(const std::string &name, const Vector3 &pos, const Vector3 &scale, const float &rotatingValue, const Vector3 &rotationAxis, const bool &active) :
+Pos(pos), Scale(scale), Active(active) 
 {
-	this->MeshObject = object.MeshObject;
-	this->Pos = object.Pos;
-	this->Scale = object.Scale;
-	this->RotationAngle = object.RotationAngle;
-	this->Active = object.Active;
-	SetBounds();
+    setName(name);
+    SetRotation(rotatingValue, rotationAxis);
+}
+
+GameObject::GameObject(GameObject &Object)
+{
+    this->MeshObject = Object.MeshObject;
+    this->Pos = Object.Pos;
+    this->Scale = Object.Scale;
+    this->RotationAngle = Object.RotationAngle;
+    this->Active = Object.Active;
+    setName(Object.getName());
 }
 
 void GameObject::SetMesh(Mesh &meshObject)
@@ -100,14 +103,12 @@ void GameObject::Render()
 	}
 }
 
-GameObject& GameObject::operator= (GameObject* object)
+GameObject& GameObject::operator= (const GameObject &object)
 {
-	if (this != object)
-	{
-		this->MeshObject = object->MeshObject;
-		this->Pos = object->Pos;
-		this->Scale = object->Scale;
-		this->RotationAngle = object->RotationAngle;
-		this->Active = object->Active;
-	}
+	this->MeshObject = object.MeshObject;
+	this->Pos = object.Pos;
+	this->Scale = object.Scale;
+	this->RotationAngle = object.RotationAngle;
+	this->Active = object.Active;
+    return *this;
 }

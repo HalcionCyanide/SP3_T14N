@@ -46,6 +46,8 @@ private:
 
     double framerates;
 
+	Vector3 TestPos; //<!>
+
     GenericEntity *theInteractiveMap;
     //<!> will remove soon <!>
     std::vector<GenericEntity*> testingRenderingStuff;

@@ -24,7 +24,7 @@
     <ClCompile Include="Source\LoadHmap.cpp" />
     <ClCompile Include="Source\LoadOBJ.cpp" />
     <ClCompile Include="Source\LoadTGA.cpp" />
-    <ClCompile Include="Source\Map.cpp" />
+    <ClCompile Include="Source\GameMap.cpp" />
     <ClCompile Include="Source\Quest.cpp" />
     <ClCompile Include="Source\questManager.cpp" />
     <ClCompile Include="Source\Scene_1.cpp" />
@@ -36,6 +36,7 @@
     <ClCompile Include="Source\shader.cpp" />
     <ClCompile Include="Source\SpriteAnimation.cpp" />
     <ClCompile Include="Source\UI_Element.cpp" />
+    <ClCompile Include="Source\UI_System.cpp" />
     <ClCompile Include="Source\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -57,7 +58,7 @@
     <ClInclude Include="Source\LoadHmap.h" />
     <ClInclude Include="Source\LoadOBJ.h" />
     <ClInclude Include="Source\LoadTGA.h" />
-    <ClInclude Include="Source\Map.h" />
+    <ClInclude Include="Source\GameMap.h" />
     <ClInclude Include="Source\Quest.h" />
     <ClInclude Include="Source\questManager.h" />
     <ClInclude Include="Source\Scene_1.h" />
@@ -71,6 +72,7 @@
     <ClInclude Include="Source\SingletonTemplate.h" />
     <ClInclude Include="Source\SpriteAnimation.h" />
     <ClInclude Include="Source\UI_Element.h" />
+    <ClInclude Include="Source\UI_System.h" />
     <ClInclude Include="Source\Utility.h" />
     <ClInclude Include="Source\Vertex.h" />
   </ItemGroup>
