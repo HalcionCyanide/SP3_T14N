@@ -7,6 +7,7 @@
 #include <map>
 #include <stack>
 #include "InputManager.h"
+#include "Boundary.h"
 
 class InputManager;
 

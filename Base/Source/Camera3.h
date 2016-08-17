@@ -42,6 +42,7 @@ public:
 
 	// Update Camera status
 	virtual void UpdateStatus(const unsigned char key, const bool status = true);
+	virtual void CheckPositionUpdate(const Boundary &object, const Boundary &player);
 
 	Vector3 CameraVelocity;
 

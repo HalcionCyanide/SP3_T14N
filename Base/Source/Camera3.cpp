@@ -306,7 +306,18 @@ void Camera3::UpdateCameraVectors()
 void Camera3::UpdateCameraPosition()
 {
 	//Include Bounds Check Here
+	
 	position += MovementValues;
+}
+
+void Camera3::CheckPositionUpdate(const Boundary &object, const Boundary &player)
+{
+	//Boundary* temp = new Boundary(player);
+	//temp->CalculateValues()
+	//if (object.CheckCollision(object, player))
+	//{
+
+	//}
 }
 
 void Camera3::C_ForwardMovement(const float dt)
