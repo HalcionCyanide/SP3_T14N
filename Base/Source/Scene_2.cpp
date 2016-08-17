@@ -256,7 +256,7 @@ void Scene_2::RenderPassMain()
 	modelStack->LoadIdentity();
 
 	//RenderTerrain();
-	RenderSkyplane();
+	//RenderSkyplane();
 
 	RenderShadowCasters();
 
