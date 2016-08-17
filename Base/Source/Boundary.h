@@ -13,7 +13,7 @@ public:
 
 	virtual bool CheckCollision(const Boundary &object)const;
 	virtual bool CheckCollision(const Vector3 &point)const;
-	virtual bool CheckCollision2D(const Vector3 &point)const;
+	//virtual bool CheckCollision2D(const Vector3 &point)const;
 	virtual void CalculateValues(const Vector3 &pos, const Vector3 &scale);
 
 	virtual void SetPosition(const Vector3 &position);
