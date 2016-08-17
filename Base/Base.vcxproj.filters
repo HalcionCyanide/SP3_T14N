@@ -124,7 +124,7 @@
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="Source\Map.cpp">
-      <Filter>Header Files\Classes</Filter>
+      <Filter>Source Files\Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
