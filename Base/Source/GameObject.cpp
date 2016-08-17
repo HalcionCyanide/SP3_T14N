@@ -19,7 +19,7 @@ void GameObject::SetScale(const Vector3 &scale)
 
 void GameObject::SetRotation(const float &rotatingValue, const Vector3 &rotationAxis)
 {
-	this->Rotation.SetToRotation(rotatingValue, rotationAxis.x, rotationAxis.y, rotationAxis.z);
+	this->RotationAngle = rotatingValue;
 }
 
 void GameObject::SetActive(const bool &active)
@@ -42,9 +42,9 @@ Vector3 GameObject::GetScale()
 	return this->Scale;
 }
 
-Mtx44 GameObject::GetRotation()
+float GameObject::GetRotation()
 {
-	return this->Rotation;
+	return this->RotationAngle;
 }
 
 bool GameObject::GetActive()
@@ -68,6 +68,7 @@ void GameObject::Render()
 		GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 		Scene_System::accessing().getCurrScene().modelStack->PushMatrix();
 		Scene_System::accessing().getCurrScene().modelStack->Translate(Pos.x, Pos.y, Pos.z);
+		Scene_System::accessing().getCurrScene().modelStack->Rotate(RotationAngle, 0, 1, 0);
 		Scene_System::accessing().getCurrScene().modelStack->Scale(Scale.x, Scale.y, Scale.z);
 		SceneGraphics->RenderMesh(*MeshObject, false);
 		Scene_System::accessing().getCurrScene().modelStack->PopMatrix();

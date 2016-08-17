@@ -30,14 +30,14 @@ public:
 	Mesh& GetMesh();
 	Vector3 GetPos();
 	Vector3 GetScale();
-	Mtx44 GetRotation();
+	float GetRotation();
 	bool GetActive();
 
 private:
 
 	Mesh* MeshObject = nullptr;
 	Vector3 Pos, Scale;
-	Mtx44 Rotation;
+	float RotationAngle;
 	bool Active = true;
 
 };

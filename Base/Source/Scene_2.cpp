@@ -65,12 +65,18 @@ void Scene_2::Init()
 	newMesh->textureArray[0] = LoadTGA("Image//ParticleWhite.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	GameObject* test = new GameObject();
-	test->Init("test", Vector3(15, 0, 15), Vector3(5, 5, 5), 0.0f, Vector3(1, 0, 0), true);
-	test->SetPos(Vector3(test->GetPos().x, TerrainYScale * ReadHeightMap(m_heightMap, (test->GetPos().x / TerrainXScale), (test->GetPos().z / TerrainXScale)) + test->GetScale().y * 0.5f, test->GetPos().z));
+	GameObject* Player = new GameObject();
+	Player->Init("Player", camera.position - Vector3(0, camera.PlayerHeight, 0) , Vector3(2, 1, 2), 0.0f, Vector3(1, 0, 0), true);
 	newMesh = MeshBuilder::GenerateCube("Cube", Color(1, 1, 1), 1.0f);
-	test->SetMesh(*newMesh);
-	ObjectVec.push_back(test);
+	Player->SetMesh(*newMesh);
+	ObjectVec.push_back(Player);
+
+	GameObject* ObjectA = new GameObject();
+	ObjectA->Init("ObjectA", Vector3(15, 0, 15), Vector3(5, 5, 5), 0.0f, Vector3(1, 0, 0), true);
+	ObjectA->SetPos(Vector3(ObjectA->GetPos().x, TerrainYScale * ReadHeightMap(m_heightMap, (ObjectA->GetPos().x / TerrainXScale), (ObjectA->GetPos().z / TerrainXScale)) + ObjectA->GetScale().y * 0.5f, ObjectA->GetPos().z));
+	newMesh = MeshBuilder::GenerateCube("Cube", Color(1, 1, 1), 1.0f);
+	ObjectA->SetMesh(*newMesh);
+	ObjectVec.push_back(ObjectA);
 }
 
 void Scene_2::Update(float dt)
@@ -104,6 +110,16 @@ void Scene_2::Update(float dt)
 		BManager.AddParticle("ParticleW", Vector3(Math::RandFloatMinMax(-5, 5), camera.position.y + Math::RandFloatMinMax(-5, 5), Math::RandFloatMinMax(-5, 5)), Vector3(RandScale, RandScale, RandScale), Vector3(Math::RandFloatMinMax(-5, 5), Math::RandFloatMinMax(-5, 5), Math::RandFloatMinMax(-5, 5)), camera.position, 2);
 	}
 	BManager.UpdateContainer(dt, camera.position);
+
+	for (auto it : ObjectVec)
+	{
+		if (it->getName() == "Player")
+		{
+			it->SetPos(camera.position - Vector3(0,camera.PlayerHeight - 2));
+			it->SetRotation(camera.CurrentCameraRotation.y, Vector3(0, 1, 0));
+			
+		}
+	}
 
 	camera.Update(dt);
 }
