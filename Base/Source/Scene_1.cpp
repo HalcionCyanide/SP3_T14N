@@ -39,10 +39,6 @@ void Scene_1::Init()
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	newMesh = MeshBuilder::GenerateSkyPlane("skyplane", Color(1, 1, 1), 34, 500.0f, 2000.0f, 1.0f, 1.0f);
-	newMesh->textureArray[0] = LoadTGA("Image//ClearSkyUp2.tga");
-	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-
 	newMesh = MeshBuilder::GenerateQuad("TFB_Logo", Color(1, 1, 1));
 	newMesh->textureArray[0] = LoadTGA("Image//TFB_Logo.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
