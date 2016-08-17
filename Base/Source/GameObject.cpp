@@ -74,3 +74,15 @@ void GameObject::Render()
 		Scene_System::accessing().getCurrScene().modelStack->PopMatrix();
 	}
 }
+
+GameObject& GameObject::operator= (GameObject* object)
+{
+	if (this != object)
+	{
+		this->MeshObject = object->MeshObject;
+		this->Pos = object->Pos;
+		this->Scale = object->Scale;
+		this->RotationAngle = object->RotationAngle;
+		this->Active = object->Active;
+	}
+}
