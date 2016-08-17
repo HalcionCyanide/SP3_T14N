@@ -7,52 +7,47 @@ Boundary::Boundary(const Vector3 &pos, const Vector3 &scale)
 
 Boundary::Boundary(const Boundary &bounds)
 {
-	if (this != &bounds)
-	{
-		this->MaxValues = bounds.MaxValues;
-		this->MinValues = bounds.MinValues;
-	}
+	this->Position = bounds.Position;
+	this->Scale = bounds.Scale;
 }
 
-bool Boundary::CheckCollision(const Boundary &object, const Boundary &player)const
+bool Boundary::CheckCollision(const Boundary &object)const
 {
-	return ((object.GetMaxValues().x > player.GetMinValues().x || player.GetMaxValues().x > object.GetMinValues().x) &&
-		(object.GetMaxValues().y > player.GetMinValues().y || player.GetMaxValues().y > object.GetMinValues().y) &&
-		(object.GetMaxValues().z > player.GetMinValues().z || player.GetMaxValues().z > object.GetMinValues().z));
+	if (abs(this->Position.x - object.Position.x) > (this->Scale.x + object.Scale.x) * 0.5f) return false;
+//	if (abs(this->Position.y - object.Position.y) > (this->Scale.y + object.Scale.y) * 0.5f) return false;
+	if (abs(this->Position.z - object.Position.z) > (this->Scale.z + object.Scale.z) * 0.5f) return false;
+	return true;
 }
 
-bool Boundary::CheckCollision2D(const Boundary &object, const Vector3 &point)const
+bool Boundary::CheckCollision(const Vector3 &point)const
 {
-	return ((object.GetMaxValues().x > point.x || point.x > object.GetMinValues().x) &&
-		(object.GetMaxValues().y > point.y || point.y > object.GetMinValues().y));
+	if (abs(this->Position.x - point.x) > (this->Scale.x) * 0.5f) return false;
+	if (abs(this->Position.z - point.z) > (this->Scale.z) * 0.5f) return false;
+	return true;
 }
 
 void Boundary::CalculateValues(const Vector3 &pos, const Vector3 &scale)
 {
-	Vector3 ObjectMin, ObjectMax;
-	ObjectMax.Set(float(pos.x + (scale.x * 0.5f)), float(pos.y + (scale.y * 0.5f)), float(pos.z + (scale.z * 0.5f)));
-	ObjectMin.Set(float(pos.x - (scale.x * 0.5f)), float(pos.y - (scale.y * 0.5f)), float(pos.z - (scale.z * 0.5f)));
-
-	SetMaxValues(ObjectMax);
-	SetMinValues(ObjectMin);
+	SetPosition(pos);
+	SetScale(scale);
 }
 
-void Boundary::SetMaxValues(const Vector3 &maxvalues)
+void Boundary::SetPosition(const Vector3 &position)
 {
-	this->MaxValues = maxvalues;
+	this->Position = position;
 }
 
-void Boundary::SetMinValues(const Vector3 &minValues)
+void Boundary::SetScale(const Vector3 &scale)
 {
-	this->MinValues = minValues;
+	this->Scale = scale;
 }
 
-Vector3 Boundary::GetMaxValues()const
+Vector3 Boundary::GetPosition()const
 {
-	return MaxValues;
+	return Position;
 }
 
-Vector3 Boundary::GetMinValues()const
+Vector3 Boundary::GetScale()const
 {
-	return MinValues;
+	return Scale;
 }

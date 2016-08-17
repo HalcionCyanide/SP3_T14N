@@ -35,7 +35,7 @@ GameMap::~GameMap(void)
     }
 }
 
-bool GameMap::LoadMap(const std::string &mapName, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GenericEntity*> &theRenderingStuff)
+bool GameMap::LoadMap(const std::string &mapName, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GameObject*> &theRenderingStuff)
 {
     if (LoadFile(mapName, theHeightMap, terrainSize, theRenderingStuff) == true)
     {
@@ -46,7 +46,7 @@ bool GameMap::LoadMap(const std::string &mapName, std::vector<unsigned char> &th
     return false;
 }
 
-bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GenericEntity*> &theRenderingStuff)
+bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GameObject*> &theRenderingStuff)
 {
     //<?>
     int theLineCounter = 0;
@@ -97,7 +97,7 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
     tileSizeXYZ.z = terrainSize.z / theNumOfTiles_MapHeight;
     //<?>
 
-    for (std::vector<GenericEntity*>::iterator it = theRenderingStuff.begin(), end = theRenderingStuff.end(); it != end; ++it)
+    for (std::vector<GameObject*>::iterator it = theRenderingStuff.begin(), end = theRenderingStuff.end(); it != end; ++it)
     {
         GameObject *the3DObj = dynamic_cast<GameObject*>(*it);
         the3DObj->SetPos(Vector3(

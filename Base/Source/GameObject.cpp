@@ -80,6 +80,11 @@ bool GameObject::GetActive()const
 	return this->Active;
 }
 
+Boundary GameObject::GetBoundary()const
+{
+	return Bounds;
+}
+
 void GameObject::Init(const std::string &name, const Vector3 &pos, const Vector3 &scale, const float &rotatingValue, const Vector3 &rotationAxis, const bool &active)
 {
 	this->setName(name);

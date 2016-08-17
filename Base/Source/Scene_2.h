@@ -49,6 +49,7 @@ private:
 	BillboardManager BManager;
 
 	std::vector<GameObject*> ObjectVec;
+	GameObject* Player;
 
     double framerates;
 };

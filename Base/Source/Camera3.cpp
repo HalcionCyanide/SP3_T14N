@@ -21,7 +21,7 @@ Constructor for Camera
 /****************************************************************************/
 
 Camera3::Camera3()
-	: CameraVelocity(0,0,0)
+	: CameraVelocity(0, 0, 0), ObjectVec(nullptr)
 {
 }
 
@@ -88,6 +88,11 @@ void Camera3::UpdateStatus(const unsigned char key, const bool status)
 	//myKeys[key] = status;
 }
 
+void Camera3::SetObjectVector(std::vector<GameObject*> &ObjectVec)
+{
+	this->ObjectVec = &ObjectVec;
+}
+
 /****************************************************************************/
 /*!
 \brief
@@ -101,6 +106,7 @@ void Camera3::Update(float dt)
 	CameraRotationSpeed = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * RelativeMouseSensitivity;
 	Application::cA_CurrentTerrainY += CameraBobVal;
 	MovementValues.SetZero();
+	//cameraMovement(dt);
 	if (Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT))
 	{
 		CameraMaxWalkSpeed = CameraBaseWalkSpeed * 2;
@@ -129,7 +135,7 @@ void Camera3::Update(float dt)
 		DecomposePlayerInertia(dt);
 	}
 	if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
-		DecomposeMouseInertia(dt);
+	DecomposeMouseInertia(dt);
 
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('W'))
 	{
@@ -147,10 +153,11 @@ void Camera3::Update(float dt)
 	{
 		Strafe(dt);
 	}
-	if (!CameraIsLocked && Scene_System::accessing().cSS_InputManager->GetKeyValue(' '))
+	if (!CameraIsLocked &&Scene_System::accessing().cSS_InputManager->GetKeyValue(' '))
 	{
 		Jump(dt);
 	}
+
 	if (m_bJumping == false)
 	{
 		position.y = Application::cA_CurrentTerrainY;
@@ -161,6 +168,11 @@ void Camera3::Update(float dt)
 	UpdateJump(dt);
 	UpdateCameraPosition();
 	UpdateCameraVectors();
+	
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('R'))
+	{
+		Reset();
+	}
 }
 
 void Camera3::DecomposePlayerInertia(float dt)
@@ -299,19 +311,36 @@ void Camera3::UpdateCameraVectors()
 
 void Camera3::UpdateCameraPosition()
 {
-	//Include Bounds Check Here
+	if (ObjectVec)
+	{
+		Boundary* temp = new Boundary();
+		//Include Bounds Check Here
+		temp->CalculateValues(position + MovementValues, Vector3(2, PlayerHeight, 2));
+		for (std::vector<GameObject*>::iterator it = ObjectVec->begin(); it != ObjectVec->end(); ++it)
+		{
+			CheckPositionUpdate((*it)->GetBoundary(), *temp);
+		}
+	}
 	if (!CameraIsLocked)
 		position += MovementValues;
 }
 
 void Camera3::CheckPositionUpdate(const Boundary &object, const Boundary &player)
 {
-	//Boundary* temp = new Boundary(player);
-	//temp->CalculateValues()
-	//if (object.CheckCollision(object, player))
-	//{
-
-	//}
+	if (ObjectVec)
+	{
+		if (object.CheckCollision(player))
+		{
+			if (object.GetPosition().x > player.GetPosition().x)
+				MovementValues.x = 0; //= (object.GetPosition() - object.GetScale()).x - (player.GetPosition() + player.GetScale()).x;
+			else if (object.GetPosition().x < player.GetPosition().x)
+				MovementValues.x = 0;// = (player.GetPosition() - player.GetScale()).x - (object.GetPosition() + object.GetScale()).x;
+			if (object.GetPosition().z > player.GetPosition().z)
+				MovementValues.z = 0; //= (object.GetPosition() - object.GetScale()).z - (player.GetPosition() + player.GetScale()).z;
+			else if (object.GetPosition().z < player.GetPosition().z)
+				MovementValues.z = 0; //= (player.GetPosition() - player.GetScale()).z - (object.GetPosition() + object.GetScale()).z;
+		}
+	}
 }
 
 void Camera3::C_ForwardMovement(const float dt)

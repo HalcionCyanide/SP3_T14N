@@ -37,18 +37,20 @@ void Scene_2::Init()
 	newMesh->textureArray[0] = LoadTGA("Image//ParticleWhite.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	GameObject* Player = new GameObject();
+	Player = new GameObject();
 	Player->Init("Player", camera.position - Vector3(0, camera.PlayerHeight, 0) , Vector3(2, 1, 2), 0.0f, Vector3(1, 0, 0), true);
-	newMesh = MeshBuilder::GenerateCube("Cube", Color(1, 1, 1), 1.0f);
-	Player->SetMesh(*newMesh);
-	ObjectVec.push_back(Player);
+	std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find("cube");
+	Player->SetMesh(*it->second);
 
 	GameObject* ObjectA = new GameObject();
 	ObjectA->Init("ObjectA", Vector3(15, 0, 15), Vector3(5, 5, 5), 0.0f, Vector3(1, 0, 0), true);
 	ObjectA->SetPos(Vector3(ObjectA->GetPos().x, TerrainYScale * ReadHeightMap(m_heightMap, (ObjectA->GetPos().x / TerrainXScale), (ObjectA->GetPos().z / TerrainXScale)) + ObjectA->GetScale().y * 0.5f, ObjectA->GetPos().z));
-	newMesh = MeshBuilder::GenerateCube("Cube", Color(1, 1, 1), 1.0f);
-	ObjectA->SetMesh(*newMesh);
+	it = SceneGraphics->meshList.find("cube");
+	ObjectA->SetMesh(*it->second);
+	ObjectA->SetBounds();
 	ObjectVec.push_back(ObjectA);
+
+	camera.SetObjectVector(ObjectVec);
 }
 
 void Scene_2::Update(float dt)
@@ -83,15 +85,8 @@ void Scene_2::Update(float dt)
 	}
 	BManager.UpdateContainer(dt, camera.position);
 
-	for (auto it : ObjectVec)
-	{
-		if (it->getName() == "Player")
-		{
-			it->SetPos(camera.position - Vector3(0,camera.PlayerHeight - 2));
-			it->SetRotation(camera.CurrentCameraRotation.y, Vector3(0, 1, 0));
-			
-		}
-	}
+	Player->SetPos(camera.position - Vector3(0,camera.PlayerHeight - 2));
+	Player->SetRotation(camera.CurrentCameraRotation.y, Vector3(0, 1, 0));
 
 	camera.Update(dt);
 }
@@ -137,6 +132,7 @@ void Scene_2::RenderShadowCasters()
 	{
 		itt->Render();
 	}
+	Player->Render();
 }
 
 void Scene_2::RenderSkybox()
@@ -272,6 +268,11 @@ void Scene_2::RenderPassMain()
 	ss << "Scene 2 - FPS:" << framerates;
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 25);
+
+	ss.str("");
+	ss << "Speed:" << camera.CameraVelocity;
+	ss.precision(3);
+	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
 	SceneGraphics->SetHUD(false);
 
 }

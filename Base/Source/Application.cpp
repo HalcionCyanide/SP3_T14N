@@ -6,6 +6,11 @@
 #include "Scene_MainMenu.h"
 #include "Scene_1.h"
 #include "Scene_2.h"
+#include "SceneBattle.h"
+#include "SceneOpenField.h"
+#include "SceneTown1.h"
+#include "SceneTown2.h"
+#include "SceneTown3.h"
 
 //Include GLEW
 #include <GL/glew.h>
@@ -154,6 +159,22 @@ void Application::Run()
 	Scene_2* SecondScene = new Scene_2();
 	SecondScene->Init();
 	Scene_System::accessing().AddScene(*SecondScene);
+
+    SceneTown1* town1 = new SceneTown1();
+    town1->Init();
+    Scene_System::accessing().AddScene(*town1);
+
+    SceneTown2* town2 = new SceneTown2();
+    town2->Init();
+    Scene_System::accessing().AddScene(*town2);
+
+    SceneTown3* town3 = new SceneTown3();
+    town3->Init();
+    Scene_System::accessing().AddScene(*town3);
+
+    SceneOpenField* openfield = new SceneOpenField();
+    openfield->Init();
+    Scene_System::accessing().AddScene(*openfield);
 
 	// Active Window Detection
 	HWND hwnd = GetActiveWindow();

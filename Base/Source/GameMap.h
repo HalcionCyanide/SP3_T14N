@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 #include "Vector3.h"
+#include "GameObject.h"
 
 class GameMap : public GenericEntity
 {
@@ -13,7 +14,7 @@ public:
     virtual ~GameMap(void);
 
     //virtual void Init(const int &theTileSize = 25);
-    virtual bool LoadMap(const std::string &mapName, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GenericEntity*> &theRenderingStuff);
+    virtual bool LoadMap(const std::string &mapName, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GameObject*> &theRenderingStuff);
     int GetTileSize(void);
 
     int getNumOfTiles_MapHeight(void);		// Get the number of tiles for height of the map
@@ -28,7 +29,7 @@ protected:
     int theNumOfTiles_MapHeight;	// Number of tiles in the map's height
     int theNumOfTiles_MapWidth;		// Number of tiles in the map's width
 
-    virtual bool LoadFile(const std::string &mapName, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GenericEntity*> &theRenderingStuff);
+    virtual bool LoadFile(const std::string &mapName, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GameObject*> &theRenderingStuff);
     Vector3 tileSizeXYZ;
 
 private:
