@@ -10,12 +10,9 @@
 class GameObject : public GenericEntity
 {
 public:
-	GameObject(){};
-	GameObject(const std::string &name, const Vector3 &pos, const Vector3 &scale, const float &rotatingValue, const Vector3 &rotationAxis, const bool &active) :
-		Pos(pos), Scale(scale), Active(active) {
-		setName(name);
-		SetRotation(rotatingValue, rotationAxis);
-	};
+	GameObject();
+    GameObject(const std::string &name, const Vector3 &pos, const Vector3 &scale, const float &rotatingValue, const Vector3 &rotationAxis, const bool &active);
+    GameObject(GameObject &Object);
 	virtual ~GameObject(){};
 
 	virtual void Init(const std::string &name, const Vector3 &pos, const Vector3 &scale, const float &rotatingValue, const Vector3 &rotationAxis, const bool &active);
@@ -32,6 +29,8 @@ public:
 	Vector3 GetScale();
 	float GetRotation();
 	bool GetActive();
+
+	GameObject& operator= (const GameObject& object);
 
 private:
 

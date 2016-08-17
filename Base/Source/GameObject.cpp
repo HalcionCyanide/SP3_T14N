@@ -2,6 +2,29 @@
 #include "Scene_System.h"
 #include "GraphicsEntity.h"
 
+GameObject::GameObject()
+    : GenericEntity()
+{
+    RotationAngle = 0;
+}
+
+GameObject::GameObject(const std::string &name, const Vector3 &pos, const Vector3 &scale, const float &rotatingValue, const Vector3 &rotationAxis, const bool &active) :
+Pos(pos), Scale(scale), Active(active) 
+{
+    setName(name);
+    SetRotation(rotatingValue, rotationAxis);
+}
+
+GameObject::GameObject(GameObject &Object)
+{
+    this->MeshObject = Object.MeshObject;
+    this->Pos = Object.Pos;
+    this->Scale = Object.Scale;
+    this->RotationAngle = Object.RotationAngle;
+    this->Active = Object.Active;
+    setName(Object.getName());
+}
+
 void GameObject::SetMesh(Mesh &meshObject)
 {
 	this->MeshObject = &meshObject;
@@ -73,4 +96,14 @@ void GameObject::Render()
 		SceneGraphics->RenderMesh(*MeshObject, false);
 		Scene_System::accessing().getCurrScene().modelStack->PopMatrix();
 	}
+}
+
+GameObject& GameObject::operator= (const GameObject &object)
+{
+	this->MeshObject = object.MeshObject;
+	this->Pos = object.Pos;
+	this->Scale = object.Scale;
+	this->RotationAngle = object.RotationAngle;
+	this->Active = object.Active;
+    return *this;
 }

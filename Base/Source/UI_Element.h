@@ -11,7 +11,7 @@ class UI_Element : public GenericEntity
 {
 public:
 	UI_Element();
-	~UI_Element();
+	virtual ~UI_Element();
 
 	Vector3 Position;
 	Vector3 Dimensions;

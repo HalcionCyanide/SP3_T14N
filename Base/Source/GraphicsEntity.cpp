@@ -499,6 +499,16 @@ bool GraphicsEntity::loadingMeshDriven(const std::string &fileLocation)
                 else if (theValues[pos] == "CUBE") {
                     newMesh = MeshBuilder::GenerateCube(theName, Color(r, g, b));
                 }
+                else if (theValues[pos] == "SPRITE") {
+                    unsigned row, col;
+                    it = std::find(theKeys.begin(), theKeys.end(), "NUMROWS");
+                    pos = it - theKeys.begin();
+                    row = stoi(theValues[pos]);
+                    it = std::find(theKeys.begin(), theKeys.end(), "NUMCOLUMNS");
+                    pos = it - theKeys.begin();
+                    col = stoi(theValues[pos]);
+                    newMesh = MeshBuilder::GenerateSpriteAnimation(theName, row, col);
+                }
                 else {
                     continue;
                 }

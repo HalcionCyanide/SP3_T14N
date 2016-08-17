@@ -2,7 +2,7 @@
 #include <sstream>
 
 #include "Scene_2.h"
-#include "Map.h"
+#include "GameMap.h"
 #include "GameObject.h"
 
 std::string Scene_1::id_ = "Scene 1";
@@ -86,8 +86,8 @@ void Scene_1::Init()
 		BManager.AddHMapBillboard("Tree", m_heightMap, TerrainScale, Vector3((float)i * 10.f), Vector3(10.f, 20.f, 10.f), Vector3(), camera.position);
 	}
 
-    CMap *theMap = dynamic_cast<CMap*>(theInteractiveMap);
-    theMap = new CMap();
+    theInteractiveMap = new GameMap();
+    GameMap *theMap = dynamic_cast<GameMap*>(theInteractiveMap);
     theMap->setName("scene 1 logic map");
     theMap->LoadMap("Image//MapTest.csv", m_heightMap, TerrainScale, testingRenderingStuff);
 
@@ -332,12 +332,17 @@ void Scene_1::RenderPassMain()
 	ss << "Mouse Position:" << Scene_System::accessing().cSS_InputManager->GetMousePosition();
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
+    //<!> Removing soon
+    ss.str("");
+    ss << "CPos:" << camera.position;
+    ss.precision(3);
+    SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 125);
+    //<!> Removing soon
 	SceneGraphics->SetHUD(false);
 
 	ss.str("9, 0 - Toggle Mouse Modes");
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
-	SceneGraphics->SetHUD(false);
 
 }
 
@@ -359,6 +364,9 @@ void Scene_1::Exit()
         delete theInteractiveMap;
     //<!> will remove soon <!>
     for (auto it : testingRenderingStuff)
-        delete it;
+    {
+        if (it)
+            delete it;
+    }
     //<!> will remove soon <!>
 }

@@ -1,0 +1,6 @@
+Name,CharacterSymbol //ONLY 1 character is allowed!,MeshID,ScaleX,ScaleY,ScaleZ,RotationX,RotationY,RotationZ,Active
+TheWhiteCube,C,cube,10,5,10,,,,1
+TheSmallHouse,H,small_house,50,50,50,,,,1
+TheTree,T,,1,1,1,,,,1
+TheGrass,G,,1,1,1,,,,1
+TheSmallHouse2,h,small_house2,10,10,10,,,,1
