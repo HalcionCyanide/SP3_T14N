@@ -7,40 +7,32 @@ unsigned char LeftCommand::theKey = 'd';
 
 ForwardCommand::ForwardCommand()
 {
-
 }
 
 ForwardCommand::~ForwardCommand()
 {
-
 }
 
 BackCommand::BackCommand()
 {
-
 }
 
 BackCommand::~BackCommand()
 {
-
 }
 
 RightCommand::RightCommand()
 {
-
 }
 
 RightCommand::~RightCommand()
 {
-
 }
 
 LeftCommand::LeftCommand()
 {
-
 }
 
 LeftCommand::~LeftCommand()
 {
-
 }
