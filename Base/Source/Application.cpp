@@ -140,13 +140,13 @@ void Application::Init()
 	SceneGraphics->Init();
 	Scene_System::accessing().setGraphics_Scene(*SceneGraphics);
 
+	SceneTown1* town1 = new SceneTown1();
+	town1->Init();
+	Scene_System::accessing().AddScene(*town1);
 	Scene_MainMenu *MainMenuScene = new Scene_MainMenu();
 	MainMenuScene->Init();
 	Scene_System::accessing().AddScene(*MainMenuScene);
 
-	SceneTown1* town1 = new SceneTown1();
-	town1->Init();
-	Scene_System::accessing().AddScene(*town1);
 
 	SceneTown2* town2 = new SceneTown2();
 	town2->Init();

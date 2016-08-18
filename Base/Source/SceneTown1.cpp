@@ -6,7 +6,7 @@
 #include "SceneTown3.h"
 
 #include "GameMap.h"
-#include "GameObject.h"
+#include "PlayerObject.h"
 
 std::string SceneTown1::id_ = "Scene Town 1";
 
@@ -16,6 +16,7 @@ SceneTown1::SceneTown1()
     framerates = 0;
     setName(id_);
     theInteractiveMap = nullptr;
+    Player = nullptr;
 }
 
 SceneTown1::~SceneTown1()
@@ -54,6 +55,21 @@ void SceneTown1::Init()
     GameMap *theMap = dynamic_cast<GameMap*>(theInteractiveMap);
     theMap->setName("scene town 1 logic map");
     theMap->LoadMap("Image//Town1Layout.csv", m_heightMap, TerrainScale, objVec, BManager);
+
+    //<!> There can only be 1 Player
+    Player = new PlayerObject();
+    Player->Init("Player", camera.position - Vector3(0, camera.PlayerHeight, 0), Vector3(2, 1, 2), 0.0f, Vector3(1, 0, 0), true);
+    std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find("cube");
+    Player->SetMesh(*it->second);
+    Player->setName("PLayer 1");
+    Player->SetRotation(camera.CurrentCameraRotation.y, Vector3(0, 1, 0));
+    PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
+    PlayerPTR->setVel(Vector3(10.f, 0.f, 0.f));
+    PlayerPTR->SetPos(Vector3(Player->GetPos().x, camera.PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPos().x / TerrainScale.x), (Player->GetPos().z / TerrainScale.z)), Player->GetPos().z));
+    PlayerPTR->setPlayerBoundaries(objVec);
+    camera.position = PlayerPTR->GetPos();
+    camera.UpdateCameraVectors();
+    //<!> There can only be 1 Player
 }
 
 void SceneTown1::Update(float dt)
@@ -101,7 +117,13 @@ void SceneTown1::Update(float dt)
 
     BManager.UpdateContainer(dt, camera.position);
 
+    PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
+    PlayerPTR->Update(dt);
+    PlayerPTR->SetRotation(camera.CurrentCameraRotation.y, Vector3(0, 1, 0));
+
     camera.Update(dt);
+    camera.position = PlayerPTR->GetPos();
+    camera.UpdateCameraVectors();
 }
 
 void SceneTown1::RenderTerrain()
@@ -319,4 +341,6 @@ void SceneTown1::Exit()
         if (it)
             delete it;
     }
+    if (Player)
+        delete Player;
 }
