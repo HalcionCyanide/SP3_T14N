@@ -168,6 +168,9 @@
     <ClCompile Include="Source\SceneBattleScreen.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GameObjectBuilder.cpp">
+      <Filter>Source Files\Mains\Misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Scene_System.h">
@@ -313,6 +316,9 @@
     </ClInclude>
     <ClInclude Include="Source\SceneFreeField.h">
       <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObjectBuilder.h">
+      <Filter>Header Files\Misc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

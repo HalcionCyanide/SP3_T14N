@@ -21,6 +21,7 @@
     <ClCompile Include="Source\Camera3.cpp" />
     <ClCompile Include="Source\Commands.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
+    <ClCompile Include="Source\GameObjectBuilder.cpp" />
     <ClCompile Include="Source\InputManager.cpp" />
     <ClCompile Include="Source\DepthFBO.cpp" />
     <ClCompile Include="Source\GraphicsEntity.cpp" />
@@ -64,6 +65,7 @@
     <ClInclude Include="Source\Camera3.h" />
     <ClInclude Include="Source\Commands.h" />
     <ClInclude Include="Source\GameObject.h" />
+    <ClInclude Include="Source\GameObjectBuilder.h" />
     <ClInclude Include="Source\InputManager.h" />
     <ClInclude Include="Source\DepthFBO.h" />
     <ClInclude Include="Source\DetectMemoryLeak.h" />
