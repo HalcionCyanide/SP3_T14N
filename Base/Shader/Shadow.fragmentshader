@@ -166,15 +166,15 @@ vec2 poissonDisk[64] = vec2[](
 
 float getShadowEffect(float cosTheta)
 {
-	//Original
+	/*//Original
 	float visibility = 1.0;
 	float bias = 0.005;
 	if(texture2D(shadowMap, shadowCoord.xy).x < shadowCoord.z - bias) {
 		visibility = 0.25;
 	}
-	return visibility;
+	return visibility;*/
 
-	/*// Poisson Shadow Sampling
+	//Poisson Shadow Sampling
 	float visibility = 1.0;
 	float bias = 0.0015 * tan(acos(cosTheta));
 	float SampleSpread = 1800 - ((shadowSamplingCount - 8) * 25); // How near samples are to one another, nearer = more
@@ -185,7 +185,7 @@ float getShadowEffect(float cosTheta)
 		   visibility = clamp(visibility, 0, 1 );
 		}
 	}
-	return visibility;*/
+	return visibility;
 }
 
 void main(){
