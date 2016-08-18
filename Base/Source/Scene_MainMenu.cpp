@@ -42,6 +42,10 @@ void Scene_MainMenu::Init()
 	newMesh->textureArray[0] = LoadTGA("Image//TFB_Logo.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
+	newMesh = MeshBuilder::GenerateQuad("TFB_Button", Color(1, 1, 1));
+	newMesh->textureArray[0] = LoadTGA("Image//TFB_Button.tga");
+	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+
 	//TEST Tree Init
 	GLuint TreeTex = LoadTGA("Image//Tree.tga");
 
@@ -59,7 +63,23 @@ void Scene_MainMenu::Init()
 	{
 		BManager.AddHMapBillboard("Tree", m_heightMap, TerrainScale, Vector3((float)i * 10.f), Vector3(10.f, 20.f, 10.f), Vector3(), camera.position);
 	}
-	UI_Sys.AddUIElement(UI_Element::UI_LOGO, "TFB_Logo", Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 2.f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 2.f, 1), Vector3(1000, 1000, 1), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.75f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.75f, 1));
+	InitSceneUIElems();
+}
+
+void Scene_MainMenu::InitSceneUIElems()
+{
+	Vector3 CenterPosition(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
+	UI_Sys.AddUIElement(UI_Element::UI_LOGO, "TFB_Logo", CenterPosition * 3, Vector3(1300, 1300, 1), CenterPosition * 1.35f);
+	
+	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", CenterPosition * -2.f, Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0));
+	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", CenterPosition * -2.5f, Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0));
+	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", CenterPosition * -3.f, Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0));
+
+	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0));
+	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(0, CenterPosition.y * 3.5f, 0), Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0));
+	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(0, CenterPosition.y * 4.f, 0), Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0));
+
+
 }
 
 void Scene_MainMenu::Update(float dt)
@@ -273,6 +293,11 @@ void Scene_MainMenu::RenderPassMain()
 	SceneGraphics->SetHUD(true);
 
 	UI_Sys.Render();
+
+	if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
+	{
+		SceneGraphics->RenderMeshIn2D("TFB_Logo", false, 100, 100, Scene_System::accessing().cSS_InputManager->GetMousePosition().x, Scene_System::accessing().cSS_InputManager->GetMousePosition().y);
+	}
 
 	std::ostringstream ss;
 	ss.str("");

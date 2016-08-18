@@ -159,6 +159,15 @@
     <ClCompile Include="Source\GameObject.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\BoundsBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SimpleCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Boundary2D.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Scene_System.h">
@@ -295,6 +304,15 @@
     </ClInclude>
     <ClInclude Include="Source\SceneFreeField.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BoundsBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SimpleCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Boundary2D.h">
+      <Filter>Header Files\Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

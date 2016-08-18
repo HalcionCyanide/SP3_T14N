@@ -68,7 +68,7 @@ void InputManager::UpdateMouse()
 		cIM_CameraPitch = static_cast<float>(mousePosition.y - moveY);
 	}
 	
-	float ScreenX = mousePosition.x * Scene_System::accessing().GetUIWidth() / cIM_ScreenWidth;
-	float ScreenY = (cIM_ScreenHeight - mousePosition.y) * Scene_System::accessing().GetUIHeight() / cIM_ScreenHeight;
-	SetMousePosition(Vector3(ScreenX, ScreenY, 0));
+	//float ScreenX = mousePosition.x * Scene_System::accessing().GetUIWidth() / cIM_ScreenWidth;
+	//float ScreenY = (cIM_ScreenHeight - mousePosition.y) * Scene_System::accessing().GetUIHeight() / cIM_ScreenHeight;
+	SetMousePosition(Vector3(mousePosition.x, cIM_ScreenHeight - mousePosition.y, 0.f));
 }
