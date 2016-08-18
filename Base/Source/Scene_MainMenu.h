@@ -34,6 +34,7 @@ private:
 		S_SECONDLEVEL,
 	};
 
+	void InitSceneUIElems();
 
 	// Shadow GPass
 	void RenderPassGPass();

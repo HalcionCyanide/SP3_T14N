@@ -28,7 +28,7 @@ PlayerObject::~PlayerObject()
 
 void PlayerObject::Update(double dt)
 {
-	m_ElapsedTime = dt;
+	m_ElapsedTime = (float)dt;
 
 	if (Application::IsKeyPressed(VK_SHIFT) &&
 		!Scene_System::accessing().cSS_InputManager->GetKeyValue('S'))
@@ -66,23 +66,23 @@ void PlayerObject::Update(double dt)
 
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('W'))
 	{
-		Walk(dt);
+		Walk((float)dt);
 	}
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('S'))
 	{
-		Walk(-dt);
+		Walk(-(float)dt);
 	}
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('A'))
 	{
-		Strafe(-dt);
+		Strafe(-(float)dt);
 	}
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('D'))
 	{
-		Strafe(dt);
+		Strafe((float)dt);
 	}
 	if (!CameraIsLocked &&Scene_System::accessing().cSS_InputManager->GetKeyValue(' '))
 	{
-		Jump(dt);
+		Jump((float)dt);
 	}
 	if (m_bJumping == false)
 	{
@@ -90,10 +90,10 @@ void PlayerObject::Update(double dt)
 	}
 	if (!vel_.IsZero())
 	{
-		DecomposePlayerInertia(dt);
+		DecomposePlayerInertia((float)dt);
 	}
 
-	UpdateJump(dt);
+	UpdateJump((float)dt);
 }
 
 void PlayerObject::SetJump(const float &speed, const float &max_speed, const float &accel)
