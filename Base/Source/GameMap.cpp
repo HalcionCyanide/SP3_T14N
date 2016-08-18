@@ -35,9 +35,9 @@ GameMap::~GameMap(void)
     }
 }
 
-bool GameMap::LoadMap(const std::string &mapName, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GameObject*> &theRenderingStuff)
+bool GameMap::LoadMap(const std::string &mapName, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GameObject*> &theRenderingStuff, BillboardManager &theBBManager)
 {
-    if (LoadFile(mapName, theHeightMap, terrainSize, theRenderingStuff) == true)
+    if (LoadFile(mapName, theHeightMap, terrainSize, theRenderingStuff, theBBManager) == true)
     {
         printf("Map (%s) has been successfully loaded!\n", mapName.c_str());
         return true;
@@ -46,7 +46,7 @@ bool GameMap::LoadMap(const std::string &mapName, std::vector<unsigned char> &th
     return false;
 }
 
-bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GameObject*> &theRenderingStuff)
+bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GameObject*> &theRenderingStuff, BillboardManager &theBBManager)
 {
     //<?>
     int theLineCounter = 0;
@@ -74,15 +74,24 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
             if (itLegend != bunchOfLegends.end())
             {
                 GameObject *the3Dobject = dynamic_cast<GameObject*>(itLegend->second);
-                GameObject *aCopyOfIt = new GameObject(*the3Dobject);
-                aCopyOfIt->SetPos(Vector3((float)num_Column, 0, (float)theLineCounter));
-                if (token.size() > 1)
+                if (the3Dobject)
                 {
-                    std::string strRotation = token.substr(2);
-                    aCopyOfIt->SetRotation(stof(strRotation), Vector3(0, 1, 0));
+                    GameObject *aCopyOfIt = new GameObject(*the3Dobject);
+                    aCopyOfIt->SetPos(Vector3((float)num_Column, 0, (float)theLineCounter));
+                    if (token.size() > 1)
+                    {
+                        std::string strRotation = token.substr(2);
+                        aCopyOfIt->SetRotation(stof(strRotation), Vector3(0, 1, 0));
+                    }
+                    theRenderingStuff.push_back(aCopyOfIt);
+                    it->second.push_back(itLegend->first);
                 }
-                theRenderingStuff.push_back(aCopyOfIt);
-                it->second.push_back(itLegend->first);
+                else
+                {
+                    Billboard *isBillboard = dynamic_cast<Billboard*>(itLegend->second);
+                    theBBManager.AddBillboard(isBillboard->GetMeshName(), Vector3((float)num_Column, 0, (float)theLineCounter), isBillboard->GetDimensions());
+                    it->second.push_back(' ');
+                }
             }
             else 
               it->second.push_back(' ');
@@ -108,6 +117,20 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
         the3DObj->SetPos(Vector3(the3DObj->GetPos().x,
             (the3DObj->GetScale().y*0.5f) + terrainSize.y * ReadHeightMap(theHeightMap, the3DObj->GetPos().x / terrainSize.x, the3DObj->GetPos().z / terrainSize.z),
             the3DObj->GetPos().z
+            ));
+    }
+
+    for (std::vector<Billboard*>::iterator it = theBBManager.BillboardContainer.begin(), end = theBBManager.BillboardContainer.end(); it != end; ++it)
+    {
+        Billboard *theBB = (*it);
+        theBB->SetPosition(Vector3(
+            ((theBB->GetPosition().x - ((float)theNumOfTiles_MapWidth / 2.f)) * tileSizeXYZ.x) + (tileSizeXYZ.x * 0.5f),
+            0,
+            (-(theBB->GetPosition().z - ((float)theNumOfTiles_MapHeight / 2.f)) * tileSizeXYZ.z) - (tileSizeXYZ.z * 0.5f)
+            ));
+        theBB->SetPosition(Vector3(theBB->GetPosition().x,
+            (theBB->GetDimensions().y*0.5f) + terrainSize.y * ReadHeightMap(theHeightMap, theBB->GetPosition().x / terrainSize.x, theBB->GetPosition().z / terrainSize.z),
+            theBB->GetPosition().z
             ));
     }
 
@@ -166,7 +189,7 @@ bool GameMap::loadThoseLegends(const std::string &fileName)
                 {
                     theValues.push_back(token);
                 }
-                GameObject *theObject = new GameObject();
+                GenericEntity *theObject = new GameObject();
                 char symbol = ' ';
                 for (size_t num = 0; num < theKeys.size(); ++num)
                 {
@@ -182,26 +205,42 @@ bool GameMap::loadThoseLegends(const std::string &fileName)
                     {
                         std::map<std::string, Mesh*>::iterator it = graphics->meshList.find(theValues[num]);
                         if (it != graphics->meshList.end())
-                            theObject->SetMesh(*it->second);
+                        {
+                            GameObject*go = dynamic_cast<GameObject*>(theObject);
+                            go->SetMesh(*it->second);
+                        }
                     }
                     else if (theKeys[num].find("SCALEX") != std::string::npos)
                     {
-                        theObject->SetScale(Vector3(stof(theValues[num]), theObject->GetScale().y, theObject->GetScale().z));
+                        GameObject*go = dynamic_cast<GameObject*>(theObject);
+                        go->SetScale(Vector3(stof(theValues[num]), go->GetScale().y, go->GetScale().z));
                     }
                     else if (theKeys[num].find("SCALEY") != std::string::npos)
                     {
-                        theObject->SetScale(Vector3(theObject->GetScale().x,stof(theValues[num]) , theObject->GetScale().z));
+                        GameObject*go = dynamic_cast<GameObject*>(theObject);
+                        go->SetScale(Vector3(go->GetScale().x, stof(theValues[num]), go->GetScale().z));
                     }
                     else if (theKeys[num].find("SCALEZ") != std::string::npos)
                     {
-                        theObject->SetScale(Vector3(theObject->GetScale().x, theObject->GetScale().y, stof(theValues[num])));
+                        GameObject*go = dynamic_cast<GameObject*>(theObject);
+                        go->SetScale(Vector3(go->GetScale().x, go->GetScale().y, stof(theValues[num])));
                     }
                     else if (theKeys[num].find("ACTIVE") != std::string::npos)
                     {
+                        GameObject*go = dynamic_cast<GameObject*>(theObject);
                         if (theValues[num] == "0")
-                            theObject->SetActive(false);
+                            go->SetActive(false);
                         else
-                            theObject->SetActive(true);
+                            go->SetActive(true);
+                    }
+                    else if (theKeys[num].find("BILLBOARD") != std::string::npos)
+                    {
+                        if (theValues[num] != "0")
+                        {
+                            GameObject*go = dynamic_cast<GameObject*>(theObject);
+                            theObject = new Billboard(go->GetPos(), go->GetScale(), Vector3(0,0,0), Vector3(0,0,0), go->GetMesh().name);
+                            delete go;
+                        }
                     }
                 }
                 bunchOfLegends.insert(std::pair<unsigned char, GenericEntity*>(symbol, theObject));

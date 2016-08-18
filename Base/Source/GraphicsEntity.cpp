@@ -162,7 +162,7 @@ void GraphicsEntity::Init()
 
 void GraphicsEntity::Update(float dt)
 {
-    if (Application::IsKeyPressed('1')) {
+    /*if (Application::IsKeyPressed('1')) {
         glEnable(GL_CULL_FACE);
     }
     if (Application::IsKeyPressed('2')) {
@@ -173,7 +173,7 @@ void GraphicsEntity::Update(float dt)
     }
     if (Application::IsKeyPressed('4')) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    }
+    }*/
 }
 
 void GraphicsEntity::Render()

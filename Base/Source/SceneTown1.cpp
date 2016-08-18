@@ -2,6 +2,9 @@
 #include <sstream>
 
 #include "Scene_2.h"
+#include "SceneTown2.h"
+#include "SceneTown3.h"
+
 #include "GameMap.h"
 #include "GameObject.h"
 
@@ -34,7 +37,7 @@ void SceneTown1::Init()
     camera.Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
 
     // Initiallise Model Specific Meshes Here
-    Mesh* newMesh = MeshBuilder::GenerateTerrain("terrain", "Image//heightmap5.raw", m_heightMap);
+    Mesh* newMesh = MeshBuilder::GenerateTerrain("Town 1", "Image//heightmap_Town1.raw", m_heightMap);
     newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
     newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
     SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
@@ -50,7 +53,7 @@ void SceneTown1::Init()
     theInteractiveMap = new GameMap();
     GameMap *theMap = dynamic_cast<GameMap*>(theInteractiveMap);
     theMap->setName("scene town 1 logic map");
-    theMap->LoadMap("Image//Town1Layout.csv", m_heightMap, TerrainScale, objVec);
+    theMap->LoadMap("Image//Town1Layout.csv", m_heightMap, TerrainScale, objVec, BManager);
 }
 
 void SceneTown1::Update(float dt)
@@ -73,10 +76,18 @@ void SceneTown1::Update(float dt)
 
     framerates = 1 / dt;
 
-    if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
-    {
-        Scene_System::accessing().SwitchScene(Scene_2::id_);
-    }
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
+	{
+		Scene_System::accessing().SwitchScene(SceneTown2::id_);
+	}
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('3'))
+	{
+		Scene_System::accessing().SwitchScene(SceneTown3::id_);
+	}
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('4'))
+	{
+		Scene_System::accessing().SwitchScene(Scene_2::id_);
+	}
     if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
     {
         Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
@@ -98,7 +109,7 @@ void SceneTown1::RenderTerrain()
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
     modelStack->PushMatrix();
     modelStack->Scale(TerrainScale.x, TerrainScale.y, TerrainScale.z);
-    SceneGraphics->RenderMesh("terrain", true);
+    SceneGraphics->RenderMesh("Town 1", true);
     modelStack->PopMatrix();
 }
 

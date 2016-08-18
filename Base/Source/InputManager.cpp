@@ -70,5 +70,5 @@ void InputManager::UpdateMouse()
 	
 	//float ScreenX = mousePosition.x * Scene_System::accessing().GetUIWidth() / cIM_ScreenWidth;
 	//float ScreenY = (cIM_ScreenHeight - mousePosition.y) * Scene_System::accessing().GetUIHeight() / cIM_ScreenHeight;
-	SetMousePosition(Vector3(mousePosition.x, cIM_ScreenHeight - mousePosition.y, 0.f));
+	SetMousePosition(Vector3((float)mousePosition.x, cIM_ScreenHeight - (float)mousePosition.y, 0.f));
 }

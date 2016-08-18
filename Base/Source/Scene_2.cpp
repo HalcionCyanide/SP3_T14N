@@ -1,7 +1,9 @@
 #include "Scene_2.h"
 #include <sstream>
 
-#include "Scene_1.h"
+#include "SceneTown1.h"
+#include "SceneTown2.h"
+#include "SceneTown3.h"
 #include "PlayerObject.h"
 
 std::string Scene_2::id_ = "Scene 2";
@@ -81,8 +83,16 @@ void Scene_2::Update(float dt)
 
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('1'))
     {
-		Scene_System::accessing().SwitchToPreviousScene();
+		Scene_System::accessing().SwitchScene(SceneTown1::id_);
     }
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
+	{
+		Scene_System::accessing().SwitchScene(SceneTown2::id_);
+	}
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('3'))
+	{
+		Scene_System::accessing().SwitchScene(SceneTown3::id_);
+	}
 
 	int RandAmount = Math::RandIntMinMax(0, 3);
 	for (int i = 0; i < RandAmount; ++i)

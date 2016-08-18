@@ -2,6 +2,9 @@
 #include <sstream>
 
 #include "Scene_2.h"
+#include "SceneTown1.h"
+#include "SceneTown3.h"
+
 #include "GameMap.h"
 #include "GameObject.h"
 
@@ -50,7 +53,8 @@ void SceneTown2::Init()
     theInteractiveMap = new GameMap();
     GameMap *theMap = dynamic_cast<GameMap*>(theInteractiveMap);
     theMap->setName("scene town 2 logic map");
-    theMap->LoadMap("Image//Town2Layout.csv", m_heightMap, TerrainScale, objVec);
+    theMap->LoadMap("Image//Town2Layout.csv", m_heightMap, TerrainScale, objVec, BManager);
+
 
 }
 
@@ -74,10 +78,18 @@ void SceneTown2::Update(float dt)
 
     framerates = 1 / dt;
 
-    if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
+    if (Scene_System::accessing().cSS_InputManager->GetKeyValue('1'))
     {
-        Scene_System::accessing().SwitchScene(Scene_2::id_);
+        Scene_System::accessing().SwitchScene(SceneTown1::id_);
     }
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('3'))
+	{
+		Scene_System::accessing().SwitchScene(SceneTown3::id_);
+	}
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('4'))
+	{
+		Scene_System::accessing().SwitchScene(Scene_2::id_);
+	}
     if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
     {
         Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
