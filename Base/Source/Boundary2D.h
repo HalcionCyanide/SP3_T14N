@@ -14,7 +14,6 @@ public:
 
 	virtual bool CheckCollision(const Boundary2D &object)const;
 	virtual bool CheckCollision(const Vector3 &point)const;
-
 };
 
 
