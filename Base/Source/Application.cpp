@@ -6,8 +6,8 @@
 #include "Scene_MainMenu.h"
 #include "Scene_1.h"
 #include "Scene_2.h"
-#include "SceneBattle.h"
-#include "SceneOpenField.h"
+#include "SceneBattleScreen.h"
+#include "SceneFreeField.h"
 #include "SceneTown1.h"
 #include "SceneTown2.h"
 #include "SceneTown3.h"
@@ -133,13 +133,6 @@ void Application::Init()
 	m_dAccumulatedTime_ThreadOne = 0.0;
 	m_dAccumulatedTime_ThreadTwo = 0.0;
 
-	//glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);	// Hides the cursor within the window
-}
-
-void Application::Run()
-{
-    m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
-
 	float ScreenHeight = 100; // <!>
 	float ScreenWidth = ScreenHeight * ((float)cA_WindowWidth / (float)cA_WindowHeight);
 	Scene_System::accessing().SetUIDimensions(ScreenWidth, ScreenHeight);
@@ -160,21 +153,30 @@ void Application::Run()
 	SecondScene->Init();
 	Scene_System::accessing().AddScene(*SecondScene);
 
-    SceneTown1* town1 = new SceneTown1();
-    town1->Init();
-    Scene_System::accessing().AddScene(*town1);
+	SceneTown1* town1 = new SceneTown1();
+	town1->Init();
+	Scene_System::accessing().AddScene(*town1);
 
-    SceneTown2* town2 = new SceneTown2();
-    town2->Init();
-    Scene_System::accessing().AddScene(*town2);
+	SceneTown2* town2 = new SceneTown2();
+	town2->Init();
+	Scene_System::accessing().AddScene(*town2);
 
-    SceneTown3* town3 = new SceneTown3();
-    town3->Init();
-    Scene_System::accessing().AddScene(*town3);
+	SceneTown3* town3 = new SceneTown3();
+	town3->Init();
+	Scene_System::accessing().AddScene(*town3);
 
-    SceneOpenField* openfield = new SceneOpenField();
-    openfield->Init();
-    Scene_System::accessing().AddScene(*openfield);
+	SceneFreeField* freefield = new SceneFreeField();
+	freefield->Init();
+	Scene_System::accessing().AddScene(*freefield);
+
+	SceneBattleScreen* battlescreen = new SceneBattleScreen();
+	battlescreen->Init();
+	Scene_System::accessing().AddScene(*battlescreen);
+}
+
+void Application::Run()
+{
+    m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
 
 	// Active Window Detection
 	HWND hwnd = GetActiveWindow();

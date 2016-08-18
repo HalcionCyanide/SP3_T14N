@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _SCENE_FREE_FIELD_H
+#define _SCENE_FREE_FIELD_H
+
 
 #include "SceneEntity.h"
 #include "Scene_System.h"
@@ -7,12 +9,12 @@
 #include "Camera3.h"
 #include "BillboardManager.h"
 
-class SceneBattle : public SceneEntity
+class SceneFreeField : public SceneEntity
 {
 public:
     static std::string id_;
-    SceneBattle();
-    virtual ~SceneBattle();
+    SceneFreeField();
+    virtual ~SceneFreeField();
 
     virtual void Init();
     virtual void Update(float dt);
@@ -26,8 +28,16 @@ private:
     void RenderPassGPass();
     void RenderPassMain();
 
+    //Heightmap stuff
+    std::vector<unsigned char> m_heightMap;
+    Vector3 TerrainScale;
+
     // Additional Calls
     void RenderShadowCasters();
+    void RenderTerrain();
+    void RenderSkybox();
+
+    const float SkyboxSize = 1000;
 
     BillboardManager BManager;
 
@@ -35,3 +45,5 @@ private:
     GenericEntity *theInteractiveMap;
     std::vector<GameObject*> objVec;
 };
+
+#endif // _SCENE_FREE_FIELD_H

@@ -28,6 +28,13 @@ public:
 
 
 private:
+	enum STATE_MAIN_MENU
+	{
+		S_FIRSTLEVEL,
+		S_SECONDLEVEL,
+	};
+
+
 	// Shadow GPass
 	void RenderPassGPass();
 	void RenderPassMain();

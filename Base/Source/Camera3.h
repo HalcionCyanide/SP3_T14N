@@ -43,7 +43,6 @@ public:
 	Vector3 CurrentCameraRotation;
 
 	// Update Camera status
-	virtual void UpdateStatus(const unsigned char key, const bool status = true);
 	virtual void CheckPositionUpdate(const Boundary &object, const Boundary &player);
 	virtual void SetObjectVector(std::vector<GameObject*> &ObjectVec);
 

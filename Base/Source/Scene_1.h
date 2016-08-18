@@ -38,7 +38,6 @@ private:
 	// Additional Calls
 	void RenderShadowCasters();
 	void RenderTerrain();
-	void RenderSkyplane();
 	void RenderSkybox();
 
 	const float SkyboxSize = 1000;

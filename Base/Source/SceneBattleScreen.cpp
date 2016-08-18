@@ -1,13 +1,13 @@
-#include "SceneBattle.h"
+#include "SceneBattleScreen.h"
 #include <sstream>
 
 #include "Scene_2.h"
 #include "GameMap.h"
 #include "GameObject.h"
 
-std::string SceneBattle::id_ = "Scene Town 1";
+std::string SceneBattleScreen::id_ = "Scene Town 1";
 
-SceneBattle::SceneBattle()
+SceneBattleScreen::SceneBattleScreen()
     : SceneEntity()
 {
     framerates = 0;
@@ -15,12 +15,12 @@ SceneBattle::SceneBattle()
     theInteractiveMap = nullptr;
 }
 
-SceneBattle::~SceneBattle()
+SceneBattleScreen::~SceneBattleScreen()
 {
 
 }
 
-void SceneBattle::Init()
+void SceneBattleScreen::Init()
 {
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 
@@ -31,7 +31,7 @@ void SceneBattle::Init()
     camera.Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
 }
 
-void SceneBattle::Update(float dt)
+void SceneBattleScreen::Update(float dt)
 {
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
     SceneGraphics->Update(dt);
@@ -54,7 +54,7 @@ void SceneBattle::Update(float dt)
     camera.Update(dt);
 }
 
-void SceneBattle::RenderShadowCasters()
+void SceneBattleScreen::RenderShadowCasters()
 {
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
     for (std::vector<Billboard*>::iterator it = BManager.BillboardContainer.begin(); it != BManager.BillboardContainer.end(); ++it)
@@ -74,7 +74,7 @@ void SceneBattle::RenderShadowCasters()
     }
 }
 
-void SceneBattle::RenderPassGPass()
+void SceneBattleScreen::RenderPassGPass()
 {
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
     SceneGraphics->m_renderPass = GraphicsEntity::RENDER_PASS::RENDER_PASS_PRE;
@@ -98,7 +98,7 @@ void SceneBattle::RenderPassGPass()
     RenderShadowCasters();
 }
 
-void SceneBattle::RenderPassMain()
+void SceneBattleScreen::RenderPassMain()
 {
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
     SceneGraphics->m_renderPass = GraphicsEntity::RENDER_PASS::RENDER_PASS_MAIN;
@@ -187,7 +187,7 @@ void SceneBattle::RenderPassMain()
 
 }
 
-void SceneBattle::Render()
+void SceneBattleScreen::Render()
 {
     //*********************************
     //		PRE RENDER PASS
@@ -199,7 +199,7 @@ void SceneBattle::Render()
     RenderPassMain();
 }
 
-void SceneBattle::Exit()
+void SceneBattleScreen::Exit()
 {
     if (theInteractiveMap)
         delete theInteractiveMap;

@@ -1,4 +1,54 @@
 #include "Billboard.h"
+#include "Scene_System.h"
+#include "GraphicsEntity.h"
+
+Billboard::Billboard(const Vector3& Position, const Vector3& Dimensions, const Vector3& PlayerPosition, const Vector3& Velocity, const std::string& MeshName, const float& LifeTime)
+{
+	Init(Position, Dimensions, PlayerPosition, Velocity, MeshName, LifeTime);
+}
+
+void Billboard::Init(const Vector3& Position, const Vector3& Dimensions, const Vector3& PlayerPosition, const Vector3& Velocity, const std::string& MeshName, const float& LifeTime)
+{
+	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
+	std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find(MeshName);
+	if (it != SceneGraphics->meshList.end())
+	{
+		this->MeshName = MeshName;
+		this->Position = Position;
+		this->Dimensions = Dimensions;
+		this->Velocity = Velocity;
+		this->PlayerPosition = PlayerPosition;
+		this->CurrentTime = 0;
+		this->LifeTime = LifeTime;
+		StoredMesh = it->second;
+	}
+}
+
+void Billboard::Update(float dt)
+{
+	if (Active)
+	{
+		if (Active)
+		{
+			SetCurrentTime(GetCurrTime() + dt);
+			SetPosition(GetPosition() + GetVelocity() * dt);
+		}
+		Active = CheckLife();
+	}
+}
+
+void Billboard::Render()
+{
+	if (Active && StoredMesh)
+	{
+		GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
+		Scene_System::accessing().getCurrScene().modelStack->PushMatrix();
+		Scene_System::accessing().getCurrScene().modelStack->Translate(Position.x, Position.y, Position.z);
+		Scene_System::accessing().getCurrScene().modelStack->Scale(Dimensions.x, Dimensions.y, Dimensions.z);
+		SceneGraphics->RenderMesh(*StoredMesh, true);
+		Scene_System::accessing().getCurrScene().modelStack->PopMatrix();
+	}
+}
 
 bool Billboard::CheckLife()
 {
@@ -58,13 +108,19 @@ void Billboard::SetPlayerPosition(const Vector3& v3)
 	PlayerPosition = v3;
 }
 
-void Billboard::SetParameters(Vector3 Position, Vector3 Dimensions, Vector3 PlayerPosition, Vector3 Velocity, std::string MeshName, float CurrentTime, float LifeTime)
+void Billboard::SetParameters(const Vector3& Position, const Vector3& Dimensions, const Vector3& PlayerPosition, const Vector3& Velocity, const std::string& MeshName, const float& CurrentTime, const float& LifeTime)
 {
-	this->MeshName = MeshName;
-	this->Position = Position;
-	this->Dimensions = Dimensions;
-	this->Velocity = Velocity;
-	this->PlayerPosition = PlayerPosition;
-	this->CurrentTime = 0;
-	this->LifeTime = LifeTime;
+	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
+	std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find(MeshName);
+	if (it != SceneGraphics->meshList.end())
+	{
+		this->MeshName = MeshName;
+		this->Position = Position;
+		this->Dimensions = Dimensions;
+		this->Velocity = Velocity;
+		this->PlayerPosition = PlayerPosition;
+		this->CurrentTime = 0;
+		this->LifeTime = LifeTime;
+		StoredMesh = it->second;
+	}
 }

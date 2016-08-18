@@ -31,8 +31,8 @@
     <ClCompile Include="Source\PlayerObject.cpp" />
     <ClCompile Include="Source\Quest.cpp" />
     <ClCompile Include="Source\questManager.cpp" />
-    <ClCompile Include="Source\SceneBattle.cpp" />
-    <ClCompile Include="Source\SceneOpenField.cpp" />
+    <ClCompile Include="Source\SceneBattleScreen.cpp" />
+    <ClCompile Include="Source\SceneFreeField.cpp" />
     <ClCompile Include="Source\SceneTown1.cpp" />
     <ClCompile Include="Source\SceneTown2.cpp" />
     <ClCompile Include="Source\SceneTown3.cpp" />
@@ -75,8 +75,8 @@
     <ClInclude Include="Source\PlayerObject.h" />
     <ClInclude Include="Source\Quest.h" />
     <ClInclude Include="Source\questManager.h" />
-    <ClInclude Include="Source\SceneBattle.h" />
-    <ClInclude Include="Source\SceneOpenField.h" />
+    <ClInclude Include="Source\SceneBattleScreen.h" />
+    <ClInclude Include="Source\SceneFreeField.h" />
     <ClInclude Include="Source\SceneTown1.h" />
     <ClInclude Include="Source\SceneTown2.h" />
     <ClInclude Include="Source\SceneTown3.h" />
@@ -137,10 +137,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>false</LinkIncremental>
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
