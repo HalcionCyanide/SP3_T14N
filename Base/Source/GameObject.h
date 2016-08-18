@@ -16,7 +16,7 @@ public:
     GameObject(const std::string &name, const Vector3 &pos, const Vector3 &scale, const float &rotatingValue, const Vector3 &rotationAxis, const bool &active);
     GameObject(GameObject &Object);
 
-	virtual ~GameObject(){};
+	virtual ~GameObject();
 
 	virtual void Init(const std::string &name, const Vector3 &pos, const Vector3 &scale, const float &rotatingValue, const Vector3 &rotationAxis, const bool &active);
 	virtual void Render();
@@ -27,6 +27,8 @@ public:
 	virtual void SetRotation(const float &rotatingValue, const Vector3 &rotationAxis);
 	virtual void SetActive(const bool &active);
 	virtual void SetBounds();
+
+    virtual void settingNewBounds(Boundary &theNewBounds);
 
 	Mesh& GetMesh()const;
 	Vector3 GetPos()const;
