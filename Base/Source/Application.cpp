@@ -214,12 +214,14 @@ void Application::Update()
 		m_dAccumulatedTime_ThreadOne = 0.0;
 	}
 
+    //<!> This is a huge problem even if you made it to be 2 threaded
 	m_dAccumulatedTime_ThreadTwo += m_dElaspedTime;
 	if (m_dAccumulatedTime_ThreadTwo > 1 / frameTime)
 	{
 		Scene_System::accessing().cSS_InputManager->HandleUserInput();
 		m_dAccumulatedTime_ThreadTwo = 0.0;
 	}
+    //<!> This is a huge problem even if you made it to be 2 threaded
 }
 
 void Application::Exit()

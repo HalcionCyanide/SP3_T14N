@@ -2,6 +2,7 @@
 #include <sstream>
 
 #include "Scene_1.h"
+#include "PlayerObject.h"
 
 std::string Scene_2::id_ = "Scene 2";
 
@@ -37,10 +38,12 @@ void Scene_2::Init()
 	newMesh->textureArray[0] = LoadTGA("Image//ParticleWhite.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	Player = new GameObject();
+	Player = new PlayerObject();
 	Player->Init("Player", camera.position - Vector3(0, camera.PlayerHeight, 0) , Vector3(2, 1, 2), 0.0f, Vector3(1, 0, 0), true);
 	std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find("cube");
 	Player->SetMesh(*it->second);
+    Player->setName("PLayer 1");
+    Player->SetRotation(camera.CurrentCameraRotation.y, Vector3(0, 1, 0));
 
 	GameObject* ObjectA = new GameObject();
 	ObjectA->Init("ObjectA", Vector3(15, 0, 15), Vector3(5, 5, 5), 0.0f, Vector3(1, 0, 0), true);
@@ -85,10 +88,12 @@ void Scene_2::Update(float dt)
 	}
 	BManager.UpdateContainer(dt, camera.position);
 
+    //<!>What i want here is camera following the Player, not player following the camera <!>
 	Player->SetPos(camera.position - Vector3(0,camera.PlayerHeight - 2));
 	Player->SetRotation(camera.CurrentCameraRotation.y, Vector3(0, 1, 0));
-
 	camera.Update(dt);
+    //<!>What i want here is camera following the Player, not player following the camera <!>
+
 }
 
 void Scene_2::RenderTerrain()
@@ -97,6 +102,15 @@ void Scene_2::RenderTerrain()
 	modelStack->PushMatrix();
 	modelStack->Scale(TerrainXScale, TerrainYScale, TerrainXScale);
 	SceneGraphics->RenderMesh("terrain", true);
+	modelStack->PopMatrix();
+}
+
+void Scene_2::RenderSkyplane()
+{
+	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
+	modelStack->PushMatrix();
+	modelStack->Translate(500, 1800, -500);
+	SceneGraphics->RenderMesh("skyplane", false);
 	modelStack->PopMatrix();
 }
 
@@ -247,7 +261,7 @@ void Scene_2::RenderPassMain()
 	modelStack->LoadIdentity();
 
 	//RenderTerrain();
-	RenderSkybox();
+	//RenderSkyplane();
 
 	RenderShadowCasters();
 

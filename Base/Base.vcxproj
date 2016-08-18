@@ -17,6 +17,7 @@
     <ClCompile Include="Source\Boundary.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Camera3.cpp" />
+    <ClCompile Include="Source\Commands.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\InputManager.cpp" />
     <ClCompile Include="Source\DepthFBO.cpp" />
@@ -27,6 +28,7 @@
     <ClCompile Include="Source\GameMap.cpp" />
     <ClCompile Include="Source\NPC.cpp" />
     <ClCompile Include="Source\NPCManager.cpp" />
+    <ClCompile Include="Source\PlayerObject.cpp" />
     <ClCompile Include="Source\Quest.cpp" />
     <ClCompile Include="Source\questManager.cpp" />
     <ClCompile Include="Source\SceneBattleScreen.cpp" />
@@ -55,6 +57,7 @@
     <ClInclude Include="Source\Boundary.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Camera3.h" />
+    <ClInclude Include="Source\Commands.h" />
     <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\InputManager.h" />
     <ClInclude Include="Source\DepthFBO.h" />
@@ -69,6 +72,7 @@
     <ClInclude Include="Source\GameMap.h" />
     <ClInclude Include="Source\NPC.h" />
     <ClInclude Include="Source\NPCManager.h" />
+    <ClInclude Include="Source\PlayerObject.h" />
     <ClInclude Include="Source\Quest.h" />
     <ClInclude Include="Source\questManager.h" />
     <ClInclude Include="Source\SceneBattleScreen.h" />

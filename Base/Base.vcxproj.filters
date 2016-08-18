@@ -34,14 +34,14 @@
     <Filter Include="Source Files\Mains">
       <UniqueIdentifier>{35081f40-8b4a-47b1-93c1-05fb587f553b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Misc">
-      <UniqueIdentifier>{f062b6cd-9d33-4947-9281-367ca5dfe141}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Scenes">
       <UniqueIdentifier>{b2d02fa3-79ee-458b-86f2-0209eca1da31}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Systems">
       <UniqueIdentifier>{23a0ea06-741c-4e09-b504-76fb10ac4d33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Mains\Misc">
+      <UniqueIdentifier>{f062b6cd-9d33-4947-9281-367ca5dfe141}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -55,19 +55,19 @@
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
     <ClCompile Include="Source\DepthFBO.cpp">
-      <Filter>Source Files\Misc</Filter>
+      <Filter>Source Files\Mains\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application.cpp">
       <Filter>Source Files\Mains</Filter>
     </ClCompile>
     <ClCompile Include="Source\LoadHmap.cpp">
-      <Filter>Source Files\Misc</Filter>
+      <Filter>Source Files\Mains\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Source\LoadOBJ.cpp">
-      <Filter>Source Files\Misc</Filter>
+      <Filter>Source Files\Mains\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Source\LoadTGA.cpp">
-      <Filter>Source Files\Misc</Filter>
+      <Filter>Source Files\Mains\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Source\main.cpp">
       <Filter>Source Files\Mains</Filter>
@@ -76,7 +76,7 @@
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
     <ClCompile Include="Source\MeshBuilder.cpp">
-      <Filter>Source Files\Misc</Filter>
+      <Filter>Source Files\Mains\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene_System.cpp">
       <Filter>Source Files\Systems</Filter>
@@ -85,7 +85,7 @@
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
     <ClCompile Include="Source\Utility.cpp">
-      <Filter>Source Files\Misc</Filter>
+      <Filter>Source Files\Mains\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Source\GraphicsEntity.cpp">
       <Filter>Source Files\Scenes</Filter>
@@ -97,7 +97,7 @@
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Source\shader.cpp">
-      <Filter>Source Files\Misc</Filter>
+      <Filter>Source Files\Mains\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Source\GameObject.cpp">
       <Filter>Source Files\Scenes</Filter>
@@ -132,6 +132,12 @@
     <ClCompile Include="Source\Scene_MainMenu.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneBattle.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneOpenField.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
     <ClCompile Include="Source\SceneTown1.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
@@ -147,11 +153,11 @@
     <ClCompile Include="Source\NPC.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SceneFreeField.cpp">
-      <Filter>Source Files\Scenes</Filter>
+    <ClCompile Include="Source\Commands.cpp">
+      <Filter>Source Files\Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SceneBattleScreen.cpp">
-      <Filter>Source Files\Scenes</Filter>
+    <ClCompile Include="Source\PlayerObject.cpp">
+      <Filter>Source Files\Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -242,9 +248,6 @@
     <ClInclude Include="Source\UI_Element.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameObject.h">
-      <Filter>Header Files\Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Quest.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
@@ -257,10 +260,19 @@
     <ClInclude Include="Source\UI_System.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Boundary.h">
+    <ClInclude Include="Source\Scene_MainMenu.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene_MainMenu.h">
+    <ClInclude Include="Source\Boundary.h">
+      <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject.h">
+      <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneBattle.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneOpenField.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Source\SceneTown1.h">
@@ -278,11 +290,11 @@
     <ClInclude Include="Source\NPC.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SceneFreeField.h">
-      <Filter>Header Files\Scenes</Filter>
+    <ClInclude Include="Source\Commands.h">
+      <Filter>Header Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SceneBattleScreen.h">
-      <Filter>Header Files\Scenes</Filter>
+    <ClInclude Include="Source\PlayerObject.h">
+      <Filter>Header Files\Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
