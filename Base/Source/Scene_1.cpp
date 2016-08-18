@@ -61,7 +61,7 @@ void Scene_1::Init()
     theInteractiveMap = new GameMap();
     GameMap *theMap = dynamic_cast<GameMap*>(theInteractiveMap);
     theMap->setName("scene 1 logic map");
-    theMap->LoadMap("Image//MapTest.csv", m_heightMap, TerrainScale, testingRenderingStuff);
+    theMap->LoadMap("Image//MapTest.csv", m_heightMap, TerrainScale, testingRenderingStuff, BManager);
 
 	TestPos.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 0);
 }

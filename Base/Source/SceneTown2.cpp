@@ -50,7 +50,8 @@ void SceneTown2::Init()
     theInteractiveMap = new GameMap();
     GameMap *theMap = dynamic_cast<GameMap*>(theInteractiveMap);
     theMap->setName("scene town 2 logic map");
-    theMap->LoadMap("Image//Town2Layout.csv", m_heightMap, TerrainScale, objVec);
+    theMap->LoadMap("Image//Town2Layout.csv", m_heightMap, TerrainScale, objVec, BManager);
+
 
 }
 
