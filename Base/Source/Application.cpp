@@ -144,6 +144,9 @@ void Application::Init()
 	SceneGraphics->Init();
 	Scene_System::accessing().setGraphics_Scene(*SceneGraphics);
 
+	SceneFreeField* freefield = new SceneFreeField();
+	freefield->Init();
+	Scene_System::accessing().AddScene(*freefield);
 	Scene_MainMenu *MainMenuScene = new Scene_MainMenu();
 	MainMenuScene->Init();
 	Scene_System::accessing().AddScene(*MainMenuScene);
@@ -164,9 +167,6 @@ void Application::Init()
 	SecondScene->Init();
 	Scene_System::accessing().AddScene(*SecondScene);
 
-	SceneFreeField* freefield = new SceneFreeField();
-	freefield->Init();
-	Scene_System::accessing().AddScene(*freefield);
 
 	SceneBattleScreen* battlescreen = new SceneBattleScreen();
 	battlescreen->Init();
