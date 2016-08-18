@@ -44,6 +44,8 @@ public:
 	static ISoundEngine* theSoundEngine;
 	static ISound* Sound_Footstep;
 
+	static bool ExitGame;
+
 private:
 	Application();
 	~Application();
