@@ -302,9 +302,6 @@
     <ClInclude Include="Source\PlayerObject.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SceneBattleScreen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Boundary2D.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
@@ -319,6 +316,9 @@
     </ClInclude>
     <ClInclude Include="Source\GameObjectBuilder.h">
       <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneBattleScreen.h">
+      <Filter>Header Files\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
