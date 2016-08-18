@@ -34,7 +34,7 @@ void SceneTown2::Init()
     camera.Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
 
     // Initiallise Model Specific Meshes Here
-    Mesh* newMesh = MeshBuilder::GenerateTerrain("terrain", "Image//heightmap5.raw", m_heightMap);
+    Mesh* newMesh = MeshBuilder::GenerateTerrain("town2", "Image//heightmap_Town2.raw", m_heightMap);
     newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
     newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
     SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
@@ -99,7 +99,7 @@ void SceneTown2::RenderTerrain()
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
     modelStack->PushMatrix();
     modelStack->Scale(TerrainScale.x, TerrainScale.y, TerrainScale.z);
-    SceneGraphics->RenderMesh("terrain", true);
+    SceneGraphics->RenderMesh("town2", true);
     modelStack->PopMatrix();
 }
 
