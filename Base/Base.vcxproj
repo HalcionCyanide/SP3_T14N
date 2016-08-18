@@ -15,6 +15,7 @@
     <ClCompile Include="Source\Billboard.cpp" />
     <ClCompile Include="Source\BillboardManager.cpp" />
     <ClCompile Include="Source\Boundary.cpp" />
+    <ClCompile Include="Source\Boundary2D.cpp" />
     <ClCompile Include="Source\BoundsBuilder.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Camera3.cpp" />
@@ -57,6 +58,7 @@
     <ClInclude Include="Source\Billboard.h" />
     <ClInclude Include="Source\BillboardManager.h" />
     <ClInclude Include="Source\Boundary.h" />
+    <ClInclude Include="Source\Boundary2D.h" />
     <ClInclude Include="Source\BoundsBuilder.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Camera3.h" />
