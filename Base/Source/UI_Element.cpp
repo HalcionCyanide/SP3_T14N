@@ -50,7 +50,6 @@ void UI_Element::Update(float dt)
 
 void UI_Element::Update(float dt, const Vector3& MousePosition, bool& ClickSuccess)
 {
-	ClickSuccess = false;
 	float Check = (TargetPosition - Position).LengthSquared();
 	if (!AtTarget && Active && Check > 1.f)
 	{
@@ -62,11 +61,12 @@ void UI_Element::Update(float dt, const Vector3& MousePosition, bool& ClickSucce
 	}
 	if (Active)
 	{
-		if (UI_Bounds->CheckCollision(MousePosition))
+		if (BoundsActive && UI_Bounds->CheckCollision(MousePosition))
 		{
 			// Do Upscale
 			if (Application::IsKeyPressed(VK_LBUTTON))
 			{
+				//BoundsActive = false;
 				ClickSuccess = true;
 			}
 		}

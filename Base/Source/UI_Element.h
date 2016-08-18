@@ -32,6 +32,7 @@ public:
 	UI_TYPES UI_Type = UI_UNASSIGNED;
 	std::string UI_Text;
 	bool AtTarget = false;
+	bool BoundsActive = true;
 
 	Boundary* UI_Bounds;
 

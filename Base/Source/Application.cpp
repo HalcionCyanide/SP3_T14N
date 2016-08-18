@@ -31,6 +31,8 @@ float Application::cA_MinimumTerrainY = 0, Application::cA_CurrentTerrainY = 0;
 ISoundEngine* Application::theSoundEngine = NULL;
 ISound* Application::Sound_Footstep = NULL;
 
+bool Application::ExitGame = false;
+
 //Define an error callback
 static void error_callback(int error, const char* description)
 {
@@ -184,7 +186,7 @@ void Application::Run()
 	HWND hwnd = GetActiveWindow();
 
 	//Main Loop
-	while (!glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE))
+	while (!ExitGame && !glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE))
 	{
 		if (hwnd == GetActiveWindow())
 			Update(); 
