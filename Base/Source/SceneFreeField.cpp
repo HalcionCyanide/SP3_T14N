@@ -3,7 +3,7 @@
 
 #include "Scene_2.h"
 #include "GameMap.h"
-#include "GameObject.h"
+#include "PlayerObject.h"
 
 std::string SceneFreeField::id_ = "Scene Free Field";
 
@@ -13,6 +13,7 @@ SceneFreeField::SceneFreeField()
     framerates = 0;
     setName(id_);
     theInteractiveMap = nullptr;
+    Player = nullptr;
 }
 
 SceneFreeField::~SceneFreeField()
@@ -51,6 +52,19 @@ void SceneFreeField::Init()
     GameMap *theMap = dynamic_cast<GameMap*>(theInteractiveMap);
     theMap->setName("scene open field logic map");
     theMap->LoadMap("Image//OpenFieldLayout.csv", m_heightMap, TerrainScale, objVec, BManager);
+
+    Player = new PlayerObject();
+    Player->Init("Player", camera.position - Vector3(0, camera.PlayerHeight, 0), Vector3(2, 1, 2), 0.0f, Vector3(1, 0, 0), true);
+    std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find("cube");
+    Player->SetMesh(*it->second);
+    Player->setName("PLayer 1");
+    Player->SetRotation(camera.CurrentCameraRotation.y, Vector3(0, 1, 0));
+    PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
+    PlayerPTR->setVel(Vector3(10.f, 0.f, 0.f));
+    PlayerPTR->SetPos(Vector3(Player->GetPos().x, camera.PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPos().x / TerrainScale.x), (Player->GetPos().z / TerrainScale.z)), Player->GetPos().z));
+    PlayerPTR->setPlayerBoundaries(objVec);
+    camera.position = PlayerPTR->GetPos();
+    camera.UpdateCameraVectors();
 }
 
 void SceneFreeField::Update(float dt)
@@ -90,7 +104,13 @@ void SceneFreeField::Update(float dt)
 
     BManager.UpdateContainer(dt, camera.position);
 
+    PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
+    PlayerPTR->Update(dt);
+    PlayerPTR->SetRotation(camera.CurrentCameraRotation.y, Vector3(0, 1, 0));
+
     camera.Update(dt);
+    camera.position = PlayerPTR->GetPos();
+    camera.UpdateCameraVectors();
 }
 
 void SceneFreeField::RenderTerrain()
@@ -308,4 +328,6 @@ void SceneFreeField::Exit()
         if (it)
             delete it;
     }
+    if (Player)
+        delete Player;
 }
