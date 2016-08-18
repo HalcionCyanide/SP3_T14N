@@ -34,7 +34,7 @@ void SceneTown1::Init()
     camera.Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
 
     // Initiallise Model Specific Meshes Here
-    Mesh* newMesh = MeshBuilder::GenerateTerrain("terrain", "Image//heightmap5.raw", m_heightMap);
+    Mesh* newMesh = MeshBuilder::GenerateTerrain("terrain", "Image//heightmap_Town1.raw", m_heightMap);
     newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
     newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
     SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
