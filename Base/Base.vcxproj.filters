@@ -126,12 +126,6 @@
     <ClCompile Include="Source\Scene_MainMenu.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SceneBattle.cpp">
-      <Filter>Source Files\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SceneOpenField.cpp">
-      <Filter>Source Files\Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="Source\SceneTown1.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
@@ -158,6 +152,18 @@
     </ClCompile>
     <ClCompile Include="Source\GameObject.cpp">
       <Filter>Source Files\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SimpleCommand.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneBattleScreen.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneFreeField.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BoundsBuilder.cpp">
+      <Filter>Source Files\Mains\Misc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -269,12 +275,6 @@
     <ClInclude Include="Source\GameObject.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SceneBattle.h">
-      <Filter>Header Files\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SceneOpenField.h">
-      <Filter>Header Files\Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="Source\SceneTown1.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
@@ -295,6 +295,18 @@
     </ClInclude>
     <ClInclude Include="Source\PlayerObject.h">
       <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SimpleCommand.h">
+      <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BoundsBuilder.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneFreeField.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneBattleScreen.h">
+      <Filter>Header Files\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
