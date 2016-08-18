@@ -26,6 +26,8 @@ void UI_Element::Init(const std::string& name, const Vector3& Position, const Ve
 		this->TargetPosition = TargetPosition;
 		this->Dimensions = Dimensions;
 		this->UI_Text = UI_Text;
+		UI_Bounds = new Boundary2D();
+		UI_Bounds->CalculateValues(Position, Dimensions);
 	}
 }
 
@@ -36,12 +38,39 @@ void UI_Element::SwapOriginalWithTarget()
 
 void UI_Element::Update(float dt)
 {
-	if (Active && (TargetPosition - Position).LengthSquared() > 1.f)
+	float Check = (TargetPosition - Position).LengthSquared();
+	if (!AtTarget && Active && Check > 1.f)
 	{
 		Vector3 DirVec = TargetPosition - Position;
 		Position += DirVec * 2 * dt;
+		if (Check < 1.f)
+			AtTarget = true;
 	}
-	else if (Active)SwapOriginalWithTarget();
+}
+
+void UI_Element::Update(float dt, const Vector3& MousePosition, bool& ClickSuccess)
+{
+	ClickSuccess = false;
+	float Check = (TargetPosition - Position).LengthSquared();
+	if (!AtTarget && Active && Check > 1.f)
+	{
+		UI_Bounds->CalculateValues(Position, Dimensions);
+		Vector3 DirVec = TargetPosition - Position;
+		Position += DirVec * 2 * dt;
+		if (Check < 1.f)
+			AtTarget = true;
+	}
+	if (Active)
+	{
+		if (UI_Bounds->CheckCollision(MousePosition))
+		{
+			// Do Upscale
+			if (Application::IsKeyPressed(VK_LBUTTON))
+			{
+				ClickSuccess = true;
+			}
+		}
+	}
 }
 
 void UI_Element::Render()
@@ -56,6 +85,6 @@ void UI_Element::Render()
 
 void UI_Element::Exit()
 {
-	/*if (StoredMesh)
-		delete StoredMesh;*/
+	if (UI_Bounds)
+		delete UI_Bounds;
 }

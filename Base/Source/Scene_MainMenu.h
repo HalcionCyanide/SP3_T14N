@@ -34,6 +34,10 @@ private:
 		S_SECONDLEVEL,
 	};
 
+	STATE_MAIN_MENU CurrentMenuState = S_FIRSTLEVEL;
+
+	const static std::string UI_Text[];
+
 	void InitSceneUIElems();
 	void UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU);
 

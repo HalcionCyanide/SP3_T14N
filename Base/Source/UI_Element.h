@@ -3,7 +3,7 @@
 
 #include "GenericEntity.h"
 #include "Vector3.h"
-#include "Boundary.h"
+#include "Boundary2D.h"
 #include "Mesh.h"
 #include <string>
 
@@ -31,17 +31,20 @@ public:
 	Vector3 Dimensions;
 	UI_TYPES UI_Type = UI_UNASSIGNED;
 	std::string UI_Text;
+	bool AtTarget = false;
+
+	Boundary* UI_Bounds;
 
 	void SwapOriginalWithTarget();
 
 	virtual void Init(const std::string& name, const Vector3& Position, const Vector3& Dimensions, const Vector3& TargetPosition, const std::string& UI_Text);
 	virtual void Update(float dt);
+	virtual	void Update(float dt, const Vector3& MousePosition, bool& ClickSuccess);
 	virtual void Render();
 	virtual void Exit();
 
 private:
 	Mesh* StoredMesh = nullptr;
-	Boundary UI_Bounds;
 };
 
 

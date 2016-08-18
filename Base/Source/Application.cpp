@@ -133,6 +133,8 @@ void Application::Init()
 	m_dAccumulatedTime_ThreadOne = 0.0;
 	m_dAccumulatedTime_ThreadTwo = 0.0;
 
+	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+
 	float ScreenHeight = 100; // <!>
 	float ScreenWidth = ScreenHeight * ((float)cA_WindowWidth / (float)cA_WindowHeight);
 	Scene_System::accessing().SetUIDimensions(ScreenWidth, ScreenHeight);
@@ -184,9 +186,6 @@ void Application::Run()
 	//Main Loop
 	while (!glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE))
 	{
-		if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode) 
-			glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-		else glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		if (hwnd == GetActiveWindow())
 			Update(); 
 		Scene_System::accessing().getCurrScene().Render();
