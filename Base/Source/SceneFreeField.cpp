@@ -1,13 +1,13 @@
-#include "SceneOpenField.h"
+#include "SceneFreeField.h"
 #include <sstream>
 
 #include "Scene_2.h"
 #include "GameMap.h"
 #include "GameObject.h"
 
-std::string SceneOpenField::id_ = "Scene Open Field";
+std::string SceneFreeField::id_ = "Scene Free Field";
 
-SceneOpenField::SceneOpenField()
+SceneFreeField::SceneFreeField()
     : SceneEntity()
 {
     framerates = 0;
@@ -15,12 +15,12 @@ SceneOpenField::SceneOpenField()
     theInteractiveMap = nullptr;
 }
 
-SceneOpenField::~SceneOpenField()
+SceneFreeField::~SceneFreeField()
 {
 
 }
 
-void SceneOpenField::Init()
+void SceneFreeField::Init()
 {
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 
@@ -54,7 +54,7 @@ void SceneOpenField::Init()
 
 }
 
-void SceneOpenField::Update(float dt)
+void SceneFreeField::Update(float dt)
 {
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
     SceneGraphics->Update(dt);
@@ -94,7 +94,7 @@ void SceneOpenField::Update(float dt)
     camera.Update(dt);
 }
 
-void SceneOpenField::RenderTerrain()
+void SceneFreeField::RenderTerrain()
 {
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
     modelStack->PushMatrix();
@@ -103,7 +103,7 @@ void SceneOpenField::RenderTerrain()
     modelStack->PopMatrix();
 }
 
-void SceneOpenField::RenderShadowCasters()
+void SceneFreeField::RenderShadowCasters()
 {
     RenderTerrain();
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
@@ -124,7 +124,7 @@ void SceneOpenField::RenderShadowCasters()
     }
 }
 
-void SceneOpenField::RenderSkybox()
+void SceneFreeField::RenderSkybox()
 {
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
     //left
@@ -172,7 +172,7 @@ void SceneOpenField::RenderSkybox()
     modelStack->PopMatrix();
 }
 
-void SceneOpenField::RenderPassGPass()
+void SceneFreeField::RenderPassGPass()
 {
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
     SceneGraphics->m_renderPass = GraphicsEntity::RENDER_PASS::RENDER_PASS_PRE;
@@ -196,7 +196,7 @@ void SceneOpenField::RenderPassGPass()
     RenderShadowCasters();
 }
 
-void SceneOpenField::RenderPassMain()
+void SceneFreeField::RenderPassMain()
 {
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
     SceneGraphics->m_renderPass = GraphicsEntity::RENDER_PASS::RENDER_PASS_MAIN;
@@ -288,7 +288,7 @@ void SceneOpenField::RenderPassMain()
 
 }
 
-void SceneOpenField::Render()
+void SceneFreeField::Render()
 {
     //*********************************
     //		PRE RENDER PASS
@@ -300,7 +300,7 @@ void SceneOpenField::Render()
     RenderPassMain();
 }
 
-void SceneOpenField::Exit()
+void SceneFreeField::Exit()
 {
     if (theInteractiveMap)
         delete theInteractiveMap;

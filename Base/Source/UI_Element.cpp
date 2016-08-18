@@ -21,20 +21,26 @@ void UI_Element::Init(const std::string& name, const Vector3& Position, const Ve
 	{
 		StoredMesh = it->second;
 		Active = true;
-		this->Position = Position;
+		this->Position = this->OriginalPosition = Position;
 		this->Dimensions = Dimensions;
 		this->TargetPosition = TargetPosition;
 		this->Dimensions = Dimensions;
 	}
 }
 
+void UI_Element::SwapOriginalWithTarget()
+{
+	std::swap(OriginalPosition, TargetPosition);
+}
+
 void UI_Element::Update(float dt)
 {
-	if (Active && (TargetPosition != Position))
+	if (Active && (TargetPosition - Position).LengthSquared() > 1.f)
 	{
 		Vector3 DirVec = TargetPosition - Position;
-		Position += DirVec * dt;
+		Position += DirVec * 2 * dt;
 	}
+	else if (Active)SwapOriginalWithTarget();
 }
 
 void UI_Element::Render()

@@ -82,12 +82,6 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	GRAVITY = -180.0f;
 }
 
-// Update Camera status
-void Camera3::UpdateStatus(const unsigned char key, const bool status)
-{
-	//myKeys[key] = status;
-}
-
 void Camera3::SetObjectVector(std::vector<GameObject*> &ObjectVec)
 {
 	this->ObjectVec = &ObjectVec;
@@ -106,8 +100,9 @@ void Camera3::Update(float dt)
 	CameraRotationSpeed = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * RelativeMouseSensitivity;
 	Application::cA_CurrentTerrainY += CameraBobVal;
 	MovementValues.SetZero();
-	//cameraMovement(dt);
-	if (Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT))
+
+	if (Application::IsKeyPressed(VK_SHIFT) &&
+		!Scene_System::accessing().cSS_InputManager->GetKeyValue('S'))
 	{
 		CameraMaxWalkSpeed = CameraBaseWalkSpeed * 2;
 	}

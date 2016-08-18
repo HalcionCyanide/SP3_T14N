@@ -100,15 +100,6 @@ void Scene_2::RenderTerrain()
 	modelStack->PopMatrix();
 }
 
-void Scene_2::RenderSkyplane()
-{
-	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
-	modelStack->PushMatrix();
-	modelStack->Translate(500, 1800, -500);
-	SceneGraphics->RenderMesh("skyplane", false);
-	modelStack->PopMatrix();
-}
-
 void Scene_2::RenderShadowCasters()
 {
 	RenderTerrain();
@@ -256,7 +247,7 @@ void Scene_2::RenderPassMain()
 	modelStack->LoadIdentity();
 
 	//RenderTerrain();
-	RenderSkyplane();
+	RenderSkybox();
 
 	RenderShadowCasters();
 

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _SCENE_TOWN_2_H
+#define _SCENE_TOWN_2_H
 
 #include "SceneEntity.h"
 #include "Scene_System.h"
@@ -43,3 +44,5 @@ private:
     GenericEntity *theInteractiveMap;
     std::vector<GameObject*> objVec;
 };
+
+#endif // _SCENE_TOWN_2_H

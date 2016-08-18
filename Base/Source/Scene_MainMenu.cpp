@@ -32,9 +32,6 @@ void Scene_MainMenu::Init()
 	perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
 	projectionStack->LoadMatrix(perspective);
 
-	camera.Init(Vector3(5, 30, -31), Vector3(5, 30, -5), Vector3(0, 1, 0));
-	camera.CameraIsLocked = true;
-
 	// Initiallise Model Specific Meshes Here
 	Mesh* newMesh = MeshBuilder::GenerateTerrain("terrain", "Image//heightmap5.raw", m_heightMap);
 	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
@@ -55,11 +52,14 @@ void Scene_MainMenu::Init()
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera.position.x / TerrainScale.x, camera.position.z / TerrainScale.z) + camera.PlayerHeight;
 	Application::cA_CurrentTerrainY = Application::cA_MinimumTerrainY;
 
-	for (int i = 0; i < 8; i++)
+	camera.Init(Vector3(0, Application::cA_CurrentTerrainY, -30), Vector3(0, Application::cA_CurrentTerrainY, -35), Vector3(0, 1, 0));
+	camera.CameraIsLocked = true;
+
+	for (int i = 0; i < 4; i++)
 	{
 		BManager.AddHMapBillboard("Tree", m_heightMap, TerrainScale, Vector3((float)i * 10.f), Vector3(10.f, 20.f, 10.f), Vector3(), camera.position);
 	}
-	UI_Sys.AddUIElement(UI_Element::UI_LOGO, "TFB_Logo", Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 2.f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 2.f, 1), Vector3(700, 700, 1), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.75f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.75f, 1));
+	UI_Sys.AddUIElement(UI_Element::UI_LOGO, "TFB_Logo", Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 2.f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 2.f, 1), Vector3(1000, 1000, 1), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.75f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.75f, 1));
 }
 
 void Scene_MainMenu::Update(float dt)

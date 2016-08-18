@@ -1,18 +1,52 @@
 #include "BillboardManager.h"
 #include <algorithm>
 
+BillboardManager::BillboardManager()
+{
+	Init();
+}
+
+BillboardManager::~BillboardManager()
+{
+	Exit();
+}
+
+void BillboardManager::Init()
+{
+
+}
+
+void BillboardManager::Update(double dt)
+{
+	for (std::vector<Billboard*>::iterator it = BillboardContainer.begin(); it != BillboardContainer.end(); ++it)
+	{
+		if ((*it)->Active)
+			(*it)->Update((float)dt);
+	}
+}
+
+void BillboardManager::Render()
+{
+	for (std::vector<Billboard*>::iterator it = BillboardContainer.begin(); it != BillboardContainer.end(); ++it)
+	{
+		if ((*it)->Active)
+			(*it)->Render();
+	}
+}
+
+void BillboardManager::Exit()
+{
+	for (std::vector<Billboard*>::iterator it = BillboardContainer.begin(); it != BillboardContainer.end(); ++it)
+		(*it)->Exit();
+}
+
 void BillboardManager::UpdateContainer(float dt, const Vector3 &CameraPosition){
 	for (std::vector<Billboard*>::iterator it = BillboardContainer.begin(); it != BillboardContainer.end(); it++)
 	{
 		Billboard* B = *it;
-		B->Active = B->CheckLife();
 		B->SetPlayerPosition(CameraPosition);
-		if (B->Active)
-		{
-			B->SetCurrentTime(B->GetCurrTime() + dt);
-			B->SetPosition(B->GetPosition() + B->GetVelocity() * dt);
-		}
 	}
+	Update(dt);
 	std::sort(&BillboardContainer[0], &BillboardContainer[BillboardContainer.size() - 1]);
 
 }

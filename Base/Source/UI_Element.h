@@ -25,15 +25,17 @@ public:
 
 	bool Active = false;
 	Vector3 Position;
+	Vector3 OriginalPosition;
+	Vector3 TargetPosition;
 	Vector3 Dimensions;
 	UI_TYPES UI_Type = UI_UNASSIGNED;
+
+	void SwapOriginalWithTarget();
 
 	virtual void Init(const std::string& name, const Vector3& Position, const Vector3& Dimensions, const Vector3& TargetPosition);
 	virtual void Update(float dt);
 	virtual void Render();
 	virtual void Exit();
-
-	Vector3 TargetPosition;
 
 private:
 	Mesh* StoredMesh = nullptr;
