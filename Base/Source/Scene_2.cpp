@@ -308,4 +308,5 @@ void Scene_2::Render()
 
 void Scene_2::Exit()
 {
+    delete Player;
 }
