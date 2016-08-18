@@ -99,9 +99,6 @@
     <ClCompile Include="Source\shader.cpp">
       <Filter>Source Files\Mains\Misc</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameObject.cpp">
-      <Filter>Source Files\Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="Source\UI_Element.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
@@ -125,9 +122,6 @@
     </ClCompile>
     <ClCompile Include="Source\UI_System.cpp">
       <Filter>Source Files\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Boundary.cpp">
-      <Filter>Source Files\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene_MainMenu.cpp">
       <Filter>Source Files\Scenes</Filter>
@@ -157,6 +151,12 @@
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
     <ClCompile Include="Source\PlayerObject.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Boundary.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
   </ItemGroup>

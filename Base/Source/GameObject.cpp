@@ -118,3 +118,12 @@ GameObject& GameObject::operator= (const GameObject &object)
 	this->Active = object.Active;
     return *this;
 }
+
+void GameObject::settingNewBounds(Boundary &theNewBounds)
+{
+    if (Bounds)
+    {
+        delete Bounds;
+    }
+    Bounds = &theNewBounds;
+}

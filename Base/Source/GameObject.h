@@ -28,6 +28,8 @@ public:
 	virtual void SetActive(const bool &active);
 	virtual void SetBounds();
 
+    virtual void settingNewBounds(Boundary &theNewBounds);
+
 	Mesh& GetMesh()const;
 	Vector3 GetPos()const;
 	Vector3 GetScale()const;
