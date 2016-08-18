@@ -39,7 +39,6 @@
     <ClCompile Include="Source\SceneTown1.cpp" />
     <ClCompile Include="Source\SceneTown2.cpp" />
     <ClCompile Include="Source\SceneTown3.cpp" />
-    <ClCompile Include="Source\Scene_1.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\MeshBuilder.cpp" />
@@ -87,7 +86,6 @@
     <ClInclude Include="Source\SceneTown1.h" />
     <ClInclude Include="Source\SceneTown2.h" />
     <ClInclude Include="Source\SceneTown3.h" />
-    <ClInclude Include="Source\Scene_1.h" />
     <ClInclude Include="Source\Material.h" />
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\MeshBuilder.h" />

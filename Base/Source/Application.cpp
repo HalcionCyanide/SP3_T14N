@@ -4,7 +4,6 @@
 #include "GraphicsEntity.h"
 
 #include "Scene_MainMenu.h"
-#include "Scene_1.h"
 #include "Scene_2.h"
 #include "SceneBattleScreen.h"
 #include "SceneFreeField.h"
@@ -145,14 +144,6 @@ void Application::Init()
 	MainMenuScene->Init();
 	Scene_System::accessing().AddScene(*MainMenuScene);
 
-	Scene_1 *FirstScene = new Scene_1();
-	FirstScene->Init();
-	Scene_System::accessing().AddScene(*FirstScene);
-
-	Scene_2* SecondScene = new Scene_2();
-	SecondScene->Init();
-	Scene_System::accessing().AddScene(*SecondScene);
-
 	SceneTown1* town1 = new SceneTown1();
 	town1->Init();
 	Scene_System::accessing().AddScene(*town1);
@@ -164,6 +155,10 @@ void Application::Init()
 	SceneTown3* town3 = new SceneTown3();
 	town3->Init();
 	Scene_System::accessing().AddScene(*town3);
+
+	Scene_2* SecondScene = new Scene_2();
+	SecondScene->Init();
+	Scene_System::accessing().AddScene(*SecondScene);
 
 	SceneFreeField* freefield = new SceneFreeField();
 	freefield->Init();

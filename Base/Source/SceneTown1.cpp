@@ -2,6 +2,9 @@
 #include <sstream>
 
 #include "Scene_2.h"
+#include "SceneTown2.h"
+#include "SceneTown3.h"
+
 #include "GameMap.h"
 #include "GameObject.h"
 
@@ -73,10 +76,18 @@ void SceneTown1::Update(float dt)
 
     framerates = 1 / dt;
 
-    if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
-    {
-        Scene_System::accessing().SwitchScene(Scene_2::id_);
-    }
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
+	{
+		Scene_System::accessing().SwitchScene(SceneTown2::id_);
+	}
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('3'))
+	{
+		Scene_System::accessing().SwitchScene(SceneTown3::id_);
+	}
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('4'))
+	{
+		Scene_System::accessing().SwitchScene(Scene_2::id_);
+	}
     if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
     {
         Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
