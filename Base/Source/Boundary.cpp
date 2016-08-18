@@ -14,7 +14,6 @@ Boundary::Boundary(const Boundary &bounds)
 bool Boundary::CheckCollision(const Boundary &object)const
 {
 	if (abs(this->Position.x - object.Position.x) > (this->Scale.x + object.Scale.x) * 0.5f) return false;
-//	if (abs(this->Position.y - object.Position.y) > (this->Scale.y + object.Scale.y) * 0.5f) return false;
 	if (abs(this->Position.z - object.Position.z) > (this->Scale.z + object.Scale.z) * 0.5f) return false;
 	return true;
 }
@@ -29,7 +28,7 @@ bool Boundary::CheckCollision(const Vector3 &point)const
 void Boundary::CalculateValues(const Vector3 &pos, const Vector3 &scale)
 {
 	SetPosition(pos);
-	SetScale(scale);
+	SetScale(scale + Vector3(5, 5, 5));
 }
 
 void Boundary::SetPosition(const Vector3 &position)

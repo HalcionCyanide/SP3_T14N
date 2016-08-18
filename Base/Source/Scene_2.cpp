@@ -29,7 +29,7 @@ void Scene_2::Init()
 	camera.Init(Vector3(0, 0, -5), Vector3(0, 0, 0), Vector3(0, 1, 0));
 
 	// Initiallise Model Specific Meshes Here
-	Mesh* newMesh = MeshBuilder::GenerateTerrain("terrain", "Image//heightmap5.raw", m_heightMap);
+	Mesh* newMesh = MeshBuilder::GenerateTerrain("Town2", "Image//heightmap_Town2.raw", m_heightMap);
 	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
@@ -49,7 +49,7 @@ void Scene_2::Init()
 	PlayerPTR->SetPos(Vector3(Player->GetPos().x, camera.PlayerHeight + TerrainYScale * ReadHeightMap(m_heightMap, (Player->GetPos().x / TerrainXScale), (Player->GetPos().z / TerrainXScale)), Player->GetPos().z));
 
 	GameObject* ObjectA = new GameObject();
-	ObjectA->Init("ObjectA", Vector3(15, 0, 15), Vector3(5, 5, 5), 0.0f, Vector3(1, 0, 0), true);
+	ObjectA->Init("ObjectA", Vector3(15, 0, 15), Vector3(10, 10, 10), 0.0f, Vector3(1, 0, 0), true);
 	ObjectA->SetPos(Vector3(ObjectA->GetPos().x, TerrainYScale * ReadHeightMap(m_heightMap, (ObjectA->GetPos().x / TerrainXScale), (ObjectA->GetPos().z / TerrainXScale)) + ObjectA->GetScale().y * 0.5f, ObjectA->GetPos().z));
 	it = SceneGraphics->meshList.find("cube");
 	ObjectA->SetMesh(*it->second);
@@ -107,7 +107,7 @@ void Scene_2::RenderTerrain()
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	modelStack->PushMatrix();
 	modelStack->Scale(TerrainXScale, TerrainYScale, TerrainXScale);
-	SceneGraphics->RenderMesh("terrain", true);
+	SceneGraphics->RenderMesh("Town2", true);
 	modelStack->PopMatrix();
 }
 
