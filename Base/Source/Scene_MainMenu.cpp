@@ -1,8 +1,11 @@
 #include "Scene_MainMenu.h"
 #include <sstream>
 
-#include "Scene_1.h"
 #include "Scene_2.h"
+#include "SceneTown1.h"
+#include "SceneTown2.h"
+#include "SceneTown3.h"
+
 #include "GameMap.h"
 #include "GameObject.h"
 
@@ -99,11 +102,19 @@ void Scene_MainMenu::Update(float dt)
 
 	framerates = 1 / dt;
 
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('1'))
 	{
-		Scene_System::accessing().SwitchScene(Scene_1::id_);
+		Scene_System::accessing().SwitchScene(SceneTown1::id_);
+	}
+	else if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
+	{
+		Scene_System::accessing().SwitchScene(SceneTown2::id_);
 	}
 	else if (Scene_System::accessing().cSS_InputManager->GetKeyValue('3'))
+	{
+		Scene_System::accessing().SwitchScene(SceneTown3::id_);
+	}
+	else if (Scene_System::accessing().cSS_InputManager->GetKeyValue('4'))
 	{
 		Scene_System::accessing().SwitchScene(Scene_2::id_);
 	}

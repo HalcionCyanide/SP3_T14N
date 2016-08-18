@@ -2,6 +2,9 @@
 #include <sstream>
 
 #include "Scene_2.h"
+#include "SceneTown1.h"
+#include "SceneTown2.h"
+
 #include "GameMap.h"
 #include "GameObject.h"
 
@@ -34,7 +37,7 @@ void SceneTown3::Init()
     camera.Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
 
     // Initiallise Model Specific Meshes Here
-    Mesh* newMesh = MeshBuilder::GenerateTerrain("terrain", "Image//heightmap5.raw", m_heightMap);
+    Mesh* newMesh = MeshBuilder::GenerateTerrain("Town 3", "Image//heightmap_Town3.raw", m_heightMap);
     newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
     newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
     SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
@@ -74,10 +77,18 @@ void SceneTown3::Update(float dt)
 
     framerates = 1 / dt;
 
-    if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
-    {
-        Scene_System::accessing().SwitchScene(Scene_2::id_);
-    }
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('1'))
+	{
+		Scene_System::accessing().SwitchScene(SceneTown1::id_);
+	}
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
+	{
+		Scene_System::accessing().SwitchScene(SceneTown2::id_);
+	}
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('4'))
+	{
+		Scene_System::accessing().SwitchScene(Scene_2::id_);
+	}
     if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
     {
         Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
@@ -99,7 +110,7 @@ void SceneTown3::RenderTerrain()
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
     modelStack->PushMatrix();
     modelStack->Scale(TerrainScale.x, TerrainScale.y, TerrainScale.z);
-    SceneGraphics->RenderMesh("terrain", true);
+    SceneGraphics->RenderMesh("Town 3", true);
     modelStack->PopMatrix();
 }
 
