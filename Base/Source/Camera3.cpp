@@ -327,13 +327,13 @@ void Camera3::CheckPositionUpdate(const Boundary &object, const Boundary &player
 		if (object.CheckCollision(player))
 		{
 			if (object.GetPosition().x > player.GetPosition().x)
-				MovementValues.x = 0; //= (object.GetPosition() - object.GetScale()).x - (player.GetPosition() + player.GetScale()).x;
+				CameraVelocity.x = 0;
 			else if (object.GetPosition().x < player.GetPosition().x)
-				MovementValues.x = 0;// = (player.GetPosition() - player.GetScale()).x - (object.GetPosition() + object.GetScale()).x;
+				CameraVelocity.x = 0;
 			if (object.GetPosition().z > player.GetPosition().z)
-				MovementValues.z = 0; //= (object.GetPosition() - object.GetScale()).z - (player.GetPosition() + player.GetScale()).z;
+				CameraVelocity.z = 0;
 			else if (object.GetPosition().z < player.GetPosition().z)
-				MovementValues.z = 0; //= (player.GetPosition() - player.GetScale()).z - (object.GetPosition() + object.GetScale()).z;
+				CameraVelocity.z = 0;
 		}
 	}
 }
