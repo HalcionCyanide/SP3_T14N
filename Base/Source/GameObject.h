@@ -16,7 +16,7 @@ public:
     GameObject(const std::string &name, const Vector3 &pos, const Vector3 &scale, const float &rotatingValue, const Vector3 &rotationAxis, const bool &active);
     GameObject(GameObject &Object);
 
-	virtual ~GameObject(){};
+	virtual ~GameObject();
 
 	virtual void Init(const std::string &name, const Vector3 &pos, const Vector3 &scale, const float &rotatingValue, const Vector3 &rotationAxis, const bool &active);
 	virtual void Render();

@@ -26,6 +26,15 @@ GameObject::GameObject(GameObject &Object)
 	Bounds->CalculateValues(this->Pos, this->Scale);
 }
 
+GameObject::~GameObject()
+{
+    if (Bounds)
+    {
+        delete Bounds;
+        Bounds = nullptr;
+    }
+}
+
 void GameObject::SetMesh(Mesh &meshObject)
 {
 	this->MeshObject = &meshObject;
