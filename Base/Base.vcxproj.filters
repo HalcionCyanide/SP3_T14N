@@ -154,10 +154,10 @@
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
     <ClCompile Include="Source\BoundsBuilder.cpp">
-      <Filter>Source Files\Mains\Misc</Filter>
+      <Filter>Source Files\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Source\SimpleCommand.cpp">
-      <Filter>Source Files\Mains\Misc</Filter>
+      <Filter>Source Files\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Source\SceneFreeField.cpp">
       <Filter>Source Files\Scenes</Filter>
@@ -166,7 +166,7 @@
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Source\GameObjectBuilder.cpp">
-      <Filter>Source Files\Mains\Misc</Filter>
+      <Filter>Source Files\Misc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

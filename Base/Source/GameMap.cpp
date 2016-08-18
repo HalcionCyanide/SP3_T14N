@@ -118,6 +118,8 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
             (the3DObj->GetScale().y*0.5f) + terrainSize.y * ReadHeightMap(theHeightMap, the3DObj->GetPos().x / terrainSize.x, the3DObj->GetPos().z / terrainSize.z),
             the3DObj->GetPos().z
             ));
+		//<!>
+		the3DObj->SetBounds();
     }
 
     for (std::vector<Billboard*>::iterator it = theBBManager.BillboardContainer.begin(), end = theBBManager.BillboardContainer.end(); it != end; ++it)
