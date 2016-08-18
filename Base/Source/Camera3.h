@@ -14,7 +14,6 @@ Class to define camera
 #include "Camera.h"
 #include "Scene_System.h"
 #include <vector>
-#include "GameObject.h"
 
 /****************************************************************************/
 /*!
@@ -42,14 +41,11 @@ public:
 
 	Vector3 CurrentCameraRotation;
 
-	// Update Camera status
-	virtual void CheckPositionUpdate(const Boundary &object, const Boundary &player);
-	virtual void SetObjectVector(std::vector<GameObject*> &ObjectVec);
-
 	Vector3 CameraVelocity;
 
 	bool CameraIsLocked = false;
 
+	void UpdateCameraVectors();
 private:
 
 	Vector3 view;
@@ -60,14 +56,11 @@ private:
 	float CameraMaxWalkSpeed = 32.0f;
 
 	void UpdateCameraAngles(double dt);
-	void UpdateCameraVectors();
 	void UpdateCameraPosition();
 	Vector3 MinimumCameraRotation;
 	Vector3 MaximumCameraRotation;
 	Vector3 MovementValues = Vector3(0, 0, 0);
 	float CameraRotationSpeed;
-
-	std::vector<GameObject*> *ObjectVec;
 
 	// For Jump use
 	bool m_bJumping;

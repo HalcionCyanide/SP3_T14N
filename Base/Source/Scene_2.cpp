@@ -44,6 +44,9 @@ void Scene_2::Init()
 	Player->SetMesh(*it->second);
     Player->setName("PLayer 1");
     Player->SetRotation(camera.CurrentCameraRotation.y, Vector3(0, 1, 0));
+	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
+	PlayerPTR->setVel(Vector3(10.f, 0.f, 0.f));
+	PlayerPTR->SetPos(Vector3(Player->GetPos().x, camera.PlayerHeight + TerrainYScale * ReadHeightMap(m_heightMap, (Player->GetPos().x / TerrainXScale), (Player->GetPos().z / TerrainXScale)), Player->GetPos().z));
 
 	GameObject* ObjectA = new GameObject();
 	ObjectA->Init("ObjectA", Vector3(15, 0, 15), Vector3(5, 5, 5), 0.0f, Vector3(1, 0, 0), true);
@@ -53,7 +56,8 @@ void Scene_2::Init()
 	ObjectA->SetBounds();
 	ObjectVec.push_back(ObjectA);
 
-	camera.SetObjectVector(ObjectVec);
+
+	PlayerPTR->setPlayerBoundaries(ObjectVec);
 }
 
 void Scene_2::Update(float dt)
@@ -88,11 +92,13 @@ void Scene_2::Update(float dt)
 	}
 	BManager.UpdateContainer(dt, camera.position);
 
-    //<!>What i want here is camera following the Player, not player following the camera <!>
-	Player->SetPos(camera.position - Vector3(0,camera.PlayerHeight - 2));
-	Player->SetRotation(camera.CurrentCameraRotation.y, Vector3(0, 1, 0));
+	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
+	PlayerPTR->Update(dt);
+	PlayerPTR->SetRotation(camera.CurrentCameraRotation.y, Vector3(0, 1, 0));
+
 	camera.Update(dt);
-    //<!>What i want here is camera following the Player, not player following the camera <!>
+	camera.position = PlayerPTR->GetPos();
+	camera.UpdateCameraVectors();
 
 }
 
@@ -128,7 +134,6 @@ void Scene_2::RenderShadowCasters()
 	{
 		itt->Render();
 	}
-	Player->Render();
 }
 
 void Scene_2::RenderSkybox()
@@ -269,8 +274,14 @@ void Scene_2::RenderPassMain()
 	ss << "Speed:" << camera.CameraVelocity;
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
-	SceneGraphics->SetHUD(false);
+	
 
+	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
+	ss.str("");
+	ss << "Player Speed:" << PlayerPTR->vel_;
+	ss.precision(3);
+	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
+	SceneGraphics->SetHUD(false);
 }
 
 void Scene_2::Render()

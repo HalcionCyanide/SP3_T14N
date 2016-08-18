@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PLAYEROBJECT_H
+#define PLAYEROBJECT_H
 
 #include "GameObject.h"
 #include <vector>
@@ -16,14 +17,39 @@ public:
     virtual void setAccel(const Vector3 &theacceleration);
 
     virtual void setPlayerBoundaries(std::vector<GameObject*> &Playerboundary);
+	virtual bool CheckCollision(const Boundary &object, const Vector3 &Prediction);
+
+	Vector3 vel_;
+
+private:
+	void DecomposePlayerInertia(float dt);
+	void CameraTiltMotion(double dt, bool Moving);
+
+	virtual void P_ForwardMovement(const float dt);
+	virtual void P_BackwardMovement(const float dt);
+	virtual void P_LeftMovement(const float dt);
+	virtual void P_RightMovement(const float dt);
+	virtual void Walk(const float dt);
+	virtual void Strafe(const float dt);
+	virtual void Jump(const float dt);
+	virtual void UpdateJump(const float dt);
 
 protected:
     virtual void walkDirection(const float &degree, const float &byHowMuch);
 
-    Vector3 vel_, accel_, MovementValues;
+	float BaseWalkSpeed = 16.0f;
+	float MaxWalkSpeed = 32.0f;
+
+	bool CameraIsLocked = false;
+
+    Vector3 accel_, MovementValues;
     float JumpVel;
+	float GRAVITY;
     float JUMPMAXSPEED, JUMPACCEL;
-    bool m_bJumping;
+    bool m_bJumping = false;
     double m_ElapsedTime;
     std::vector<GameObject*> *theBoundaries;
 };
+
+
+#endif

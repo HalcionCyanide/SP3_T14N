@@ -21,7 +21,7 @@ Constructor for Camera
 /****************************************************************************/
 
 Camera3::Camera3()
-	: CameraVelocity(0, 0, 0), ObjectVec(nullptr)
+	: CameraVelocity(0, 0, 0)
 {
 }
 
@@ -80,11 +80,6 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	JUMPMAXSPEED = 60.0f;
 	JUMPACCEL = 250.0f;
 	GRAVITY = -180.0f;
-}
-
-void Camera3::SetObjectVector(std::vector<GameObject*> &ObjectVec)
-{
-	this->ObjectVec = &ObjectVec;
 }
 
 /****************************************************************************/
@@ -306,37 +301,10 @@ void Camera3::UpdateCameraVectors()
 
 void Camera3::UpdateCameraPosition()
 {
-	if (ObjectVec)
-	{
-		Boundary* temp = new Boundary();
-		//Include Bounds Check Here
-		temp->CalculateValues(position + MovementValues, Vector3(2, PlayerHeight, 2));
-		for (std::vector<GameObject*>::iterator it = ObjectVec->begin(); it != ObjectVec->end(); ++it)
-		{
-			CheckPositionUpdate( *(*it)->GetBoundary(), *temp);
-		}
-	}
 	if (!CameraIsLocked)
 		position += MovementValues;
 }
 
-void Camera3::CheckPositionUpdate(const Boundary &object, const Boundary &player)
-{
-	if (ObjectVec)
-	{
-		if (object.CheckCollision(player))
-		{
-			if (object.GetPosition().x > player.GetPosition().x)
-				CameraVelocity.x = 0;
-			else if (object.GetPosition().x < player.GetPosition().x)
-				CameraVelocity.x = 0;
-			if (object.GetPosition().z > player.GetPosition().z)
-				CameraVelocity.z = 0;
-			else if (object.GetPosition().z < player.GetPosition().z)
-				CameraVelocity.z = 0;
-		}
-	}
-}
 
 void Camera3::C_ForwardMovement(const float dt)
 {
