@@ -31,14 +31,14 @@ void Scene_MainMenu::Init()
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 
 	// Set Terrain Size
-	TerrainScale.Set(700.f, 100.f, 700.f);
+	TerrainScale.Set(500.f, 110.f, 210.f);
 
 	Mtx44 perspective;
 	perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
 	projectionStack->LoadMatrix(perspective);
 
 	// Initiallise Model Specific Meshes Here
-	Mesh* newMesh = MeshBuilder::GenerateTerrain("terrain", "Image//heightmap5.raw", m_heightMap);
+	Mesh* newMesh = MeshBuilder::GenerateTerrain("terrain", "Image//heightmap_MainMenu.raw", m_heightMap);
 	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
@@ -58,12 +58,13 @@ void Scene_MainMenu::Init()
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera.position.x / TerrainScale.x, camera.position.z / TerrainScale.z) + camera.PlayerHeight;
 	Application::cA_CurrentTerrainY = Application::cA_MinimumTerrainY;
 
-	camera.Init(Vector3(0, Application::cA_CurrentTerrainY, -30), Vector3(0, Application::cA_CurrentTerrainY, -35), Vector3(0, 1, 0));
-	camera.CameraIsLocked = true;
+	camera.Init(Vector3(-0.5f, Application::cA_CurrentTerrainY, -44.5f), Vector3(0, Application::cA_CurrentTerrainY + 5, -35), Vector3(0, 1, 0));
+	//camera.CameraIsLocked = true;
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 15; i++)
 	{
-		BManager.AddHMapBillboard("Tree", m_heightMap, TerrainScale, Vector3((float)i * 10.f), Vector3(10.f, 20.f, 10.f), Vector3(), camera.position);
+		BManager.AddHMapBillboard("Tree", m_heightMap, TerrainScale, Vector3((float)i * Math::RandFloatMinMax(-10.f, 10.f) + 40.f, 0.f, 25.f + Math::RandFloatMinMax(-5.f, 10.f)), Vector3(10.f, 20.f, 10.f), Vector3(), camera.position);
+		BManager.AddHMapBillboard("Tree", m_heightMap, TerrainScale, Vector3((float)i * Math::RandFloatMinMax(-10.f, 10.f) + 40.f, 0.f, 47.f + Math::RandFloatMinMax(-5.f, 10.f)), Vector3(10.f, 20.f, 10.f), Vector3(), camera.position);
 	}
 
 	CurrentMenuState = S_FIRSTLEVEL;
@@ -74,15 +75,15 @@ void Scene_MainMenu::Init()
 void Scene_MainMenu::InitSceneUIElems()
 {
 	Vector3 CenterPosition(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
-	UI_Sys.AddUIElement(UI_Element::UI_LOGO, "TFB_Logo", CenterPosition * 3, Vector3(1300, 1300, 1), CenterPosition * 1.35f);
+	UI_Sys.AddUIElement(UI_Element::UI_LOGO, "TFB_Logo", CenterPosition * 3, CenterPosition * 3, Vector3(1300, 1300, 1), CenterPosition * 1.35f);
 	
-	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", CenterPosition * -2.f, Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), UI_Text[1]);
-	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", CenterPosition * -2.5f, Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), UI_Text[2]);
-	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", CenterPosition * -3.f, Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), UI_Text[3]);
+	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", CenterPosition * -2.f, CenterPosition * -2.f, Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), UI_Text[1]);
+	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", CenterPosition * -2.5f, CenterPosition * -2.5f, Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), UI_Text[2]);
+	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", CenterPosition * -3.f, CenterPosition * -3.f, Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), UI_Text[3]);
 
-	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[4]);
-	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[5]);
-	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[6]);
+	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[4]);
+	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[5]);
+	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[6]);
 
 
 }
@@ -380,7 +381,7 @@ void Scene_MainMenu::RenderPassMain()
 	RenderSkybox();
 	RenderShadowCasters();
 
-	SceneGraphics->RenderMesh("reference", false);
+	//SceneGraphics->RenderMesh("reference", false);
 
 	//<!> will remove soon <!>
 	for (auto it : testingRenderingStuff)

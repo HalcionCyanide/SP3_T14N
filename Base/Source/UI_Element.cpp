@@ -2,10 +2,10 @@
 #include "Scene_System.h"
 #include "GraphicsEntity.h"
 
-UI_Element::UI_Element(const UI_Element::UI_TYPES& UI_Type, const std::string& name, const Vector3& Position, const Vector3& Dimensions, const Vector3& TargetPosition, const std::string& UI_Text)
+UI_Element::UI_Element(const UI_Element::UI_TYPES& UI_Type, const std::string& name, const Vector3& Position, const Vector3& SpawnPosition, const Vector3& Dimensions, const Vector3& TargetPosition, const std::string& UI_Text)
 {
 	this->UI_Type = UI_Type;
-	Init(name, Position, Dimensions, TargetPosition, UI_Text);
+	Init(name, Position, SpawnPosition, Dimensions, TargetPosition, UI_Text);
 }
 
 UI_Element::~UI_Element()
@@ -13,7 +13,7 @@ UI_Element::~UI_Element()
 	Exit();
 }
 
-void UI_Element::Init(const std::string& name, const Vector3& Position, const Vector3& Dimensions, const Vector3& TargetPosition, const std::string& UI_Text)
+void UI_Element::Init(const std::string& name, const Vector3& Position, const Vector3& SpawnPosition, const Vector3& Dimensions, const Vector3& TargetPosition, const std::string& UI_Text)
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find(name);
@@ -21,7 +21,8 @@ void UI_Element::Init(const std::string& name, const Vector3& Position, const Ve
 	{
 		StoredMesh = it->second;
 		Active = true;
-		this->Position = this->OriginalPosition = Position;
+		this->Position = SpawnPosition;
+		this->OriginalPosition = Position;
 		this->Dimensions = Dimensions;
 		this->TargetPosition = TargetPosition;
 		this->Dimensions = Dimensions;
@@ -55,7 +56,7 @@ void UI_Element::Update(float dt, const Vector3& MousePosition, bool& ClickSucce
 	{
 		UI_Bounds->CalculateValues(Position, Dimensions);
 		Vector3 DirVec = TargetPosition - Position;
-		Position += DirVec * 2 * dt;
+		Position += DirVec * 3 * dt;
 		if (Check < 1.f)
 			AtTarget = true;
 	}

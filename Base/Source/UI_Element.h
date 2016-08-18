@@ -20,7 +20,7 @@ public:
 		UI_BUTTON_B_TO_SCRN,
 	};
 
-	UI_Element(const UI_Element::UI_TYPES& UI_Type, const std::string& name, const Vector3& Position, const Vector3& Dimensions, const Vector3& TargetPosition, const std::string& UI_Text = "");
+	UI_Element(const UI_Element::UI_TYPES& UI_Type, const std::string& name, const Vector3& Position, const Vector3& SpawnPosition, const Vector3& Dimensions, const Vector3& TargetPosition, const std::string& UI_Text = "");
 	
 	virtual ~UI_Element();
 
@@ -38,7 +38,7 @@ public:
 
 	void SwapOriginalWithTarget();
 
-	virtual void Init(const std::string& name, const Vector3& Position, const Vector3& Dimensions, const Vector3& TargetPosition, const std::string& UI_Text);
+	virtual void Init(const std::string& name, const Vector3& Position, const Vector3& SpawnPosition, const Vector3& Dimensions, const Vector3& TargetPosition, const std::string& UI_Text);
 	virtual void Update(float dt);
 	virtual	void Update(float dt, const Vector3& MousePosition, bool& ClickSuccess);
 	virtual void Render();
