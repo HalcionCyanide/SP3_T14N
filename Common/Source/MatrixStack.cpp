@@ -155,6 +155,44 @@ void MS::Scale(float scaleX, float scaleY, float scaleZ) {
 /******************************************************************************/
 /*!
 \brief
+Multiply the top matrix with a scale matrix based on the following parameters
+
+\param	scaleX
+Factor to scale along x-axis
+\param	scaleY
+Factor to scale along y-axis
+\param	scaleZ
+Factor to scale along z-axis
+*/
+/******************************************************************************/
+void MS::Scale(Vector3 Scale) {
+	Mtx44 mat;
+	mat.SetToScale(Scale.x, Scale.y, Scale.z);
+	ms.top() = ms.top() * mat;
+}
+
+/******************************************************************************/
+/*!
+\brief
+Multiply the top matrix with a scale matrix based on the following parameters
+
+\param	scaleX
+Factor to scale along x-axis
+\param	scaleY
+Factor to scale along y-axis
+\param	scaleZ
+Factor to scale along z-axis
+*/
+/******************************************************************************/
+void MS::Scale(float scalar) {
+	Mtx44 mat;
+	mat.SetToScale(scalar, scalar, scalar);
+	ms.top() = ms.top() * mat;
+}
+
+/******************************************************************************/
+/*!
+\brief
 Multiply the top matrix with a translation matrix based on the following 
 parameters
 
@@ -169,6 +207,22 @@ parameters
 void MS::Translate(float translateX, float translateY, float translateZ) {
 	Mtx44 mat;
 	mat.SetToTranslation(translateX, translateY, translateZ);
+	ms.top() = ms.top() * mat;
+}
+
+/******************************************************************************/
+/*!
+\brief
+Multiply the top matrix with a translation matrix based on the following
+parameters
+
+\param	pos
+	Offset according to vector
+*/
+/******************************************************************************/
+void MS::Translate(Vector3 pos) {
+	Mtx44 mat;
+	mat.SetToTranslation(pos.x, pos.y, pos.z);
 	ms.top() = ms.top() * mat;
 }
 
@@ -227,5 +281,24 @@ void MS::LookAt(double eyeX, double eyeY, double eyeZ,
 {
 	Mtx44 mat;
 	mat.SetToLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
+	ms.top() = ms.top() * mat;
+}
+
+/******************************************************************************/
+/*!
+\brief Setup lookat matrix and push to matrix stack
+
+\param position
+	position vector
+\param target
+	target vector
+\param up
+	up vector
+*/
+/******************************************************************************/
+void MS::LookAt(Vector3 position, Vector3 target, Vector3 up)
+{
+	Mtx44 mat;
+	mat.SetToLookAt(position.x, position.y, position.z, target.x, target.y, target.z, up.x, up.y, up.z);
 	ms.top() = ms.top() * mat;
 }
