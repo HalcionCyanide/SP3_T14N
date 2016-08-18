@@ -40,7 +40,7 @@
     <Filter Include="Source Files\Systems">
       <UniqueIdentifier>{23a0ea06-741c-4e09-b504-76fb10ac4d33}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Mains\Misc">
+    <Filter Include="Source Files\Misc">
       <UniqueIdentifier>{f062b6cd-9d33-4947-9281-367ca5dfe141}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -55,19 +55,19 @@
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
     <ClCompile Include="Source\DepthFBO.cpp">
-      <Filter>Source Files\Mains\Misc</Filter>
+      <Filter>Source Files\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application.cpp">
       <Filter>Source Files\Mains</Filter>
     </ClCompile>
     <ClCompile Include="Source\LoadHmap.cpp">
-      <Filter>Source Files\Mains\Misc</Filter>
+      <Filter>Source Files\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Source\LoadOBJ.cpp">
-      <Filter>Source Files\Mains\Misc</Filter>
+      <Filter>Source Files\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Source\LoadTGA.cpp">
-      <Filter>Source Files\Mains\Misc</Filter>
+      <Filter>Source Files\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Source\main.cpp">
       <Filter>Source Files\Mains</Filter>
@@ -76,7 +76,7 @@
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
     <ClCompile Include="Source\MeshBuilder.cpp">
-      <Filter>Source Files\Mains\Misc</Filter>
+      <Filter>Source Files\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene_System.cpp">
       <Filter>Source Files\Systems</Filter>
@@ -85,7 +85,7 @@
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
     <ClCompile Include="Source\Utility.cpp">
-      <Filter>Source Files\Mains\Misc</Filter>
+      <Filter>Source Files\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Source\GraphicsEntity.cpp">
       <Filter>Source Files\Scenes</Filter>
@@ -94,7 +94,7 @@
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Source\shader.cpp">
-      <Filter>Source Files\Mains\Misc</Filter>
+      <Filter>Source Files\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Source\UI_Element.cpp">
       <Filter>Source Files\Classes</Filter>
