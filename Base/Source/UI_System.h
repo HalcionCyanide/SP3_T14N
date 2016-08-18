@@ -18,7 +18,7 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
-	void AddUIElement(const UI_Element::UI_TYPES& UI_Type, const std::string& name, const Vector3& Position, const Vector3& Dimension, const Vector3& TargetPosition);
+	void AddUIElement(const UI_Element::UI_TYPES& UI_Type, const std::string& name, const Vector3& Position, const Vector3& Dimension, const Vector3& TargetPosition, const std::string& UI_Text = "");
 
 private:
 	std::vector<UI_Element*> cUIS_ElementContainer;

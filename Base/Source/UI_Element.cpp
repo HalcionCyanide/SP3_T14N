@@ -2,10 +2,10 @@
 #include "Scene_System.h"
 #include "GraphicsEntity.h"
 
-UI_Element::UI_Element(const UI_Element::UI_TYPES& UI_Type, const std::string& name, const Vector3& Position, const Vector3& Dimensions, const Vector3& TargetPosition)
+UI_Element::UI_Element(const UI_Element::UI_TYPES& UI_Type, const std::string& name, const Vector3& Position, const Vector3& Dimensions, const Vector3& TargetPosition, const std::string& UI_Text)
 {
 	this->UI_Type = UI_Type;
-	Init(name, Position, Dimensions, TargetPosition);
+	Init(name, Position, Dimensions, TargetPosition, UI_Text);
 }
 
 UI_Element::~UI_Element()
@@ -13,7 +13,7 @@ UI_Element::~UI_Element()
 	Exit();
 }
 
-void UI_Element::Init(const std::string& name, const Vector3& Position, const Vector3& Dimensions, const Vector3& TargetPosition)
+void UI_Element::Init(const std::string& name, const Vector3& Position, const Vector3& Dimensions, const Vector3& TargetPosition, const std::string& UI_Text)
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find(name);
@@ -25,6 +25,7 @@ void UI_Element::Init(const std::string& name, const Vector3& Position, const Ve
 		this->Dimensions = Dimensions;
 		this->TargetPosition = TargetPosition;
 		this->Dimensions = Dimensions;
+		this->UI_Text = UI_Text;
 	}
 }
 
@@ -49,6 +50,7 @@ void UI_Element::Render()
 	{
 		GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 		SceneGraphics->RenderMeshIn2D(*StoredMesh, false, Dimensions.x, Dimensions.y, Position.x, Position.y);
+		SceneGraphics->RenderTextOnScreen(UI_Text, Color(1, 1, 1), Dimensions.y * 0.3f, Position.x - (UI_Text.size() * 0.5f * 0.75f * Dimensions.y * 0.3f), Position.y - (0.5f * Dimensions.y * 0.3f));
 	}
 }
 

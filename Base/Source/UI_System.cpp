@@ -39,7 +39,7 @@ void UI_System::Exit()
 		(*it)->Exit();
 }
 
-void UI_System::AddUIElement(const UI_Element::UI_TYPES& UI_Type, const std::string& name, const Vector3& Position, const Vector3& Dimension, const Vector3& TargetPosition)
+void UI_System::AddUIElement(const UI_Element::UI_TYPES& UI_Type, const std::string& name, const Vector3& Position, const Vector3& Dimension, const Vector3& TargetPosition, const std::string& UI_Text)
 {
-	cUIS_ElementContainer.push_back(new UI_Element(UI_Type, name, Position, Dimension, TargetPosition));
+	cUIS_ElementContainer.push_back(new UI_Element(UI_Type, name, Position, Dimension, TargetPosition, UI_Text));
 }

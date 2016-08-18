@@ -34,6 +34,8 @@ private:
 		S_SECONDLEVEL,
 	};
 
+	void InitSceneUIElems();
+	void UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU);
 
 	// Shadow GPass
 	void RenderPassGPass();
