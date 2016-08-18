@@ -42,6 +42,12 @@ void PlayerObject::Update(double dt)
 
     if (MovementValues.IsZero() == false)
     {
+        if (theBoundaries)
+        {
+
+        }
+
+        SetPos(Pos + MovementValues);
         MovementValues.SetZero();
     }
 }
@@ -65,8 +71,8 @@ void PlayerObject::setAccel(const Vector3 &theacceleration)
 
 void PlayerObject::walkDirection(const float &degree, const float &byHowMuch)
 {
-    MovementValues.x += (float)(sin(Math::DegreeToRadian(RotationAngle + degree)) * vel_.x * m_ElapsedTime * byHowMuch);
-    MovementValues.z += (float)(cos(Math::DegreeToRadian(RotationAngle + degree)) * vel_.x * m_ElapsedTime * byHowMuch);
+    MovementValues.x += (float)(sin(Math::DegreeToRadian(RotationAngle + degree)) * vel_.x * (float)(m_ElapsedTime) * byHowMuch);
+    MovementValues.z += (float)(cos(Math::DegreeToRadian(RotationAngle + degree)) * vel_.x * (float)(m_ElapsedTime) * byHowMuch);
 }
 
 void PlayerObject::setPlayerBoundaries(std::vector<GameObject*> &Playerboundary)
