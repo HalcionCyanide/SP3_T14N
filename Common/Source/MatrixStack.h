@@ -33,11 +33,15 @@ public:
 	void MultMatrix(const Mtx44 &matrix);
 	void Rotate(float degrees, float axisX, float axisY, float axisZ);
 	void Scale(float scaleX, float scaleY, float scaleZ);
+	void Scale(float scalar);
+	void Scale(Vector3 scale);
 	void Translate(float translateX, float translateY, float translateZ);
+	void Translate(Vector3 pos);
 	void Frustum(double left, double right, double	bottom, double top, double near, double far);
 	void LookAt(double eyeX, double eyeY, double eyeZ,
 				double centerX, double centerY, double centerZ,
 				double upX, double upY, double upZ);
+	void LookAt(Vector3 position, Vector3 target, Vector3 up);
 };
 
 #endif
