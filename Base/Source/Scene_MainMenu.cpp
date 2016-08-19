@@ -5,6 +5,7 @@
 #include "SceneTown1.h"
 #include "SceneTown2.h"
 #include "SceneTown3.h"
+#include "SceneFreeField.h"
 
 #include "GameMap.h"
 #include "GameObject.h"
@@ -145,7 +146,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
 						{
 							// Start
 							Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-							Scene_System::accessing().SwitchScene(SceneTown1::id_);
+							Scene_System::accessing().SwitchScene(SceneFreeField::id_);
 						}
 						else if (((*it)->UI_Text == UI_Text[5]))
 						{
