@@ -60,7 +60,7 @@ void Scene_MainMenu::Init()
 	Application::cA_CurrentTerrainY = Application::cA_MinimumTerrainY;
 
 	camera.Init(Vector3(-0.5f, Application::cA_CurrentTerrainY, -40.f), Vector3(0, Application::cA_CurrentTerrainY + 5, -35), Vector3(0, 1, 0));
-	//camera.CameraIsLocked = true;
+	camera.CameraIsLocked = true;
 
 	for (int i = 0; i < 15; i++)
 	{
@@ -146,7 +146,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
 						{
 							// Start
 							Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-							Scene_System::accessing().SwitchScene(SceneFreeField::id_);
+							Scene_System::accessing().SwitchScene(SceneTown1::id_);
 						}
 						else if (((*it)->UI_Text == UI_Text[5]))
 						{
