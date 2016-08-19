@@ -59,7 +59,7 @@ void Scene_MainMenu::Init()
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera.position.x / TerrainScale.x, camera.position.z / TerrainScale.z) + camera.PlayerHeight;
 	Application::cA_CurrentTerrainY = Application::cA_MinimumTerrainY;
 
-	camera.Init(Vector3(-0.5f, Application::cA_CurrentTerrainY, -44.5f), Vector3(0, Application::cA_CurrentTerrainY + 5, -35), Vector3(0, 1, 0));
+	camera.Init(Vector3(-0.5f, Application::cA_CurrentTerrainY, -40.f), Vector3(0, Application::cA_CurrentTerrainY + 5, -35), Vector3(0, 1, 0));
 	//camera.CameraIsLocked = true;
 
 	for (int i = 0; i < 15; i++)
