@@ -47,7 +47,8 @@ void BillboardManager::UpdateContainer(float dt, const Vector3 &CameraPosition){
 		B->SetPlayerPosition(CameraPosition);
 	}
 	Update(dt);
-	std::sort(&BillboardContainer[0], &BillboardContainer[BillboardContainer.size() - 1]);
+	if (BillboardContainer.size() > 0)
+		std::sort(&BillboardContainer[0], &BillboardContainer[BillboardContainer.size() - 1]);
 
 }
 

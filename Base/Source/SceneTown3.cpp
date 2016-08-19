@@ -32,8 +32,8 @@ void SceneTown3::Init()
 	TerrainScale.Set(350.f, 50.f, 350.f);
 
     Mtx44 perspective;
-    perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
-    projectionStack->LoadMatrix(perspective);
+	perspective.SetToPerspective(45.0f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 0.1f, 10000.0f);
+	projectionStack->LoadMatrix(perspective);
 
     camera.Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
 
@@ -171,50 +171,54 @@ void SceneTown3::RenderShadowCasters()
 
 void SceneTown3::RenderSkybox()
 {
-    GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
-    //left
-    modelStack->PushMatrix();
-    modelStack->Rotate(90, 0, 1, 0);
-    modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
-    modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
-    SceneGraphics->RenderMesh("SB_Left", false);
-    modelStack->PopMatrix();
+	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
+	//left
+	modelStack->PushMatrix();
+	modelStack->Rotate(90, 0, 1, 0);
+	modelStack->PushMatrix();
+	modelStack->Rotate(90, 0, 1, 0);
+	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
+	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
+	SceneGraphics->RenderMesh("SB_Left", false);
+	modelStack->PopMatrix();
 
-    modelStack->PushMatrix();
-    modelStack->Rotate(-90, 0, 1, 0);
-    modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
-    modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
-    SceneGraphics->RenderMesh("SB_Right", false);
-    modelStack->PopMatrix();
+	modelStack->PushMatrix();
+	modelStack->Rotate(-90, 0, 1, 0);
+	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
+	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
+	SceneGraphics->RenderMesh("SB_Right", false);
+	modelStack->PopMatrix();
 
-    modelStack->PushMatrix();
-    modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
-    modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
-    SceneGraphics->RenderMesh("SB_Front", false);
-    modelStack->PopMatrix();
+	modelStack->PushMatrix();
+	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
+	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
+	SceneGraphics->RenderMesh("SB_Front", false);
+	modelStack->PopMatrix();
 
-    modelStack->PushMatrix();
-    modelStack->Rotate(180, 0, 1, 0);
-    modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
-    modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
-    SceneGraphics->RenderMesh("SB_Back", false);
-    modelStack->PopMatrix();
+	modelStack->PushMatrix();
+	modelStack->Rotate(180, 0, 1, 0);
+	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
+	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
+	SceneGraphics->RenderMesh("SB_Back", false);
+	modelStack->PopMatrix();
 
-    modelStack->PushMatrix();
-    modelStack->Rotate(90, 1, 0, 0);
-    modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
-    modelStack->Rotate(90, 0, 0, 1);
-    modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
-    SceneGraphics->RenderMesh("SB_Top", false);
-    modelStack->PopMatrix();
+	modelStack->PushMatrix();
+	modelStack->Rotate(90, 1, 0, 0);
+	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
+	modelStack->Rotate(90, 0, 0, 1);
+	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
+	SceneGraphics->RenderMesh("SB_Top", false);
+	modelStack->PopMatrix();
 
-    modelStack->PushMatrix();
-    modelStack->Rotate(-90, 1, 0, 0);
-    modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
-    modelStack->Rotate(-90, 0, 0, 1);
-    modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
-    SceneGraphics->RenderMesh("SB_Bottom", false);
-    modelStack->PopMatrix();
+	modelStack->PushMatrix();
+	modelStack->Rotate(-90, 1, 0, 0);
+	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
+	modelStack->Rotate(-90, 0, 0, 1);
+	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
+	SceneGraphics->RenderMesh("SB_Bottom", false);
+	modelStack->PopMatrix();
+	modelStack->PopMatrix();
+
 }
 
 void SceneTown3::RenderPassGPass()

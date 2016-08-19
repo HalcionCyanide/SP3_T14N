@@ -33,8 +33,8 @@ void SceneTown1::Init()
     TerrainScale.Set(400.f, 100.f, 400.f);
 
     Mtx44 perspective;
-    perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
-    projectionStack->LoadMatrix(perspective);
+	perspective.SetToPerspective(45.0f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 0.1f, 10000.0f);
+	projectionStack->LoadMatrix(perspective);
 
     camera.Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
 
@@ -175,6 +175,8 @@ void SceneTown1::RenderSkybox()
 {
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
     //left
+	modelStack->PushMatrix();
+	modelStack->Rotate(90, 0, 1, 0);
     modelStack->PushMatrix();
     modelStack->Rotate(90, 0, 1, 0);
     modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
@@ -217,6 +219,8 @@ void SceneTown1::RenderSkybox()
     modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
     SceneGraphics->RenderMesh("SB_Bottom", false);
     modelStack->PopMatrix();
+	modelStack->PopMatrix();
+
 }
 
 void SceneTown1::RenderPassGPass()

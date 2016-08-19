@@ -33,8 +33,8 @@ void SceneFreeField::Init()
     TerrainScale.Set(400.f, 50.f, 400.f);
 
     Mtx44 perspective;
-    perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
-    projectionStack->LoadMatrix(perspective);
+	perspective.SetToPerspective(45.0f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 0.1f, 10000.0f);
+	projectionStack->LoadMatrix(perspective);
 
     camera.Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
 

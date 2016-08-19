@@ -11,11 +11,12 @@ GameObject::GameObject()
 GameObject::GameObject(const std::string &name, const Vector3 &pos, const Vector3 &scale, const float &rotatingValue, const Vector3 &rotationAxis, const bool &active) :
 Pos(pos), Scale(scale), Active(active) 
 {
+	SetMesh(name);
     setName(name);
     SetRotation(rotatingValue, rotationAxis);
 }
 
-GameObject::GameObject(GameObject &Object)
+GameObject::GameObject(GameObject &Object) 
 {
     this->MeshObject = Object.MeshObject;
     this->Pos = Object.Pos;
@@ -38,6 +39,14 @@ GameObject::~GameObject()
 void GameObject::SetMesh(Mesh &meshObject)
 {
 	this->MeshObject = &meshObject;
+}
+
+void GameObject::SetMesh(const std::string& name)
+{
+	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
+	std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find(name);
+	if (it != SceneGraphics->meshList.end())
+		this->MeshObject = it->second;
 }
 
 void GameObject::SetPos(const Vector3 &pos)
@@ -113,7 +122,7 @@ void GameObject::Render()
 		Scene_System::accessing().getCurrScene().modelStack->Translate(Pos.x, Pos.y, Pos.z);
 		Scene_System::accessing().getCurrScene().modelStack->Rotate(RotationAngle, 0, 1, 0);
 		Scene_System::accessing().getCurrScene().modelStack->Scale(Scale.x, Scale.y, Scale.z);
-		SceneGraphics->RenderMesh(*MeshObject, false);
+		SceneGraphics->RenderMesh(*MeshObject, true);
 		Scene_System::accessing().getCurrScene().modelStack->PopMatrix();
 	}
 }

@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\BattleScreenObject.cpp" />
     <ClCompile Include="Source\Billboard.cpp" />
     <ClCompile Include="Source\BillboardManager.cpp" />
     <ClCompile Include="Source\Boundary.cpp" />
@@ -55,6 +56,7 @@
   <ItemGroup>
     <ClInclude Include="C:\Users\Alienware Pc\Desktop\SceneSystem\Base\Source\shader.hpp" />
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\BattleScreenObject.h" />
     <ClInclude Include="Source\Billboard.h" />
     <ClInclude Include="Source\BillboardManager.h" />
     <ClInclude Include="Source\Boundary.h" />

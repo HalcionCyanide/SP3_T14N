@@ -6,6 +6,7 @@
 #include "SceneTown2.h"
 #include "SceneTown3.h"
 #include "SceneFreeField.h"
+#include "SceneBattleScreen.h"
 
 #include "GameMap.h"
 #include "GameObject.h"
@@ -35,7 +36,7 @@ void Scene_MainMenu::Init()
 	TerrainScale.Set(500.f, 110.f, 210.f);
 
 	Mtx44 perspective;
-	perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
+	perspective.SetToPerspective(45.0f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 0.1f, 10000.0f);
 	projectionStack->LoadMatrix(perspective);
 
 	// Initiallise Model Specific Meshes Here
@@ -123,6 +124,8 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
 						else if (((*it)->UI_Text == UI_Text[2]))
 						{
 							// Settings
+							Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+							Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
 						}
 						else if (((*it)->UI_Text == UI_Text[3]))
 						{
@@ -147,6 +150,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
 							// Start
 							Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
 							Scene_System::accessing().SwitchScene(SceneTown1::id_);
+							//Scene_System::accessing().SwitchScene(SceneTown1::id_);
 						}
 						else if (((*it)->UI_Text == UI_Text[5]))
 						{
@@ -269,6 +273,8 @@ void Scene_MainMenu::RenderSkybox()
 	//left
 	modelStack->PushMatrix();
 	modelStack->Rotate(90, 0, 1, 0);
+	modelStack->PushMatrix();
+	modelStack->Rotate(90, 0, 1, 0);
 	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
 	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
 	SceneGraphics->RenderMesh("SB_Left", false);
@@ -309,6 +315,8 @@ void Scene_MainMenu::RenderSkybox()
 	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
 	SceneGraphics->RenderMesh("SB_Bottom", false);
 	modelStack->PopMatrix();
+	modelStack->PopMatrix();
+
 }
 
 void Scene_MainMenu::RenderPassGPass()

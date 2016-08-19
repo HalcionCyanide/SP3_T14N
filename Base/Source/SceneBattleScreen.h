@@ -4,7 +4,7 @@
 #include "SceneEntity.h"
 #include "Scene_System.h"
 #include "GraphicsEntity.h"
-#include "GameObject.h"
+#include "BattleScreenObject.h"
 #include "Camera3.h"
 #include "BillboardManager.h"
 
@@ -20,7 +20,7 @@ public:
     virtual void Render();
     virtual void Exit();
 
-    Camera3 camera;
+    Camera camera;
 
 private:
     // Shadow GPass
@@ -28,13 +28,22 @@ private:
     void RenderPassMain();
 
     // Additional Calls
-    void RenderShadowCasters();
+	void PlayerUpdate(float dt);
 
     BillboardManager BManager;
 
     double framerates;
     GenericEntity *theInteractiveMap;
-    std::vector<GameObject*> objVec;
+
+	BattleScreenObject* Player = nullptr;
+	std::vector<BattleScreenObject*> ProjectileContainer;
+
+	//Player Stuff
+	Vector3 ActingForce;
+	bool isInvincible = false;
+	float IFrameTimer = 0;
+	const float FrictionDecrementMultiplier = 0.9f;
+
 };
 
 #endif //_SCENE_BATTLE_SCREEN_H

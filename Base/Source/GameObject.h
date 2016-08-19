@@ -11,7 +11,6 @@
 class GameObject : public GenericEntity
 {
 public:
-
 	GameObject();
     GameObject(const std::string &name, const Vector3 &pos, const Vector3 &scale, const float &rotatingValue, const Vector3 &rotationAxis, const bool &active);
     GameObject(GameObject &Object);
@@ -22,6 +21,7 @@ public:
 	virtual void Render();
 
 	virtual void SetMesh(Mesh &meshObject);
+	virtual void SetMesh(const std::string& name);
 	virtual void SetPos(const Vector3 &pos);
 	virtual void SetScale(const Vector3 &scale);
 	virtual void SetRotation(const float &rotatingValue, const Vector3 &rotationAxis);

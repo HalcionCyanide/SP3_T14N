@@ -177,12 +177,11 @@ float getShadowEffect(float cosTheta)
 	// Poisson Shadow Sampling
 	float visibility = 1.0;
 	float bias = 0.0015 * tan(acos(cosTheta));
-	float SampleSpread = 1800 - ((shadowSamplingCount - 8) * 25); // How near samples are to one another, nearer = more
-	int SampleCount = shadowSamplingCount;//64; // <- School com not capable  // How many samples to use
-	for (int i = 0;i < SampleCount; i++){
+	float SampleSpread = 2400 - (shadowSamplingCount * 25); // How near samples are to one another, nearer = more
+	for (int i = 0; i < shadowSamplingCount; i++){
 		if ( texture( shadowMap, shadowCoord.xy + poissonDisk[i]/SampleSpread ).x  <  shadowCoord.z-bias ){
-		   visibility -= 0.5 / shadowSamplingCount;
-		   visibility = clamp(visibility, 0, 1 );
+			visibility -= 0.8f/shadowSamplingCount;
+			visibility = clamp(visibility, 0, 1 );
 		}
 	}
 	return visibility;

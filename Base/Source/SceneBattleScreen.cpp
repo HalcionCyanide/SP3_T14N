@@ -5,7 +5,7 @@
 #include "GameMap.h"
 #include "GameObject.h"
 
-std::string SceneBattleScreen::id_ = "Scene Town 1";
+std::string SceneBattleScreen::id_ = "Scene Battle Screen";
 
 SceneBattleScreen::SceneBattleScreen()
     : SceneEntity()
@@ -25,14 +25,25 @@ void SceneBattleScreen::Init()
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 
     Mtx44 perspective;
-    perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
+	perspective.SetToPerspective(45.0f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 0.1f, 10000.0f);
     projectionStack->LoadMatrix(perspective);
 
-    camera.Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
+	Vector3 CenterPosition(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
+	float PlayerScale = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.05f; 
+
+	Mesh* newMesh = MeshBuilder::GenerateQuad("Player", Color(1, 1, 1));
+	newMesh->textureArray[0] = LoadTGA("Image//TFB_GEM.tga");
+	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+
+	Player = new BattleScreenObject("Player", 3, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), Vector3(0, 0, 0), 0, Vector3(0, 0, 1));
+
+	camera.Init(Vector3(0, 0, 1), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	//camera.CameraIsLocked = true;
 }
 
 void SceneBattleScreen::Update(float dt)
 {
+	Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
     SceneGraphics->Update(dt);
 
@@ -49,30 +60,63 @@ void SceneBattleScreen::Update(float dt)
         Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
     }
 
+	for (std::vector<BattleScreenObject*>::iterator it = ProjectileContainer.begin(); it != ProjectileContainer.end(); ++it)
+	{
+		BattleScreenObject* go = (BattleScreenObject*)*it;
+		go->Update((float)dt);
+	}
+
     BManager.UpdateContainer(dt, camera.position);
 
     camera.Update(dt);
+
+	PlayerUpdate(dt);
 }
 
-void SceneBattleScreen::RenderShadowCasters()
+
+void SceneBattleScreen::PlayerUpdate(float dt)
 {
-    GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
-    for (std::vector<Billboard*>::iterator it = BManager.BillboardContainer.begin(); it != BManager.BillboardContainer.end(); ++it)
-    {
-        if ((*it)->Active)
-        {
-            float TimeRatio = 1;
-            if ((*it)->GetLifeTime() != -1)
-                TimeRatio = 1.1f - (*it)->GetCurrTime() / (*it)->GetLifeTime();
-            modelStack->PushMatrix();
-            modelStack->Translate((*it)->GetPosition().x, (*it)->GetPosition().y, (*it)->GetPosition().z);
-            modelStack->Rotate(Math::RadianToDegree(atan2(camera.position.x - (*it)->GetPosition().x, camera.position.z - (*it)->GetPosition().z)), 0, 1, 0);
-            modelStack->Scale(TimeRatio * (*it)->GetDimensions().x, TimeRatio *(*it)->GetDimensions().y, TimeRatio *(*it)->GetDimensions().z);
-            SceneGraphics->RenderMesh((*it)->GetMeshName(), false);
-            modelStack->PopMatrix();
-        }
-    }
+	float ForceIncrement = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f;
+	/*if (Application::IsKeyPressed('W'))
+	{
+		ActingForce.y = ForceIncrement;
+	}
+	if (Application::IsKeyPressed('S'))
+	{
+		ActingForce.y = -ForceIncrement;
+	}
+	if (!Application::IsKeyPressed('W') && !Application::IsKeyPressed('S'))
+	{
+		ActingForce.y = 0;
+	}
+	if (Application::IsKeyPressed('A'))
+	{
+		ActingForce.x = -ForceIncrement;
+	}
+	if (Application::IsKeyPressed('D'))
+	{
+		ActingForce.x = ForceIncrement;
+	}
+	if (!Application::IsKeyPressed('A') && !Application::IsKeyPressed('D'))
+	{
+		ActingForce.x = 0;
+	}*/
+	Vector3 PlayerDirection = (Scene_System::accessing().cSS_InputManager->GetMousePosition() - Player->GetPosition());
+	if (!PlayerDirection.IsZero())
+		if (PlayerDirection.LengthSquared() < (Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.15f))
+		PlayerDirection.SetZero();
+		else PlayerDirection.Normalize();
+	ActingForce.Set(ForceIncrement * PlayerDirection.x, ForceIncrement * PlayerDirection.y);
+
+	if (Player->GetMass() > Math::EPSILON)
+	{
+		// Velocity Due To Acceleration If Mass Exists
+		Player->SetVelocity(Player->GetVelocity() + ActingForce * (1.f / Player->GetMass()) * dt);
+	}
+	Player->SetVelocity(Player->GetVelocity() - Player->GetVelocity()*FrictionDecrementMultiplier * dt);
+	Player->Update((double)dt);
 }
+
 
 void SceneBattleScreen::RenderPassGPass()
 {
@@ -95,7 +139,6 @@ void SceneBattleScreen::RenderPassGPass()
     }
     SceneGraphics->m_lightDepthView.SetToLookAt(SceneGraphics->lights[0].position.x, SceneGraphics->lights[0].position.y, SceneGraphics->lights[0].position.z, 0, 0, 0, 0, 1, 0);
     // Things that the light sees and creates shadows from.
-    RenderShadowCasters();
 }
 
 void SceneBattleScreen::RenderPassMain()
@@ -132,8 +175,7 @@ void SceneBattleScreen::RenderPassMain()
     }
 
     Mtx44 perspective;
-    perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
-    //perspective.SetToOrtho(-80, 80, -60, 60, -1000, 1000);
+	perspective.SetToOrtho(0, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth, 0, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, -100, 100);
     projectionStack->LoadMatrix(perspective);
 
     // Camera matrix
@@ -146,44 +188,60 @@ void SceneBattleScreen::RenderPassMain()
     // Model matrix : an identity matrix (model will be at the origin)
     modelStack->LoadIdentity();
 
-    RenderShadowCasters();
-
     SceneGraphics->RenderMesh("reference", false);
 
-    //<!> will remove soon <!>
-    for (auto it : objVec)
-    {
-        it->Render();
+	for (std::vector<BattleScreenObject*>::iterator it = ProjectileContainer.begin(); it != ProjectileContainer.end(); ++it)
+	{
+		BattleScreenObject* go = (BattleScreenObject*)*it;
+		go->Render();
     }
-    //<!> will remove soon <!>
+
+	// Player Calls
+	Player->Render();
+
+	for (std::vector<Billboard*>::iterator it = BManager.BillboardContainer.begin(); it != BManager.BillboardContainer.end(); ++it)
+	{
+		if ((*it)->Active)
+		{
+			float TimeRatio = 1;
+			if ((*it)->GetLifeTime() != -1)
+				TimeRatio = 1.1f - (*it)->GetCurrTime() / (*it)->GetLifeTime();
+			modelStack->PushMatrix();
+			modelStack->Translate((*it)->GetPosition().x, (*it)->GetPosition().y, (*it)->GetPosition().z);
+			modelStack->Rotate(Math::RadianToDegree(atan2(camera.position.x - (*it)->GetPosition().x, camera.position.z - (*it)->GetPosition().z)), 0, 1, 0);
+			modelStack->Scale(TimeRatio * (*it)->GetDimensions().x, TimeRatio *(*it)->GetDimensions().y, TimeRatio *(*it)->GetDimensions().z);
+			SceneGraphics->RenderMesh((*it)->GetMeshName(), false);
+			modelStack->PopMatrix();
+		}
+	}
 
     SceneGraphics->SetHUD(true);
+
+	if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
+	{
+		SceneGraphics->RenderMeshIn2D("TFB_Gem", false, 30, 30, Scene_System::accessing().cSS_InputManager->GetMousePosition().x, Scene_System::accessing().cSS_InputManager->GetMousePosition().y);
+	}
+
     std::ostringstream ss;
     ss.str("");
-    ss << "Scene 1 - FPS:" << framerates;
+    ss << "Scene BS - FPS:" << framerates;
     ss.precision(3);
     SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 25);
 
     ss.str("");
-    ss << "CVel:" << camera.CameraVelocity;
+    ss << "Player Pos:" << Player->GetPosition();
     ss.precision(3);
     SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
+	
+	ss.str("");
+	ss << "Player Acc:" << ActingForce*(1.f / Player->GetMass());
+	ss.precision(3);
+	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
 
     ss.str("");
     ss << "Mouse Position:" << Scene_System::accessing().cSS_InputManager->GetMousePosition();
     ss.precision(3);
-    SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
-    //<!> Removing soon
-    ss.str("");
-    ss << "CPos:" << camera.position;
-    ss.precision(3);
-    SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 125);
-    //<!> Removing soon
-    SceneGraphics->SetHUD(false);
-
-    ss.str("9, 0 - Toggle Mouse Modes");
-    ss.precision(3);
-    SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
+    SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 100);
 
 }
 
@@ -192,7 +250,7 @@ void SceneBattleScreen::Render()
     //*********************************
     //		PRE RENDER PASS
     //*********************************
-    RenderPassGPass();
+    //RenderPassGPass();
     //*********************************
     //		MAIN RENDER PASS
     //*********************************
@@ -203,9 +261,12 @@ void SceneBattleScreen::Exit()
 {
     if (theInteractiveMap)
         delete theInteractiveMap;
-    for (auto it : objVec)
+	for (std::vector<BattleScreenObject*>::iterator it = ProjectileContainer.begin(); it != ProjectileContainer.end(); ++it)
     {
-        if (it)
-            delete it;
+		if (*it)
+		{
+			delete *it;
+			*it = nullptr;
+		}
     }
 }
