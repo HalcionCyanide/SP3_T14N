@@ -6,6 +6,7 @@ GameObject::GameObject()
     : GenericEntity()
 {
     RotationAngle = 0;
+    Bounds = nullptr;
 }
 
 GameObject::GameObject(const std::string &name, const Vector3 &pos, const Vector3 &scale, const float &rotatingValue, const Vector3 &rotationAxis, const bool &active) :
@@ -14,6 +15,7 @@ Pos(pos), Scale(scale), Active(active)
 	SetMesh(name);
     setName(name);
     SetRotation(rotatingValue, rotationAxis);
+    Bounds = nullptr;
 }
 
 GameObject::GameObject(GameObject &Object) 
@@ -24,7 +26,11 @@ GameObject::GameObject(GameObject &Object)
     this->RotationAngle = Object.RotationAngle;
     this->Active = Object.Active;
     setName(Object.getName());
-	Bounds->CalculateValues(this->Pos, this->Scale);
+    if (Object.Bounds)
+    {
+        Bounds = new Boundary();
+        Bounds->CalculateValues(this->Pos, this->Scale, this->RotationAngle);
+    }
 }
 
 GameObject::~GameObject()
@@ -71,7 +77,9 @@ void GameObject::SetActive(const bool &active)
 
 void GameObject::SetBounds()
 {
-	Bounds->CalculateValues(this->Pos, this->Scale);
+    if (Bounds == nullptr)
+        Bounds = new Boundary();
+	Bounds->CalculateValues(this->Pos, this->Scale, this->RotationAngle);
 }
 
 Mesh& GameObject::GetMesh()const

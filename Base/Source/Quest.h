@@ -14,12 +14,7 @@ public:
 	std::string getName();
 	void setName(std::string);
 
-	int getStage();
-	void nextStage();
-
-	int getMaxStages();
-
-	std::vector<std::string>& getDesc();
+	std::string getDesc();
 
 	bool getActive();
 	void setActive(bool);
@@ -31,7 +26,10 @@ public:
 private:
 	int id = 0;
 	std::string questName;
-	std::vector<std::string> questDesc;
+	std::string questDesc;
+
+
+
 	int currentStage;
 	bool active;
 	bool completed;
