@@ -269,4 +269,6 @@ void SceneBattleScreen::Exit()
 			*it = nullptr;
 		}
     }
+    if (Player)
+        delete Player;
 }

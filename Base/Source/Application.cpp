@@ -64,10 +64,10 @@ Application::Application()
 
 Application::~Application()
 {
-	if (theSoundEngine != NULL)
-	{
+	//if (theSoundEngine != NULL)
+	//{
 		theSoundEngine->drop();
-	}
+	//}
 }
 
 void Application::Init()
