@@ -14,6 +14,7 @@ Pos(pos), Scale(scale), Active(active)
 {
     setName(name);
     SetRotation(rotatingValue, rotationAxis);
+    Bounds = nullptr;
 }
 
 GameObject::GameObject(GameObject &Object)
