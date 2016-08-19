@@ -30,7 +30,7 @@ void SceneFreeField::Init()
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 
     // Set Terrain Size
-    TerrainScale.Set(700.f, 100.f, 700.f);
+    TerrainScale.Set(400.f, 50.f, 400.f);
 
     Mtx44 perspective;
     perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
@@ -55,7 +55,7 @@ void SceneFreeField::Init()
     theInteractiveMap = new GameMap();
     GameMap *theMap = dynamic_cast<GameMap*>(theInteractiveMap);
     theMap->setName("scene open field logic map");
-    theMap->LoadMap("Image//OpenFieldLayout.csv", m_heightMap, TerrainScale, objVec, BManager);
+    theMap->LoadMap("Image//FreeField_1_Layout.csv", m_heightMap, TerrainScale, objVec, BManager);
 
     Player = new PlayerObject();
     Player->Init("Player", camera.position - Vector3(0, camera.PlayerHeight, 0), Vector3(2, 1, 2), 0.0f, Vector3(1, 0, 0), true);
