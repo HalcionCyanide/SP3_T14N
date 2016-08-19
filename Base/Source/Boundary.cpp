@@ -26,7 +26,7 @@ bool Boundary::CheckCollision(const Vector3 &point, const Vector3 &vel)const
 	Vector3 N = this->Normal;
 	float h = this->Scale.x;
 	float l = this->Scale.z;
-	Vector3 NP = Vector3(-N.z, N.y ,N.x);
+	Vector3 NP(-N.z,N.x);
 	Vector3 rV = vel;
 	Vector3 rD = w0 - b1;
 
