@@ -11,7 +11,7 @@ public:
     PlayerObject();
     virtual ~PlayerObject();
 
-	Camera3* cameraObject = nullptr;
+	//Camera3* cameraObject = nullptr;
 
     virtual void Update(double dt);
 

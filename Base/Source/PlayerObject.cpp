@@ -63,8 +63,8 @@ void PlayerObject::Update(double dt)
 		SetPos(Pos + MovementValues);
 		MovementValues.SetZero();
 	}
-	if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
-		cameraObject->DecomposeMouseInertia(dt);
+	//if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
+	//	cameraObject->DecomposeMouseInertia(dt);
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('W'))
 	{
 		Walk((float)dt);

@@ -207,7 +207,7 @@ void Camera3::DecomposeMouseInertia(float dt)
 {
 	float C_Rot_Accel = 0.5f;
 	float MaxRotSpeed = C_Rot_Accel;// *1.5f;
-	Yaw_Velocity += C_Rot_Accel * dt * Scene_System::accessing().cSS_InputManager->cIM_CameraYaw;
+ 	Yaw_Velocity += C_Rot_Accel * dt * Scene_System::accessing().cSS_InputManager->cIM_CameraYaw;
 	Yaw_Velocity = Math::Clamp(Yaw_Velocity, -MaxRotSpeed, MaxRotSpeed);
 	if (Yaw_Velocity) {
 		Yaw(dt);
