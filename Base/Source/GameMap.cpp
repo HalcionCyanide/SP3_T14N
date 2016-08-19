@@ -115,7 +115,7 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
             (-(the3DObj->GetPos().z - ((float)theNumOfTiles_MapHeight / 2.f)) * tileSizeXYZ.z) - (tileSizeXYZ.z * 0.5f)
             ));
         the3DObj->SetPos(Vector3(the3DObj->GetPos().x,
-            (the3DObj->GetScale().y*0.5f) + terrainSize.y * ReadHeightMap(theHeightMap, the3DObj->GetPos().x / terrainSize.x, the3DObj->GetPos().z / terrainSize.z),
+            (the3DObj->GetScale().y*0.5f) + terrainSize.y * ReadHeightMap(theHeightMap, the3DObj->GetPos().x / terrainSize.x, the3DObj->GetPos().z / terrainSize.z) - 0.5f,
             the3DObj->GetPos().z
             ));
 		//<!>

@@ -96,7 +96,7 @@ void Camera3::Update(float dt)
 	Application::cA_CurrentTerrainY += CameraBobVal;
 	MovementValues.SetZero();
 
-	if (Application::IsKeyPressed(VK_SHIFT) &&
+	/*if (Application::IsKeyPressed(VK_SHIFT) &&
 		!Scene_System::accessing().cSS_InputManager->GetKeyValue('S'))
 	{
 		CameraMaxWalkSpeed = CameraBaseWalkSpeed * 2;
@@ -151,7 +151,7 @@ void Camera3::Update(float dt)
 	if (m_bJumping == false)
 	{
 		position.y = Application::cA_CurrentTerrainY;
-	}
+	}*/
 
 	//Update Camera Values
 	UpdateCameraAngles(dt);
