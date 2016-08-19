@@ -52,6 +52,7 @@
     <ClCompile Include="Source\UI_Element.cpp" />
     <ClCompile Include="Source\UI_System.cpp" />
     <ClCompile Include="Source\Utility.cpp" />
+    <ClCompile Include="Source\UtilityItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\Users\Alienware Pc\Desktop\SceneSystem\Base\Source\shader.hpp" />
@@ -102,6 +103,7 @@
     <ClInclude Include="Source\UI_Element.h" />
     <ClInclude Include="Source\UI_System.h" />
     <ClInclude Include="Source\Utility.h" />
+    <ClInclude Include="Source\UtilityItem.h" />
     <ClInclude Include="Source\Vertex.h" />
   </ItemGroup>
   <ItemGroup>

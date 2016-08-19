@@ -13,6 +13,8 @@ public:
     virtual void receiveDamage(const int &theNum);
     virtual void addMoreDurability(const int &theNum);
 
+    virtual void UseIt() = 0;
+
     int getDurability();
 
 protected:

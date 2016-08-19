@@ -312,5 +312,8 @@ void Scene_2::Render()
 
 void Scene_2::Exit()
 {
+    for (auto it : ObjectVec)
+        delete it;
+    ObjectVec.clear();
     delete Player;
 }

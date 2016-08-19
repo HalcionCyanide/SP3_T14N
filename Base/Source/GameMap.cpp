@@ -237,12 +237,14 @@ bool GameMap::loadThoseLegends(const std::string &fileName)
                     }
                     else if (theKeys[num].find("BILLBOARD") != std::string::npos)
                     {
+                        GameObject*go = dynamic_cast<GameObject*>(theObject);
                         if (theValues[num] != "0")
                         {
-                            GameObject*go = dynamic_cast<GameObject*>(theObject);
-                            theObject = new Billboard(go->GetPos(), go->GetScale(), Vector3(0,0,0), Vector3(0,0,0), go->GetMesh().name);
+                            theObject = new Billboard(go->GetPos(), go->GetScale(), Vector3(0, 0, 0), Vector3(0, 0, 0), go->GetMesh().name);
                             delete go;
                         }
+                        else
+                            go->SetBounds();
                     }
                 }
                 bunchOfLegends.insert(std::pair<unsigned char, GenericEntity*>(symbol, theObject));

@@ -86,6 +86,9 @@ void UI_Element::Render()
 
 void UI_Element::Exit()
 {
-	if (UI_Bounds)
-		delete UI_Bounds;
+    if (UI_Bounds)
+    {
+        delete UI_Bounds;
+        UI_Bounds = nullptr;
+    }
 }

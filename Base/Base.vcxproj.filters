@@ -171,6 +171,9 @@
     <ClCompile Include="Source\CItem.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\UtilityItem.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Scene_System.h">
@@ -318,6 +321,9 @@
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Source\CItem.h">
+      <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UtilityItem.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
   </ItemGroup>

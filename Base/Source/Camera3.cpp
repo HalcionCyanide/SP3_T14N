@@ -108,7 +108,7 @@ void Camera3::Update(float dt)
 	}
 	if (!CameraVelocity.IsZero())
 	{
-		if (Application::Sound_Footstep == NULL)
+	/*	if (Application::Sound_Footstep == NULL)
 		{
 			Application::Sound_Footstep = Application::theSoundEngine->play2D(SoundName[5].c_str(), false, true);
 			Application::Sound_Footstep->setPlaybackSpeed(CameraCurrentWalkSpeed / 14);
@@ -121,7 +121,7 @@ void Camera3::Update(float dt)
 		else if (Application::Sound_Footstep->isFinished() == true)
 		{
 			Application::Sound_Footstep = NULL;
-		}
+		}*/
 		DecomposePlayerInertia(dt);
 	}
 	if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
