@@ -46,11 +46,6 @@ void SceneTown3::Init()
     Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera.position.x / TerrainScale.x, camera.position.z / TerrainScale.z) + camera.PlayerHeight;
     Application::cA_CurrentTerrainY = Application::cA_MinimumTerrainY;
 
-    for (int i = 0; i < 8; i++)
-    {
-        BManager.AddHMapBillboard("Tree", m_heightMap, TerrainScale, Vector3((float)i * 10.f), Vector3(10.f, 20.f, 10.f), Vector3(), camera.position);
-    }
-
     theInteractiveMap = new GameMap();
     GameMap *theMap = dynamic_cast<GameMap*>(theInteractiveMap);
     theMap->setName("scene town 3 logic map");
@@ -158,6 +153,15 @@ void SceneTown3::RenderShadowCasters()
             modelStack->PopMatrix();
         }
     }
+
+	//<!> will remove soon <!>
+	for (auto it : objVec)
+	{
+		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
+		if (the3DObject && (camera.position - camera.target).Normalize().Dot(the3DObject->GetPos().Normalized()) < 1.f)
+			the3DObject->Render();
+	}
+	//<!> will remove soon <!>
 }
 
 void SceneTown3::RenderSkybox()
@@ -286,13 +290,6 @@ void SceneTown3::RenderPassMain()
     RenderShadowCasters();
 
     SceneGraphics->RenderMesh("reference", false);
-
-    //<!> will remove soon <!>
-    for (auto it : objVec)
-    {
-        it->Render();
-    }
-    //<!> will remove soon <!>
 
     SceneGraphics->SetHUD(true);
     std::ostringstream ss;

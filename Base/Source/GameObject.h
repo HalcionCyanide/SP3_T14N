@@ -45,7 +45,7 @@ protected:
 	Vector3 Pos, Scale;
 	float RotationAngle;
 	bool Active = true;
-	Boundary* Bounds = new Boundary();
+	Boundary* Bounds;
 };
 
 #endif

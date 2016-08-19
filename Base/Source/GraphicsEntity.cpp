@@ -123,8 +123,8 @@ void GraphicsEntity::Init()
 	// Use our shader
 	glUseProgram(m_programID);
 
-	m_lightDepthFBO.Init(2000, 2000);
-	glUniform1i(m_parameters[U_SHADOW_SAMPLING_AMOUNT], 4);
+	m_lightDepthFBO.Init(4096, 4096);
+	glUniform1i(m_parameters[U_SHADOW_SAMPLING_AMOUNT], 8);
 
 	lights[0].type = Light::LIGHT_DIRECTIONAL;
 	lights[0].position.Set(1600, 1200, 0);

@@ -108,7 +108,7 @@ void Camera3::Update(float dt)
 	}
 	if (!CameraVelocity.IsZero())
 	{
-		if (Application::Sound_Footstep == NULL)
+	/*	if (Application::Sound_Footstep == NULL)
 		{
 			Application::Sound_Footstep = Application::theSoundEngine->play2D(SoundName[5].c_str(), false, true);
 			Application::Sound_Footstep->setPlaybackSpeed(CameraCurrentWalkSpeed / 14);
@@ -121,7 +121,7 @@ void Camera3::Update(float dt)
 		else if (Application::Sound_Footstep->isFinished() == true)
 		{
 			Application::Sound_Footstep = NULL;
-		}
+		}*/
 		DecomposePlayerInertia(dt);
 	}
 	if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
@@ -229,8 +229,8 @@ void Camera3::CameraTiltMotion(double dt, bool Moving)
 	//Values halved for testing
 	float CamTiltSpeed = CameraCurrentWalkSpeed / 13.f;
 	float TiltAmount = CameraCurrentWalkSpeed / 60.f;
-	float BobSpeed = CamTiltSpeed /2.f;
-	float BobAmount = CameraCurrentWalkSpeed / 300.f;
+	float BobSpeed = CamTiltSpeed / (64.f / CameraCurrentWalkSpeed) + (CameraCurrentWalkSpeed / 640.f);;
+	float BobAmount = (CameraCurrentWalkSpeed / 600.f) + (CameraCurrentWalkSpeed * CameraCurrentWalkSpeed / 10000.f);
 	if (Moving && cos(Math::DegreeToRadian(abs(CurrentCameraRotation.x))) > 0.3f )
 	{
 		if (!TiltDir && CurrentCameraRotation.z >= TiltAmount){ TiltDir = true; }

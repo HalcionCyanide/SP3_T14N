@@ -36,8 +36,12 @@ void BillboardManager::Render()
 
 void BillboardManager::Exit()
 {
-	for (std::vector<Billboard*>::iterator it = BillboardContainer.begin(); it != BillboardContainer.end(); ++it)
-		(*it)->Exit();
+    for (std::vector<Billboard*>::iterator it = BillboardContainer.begin(); it != BillboardContainer.end(); ++it)
+    {
+        (*it)->Exit();
+        delete *it;
+    }
+    BillboardContainer.clear();
 }
 
 void BillboardManager::UpdateContainer(float dt, const Vector3 &CameraPosition){

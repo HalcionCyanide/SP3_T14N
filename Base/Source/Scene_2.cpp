@@ -98,7 +98,7 @@ void Scene_2::Update(float dt)
 	{
 		Scene_System::accessing().SwitchScene(SceneFreeField::id_);
 	}
-	int RandAmount = Math::RandIntMinMax(0, 3);
+	int RandAmount = Math::RandIntMinMax(1, 3);
 	for (int i = 0; i < RandAmount; ++i)
 	{
 		float RandScale = Math::RandFloatMinMax(1.f, 2.f);
@@ -312,5 +312,8 @@ void Scene_2::Render()
 
 void Scene_2::Exit()
 {
+    for (auto it : ObjectVec)
+        delete it;
+    ObjectVec.clear();
     delete Player;
 }

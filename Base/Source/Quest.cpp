@@ -28,33 +28,7 @@ void Quest::setName(std::string sample)
 	questName = sample;
 }
 
-int Quest::getStage()
-{
-	return currentStage;
-}
-
-int Quest::getMaxStages()
-{
-	return questDesc.size();
-}
-
-void Quest::nextStage()
-{
-	if (active)
-	{
-		if (currentStage < getMaxStages())
-		{
-			currentStage++;
-		}
-		else
-		{
-			active = false;
-			completed = true;
-		}
-	}
-}
-
-std::vector<std::string>& Quest::getDesc()
+std::string Quest::getDesc()
 {
 	return questDesc;
 }
