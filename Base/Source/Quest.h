@@ -14,7 +14,7 @@ public:
 	std::string getName();
 	void setName(std::string);
 
-	std::vector<std::string>& getDesc();
+	std::string getDesc();
 
 	bool getActive();
 	void setActive(bool);

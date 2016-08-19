@@ -9,7 +9,6 @@ public:
 	~questManager();
 
 	void readFile(const std::string);
-	void readDescFile(const std::string);
 
 	std::vector<Quest> allQuests;
 	std::vector<Quest> completedQuests;
