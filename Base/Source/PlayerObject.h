@@ -1,6 +1,7 @@
 #ifndef PLAYEROBJECT_H
 #define PLAYEROBJECT_H
 
+#include "Camera3.h"
 #include "GameObject.h"
 #include <vector>
 
@@ -9,6 +10,8 @@ class PlayerObject : public GameObject
 public:
     PlayerObject();
     virtual ~PlayerObject();
+
+	Camera3* cameraObject = nullptr;
 
     virtual void Update(double dt);
 

@@ -4,6 +4,7 @@
 #include "Scene_2.h"
 #include "SceneTown1.h"
 #include "SceneTown2.h"
+#include "SceneFreeField.h"
 
 #include "GameMap.h"
 #include "PlayerObject.h"
@@ -99,6 +100,10 @@ void SceneTown3::Update(float dt)
 		Scene_System::accessing().SwitchScene(SceneTown2::id_);
 	}
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('4'))
+	{
+		Scene_System::accessing().SwitchScene(SceneFreeField::id_);
+	}
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('5'))
 	{
 		Scene_System::accessing().SwitchScene(Scene_2::id_);
 	}

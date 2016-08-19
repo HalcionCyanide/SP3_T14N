@@ -1,5 +1,5 @@
 Name,CharacterSymbol //ONLY 1 character is allowed!,MeshID,ScaleX,ScaleY,ScaleZ,RotationX,RotationY,RotationZ,Active,BillBoard  //This has to be at the last coloumn because Billboard is not a GameObject. OBJ SCALE RATIO MUST NOT CHANGE
 TheWhiteCube,C,cube,10,5,10,,,,1,0
-TheSmallHouse,H,small_house,24.358974359,50,50,,,,1,0
+TheSmallHouse,H,small_house,24.35897436,70,70,,,,1,0
 TheTree,T,Tree,10,20,10,,,,1,1
-TheSmallHouse2,h,small_house2,28.3333333333,50,50,,,,1,0
+TheSmallHouse2,h,small_house2,28.33333333,70,70,,,,1,0
