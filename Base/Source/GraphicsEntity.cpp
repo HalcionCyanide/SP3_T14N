@@ -168,10 +168,10 @@ void GraphicsEntity::Update(float dt)
     if (Application::IsKeyPressed('2')) {
         glDisable(GL_CULL_FACE);
     }*/
-    if (Application::IsKeyPressed('5')) {
+    if (Application::IsKeyPressed('6')) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
-	if (Application::IsKeyPressed('6')) {
+	if (Application::IsKeyPressed('7')) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
 }

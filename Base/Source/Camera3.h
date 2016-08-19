@@ -35,7 +35,7 @@ public:
 	virtual void Update(float dt);
 	virtual void Reset();
 
-	const float PlayerHeight = 10.f;
+	const float PlayerHeight = 7.5f;
 
 	float CameraCurrentWalkSpeed = 16.f;
 
@@ -44,7 +44,7 @@ public:
 	Vector3 CameraVelocity;
 
 	bool CameraIsLocked = false;
-
+	void DecomposeMouseInertia(float dt);
 	void UpdateCameraVectors();
 private:
 
@@ -73,7 +73,7 @@ private:
 	float Pitch_Velocity = 0.f;
 	float InertiaTimeLimit = 0;
 	void DecomposePlayerInertia(float dt);
-	void DecomposeMouseInertia(float dt);
+	
 
 	// For camera animations
 	bool TiltDir = false;
