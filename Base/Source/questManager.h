@@ -10,8 +10,6 @@ public:
 
 	void readFile(const std::string);
 	void readDescFile(const std::string);
-	void print();
-	void printQuestwithID(const int);
 
 	std::vector<Quest> allQuests;
 	std::vector<Quest> completedQuests;
