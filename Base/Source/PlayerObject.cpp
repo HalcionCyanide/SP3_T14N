@@ -1,6 +1,7 @@
 #include "PlayerObject.h"
 #include "Scene_System.h"
 #include "Application.h"
+#include "SimpleCommand.h"
 
 PlayerObject::PlayerObject()
     : GameObject()
@@ -68,23 +69,23 @@ void PlayerObject::Update(double dt)
 	}
 	//if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
 	//	cameraObject->DecomposeMouseInertia(dt);
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('W'))
+    if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]))
 	{
 		Walk((float)dt);
 	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('S'))
+    if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]))
 	{
 		Walk(-(float)dt);
 	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('A'))
+    if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]))
 	{
 		Strafe(-(float)dt);
 	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('D'))
+    if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]))
 	{
 		Strafe((float)dt);
 	}
-	if (!CameraIsLocked &&Scene_System::accessing().cSS_InputManager->GetKeyValue(' '))
+    if (!CameraIsLocked &&Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::JUMP_COMMAND]))
 	{
 		Jump((float)dt);
 	}

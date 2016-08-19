@@ -1,6 +1,6 @@
 #include "InputManager.h"
 #include "Application.h"
-
+#include "SimpleCommand.h"
 // Test Build 2 
 // - Ryan
 
@@ -14,7 +14,20 @@ InputManager::InputManager()
 
 void InputManager::HandleUserInput()
 {
-	for (unsigned i = 0; i < 256; ++i)
+    //<!> hardcoded inputs. A need for change. So i really need everyone's help
+    //for (unsigned num = 0; num < SimpleCommand::TOTAL_COMMANDS; ++num)
+    //{
+    //    if (Application::IsKeyPressed(SimpleCommand::m_allTheKeys[num]) && cIM_Keys[SimpleCommand::m_allTheKeys[num]] == false)
+    //    {
+    //        cIM_Keys[SimpleCommand::m_allTheKeys[num]] = true;
+    //    }
+    //    else if (!Application::IsKeyPressed(SimpleCommand::m_allTheKeys[num]) && cIM_Keys[SimpleCommand::m_allTheKeys[num]] == true)
+    //    {
+    //        cIM_Keys[SimpleCommand::m_allTheKeys[num]] = false;
+    //    }
+    //}
+    //<!> hardcoded inputs. A need for change. So i really need everyone's help
+    for (unsigned i = 0; i < 256; ++i)
 	{
 		// Check Keypress
 		if (Application::IsKeyPressed(i) && cIM_Keys[i] == false)
