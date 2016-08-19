@@ -23,7 +23,7 @@ GameObject::GameObject(GameObject &Object)
     this->RotationAngle = Object.RotationAngle;
     this->Active = Object.Active;
     setName(Object.getName());
-	Bounds->CalculateValues(this->Pos, this->Scale);
+	Bounds->CalculateValues(this->Pos, this->Scale, this->RotationAngle);
 }
 
 GameObject::~GameObject()
@@ -62,7 +62,7 @@ void GameObject::SetActive(const bool &active)
 
 void GameObject::SetBounds()
 {
-	Bounds->CalculateValues(this->Pos, this->Scale);
+	Bounds->CalculateValues(this->Pos, this->Scale, this->RotationAngle);
 }
 
 Mesh& GameObject::GetMesh()const

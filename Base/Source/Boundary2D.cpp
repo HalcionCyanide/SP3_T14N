@@ -1,8 +1,8 @@
 #include "Boundary2D.h"
 
-Boundary2D::Boundary2D(const Vector3 &pos, const Vector3 &scale)
+Boundary2D::Boundary2D(const Vector3 &pos, const Vector3 &scale, const float &rotationAngle)
 {
-	CalculateValues(pos, scale);
+	CalculateValues(pos, scale, rotationAngle);
 }
 
 Boundary2D::Boundary2D(const Boundary2D &bounds)
@@ -18,7 +18,7 @@ bool Boundary2D::CheckCollision(const Boundary2D &object)const
 	return true;
 }
 
-bool Boundary2D::CheckCollision(const Vector3 &point)const
+bool Boundary2D::CheckCollision(const Vector3 &point, const Vector3 &null)const
 {
 	if (abs(this->GetPosition().x - point.x) > (this->GetScale().x) * 0.5f) return false;
 	if (abs(this->GetPosition().y - point.y) > (this->GetScale().y) * 0.5f) return false;

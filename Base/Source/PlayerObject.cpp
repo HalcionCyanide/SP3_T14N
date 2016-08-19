@@ -53,7 +53,10 @@ void PlayerObject::Update(double dt)
 			for (std::vector<GameObject*>::iterator it = theBoundaries->begin(); it != theBoundaries->end(); ++it)
 			{
 				if (MovementValues.IsEqual(0, MovementValues.x) == false && CheckCollision(*(*it)->GetBoundary(), Xprediction))
+				{
+					CheckCollision(*(*it)->GetBoundary(), Xprediction);
 					MovementValues.x = 0;
+				}
 				if (MovementValues.IsEqual(0, MovementValues.z) == false && CheckCollision(*(*it)->GetBoundary(), Zprediction))
 					MovementValues.z = 0;
 				if (MovementValues.IsZero())
@@ -127,7 +130,7 @@ void PlayerObject::setPlayerBoundaries(std::vector<GameObject*> &Playerboundary)
 
 bool PlayerObject::CheckCollision(const Boundary &object, const Vector3 &Prediction)
 {
-	return object.CheckCollision(Prediction);
+	return object.CheckCollision(Prediction, this->MovementValues);
 }
 
 void PlayerObject::DecomposePlayerInertia(float dt)

@@ -62,7 +62,7 @@ void UI_Element::Update(float dt, const Vector3& MousePosition, bool& ClickSucce
 	}
 	if (Active)
 	{
-		if (BoundsActive && UI_Bounds->CheckCollision(MousePosition))
+		if (BoundsActive && UI_Bounds->CheckCollision(MousePosition, Vector3(0, 0, 0)))
 		{
 			// Do Upscale
 			if (Application::IsKeyPressed(VK_LBUTTON))
