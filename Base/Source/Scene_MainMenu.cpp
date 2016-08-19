@@ -59,8 +59,8 @@ void Scene_MainMenu::Init()
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera.position.x / TerrainScale.x, camera.position.z / TerrainScale.z) + camera.PlayerHeight;
 	Application::cA_CurrentTerrainY = Application::cA_MinimumTerrainY;
 
-	camera.Init(Vector3(-0.5f, Application::cA_CurrentTerrainY, -44.5f), Vector3(0, Application::cA_CurrentTerrainY + 5, -35), Vector3(0, 1, 0));
-	//camera.CameraIsLocked = true;
+	camera.Init(Vector3(-0.5f, Application::cA_CurrentTerrainY, -40.f), Vector3(0, Application::cA_CurrentTerrainY + 5, -35), Vector3(0, 1, 0));
+	camera.CameraIsLocked = true;
 
 	for (int i = 0; i < 15; i++)
 	{
@@ -146,7 +146,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
 						{
 							// Start
 							Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-							Scene_System::accessing().SwitchScene(SceneFreeField::id_);
+							Scene_System::accessing().SwitchScene(SceneTown1::id_);
 						}
 						else if (((*it)->UI_Text == UI_Text[5]))
 						{
@@ -246,15 +246,19 @@ void Scene_MainMenu::RenderShadowCasters()
 	{
 		if ((*it)->Active)
 		{
-			float TimeRatio = 1;
-			if ((*it)->GetLifeTime() != -1)
-				TimeRatio = 1.1f - (*it)->GetCurrTime() / (*it)->GetLifeTime();
-			modelStack->PushMatrix();
-			modelStack->Translate((*it)->GetPosition().x, (*it)->GetPosition().y, (*it)->GetPosition().z);
-			modelStack->Rotate(Math::RadianToDegree(atan2(camera.position.x - (*it)->GetPosition().x, camera.position.z - (*it)->GetPosition().z)), 0, 1, 0);
-			modelStack->Scale(TimeRatio * (*it)->GetDimensions().x, TimeRatio *(*it)->GetDimensions().y, TimeRatio *(*it)->GetDimensions().z);
-			SceneGraphics->RenderMesh((*it)->GetMeshName(), false);
-			modelStack->PopMatrix();
+			if ((camera.position - camera.target).Normalize().Dot((*it)->GetPosition().Normalized()) < 1.f)
+			{
+				float TimeRatio = 1;
+				if ((*it)->GetLifeTime() != -1)
+					TimeRatio = 1.1f - (*it)->GetCurrTime() / (*it)->GetLifeTime();
+				modelStack->PushMatrix();
+				modelStack->Translate((*it)->GetPosition().x, (*it)->GetPosition().y, (*it)->GetPosition().z);
+				modelStack->Rotate(Math::RadianToDegree(atan2(camera.position.x - (*it)->GetPosition().x, camera.position.z - (*it)->GetPosition().z)), 0, 1, 0);
+				modelStack->Scale(TimeRatio * (*it)->GetDimensions().x, TimeRatio *(*it)->GetDimensions().y, TimeRatio *(*it)->GetDimensions().z);
+				SceneGraphics->RenderMesh((*it)->GetMeshName(), false);
+				modelStack->PopMatrix();
+			}
+			
 		}
 	}
 }
@@ -388,7 +392,7 @@ void Scene_MainMenu::RenderPassMain()
 	for (auto it : testingRenderingStuff)
 	{
 		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
-		if (the3DObject)
+		if (the3DObject && (camera.position - camera.target).Normalize().Dot(the3DObject->GetPos().Normalized()) < 1.f)
 			the3DObject->Render();
 	}
 	//<!> will remove soon <!>

@@ -30,7 +30,7 @@ void SceneTown1::Init()
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 
     // Set Terrain Size
-    TerrainScale.Set(700.f, 100.f, 700.f);
+    TerrainScale.Set(400.f, 100.f, 400.f);
 
     Mtx44 perspective;
     perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
@@ -160,6 +160,15 @@ void SceneTown1::RenderShadowCasters()
             modelStack->PopMatrix();
         }
     }
+
+	//<!> will remove soon <!>
+	for (auto it : objVec)
+	{
+		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
+		if (the3DObject && (camera.position - camera.target).Normalize().Dot(the3DObject->GetPos().Normalized()) < 1.f)
+			the3DObject->Render();
+	}
+	//<!> will remove soon <!>
 }
 
 void SceneTown1::RenderSkybox()
@@ -288,13 +297,6 @@ void SceneTown1::RenderPassMain()
     RenderShadowCasters();
 
     SceneGraphics->RenderMesh("reference", false);
-
-    //<!> will remove soon <!>
-    for (auto it : objVec)
-    {
-        it->Render();
-    }
-    //<!> will remove soon <!>
 
     SceneGraphics->SetHUD(true);
     std::ostringstream ss;

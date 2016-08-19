@@ -161,6 +161,15 @@ void SceneTown2::RenderShadowCasters()
             modelStack->PopMatrix();
         }
     }
+
+	//<!> will remove soon <!>
+	for (auto it : objVec)
+	{
+		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
+		if (the3DObject && (camera.position - camera.target).Normalize().Dot(the3DObject->GetPos().Normalized()) < 1.f)
+			the3DObject->Render();
+	}
+	//<!> will remove soon <!>
 }
 
 void SceneTown2::RenderSkybox()
@@ -289,13 +298,6 @@ void SceneTown2::RenderPassMain()
     RenderShadowCasters();
 
     SceneGraphics->RenderMesh("reference", false);
-
-    //<!> will remove soon <!>
-    for (auto it : objVec)
-    {
-        it->Render();
-    }
-    //<!> will remove soon <!>
 
     SceneGraphics->SetHUD(true);
     std::ostringstream ss;

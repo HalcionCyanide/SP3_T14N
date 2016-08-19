@@ -112,7 +112,7 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
         the3DObj->SetPos(Vector3(
             ((the3DObj->GetPos().x - ((float)theNumOfTiles_MapWidth / 2.f)) * tileSizeXYZ.x) + (tileSizeXYZ.x * 0.5f),
             0,
-            (-(the3DObj->GetPos().z - ((float)theNumOfTiles_MapHeight / 2.f)) * tileSizeXYZ.z) - (tileSizeXYZ.z * 0.5f)
+            ((the3DObj->GetPos().z - ((float)theNumOfTiles_MapHeight / 2.f)) * tileSizeXYZ.z) - (tileSizeXYZ.z * 0.5f)
             ));
         the3DObj->SetPos(Vector3(the3DObj->GetPos().x,
             (the3DObj->GetScale().y*0.5f) + terrainSize.y * ReadHeightMap(theHeightMap, the3DObj->GetPos().x / terrainSize.x, the3DObj->GetPos().z / terrainSize.z) - 0.5f,
@@ -128,7 +128,7 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
         theBB->SetPosition(Vector3(
             ((theBB->GetPosition().x - ((float)theNumOfTiles_MapWidth / 2.f)) * tileSizeXYZ.x) + (tileSizeXYZ.x * 0.5f),
             0,
-            (-(theBB->GetPosition().z - ((float)theNumOfTiles_MapHeight / 2.f)) * tileSizeXYZ.z) - (tileSizeXYZ.z * 0.5f)
+            ((theBB->GetPosition().z - ((float)theNumOfTiles_MapHeight / 2.f)) * tileSizeXYZ.z) - (tileSizeXYZ.z * 0.5f)
             ));
         theBB->SetPosition(Vector3(theBB->GetPosition().x,
             (theBB->GetDimensions().y*0.5f) + terrainSize.y * ReadHeightMap(theHeightMap, theBB->GetPosition().x / terrainSize.x, theBB->GetPosition().z / terrainSize.z),
