@@ -19,6 +19,7 @@
     <ClCompile Include="Source\BoundsBuilder.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Camera3.cpp" />
+    <ClCompile Include="Source\CItem.cpp" />
     <ClCompile Include="Source\Commands.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\GameObjectBuilder.cpp" />
@@ -71,6 +72,7 @@
     <ClInclude Include="Source\GenericEntity.h" />
     <ClInclude Include="Source\GenericSystem.h" />
     <ClInclude Include="Source\GraphicsEntity.h" />
+    <ClInclude Include="Source\CItem.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LoadHmap.h" />
     <ClInclude Include="Source\LoadOBJ.h" />

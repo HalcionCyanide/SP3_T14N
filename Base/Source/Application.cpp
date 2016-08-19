@@ -184,8 +184,10 @@ void Application::Run()
 	while (!ExitGame && !glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE))
 	{
 		if (hwnd == GetActiveWindow())
-			Update(); 
-		Scene_System::accessing().getCurrScene().Render();
+		{
+			Update();
+			Scene_System::accessing().getCurrScene().Render();
+		}
 		//Swap buffers
 		glfwSwapBuffers(m_window);
 		//Get and organize events, like keyboard and mouse input, window resizing, etc...
