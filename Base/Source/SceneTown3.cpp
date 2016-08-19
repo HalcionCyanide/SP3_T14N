@@ -29,7 +29,7 @@ void SceneTown3::Init()
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 
     // Set Terrain Size
-    TerrainScale.Set(700.f, 100.f, 700.f);
+	TerrainScale.Set(350.f, 50.f, 350.f);
 
     Mtx44 perspective;
     perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
