@@ -63,7 +63,8 @@ void SceneFreeField::Init()
     Player->SetMesh(*it->second);
     Player->setName("Player 1");
     Player->SetRotation(camera.CurrentCameraRotation.y, Vector3(0, 1, 0));
-    PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
+	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
+	//PlayerPTR->cameraObject = &camera;
     PlayerPTR->setVel(Vector3(10.f, 0.f, 0.f));
     PlayerPTR->SetPos(Vector3(Player->GetPos().x, camera.PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPos().x / TerrainScale.x), (Player->GetPos().z / TerrainScale.z)), Player->GetPos().z));
     PlayerPTR->setPlayerBoundaries(objVec);
