@@ -39,7 +39,7 @@ void SceneFreeField::Init()
     camera.Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
 
     // Initiallise Model Specific Meshes Here
-    Mesh* newMesh = MeshBuilder::GenerateTerrain("terrain", "Image//heightmap5.raw", m_heightMap);
+    Mesh* newMesh = MeshBuilder::GenerateTerrain("FreeField", "Image//heightmap5.raw", m_heightMap);
     newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
     newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
     SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
@@ -61,7 +61,7 @@ void SceneFreeField::Init()
     Player->Init("Player", camera.position - Vector3(0, camera.PlayerHeight, 0), Vector3(2, 1, 2), 0.0f, Vector3(1, 0, 0), true);
     std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find("cube");
     Player->SetMesh(*it->second);
-    Player->setName("PLayer 1");
+    Player->setName("Player 1");
     Player->SetRotation(camera.CurrentCameraRotation.y, Vector3(0, 1, 0));
     PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
     PlayerPTR->setVel(Vector3(10.f, 0.f, 0.f));
@@ -133,7 +133,7 @@ void SceneFreeField::RenderTerrain()
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
     modelStack->PushMatrix();
     modelStack->Scale(TerrainScale.x, TerrainScale.y, TerrainScale.z);
-    SceneGraphics->RenderMesh("terrain", true);
+    SceneGraphics->RenderMesh("FreeField", true);
     modelStack->PopMatrix();
 }
 
