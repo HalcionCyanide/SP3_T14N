@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
-
+#include "genericCondition.h"
 class Quest
 {
 public:
@@ -30,5 +30,7 @@ private:
 	std::string questDesc;
 	bool active;
 	bool completed;
+    //template<class T>
+    //std::vector<genericCondition<T>*> bunch;
 };
 
