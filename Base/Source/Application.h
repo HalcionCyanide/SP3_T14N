@@ -55,6 +55,8 @@ private:
 	double m_dElaspedTime;
 	double m_dAccumulatedTime_ThreadOne;
 	double m_dAccumulatedTime_ThreadTwo;
+
+    bool loadGlobalStuff();
 };
 
 #endif

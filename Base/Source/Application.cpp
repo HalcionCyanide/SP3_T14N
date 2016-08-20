@@ -10,6 +10,9 @@
 #include "SceneTown1.h"
 #include "SceneTown2.h"
 #include "SceneTown3.h"
+#include <fstream>
+#include <assert.h>
+#include <sstream>
 
 //Include GLEW
 #include <GL/glew.h>
@@ -171,6 +174,8 @@ void Application::Init()
 	SceneBattleScreen* battlescreen = new SceneBattleScreen();
 	battlescreen->Init();
 	Scene_System::accessing().AddScene(*battlescreen);
+
+    assert(loadGlobalStuff());
 }
 
 void Application::Run()
@@ -229,4 +234,24 @@ void Application::Exit()
 	glfwDestroyWindow(m_window);
 	//Finalize and clean up GLFW
 	glfwTerminate();
+}
+
+bool Application::loadGlobalStuff()
+{
+    std::ifstream file("Image//GlobalDriven.csv");
+    if (file.is_open())
+    {
+        std::string data = "";
+        while (getline(file, data))
+        {
+            std::istringstream ss(data);
+            std::string dataFromToken = "";
+            while (getline(ss, dataFromToken, ','))
+            {
+
+            }
+        }
+        return true;
+    }
+    return false;
 }
