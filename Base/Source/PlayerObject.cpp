@@ -32,7 +32,7 @@ void PlayerObject::Update(double dt)
 	m_ElapsedTime = (float)dt;
 
 	if (Application::IsKeyPressed(VK_SHIFT) &&
-		!Scene_System::accessing().cSS_InputManager->GetKeyValue('S'))
+        !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]))
 	{
 		MaxWalkSpeed = BaseWalkSpeed * 2;
 	}
@@ -77,11 +77,11 @@ void PlayerObject::Update(double dt)
 	{
 		Walk(-(float)dt);
 	}
-    if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]))
+    if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]))
 	{
 		Strafe(-(float)dt);
 	}
-    if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]))
+    if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]))
 	{
 		Strafe((float)dt);
 	}
@@ -143,25 +143,25 @@ void PlayerObject::DecomposePlayerInertia(float dt)
 		vel_.x = 0;
 	if (abs(vel_.z) > 0 && abs(vel_.z) <= NegligibleVelocity)
 		vel_.z = 0;
-	if (!Scene_System::accessing().cSS_InputManager->GetKeyValue('S')){
+    if (!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND])){
 		if (vel_.x <= 0){
 			vel_.x += MaxWalkSpeed * RateOfDecomposition * (float)dt;
 			P_BackwardMovement(dt);
 		}
 	}
-	if (!Scene_System::accessing().cSS_InputManager->GetKeyValue('W')){
+    if (!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND])){
 		if (vel_.x >= 0){
 			vel_.x -= MaxWalkSpeed * RateOfDecomposition * (float)dt;
 			P_ForwardMovement(dt);
 		}
 	}
-	if (!Scene_System::accessing().cSS_InputManager->GetKeyValue('A')){
+    if (!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND])){
 		if (vel_.z <= 0){
 			vel_.z += MaxWalkSpeed * RateOfDecomposition * (float)dt;
 			P_LeftMovement(dt);
 		}
 	}
-	if (!Scene_System::accessing().cSS_InputManager->GetKeyValue('D')){
+    if (!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND])){
 		if (vel_.z >= 0){
 			vel_.z -= MaxWalkSpeed * RateOfDecomposition * (float)dt;
 			P_RightMovement(dt);

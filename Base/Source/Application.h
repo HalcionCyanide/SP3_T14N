@@ -57,6 +57,7 @@ private:
 	double m_dAccumulatedTime_ThreadTwo;
 
     bool loadGlobalStuff();
+    void convertStringToUpper(std::string &thestring);
 };
 
 #endif

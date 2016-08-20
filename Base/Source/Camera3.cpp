@@ -11,6 +11,7 @@
 #include "Camera3.h"
 #include "Application.h"
 #include "Mtx44.h"
+#include "SimpleCommand.h"
 
 /****************************************************************************/
 /*!
@@ -97,7 +98,7 @@ void Camera3::Update(float dt)
 	MovementValues.SetZero();
 
 	if (Application::IsKeyPressed(VK_SHIFT) &&
-		!Scene_System::accessing().cSS_InputManager->GetKeyValue('S'))
+		!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]))
 	{
 		CameraMaxWalkSpeed = CameraBaseWalkSpeed * 2;
 	}
@@ -127,23 +128,23 @@ void Camera3::Update(float dt)
 	if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
 	DecomposeMouseInertia(dt);
 
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('W'))
+    if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]))
 	{
 		Walk(dt);
 	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('S'))
+    if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]))
 	{
 		Walk(-dt);
 	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('A'))
+    if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]))
 	{
 		Strafe(-dt);
 	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('D'))
+    if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]))
 	{
 		Strafe(dt);
 	}
-	if (!CameraIsLocked &&Scene_System::accessing().cSS_InputManager->GetKeyValue(' '))
+    if (!CameraIsLocked &&Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::JUMP_COMMAND]))
 	{
 		Jump(dt);
 	}
@@ -177,25 +178,25 @@ void Camera3::DecomposePlayerInertia(float dt)
 	{
 		CameraVelocity.z = 0;
 	}
-	if (!Scene_System::accessing().cSS_InputManager->GetKeyValue('S')){
+    if (!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND])){
 		if (CameraVelocity.x <= 0){
 			CameraVelocity.x += CameraMaxWalkSpeed * RateOfDecomposition * (float)dt;
 			C_BackwardMovement(dt);
 		}
 	}
-	if (!Scene_System::accessing().cSS_InputManager->GetKeyValue('W')){
+    if (!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND])){
 		if (CameraVelocity.x >= 0){
 			CameraVelocity.x -= CameraMaxWalkSpeed * RateOfDecomposition * (float)dt;
 			C_ForwardMovement(dt);
 		}
 	}
-	if (!Scene_System::accessing().cSS_InputManager->GetKeyValue('A')){
+    if (!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND])){
 		if (CameraVelocity.z <= 0){
 			CameraVelocity.z += CameraMaxWalkSpeed * RateOfDecomposition * (float)dt;
 			C_LeftMovement(dt);
 		}
 	}
-	if (!Scene_System::accessing().cSS_InputManager->GetKeyValue('D')){
+    if (!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND])){
 		if (CameraVelocity.z >= 0){
 			CameraVelocity.z -= CameraMaxWalkSpeed * RateOfDecomposition * (float)dt;
 			C_RightMovement(dt);

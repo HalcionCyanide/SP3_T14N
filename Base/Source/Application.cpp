@@ -13,6 +13,7 @@
 #include <fstream>
 #include <assert.h>
 #include <sstream>
+#include "SimpleCommand.h"
 
 //Include GLEW
 #include <GL/glew.h>
@@ -246,12 +247,44 @@ bool Application::loadGlobalStuff()
         {
             std::istringstream ss(data);
             std::string dataFromToken = "";
-            while (getline(ss, dataFromToken, ','))
+            std::string KeyAndToken[2];
+            unsigned num = 0;
+            while (getline(ss, KeyAndToken[num], ':'))
             {
-
+                if (num == 0)
+                    convertStringToUpper(KeyAndToken[num]);
+                ++num;
+            }
+            if (KeyAndToken[0] == "FORWARD_BUTTON")
+            {
+                SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND] = KeyAndToken[1][0];
+            }
+            else if (KeyAndToken[0] == "BACKWARD_BUTTON")
+            {
+                SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND] = KeyAndToken[1][0];
+            }
+            else if (KeyAndToken[0] == "RIGHT_BUTTON")
+            {
+                SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND] = KeyAndToken[1][0];
+            }
+            else if (KeyAndToken[0] == "LEFT_BUTTON")
+            {
+                SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND] = KeyAndToken[1][0];
+            }
+            else if (KeyAndToken[0] == "JUMP_BUTTON")
+            {
+                SimpleCommand::m_allTheKeys[SimpleCommand::JUMP_COMMAND] = KeyAndToken[1][0];
             }
         }
         return true;
     }
     return false;
+}
+
+void Application::convertStringToUpper(std::string &theString)
+{
+    for (std::string::iterator it = theString.begin(), end = theString.end(); it != end; ++it)
+    {
+        (*it) = toupper(*it);
+    }
 }
