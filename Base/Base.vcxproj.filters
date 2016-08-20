@@ -159,16 +159,11 @@
     <ClCompile Include="Source\Scenes\SceneTown1.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="Source\PlayerObject.cpp">
-      <Filter>Source Files\Classes</Filter>
-=======
     <ClCompile Include="Source\Scenes\SceneTown2.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scenes\SceneTown3.cpp">
       <Filter>Source Files\Scenes</Filter>
->>>>>>> ab5a85f05485912636525a3765b25538f6987043
     </ClCompile>
     <ClCompile Include="Source\Misc\SimpleCommand.cpp">
       <Filter>Source Files\Misc</Filter>
@@ -188,7 +183,6 @@
     <ClCompile Include="Source\Misc\BattleScreenObject.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="Source\CItem.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
@@ -201,8 +195,6 @@
     <ClCompile Include="Source\BattleScreenObject.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
-=======
->>>>>>> ab5a85f05485912636525a3765b25538f6987043
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Misc\BattleScreenObject.h">
@@ -325,16 +317,11 @@
     <ClInclude Include="Source\Scenes\SceneBattleScreen.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="Source\PlayerObject.h">
-      <Filter>Header Files\Classes</Filter>
-=======
     <ClInclude Include="Source\Scenes\SceneFreeField.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scenes\SceneTown1.h">
       <Filter>Header Files\Scenes</Filter>
->>>>>>> ab5a85f05485912636525a3765b25538f6987043
     </ClInclude>
     <ClInclude Include="Source\Scenes\SceneTown2.h">
       <Filter>Header Files\Scenes</Filter>
