@@ -11,7 +11,8 @@ void Billboard::Init(const Vector3& Position, const Vector3& Dimensions, const V
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find(MeshName);
-	if (it != SceneGraphics->meshList.end())
+    setName(MeshName);
+    if (it != SceneGraphics->meshList.end())
 	{
 		this->MeshName = MeshName;
 		this->Position = Position;
