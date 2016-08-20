@@ -156,7 +156,11 @@ void GraphicsEntity::Init()
 	Mesh* newMesh = MeshBuilder::GenerateAxes("reference", 1000.f, 1000.f, 1000.f);
 	meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
+#ifdef _DEBUG
 	assert(loadingMeshDriven("Image//MeshDriven.csv"));
+#else
+    loadingMeshDriven("Image//MeshDriven.csv");
+#endif
 	ExportedFont = meshList.find("text")->second;
 }
 
