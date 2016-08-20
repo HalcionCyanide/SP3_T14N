@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file           GraphicsEntity.h
+\author      Lee Sek Heng
+\par            email: 150629Z@mymail.nyp.edu.sg
+\brief
+A GraphicsEntity so that Shaders, objects and texture that is needed across all the scenes won't be loaded multiple times
+*/
+/******************************************************************************/
 #ifndef GRAPHICS_ENTITY_H
 #define GRAPHICS_ENTITY_H
 
@@ -17,6 +26,12 @@
 #define MAX_NUM_LIGHTS 2
 #endif
 
+/******************************************************************************/
+/*!
+Class GraphicsEntity:
+\brief  Defines a GraphicsEntity, it's method for rendering the meshes, and is always connected to a recent scene.
+*/
+/******************************************************************************/
 class GraphicsEntity : public SceneEntity
 {
 public:

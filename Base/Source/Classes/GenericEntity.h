@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file           GenericEntity.h
+\author      Lee Sek Heng
+\par            email: 150629Z@mymail.nyp.edu.sg
+\brief
+A Generic Entity so that polymorphism will make life easier when all objects inheirits from it.
+*/
+/******************************************************************************/
 #ifndef GENERIC_ENTITY_H
 #define GENERIC_ENTITY_H
 
@@ -5,6 +14,12 @@
 //#include "GenericComponent.h"
 #include <string>
 
+/******************************************************************************/
+/*!
+Class GenericEntity:
+\brief  Defines a GenericEntity and it's methods.
+*/
+/******************************************************************************/
 class GenericEntity
 {
 public:
