@@ -245,6 +245,9 @@ bool Application::loadGlobalStuff()
         std::string data = "";
         while (getline(file, data))
         {
+            //Security check at it's finest
+            if (data == "" || data == "\n" || data == "\r")
+                continue;
             std::istringstream ss(data);
             std::string dataFromToken = "";
             std::string KeyAndToken[2];
