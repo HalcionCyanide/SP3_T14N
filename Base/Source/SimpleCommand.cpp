@@ -1,6 +1,12 @@
 #include "SimpleCommand.h"
 
-unsigned char SimpleCommand::m_allTheKeys[SimpleCommand::TOTAL_COMMANDS] = { 'W', 'S', 'A', 'D', ' '};
+unsigned char SimpleCommand::m_allTheKeys[SimpleCommand::TOTAL_COMMANDS] = { 
+    'W'
+    , 'S'
+    , 'A'
+    , 'D'
+    , ' '
+};
 
 SimpleCommand::SimpleCommand()
 {
