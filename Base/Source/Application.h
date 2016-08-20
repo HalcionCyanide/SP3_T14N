@@ -7,16 +7,16 @@
 #include "Vector3.h"
 #include "irrklang.h"
 using namespace irrklang;
-#pragma comment(lib, "../irrKlang-1.5.0/lib/Win32-visualStudio/irrKlang.lib")
-
-const std::string SoundName[] = {
-	"Sounds//.ogg",
-	"Sounds//.ogg",
-	"Sounds//.ogg",
-	"Sounds//.ogg",
-	"Sounds//.ogg",
-	"Sounds//Step_Grass.mp3",
-};
+//#pragma comment(lib, "../irrKlang-1.5.0/lib/Win32-visualStudio/irrKlang.lib")
+//
+//const std::string SoundName[] = {
+//	"Sounds//.ogg",
+//	"Sounds//.ogg",
+//	"Sounds//.ogg",
+//	"Sounds//.ogg",
+//	"Sounds//.ogg",
+//	"Sounds//Step_Grass.mp3",
+//};
 
 // Notation of c[ClassInitials]_Variable, cA_
 
@@ -41,8 +41,8 @@ public:
 	// Stored Camera Values
 	static float cA_MinimumTerrainY, cA_CurrentTerrainY;
 
-	static ISoundEngine* theSoundEngine;
-	static ISound* Sound_Footstep;
+	//static ISoundEngine* theSoundEngine;
+	//static ISound* Sound_Footstep;
 
 	static bool ExitGame;
 

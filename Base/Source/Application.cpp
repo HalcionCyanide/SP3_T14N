@@ -27,8 +27,8 @@ const unsigned int frameTime = 1000 / FPS; // time for each frame
 
 float Application::cA_MinimumTerrainY = 0, Application::cA_CurrentTerrainY = 0;
 
-ISoundEngine* Application::theSoundEngine = NULL;
-ISound* Application::Sound_Footstep = NULL;
+//ISoundEngine* Application::theSoundEngine = NULL;
+//ISound* Application::Sound_Footstep = NULL;
 
 bool Application::ExitGame = false;
 
@@ -58,15 +58,15 @@ bool Application::IsKeyPressed(unsigned short key)
 
 Application::Application()
 {
-	Application::theSoundEngine = NULL;
-	Application::Sound_Footstep = NULL;
+	//Application::theSoundEngine = NULL;
+	//Application::Sound_Footstep = NULL;
 }
 
 Application::~Application()
 {
 	//if (theSoundEngine != NULL)
 	//{
-		theSoundEngine->drop();
+		//theSoundEngine->drop();
 	//}
 }
 
@@ -76,10 +76,10 @@ void Application::Init()
 	Scene_System::accessing().Init();
 
 	//Start Sound Engine with Default params
-	theSoundEngine = createIrrKlangDevice();
-	theSoundEngine->setSoundVolume(0.25f);
-	if (!theSoundEngine)
-		return ;
+	//theSoundEngine = createIrrKlangDevice();
+	//theSoundEngine->setSoundVolume(0.25f);
+	//if (!theSoundEngine)
+	//	return ;
 
 	//Set the error callback
 	glfwSetErrorCallback(error_callback);
