@@ -40,6 +40,7 @@ GameObject::~GameObject()
         delete Bounds;
         Bounds = nullptr;
     }
+    MeshObject = nullptr;
 }
 
 void GameObject::SetMesh(Mesh &meshObject)

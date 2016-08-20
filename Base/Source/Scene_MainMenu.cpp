@@ -45,17 +45,17 @@ void Scene_MainMenu::Init()
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	newMesh = MeshBuilder::GenerateQuad("TFB_Logo", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//TFB_Logo.tga");
-	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+	//newMesh = MeshBuilder::GenerateQuad("TFB_Logo", Color(1, 1, 1));
+	//newMesh->textureArray[0] = LoadTGA("Image//TFB_Logo.tga");
+	//SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	newMesh = MeshBuilder::GenerateQuad("TFB_Gem", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//TFB_GEM.tga");
-	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+	//newMesh = MeshBuilder::GenerateQuad("TFB_Gem", Color(1, 1, 1));
+	//newMesh->textureArray[0] = LoadTGA("Image//TFB_GEM.tga");
+	//SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	newMesh = MeshBuilder::GenerateQuad("TFB_Button", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//TFB_Button.tga");
-	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+	//newMesh = MeshBuilder::GenerateQuad("TFB_Button", Color(1, 1, 1));
+	//newMesh->textureArray[0] = LoadTGA("Image//TFB_Button.tga");
+	//SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera.position.x / TerrainScale.x, camera.position.z / TerrainScale.z) + camera.PlayerHeight;
 	Application::cA_CurrentTerrainY = Application::cA_MinimumTerrainY;

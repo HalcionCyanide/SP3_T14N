@@ -9,7 +9,7 @@
 class Billboard : public GenericEntity
 {
 public:
-	Billboard(){};
+	Billboard();
 	Billboard(const Vector3& Position, const Vector3& Dimensions, const Vector3& PlayerPosition, const Vector3& Velocity, const std::string& MeshName, const float& LifeTime = -1);
 	virtual ~Billboard(){};
 	

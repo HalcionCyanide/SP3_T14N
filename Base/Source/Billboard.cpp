@@ -2,6 +2,13 @@
 #include "Scene_System.h"
 #include "GraphicsEntity.h"
 
+Billboard::Billboard()
+    : GenericEntity()
+{
+    StoredMesh = nullptr;
+    MeshName = "";
+}
+
 Billboard::Billboard(const Vector3& Position, const Vector3& Dimensions, const Vector3& PlayerPosition, const Vector3& Velocity, const std::string& MeshName, const float& LifeTime)
 {
 	Init(Position, Dimensions, PlayerPosition, Velocity, MeshName, LifeTime);
@@ -10,19 +17,27 @@ Billboard::Billboard(const Vector3& Position, const Vector3& Dimensions, const V
 void Billboard::Init(const Vector3& Position, const Vector3& Dimensions, const Vector3& PlayerPosition, const Vector3& Velocity, const std::string& MeshName, const float& LifeTime)
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
-	std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find(MeshName);
+    std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find(MeshName);
     setName(MeshName);
     if (it != SceneGraphics->meshList.end())
-	{
-		this->MeshName = MeshName;
-		this->Position = Position;
-		this->Dimensions = Dimensions;
-		this->Velocity = Velocity;
-		this->PlayerPosition = PlayerPosition;
-		this->CurrentTime = 0;
-		this->LifeTime = LifeTime;
-		StoredMesh = it->second;
-	}
+    {
+        this->MeshName = MeshName;
+        StoredMesh = it->second;
+    }
+    //for (auto it : SceneGraphics->meshList)
+    //{
+    //    if (MeshName == it.first)
+    //    {
+    //        StoredMesh = it.second;
+    //        break;
+    //    }
+    //}
+    this->Position = Position;
+    this->Dimensions = Dimensions;
+    this->Velocity = Velocity;
+    this->PlayerPosition = PlayerPosition;
+    this->CurrentTime = 0;
+    this->LifeTime = LifeTime;
 }
 
 void Billboard::Update(float dt)

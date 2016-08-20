@@ -240,8 +240,10 @@ bool GameMap::loadThoseLegends(const std::string &fileName)
                         GameObject*go = dynamic_cast<GameObject*>(theObject);
                         if (theValues[num] != "0")
                         {
+                            theObject = nullptr;
                             theObject = new Billboard(go->GetPos(), go->GetScale(), Vector3(0, 0, 0), Vector3(0, 0, 0), go->GetMesh().name);
                             delete go;
+                            go = nullptr;
                         }
                         else
                             go->SetBounds();
