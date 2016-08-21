@@ -69,6 +69,10 @@ void BattleSystem::Exit()
 {
 	if (Player)
 		delete Player;
+	if (BaseExterior)
+		delete BaseExterior;
+	if (BaseInterior)
+		delete BaseInterior;
 }
 
 // Private Function Calls
