@@ -2,15 +2,18 @@
 #define MUSIC_ENTITY_H
 
 #include "GenericEntity.h"
+#include "irrklang.h"
+using namespace irrklang;
 
-
-class MusicEntity : public GenericEntity
+class MusicEntity2D : public GenericEntity
 {
 public:
-    MusicEntity();
-    virtual ~MusicEntity();
+    MusicEntity2D();
+    virtual ~MusicEntity2D();
 
-    bool play3D;
+protected:
+    ISound *SoundEffects;
+    ISoundSource *SoundSource;
 };
 
 #endif

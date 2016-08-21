@@ -1,12 +1,13 @@
 #include "MusicEntity.h"
 
-MusicEntity::MusicEntity()
+MusicEntity2D::MusicEntity2D()
     : GenericEntity()
 {
-    play3D = false;
+    SoundEffects = nullptr;
+    SoundSource = nullptr;
 }
 
-MusicEntity::~MusicEntity()
+MusicEntity2D::~MusicEntity2D()
 {
 
 }

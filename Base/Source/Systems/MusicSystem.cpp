@@ -1,5 +1,17 @@
 #include "MusicSystem.h"
 
+MusicSystem::MusicSystem()
+    : musicEngine(nullptr)
+{
+
+}
+
+MusicSystem::~MusicSystem()
+{
+    if (musicEngine)
+        musicEngine->drop();
+}
+
 void MusicSystem::Init()
 {
 
