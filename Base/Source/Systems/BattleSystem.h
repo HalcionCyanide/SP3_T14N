@@ -24,7 +24,7 @@ public:
 
 	//Public Variables
 	BaseObject* Player;
-	BS_State BattleState = BS_Null;
+	BS_State BattleState = BS_PlayerEvasionStage;// = BS_Null;
 
 	// Public Function Calls
 	virtual void Init();
@@ -40,9 +40,14 @@ private:
 	// Private Variables
 	Vector3 CursorPosition;
 	float PlayerScale;
+	Vector3 PlayerActingForce;
 	Vector3 CenterPosition;
 	BaseObject* BaseExterior;
 	BaseObject* BaseInterior;
+	bool MouseModeSelected = true;
+	bool isInvincible = false;
+	float IFrameTimer = 0;
+	const float FrictionDecrementMultiplier = 0.8f;
 
 	// Private Function Calls
 	// State Calls

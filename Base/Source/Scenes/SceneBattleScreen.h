@@ -30,31 +30,12 @@ private:
 	void RenderPassGPass();
 	void RenderPassMain();
 
-	// Additional Calls
-	void PlayerUpdate(float dt);
-
 	BillboardManager BManager;
 
 	double framerates;
 	GenericEntity *theInteractiveMap;
 
-	BaseObject* Player = nullptr;
-	std::vector<BaseObject*> ProjectileContainer;
-
-	UI_Element* BaseExterior;
-	UI_Element* BaseInterior;
-
 	BattleSystem BSystem;
-
-	//Player Stuff
-	Vector3 CurrentMousePosition;
-	float PlayerScale;
-	Vector3 ActingForce;
-	bool MouseModeSelected = true;
-	bool isInvincible = false;
-	float IFrameTimer = 0;
-	const float FrictionDecrementMultiplier = 0.8f;
-
 };
 
 #endif //_SCENE_BATTLE_SCREEN_H
