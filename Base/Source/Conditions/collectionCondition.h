@@ -3,7 +3,7 @@
 #include "genericCondition.h"
 #include "..\\Classes\\GameObject.h"
 
-class collectionCondition : public genericCondition<int>
+class collectionCondition : public genericCondition
 {
 public:
 	collectionCondition();
@@ -12,6 +12,7 @@ public:
 	virtual void Update(double dt);
 private:
 	GameObject* target;
+    Data<int> theRequirement;
 };
 
 #endif

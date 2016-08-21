@@ -2,10 +2,9 @@
 
 
 collectionCondition::collectionCondition()
+    : theRequirement(0)
 {
 	target = nullptr;
-	value = 0;
-	
 }
 
 collectionCondition::~collectionCondition()
