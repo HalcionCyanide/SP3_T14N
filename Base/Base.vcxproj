@@ -116,11 +116,11 @@
     <ClInclude Include="Source\Systems\UI_System.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Image\questData.csv" />
     <None Include="Shader\GPass.fragmentshader" />
     <None Include="Shader\GPass.vertexshader" />
     <None Include="Shader\Shadow.fragmentshader" />
     <None Include="Shader\Shadow.vertexshader" />
+    <None Include="Source\Conditions\questData.csv" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9B172635-4E2B-46F1-A403-08F4194D00F5}</ProjectGuid>

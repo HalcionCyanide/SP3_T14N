@@ -10,7 +10,7 @@ public:
 
 	void readFile(const std::string);
 
-	std::vector<Quest> allQuests;
+	std::vector<Quest*> allQuests;
 
 	Quest tempQuest;
 };
