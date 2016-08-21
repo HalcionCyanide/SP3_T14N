@@ -84,6 +84,12 @@ void BattleSystem::Exit()
 		delete BaseInterior;
 		BaseInterior = nullptr;
 	}
+	for (std::vector<BaseObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
+	{
+		(*it)->Exit();
+		delete *it;
+	}
+	cBS_ObjectContainer.clear();
 }
 
 // Private Function Calls
