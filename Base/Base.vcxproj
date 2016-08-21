@@ -11,10 +11,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Classes\BaseObject.cpp" />
+    <ClCompile Include="Source\Classes\CameraBS.cpp" />
     <ClCompile Include="Source\Classes\MusicEntity.cpp" />
     <ClCompile Include="Source\Mains\Application.cpp" />
     <ClCompile Include="Source\Classes\Billboard.cpp" />
-    <ClCompile Include="Source\Misc\BattleScreenObject.cpp" />
+    <ClCompile Include="Source\Systems\BattleSystem.cpp" />
     <ClCompile Include="Source\Systems\BillboardManager.cpp" />
     <ClCompile Include="Source\Classes\Boundary.cpp" />
     <ClCompile Include="Source\Classes\Boundary2D.cpp" />
@@ -58,11 +60,13 @@
     <ClCompile Include="Source\Misc\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Classes\BaseObject.h" />
     <ClInclude Include="Source\Classes\Billboard.h" />
     <ClInclude Include="Source\Classes\Boundary.h" />
     <ClInclude Include="Source\Classes\Boundary2D.h" />
     <ClInclude Include="Source\Classes\Camera.h" />
     <ClInclude Include="Source\Classes\Camera3.h" />
+    <ClInclude Include="Source\Classes\CameraBS.h" />
     <ClInclude Include="Source\Classes\CItem.h" />
     <ClInclude Include="Source\Classes\Commands.h" />
     <ClInclude Include="Source\Classes\GameMap.h" />
@@ -83,7 +87,6 @@
     <ClInclude Include="Source\Conditions\Quest.h" />
     <ClInclude Include="Source\Conditions\questManager.h" />
     <ClInclude Include="Source\Mains\Application.h" />
-    <ClInclude Include="Source\Misc\BattleScreenObject.h" />
     <ClInclude Include="Source\Misc\BoundsBuilder.h" />
     <ClInclude Include="Source\Misc\DepthFBO.h" />
     <ClInclude Include="Source\Misc\DetectMemoryLeak.h" />
@@ -103,6 +106,7 @@
     <ClInclude Include="Source\Scenes\SceneTown3.h" />
     <ClInclude Include="Source\Scenes\Scene_2.h" />
     <ClInclude Include="Source\Scenes\Scene_MainMenu.h" />
+    <ClInclude Include="Source\Systems\BattleSystem.h" />
     <ClInclude Include="Source\Systems\BillboardManager.h" />
     <ClInclude Include="Source\Systems\GenericSystem.h" />
     <ClInclude Include="Source\Systems\InputManager.h" />

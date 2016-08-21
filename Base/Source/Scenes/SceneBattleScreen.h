@@ -5,10 +5,11 @@
 #include "..\\Systems\\Scene_System.h"
 #include "GraphicsEntity.h"
 #include "..\\Classes\\GameObject.h"
-#include "..\\Classes\\Camera3.h"
+#include "..\\Classes\\CameraBS.h"
 #include "..\\Systems\\BillboardManager.h"
 #include "..\\Systems\\UI_System.h"
-#include "..\\Misc\\BattleScreenObject.h"
+#include "..\\Classes\\BaseObject.h"
+#include "..\\Systems\\BattleSystem.h"
 
 class SceneBattleScreen : public SceneEntity
 {
@@ -22,36 +23,19 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
-	Camera camera;
+	CameraBS camera;
 
 private:
 	// Shadow GPass
 	void RenderPassGPass();
 	void RenderPassMain();
 
-	// Additional Calls
-	void PlayerUpdate(float dt);
-
 	BillboardManager BManager;
 
 	double framerates;
 	GenericEntity *theInteractiveMap;
 
-	BattleScreenObject* Player = nullptr;
-	std::vector<BattleScreenObject*> ProjectileContainer;
-
-	UI_Element* BaseExterior;
-	UI_Element* BaseInterior;
-
-	//Player Stuff
-	Vector3 CurrentMousePosition;
-	float PlayerScale;
-	Vector3 ActingForce;
-	bool MouseModeSelected = false;
-	bool isInvincible = false;
-	float IFrameTimer = 0;
-	const float FrictionDecrementMultiplier = 0.8f;
-
+	BattleSystem BSystem;
 };
 
 #endif //_SCENE_BATTLE_SCREEN_H

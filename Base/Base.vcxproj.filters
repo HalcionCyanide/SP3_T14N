@@ -177,13 +177,19 @@
     <ClCompile Include="Source\Misc\Utility.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Misc\BattleScreenObject.cpp">
-      <Filter>Source Files\Classes</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Systems\MusicSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="Source\Classes\MusicEntity.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Classes\BaseObject.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Systems\BattleSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Classes\CameraBS.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -332,9 +338,6 @@
     <ClInclude Include="Source\Systems\UI_System.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Misc\BattleScreenObject.h">
-      <Filter>Header Files\Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Classes\UI_Element.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
@@ -342,6 +345,15 @@
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="Source\Classes\MusicEntity.h">
+      <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Classes\BaseObject.h">
+      <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Systems\BattleSystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Classes\CameraBS.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
   </ItemGroup>
