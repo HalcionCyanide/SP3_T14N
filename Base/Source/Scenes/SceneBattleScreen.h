@@ -47,6 +47,7 @@ private:
 	Vector3 CurrentMousePosition;
 	float PlayerScale;
 	Vector3 ActingForce;
+	bool MouseModeSelected = false;
 	bool isInvincible = false;
 	float IFrameTimer = 0;
 	const float FrictionDecrementMultiplier = 0.8f;

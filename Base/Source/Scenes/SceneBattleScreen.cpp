@@ -46,7 +46,7 @@ void SceneBattleScreen::Init()
 
 	CurrentMousePosition = Scene_System::accessing().cSS_InputManager->GetMousePosition();
 
-	BaseExterior = new UI_Element(UI_Element::UI_UNASSIGNED, "GBox", CenterPosition, CenterPosition, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.65f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.85f, 1), CenterPosition);
+	BaseExterior = new UI_Element(UI_Element::UI_UNASSIGNED, "GBox", CenterPosition, CenterPosition, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.65f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.90f, 1), CenterPosition);
 	BaseInterior = new UI_Element(UI_Element::UI_UNASSIGNED, "GBox", CenterPosition, CenterPosition, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.55f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.75f, 1), CenterPosition);
 }
 
@@ -90,7 +90,6 @@ void SceneBattleScreen::PlayerUpdate(float dt)
 		CurrentMousePosition = Scene_System::accessing().cSS_InputManager->GetMousePosition();
 	}
 	float ForceIncrement = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f;
-	bool MouseModeSelected = true;
 	switch (MouseModeSelected)
 	{
 		case (true) :
@@ -132,19 +131,24 @@ void SceneBattleScreen::PlayerUpdate(float dt)
 			break;
 		}
 	}
-		if (Player->GetMass() > Math::EPSILON)
-		{
-			// Velocity Due To Acceleration If Mass Exists
-			Player->SetVelocity(Player->GetVelocity() + ActingForce * (1.f / Player->GetMass()) * dt);
-		}
-		Player->SetVelocity(Player->GetVelocity() - Player->GetVelocity()*FrictionDecrementMultiplier * dt);
-		Vector3 FwdPos = Player->GetPosition() + Player->GetVelocity() * dt;
-		// <!> Needs work
-		if (abs(FwdPos.x - BaseInterior->UI_Bounds->GetPosition().x) > BaseInterior->UI_Bounds->GetScale().x * 0.5f - Player->GetDimensions().x * 0.5f)
-			Player->SetVelocity(Vector3(/*-Player->GetVelocity().x * 0.5f*/ 0.f, Player->GetVelocity().y, 0.f));
-		if (abs(FwdPos.y - BaseInterior->UI_Bounds->GetPosition().y) > BaseInterior->UI_Bounds->GetScale().y * 0.5f - Player->GetDimensions().y * 0.5f)
-			Player->SetVelocity(Vector3(Player->GetVelocity().x,/* -Player->GetVelocity().y * 0.5f*/ 0.f, 0.f));
-		Player->Update((double)dt);
+	if (Player->GetMass() > Math::EPSILON)
+	{
+		// Velocity Due To Acceleration If Mass Exists
+		Player->SetVelocity(Player->GetVelocity() + ActingForce * (1.f / Player->GetMass()) * dt);
+	}
+	Player->SetVelocity(Player->GetVelocity() - Player->GetVelocity()*FrictionDecrementMultiplier * dt);
+	Vector3 FwdPos = Player->GetPosition() + Player->GetVelocity() * dt;
+	// <!> Needs work
+	if (abs(FwdPos.x - BaseInterior->UI_Bounds->GetPosition().x) > BaseInterior->UI_Bounds->GetScale().x * 0.5f - Player->GetDimensions().x * 0.5f)
+		if (abs(Player->GetVelocity().x * 0.5f) < Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.01f)
+			Player->SetVelocity(Vector3(0, Player->GetVelocity().y, 0.f));
+		else Player->SetVelocity(Vector3(-Player->GetVelocity().x * 0.5f, Player->GetVelocity().y, 0.f));
+	if (abs(FwdPos.y - BaseInterior->UI_Bounds->GetPosition().y) > BaseInterior->UI_Bounds->GetScale().y * 0.5f - Player->GetDimensions().y * 0.5f)
+		if (abs(Player->GetVelocity().y * 0.5f) < Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.01f)
+			Player->SetVelocity(Vector3(Player->GetVelocity().x,0, 0.f));
+		else Player->SetVelocity(Vector3(Player->GetVelocity().x, -Player->GetVelocity().y * 0.5f, 0.f));
+		
+	Player->Update((double)dt);
 }
 
 
