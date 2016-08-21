@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file           Scene_System.h
+\author      Lee Sek Heng
+\par            email: 150629Z@mymail.nyp.edu.sg
+\brief
+A System that handles all the scene as well as most of the global variables.
+GraphicsEntity resides here.
+*/
+/******************************************************************************/
 #ifndef SCENE_SYSTEM_H
 #define SCENE_SYSTEM_H
 
@@ -10,7 +20,13 @@
 #include "..\\Classes\\Boundary.h"
 
 class InputManager;
-
+/******************************************************************************/
+/*!
+Class Scene_System:
+\brief  Defines a scene system, it's methods for transitioning between scenes,
+            a container of those scenes and the Graphics Scene. Inheirits from GenericSystem and SingletonTemplate
+*/
+/******************************************************************************/
 class Scene_System : public GenericSystem, public SingletonTemplate<Scene_System>
 {
 public:
