@@ -135,7 +135,9 @@ void SceneBattleScreen::RenderPassMain()
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack->LoadIdentity();
 
-	SceneGraphics->RenderMesh("reference", false);
+	//SceneGraphics->RenderMesh("reference", false);
+
+	BSystem.Render();
 
 	for (std::vector<Billboard*>::iterator it = BManager.BillboardContainer.begin(); it != BManager.BillboardContainer.end(); ++it)
 	{
@@ -152,8 +154,6 @@ void SceneBattleScreen::RenderPassMain()
 			modelStack->PopMatrix();
 		}
 	}
-
-	BSystem.Render();
 
 	SceneGraphics->SetHUD(true);
 
@@ -206,4 +206,5 @@ void SceneBattleScreen::Exit()
 {
 	if (theInteractiveMap)
 		delete theInteractiveMap;
+	BSystem.Exit();
 }

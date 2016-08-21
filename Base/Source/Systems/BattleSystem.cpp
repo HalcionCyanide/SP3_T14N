@@ -5,7 +5,7 @@
 
 BattleSystem::BattleSystem()
 {
-	Init();
+	//Init();
 }
 
 BattleSystem::~BattleSystem()
@@ -22,7 +22,7 @@ void BattleSystem::Init()
 	// Note Init Player and Enemy Here
 	CenterPosition.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 	PlayerScale = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.03f;
-	Player = new BaseObject("Player", 3, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), Vector3(0, 0, 0), 0, Vector3(0, 0, 1));
+	Player = new BaseObject("ayylmao", 3, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), Vector3(0, 0, 0), 0, Vector3(0, 0, 1));
 
 	// Background If Needed
 	BaseExterior = new BaseObject("GBox", 0.f, CenterPosition + Vector3(0, CenterPosition.y * 0.1f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.65f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.90f, 1), Vector3(), 0, Vector3(0, 0, 1));
@@ -68,11 +68,20 @@ void BattleSystem::Render()
 void BattleSystem::Exit()
 {
 	if (Player)
+	{
 		delete Player;
-	if (BaseExterior)
+		Player = nullptr;
+	}
+	if (BaseExterior != nullptr)
+	{
 		delete BaseExterior;
-	if (BaseInterior)
+		BaseExterior = nullptr;
+	}
+	if (BaseInterior != nullptr)
+	{
 		delete BaseInterior;
+		BaseInterior = nullptr;
+	}
 }
 
 // Private Function Calls
@@ -93,10 +102,10 @@ void BattleSystem::UpdatePESPhase(float dt)
 	{
 		(*it)->Update(dt);
 	}
-	UpdateITimer(dt);
 	UpdateControls(dt);
-	UpdatePhysics(dt);
 	UpdatePlayer(dt);
+	UpdateITimer(dt);
+	UpdatePhysics(dt);
 }
 
 void BattleSystem::UpdateSealPhase(float dt)
@@ -178,15 +187,18 @@ void BattleSystem::UpdateControls(float dt)
 	}
 	Player->SetVelocity(Player->GetVelocity() - Player->GetVelocity()*FrictionDecrementMultiplier * dt);
 	Vector3 FwdPos = Player->GetPosition() + Player->GetVelocity() * dt;
-	// <!> Needs work
 	if (abs(FwdPos.x - TempBounds.GetPosition().x) > TempBounds.GetScale().x * 0.5f - Player->GetDimensions().x * 0.5f)
+	{
 		if (abs(Player->GetVelocity().x * 0.5f) < Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.01f)
 			Player->SetVelocity(Vector3(0, Player->GetVelocity().y, 0.f));
 		else Player->SetVelocity(Vector3(-Player->GetVelocity().x * 0.5f, Player->GetVelocity().y, 0.f));
-		if (abs(FwdPos.y - TempBounds.GetPosition().y) > TempBounds.GetScale().y * 0.5f - Player->GetDimensions().y * 0.5f)
-			if (abs(Player->GetVelocity().y * 0.5f) < Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.01f)
-				Player->SetVelocity(Vector3(Player->GetVelocity().x, 0, 0.f));
-			else Player->SetVelocity(Vector3(Player->GetVelocity().x, -Player->GetVelocity().y * 0.5f, 0.f));
+	}		
+	if (abs(FwdPos.y - TempBounds.GetPosition().y) > TempBounds.GetScale().y * 0.5f - Player->GetDimensions().y * 0.5f)
+	{
+		if (abs(Player->GetVelocity().y * 0.5f) < Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.01f)
+			Player->SetVelocity(Vector3(Player->GetVelocity().x, 0, 0.f));
+		else Player->SetVelocity(Vector3(Player->GetVelocity().x, -Player->GetVelocity().y * 0.5f, 0.f));
+	}
 
 }
 
