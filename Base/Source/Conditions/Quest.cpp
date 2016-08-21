@@ -11,6 +11,11 @@ Quest::Quest() : GenericEntity()
 
 Quest::~Quest()
 {
+	for (auto it : conditions)
+	{
+		delete it;
+	}
+	conditions.clear();
 }
 
 void Quest::setID(int i)

@@ -370,7 +370,7 @@
     <None Include="Shader\Shadow.vertexshader">
       <Filter>Shader</Filter>
     </None>
-    <None Include="Image\questData.csv">
+    <None Include="Source\Conditions\questData.csv">
       <Filter>Source Files\Conditions</Filter>
     </None>
   </ItemGroup>
