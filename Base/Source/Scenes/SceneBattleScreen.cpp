@@ -29,16 +29,25 @@ void SceneBattleScreen::Init()
 	projectionStack->LoadMatrix(perspective);
 
 	Vector3 CenterPosition(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
-	float PlayerScale = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.05f;
+	PlayerScale = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.03f;
 
 	Mesh* newMesh = MeshBuilder::GenerateQuad("Player", Color(1, 1, 1));
 	newMesh->textureArray[0] = LoadTGA("Image//TFB_GEM.tga");
+	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+
+	newMesh = MeshBuilder::GenerateQuad("GBox", Color(1, 1, 1));
+	newMesh->textureArray[0] = LoadTGA("Image//GBox.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	Player = new BattleScreenObject("Player", 3, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), Vector3(0, 0, 0), 0, Vector3(0, 0, 1));
 
 	camera.Init(Vector3(0, 0, 1), Vector3(0, 0, 0), Vector3(0, 1, 0));
 	//camera.CameraIsLocked = true;
+
+	CurrentMousePosition = Scene_System::accessing().cSS_InputManager->GetMousePosition();
+
+	BaseExterior = new UI_Element(UI_Element::UI_UNASSIGNED, "GBox", CenterPosition, CenterPosition, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.65f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.90f, 1), CenterPosition);
+	BaseInterior = new UI_Element(UI_Element::UI_UNASSIGNED, "GBox", CenterPosition, CenterPosition, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.55f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.75f, 1), CenterPosition);
 }
 
 void SceneBattleScreen::Update(float dt)
@@ -76,45 +85,70 @@ void SceneBattleScreen::Update(float dt)
 
 void SceneBattleScreen::PlayerUpdate(float dt)
 {
+	if (BaseInterior->UI_Bounds->CheckCollision(Scene_System::accessing().cSS_InputManager->GetMousePosition(), Vector3()))
+	{
+		CurrentMousePosition = Scene_System::accessing().cSS_InputManager->GetMousePosition();
+	}
 	float ForceIncrement = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f;
-	/*if (Application::IsKeyPressed('W'))
+	switch (MouseModeSelected)
 	{
-	ActingForce.y = ForceIncrement;
-	}
-	if (Application::IsKeyPressed('S'))
-	{
-	ActingForce.y = -ForceIncrement;
-	}
-	if (!Application::IsKeyPressed('W') && !Application::IsKeyPressed('S'))
-	{
-	ActingForce.y = 0;
-	}
-	if (Application::IsKeyPressed('A'))
-	{
-	ActingForce.x = -ForceIncrement;
-	}
-	if (Application::IsKeyPressed('D'))
-	{
-	ActingForce.x = ForceIncrement;
-	}
-	if (!Application::IsKeyPressed('A') && !Application::IsKeyPressed('D'))
-	{
-	ActingForce.x = 0;
-	}*/
-	Vector3 PlayerDirection = (Scene_System::accessing().cSS_InputManager->GetMousePosition() - Player->GetPosition());
-	if (!PlayerDirection.IsZero())
-		if (PlayerDirection.LengthSquared() < (Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.15f))
-			PlayerDirection.SetZero();
-		else PlayerDirection.Normalize();
-		ActingForce.Set(ForceIncrement * PlayerDirection.x, ForceIncrement * PlayerDirection.y);
-
-		if (Player->GetMass() > Math::EPSILON)
+		case (true) :
 		{
-			// Velocity Due To Acceleration If Mass Exists
-			Player->SetVelocity(Player->GetVelocity() + ActingForce * (1.f / Player->GetMass()) * dt);
+			Vector3 PlayerDirection = (CurrentMousePosition - Player->GetPosition());
+			if (!PlayerDirection.IsZero())
+				if (PlayerDirection.LengthSquared() < (Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.15f))
+					PlayerDirection.SetZero();
+				else PlayerDirection.Normalize();
+				ActingForce.Set(ForceIncrement * PlayerDirection.x, ForceIncrement * PlayerDirection.y);
+			break;
 		}
-		Player->SetVelocity(Player->GetVelocity() - Player->GetVelocity()*FrictionDecrementMultiplier * dt);
-		Player->Update((double)dt);
+		case (false) :
+		{
+			if (Application::IsKeyPressed('W'))
+			{
+				ActingForce.y = ForceIncrement;
+			}
+			if (Application::IsKeyPressed('S'))
+			{
+				ActingForce.y = -ForceIncrement;
+			}
+			if (!Application::IsKeyPressed('W') && !Application::IsKeyPressed('S'))
+			{
+				ActingForce.y = 0;
+			}
+			if (Application::IsKeyPressed('A'))
+			{
+				ActingForce.x = -ForceIncrement;
+			}
+			if (Application::IsKeyPressed('D'))
+			{
+				ActingForce.x = ForceIncrement;
+			}
+			if (!Application::IsKeyPressed('A') && !Application::IsKeyPressed('D'))
+			{
+				ActingForce.x = 0;
+			}
+			break;
+		}
+	}
+	if (Player->GetMass() > Math::EPSILON)
+	{
+		// Velocity Due To Acceleration If Mass Exists
+		Player->SetVelocity(Player->GetVelocity() + ActingForce * (1.f / Player->GetMass()) * dt);
+	}
+	Player->SetVelocity(Player->GetVelocity() - Player->GetVelocity()*FrictionDecrementMultiplier * dt);
+	Vector3 FwdPos = Player->GetPosition() + Player->GetVelocity() * dt;
+	// <!> Needs work
+	if (abs(FwdPos.x - BaseInterior->UI_Bounds->GetPosition().x) > BaseInterior->UI_Bounds->GetScale().x * 0.5f - Player->GetDimensions().x * 0.5f)
+		if (abs(Player->GetVelocity().x * 0.5f) < Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.01f)
+			Player->SetVelocity(Vector3(0, Player->GetVelocity().y, 0.f));
+		else Player->SetVelocity(Vector3(-Player->GetVelocity().x * 0.5f, Player->GetVelocity().y, 0.f));
+	if (abs(FwdPos.y - BaseInterior->UI_Bounds->GetPosition().y) > BaseInterior->UI_Bounds->GetScale().y * 0.5f - Player->GetDimensions().y * 0.5f)
+		if (abs(Player->GetVelocity().y * 0.5f) < Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.01f)
+			Player->SetVelocity(Vector3(Player->GetVelocity().x,0, 0.f));
+		else Player->SetVelocity(Vector3(Player->GetVelocity().x, -Player->GetVelocity().y * 0.5f, 0.f));
+		
+	Player->Update((double)dt);
 }
 
 
@@ -216,10 +250,19 @@ void SceneBattleScreen::RenderPassMain()
 	}
 
 	SceneGraphics->SetHUD(true);
+	BaseExterior->Render();
+	BaseInterior->Render();
+	// Player Calls
+	Player->Render();
 
 	if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
 	{
-		SceneGraphics->RenderMeshIn2D("TFB_Gem", false, 30, 30, Scene_System::accessing().cSS_InputManager->GetMousePosition().x, Scene_System::accessing().cSS_InputManager->GetMousePosition().y);
+		modelStack->PushMatrix();
+		modelStack->Translate(Scene_System::accessing().cSS_InputManager->GetMousePosition().x, Scene_System::accessing().cSS_InputManager->GetMousePosition().y, 0);
+		modelStack->Rotate(0, 0, 1, 0);
+		modelStack->Scale(PlayerScale / 2, PlayerScale / 2, 1);
+		SceneGraphics->RenderMesh("TFB_Gem", false);
+		modelStack->PopMatrix();
 	}
 
 	std::ostringstream ss;
@@ -239,9 +282,14 @@ void SceneBattleScreen::RenderPassMain()
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
 
 	ss.str("");
-	ss << "Mouse Position:" << Scene_System::accessing().cSS_InputManager->GetMousePosition();
+	ss << "Player Vel:" << Player->GetVelocity();
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 100);
+
+	ss.str("");
+	ss << "Mouse Position:" << Scene_System::accessing().cSS_InputManager->GetMousePosition();
+	ss.precision(3);
+	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 125);
 
 }
 

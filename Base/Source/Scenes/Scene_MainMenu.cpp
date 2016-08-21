@@ -45,28 +45,28 @@ void Scene_MainMenu::Init()
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	//newMesh = MeshBuilder::GenerateQuad("TFB_Logo", Color(1, 1, 1));
-	//newMesh->textureArray[0] = LoadTGA("Image//TFB_Logo.tga");
-	//SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+	newMesh = MeshBuilder::GenerateQuad("TFB_Logo", Color(1, 1, 1));
+	newMesh->textureArray[0] = LoadTGA("Image//TFB_Logo.tga");
+	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	//newMesh = MeshBuilder::GenerateQuad("TFB_Gem", Color(1, 1, 1));
-	//newMesh->textureArray[0] = LoadTGA("Image//TFB_GEM.tga");
-	//SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+	newMesh = MeshBuilder::GenerateQuad("TFB_Gem", Color(1, 1, 1));
+	newMesh->textureArray[0] = LoadTGA("Image//TFB_GEM.tga");
+	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	//newMesh = MeshBuilder::GenerateQuad("TFB_Button", Color(1, 1, 1));
-	//newMesh->textureArray[0] = LoadTGA("Image//TFB_Button.tga");
-	//SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+	newMesh = MeshBuilder::GenerateQuad("TFB_Button", Color(1, 1, 1));
+	newMesh->textureArray[0] = LoadTGA("Image//TFB_Button.tga");
+	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera.position.x / TerrainScale.x, camera.position.z / TerrainScale.z) + camera.PlayerHeight;
 	Application::cA_CurrentTerrainY = Application::cA_MinimumTerrainY;
 
-	camera.Init(Vector3(-0.5f, Application::cA_CurrentTerrainY, -40.f), Vector3(0, Application::cA_CurrentTerrainY + 5, -35), Vector3(0, 1, 0));
+	camera.Init(Vector3(-0.5f, Application::cA_MinimumTerrainY + 5, -40.f), Vector3(0, Application::cA_MinimumTerrainY + 15, -35), Vector3(0, 1, 0));
 	camera.CameraIsLocked = true;
 
 	for (int i = 0; i < 15; i++)
 	{
 		BManager.AddHMapBillboard("Tree", m_heightMap, TerrainScale, Vector3((float)i * Math::RandFloatMinMax(-10.f, 10.f) + 40.f, 0.f, 25.f + Math::RandFloatMinMax(-5.f, 10.f)), Vector3(10.f, 20.f, 10.f), Vector3(), camera.position);
-		BManager.AddHMapBillboard("Tree", m_heightMap, TerrainScale, Vector3((float)i * Math::RandFloatMinMax(-10.f, 10.f) + 40.f, 0.f, 47.f + Math::RandFloatMinMax(-5.f, 10.f)), Vector3(10.f, 20.f, 10.f), Vector3(), camera.position);
+		BManager.AddHMapBillboard("Tree", m_heightMap, TerrainScale, Vector3((float)i * Math::RandFloatMinMax(-10.f, 10.f) + 50.f, 0.f, 47.f + Math::RandFloatMinMax(-5.f, 10.f)), Vector3(10.f, 20.f, 10.f), Vector3(), camera.position);
 	}
 
 	CurrentMenuState = S_FIRSTLEVEL;

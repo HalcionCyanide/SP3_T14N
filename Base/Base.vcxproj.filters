@@ -54,9 +54,6 @@
     <ClCompile Include="Source\shader.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
-    <ClCompile Include="Source\BillboardManager.cpp">
-      <Filter>Source Files\Systems</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Mains\Application.cpp">
       <Filter>Source Files\Mains</Filter>
     </ClCompile>
@@ -181,25 +178,10 @@
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Source\Misc\BattleScreenObject.cpp">
-      <Filter>Source Files\Misc</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\CItem.cpp">
-      <Filter>Source Files\Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\UtilityItem.cpp">
-      <Filter>Source Files\Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Commands.cpp">
-      <Filter>Source Files\Misc</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\BattleScreenObject.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Misc\BattleScreenObject.h">
-      <Filter>Header Files\Misc</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Classes\Billboard.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
@@ -344,13 +326,10 @@
     <ClInclude Include="Source\Systems\UI_System.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="Source\UtilityItem.h">
+    <ClInclude Include="Source\Misc\BattleScreenObject.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Commands.h">
-      <Filter>Header Files\Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\BattleScreenObject.h">
+    <ClInclude Include="Source\Classes\UI_Element.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
   </ItemGroup>
