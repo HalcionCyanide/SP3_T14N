@@ -8,7 +8,8 @@
 #include "..\\Classes\\CameraBS.h"
 #include "..\\Systems\\BillboardManager.h"
 #include "..\\Systems\\UI_System.h"
-#include "..\\Misc\\BaseObject.h"
+#include "..\\Classes\\BaseObject.h"
+#include "..\\Systems\\BattleSystem.h"
 
 class SceneBattleScreen : public SceneEntity
 {
@@ -42,6 +43,8 @@ private:
 
 	UI_Element* BaseExterior;
 	UI_Element* BaseInterior;
+
+	BattleSystem BSystem;
 
 	//Player Stuff
 	Vector3 CurrentMousePosition;

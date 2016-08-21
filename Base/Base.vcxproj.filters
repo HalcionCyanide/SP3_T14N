@@ -177,10 +177,13 @@
     <ClCompile Include="Source\Misc\Utility.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Misc\BaseObject.cpp">
+    <ClCompile Include="Source\Classes\CameraBS.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Classes\CameraBS.cpp">
+    <ClCompile Include="Source\Systems\BattleSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Classes\BaseObject.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -335,7 +338,10 @@
     <ClInclude Include="Source\Classes\CameraBS.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Misc\BaseObject.h">
+    <ClInclude Include="Source\Systems\BattleSystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Classes\BaseObject.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
   </ItemGroup>

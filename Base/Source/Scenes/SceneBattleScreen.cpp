@@ -56,11 +56,7 @@ void SceneBattleScreen::Init()
 	newMesh->textureArray[0] = LoadTGA("Image//GBox.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	Player = new BaseObject("Player", 3, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), Vector3(0, 0, 0), 0, Vector3(0, 0, 1));
-
 	camera.Init(Vector3(0, 0, 1), Vector3(0, 0, 0), Vector3(0, 1, 0));
-
-	CurrentMousePosition = Scene_System::accessing().cSS_InputManager->GetMousePosition();
 
 	// Exterior == Guidelines to position UI properly
 	// Projectile Objects will most probably spawn within the gap between exterior and interior and move towards the player. 
