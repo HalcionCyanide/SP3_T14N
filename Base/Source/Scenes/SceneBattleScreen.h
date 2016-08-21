@@ -7,7 +7,7 @@
 #include "..\\Classes\\GameObject.h"
 #include "..\\Classes\\Camera3.h"
 #include "..\\Systems\\BillboardManager.h"
-
+#include "..\\Systems\\UI_System.h"
 #include "..\\Misc\\BattleScreenObject.h"
 
 class SceneBattleScreen : public SceneEntity
@@ -40,11 +40,16 @@ private:
 	BattleScreenObject* Player = nullptr;
 	std::vector<BattleScreenObject*> ProjectileContainer;
 
+	UI_Element* BaseExterior;
+	UI_Element* BaseInterior;
+
 	//Player Stuff
+	Vector3 CurrentMousePosition;
+	float PlayerScale;
 	Vector3 ActingForce;
 	bool isInvincible = false;
 	float IFrameTimer = 0;
-	const float FrictionDecrementMultiplier = 0.9f;
+	const float FrictionDecrementMultiplier = 0.8f;
 
 };
 

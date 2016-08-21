@@ -42,6 +42,7 @@ void UI_Element::Update(float dt)
 	float Check = (TargetPosition - Position).LengthSquared();
 	if (!AtTarget && Active && Check > 1.f)
 	{
+		UI_Bounds->CalculateValues(Position, Dimensions);
 		Vector3 DirVec = TargetPosition - Position;
 		Position += DirVec * 2 * dt;
 		if (Check < 1.f)
