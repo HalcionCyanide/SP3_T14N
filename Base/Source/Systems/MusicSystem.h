@@ -9,6 +9,7 @@ class MusicSystem : public GenericSystem, public SingletonTemplate<MusicSystem>
 public:
     virtual void Init();
     virtual void Update(double dt);
+    virtual void onNotify(const std::string &theMessage);
 };
 
 #endif

@@ -56,8 +56,10 @@ private:
 	double m_dAccumulatedTime_ThreadOne;
 	double m_dAccumulatedTime_ThreadTwo;
 
+    //<!> testing writing to files
     bool loadGlobalStuff();
     void convertStringToUpper(std::string &thestring);
+    //<!> testing writing to files
 };
 
 #endif
