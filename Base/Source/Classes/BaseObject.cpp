@@ -4,7 +4,7 @@
 \author Ryan Lim Rui An
 \par email: 150577L@mymail.nyp.edu.sg
 \brief
-Defines an object that exists within the 2D battle screen
+Defines the minimum standard for an object that exists within the game
 */
 /****************************************************************************/
 

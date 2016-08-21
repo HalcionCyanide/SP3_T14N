@@ -22,12 +22,11 @@ void BattleSystem::Init()
 	// Note Init Player and Enemy Here
 	CenterPosition.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 	PlayerScale = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.03f;
-	Player = new BaseObject("ayylmao", 3, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), Vector3(0, 0, 0), 0, Vector3(0, 0, 1));
+	Player = new BaseObject("TFB_Gem", 3, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), Vector3(0, 0, 0), 0, Vector3(0, 0, 1));
 
 	// Background If Needed
 	BaseExterior = new BaseObject("GBox", 0.f, CenterPosition + Vector3(0, CenterPosition.y * 0.1f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.85f, 1), Vector3(), 0, Vector3(0, 0, 1));
 	BaseInterior = new BaseObject("GBox", 0.f, CenterPosition + Vector3(0, CenterPosition.y * 0.1f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.7f, 1), Vector3(), 0, Vector3(0, 0, 1));
-
 
 }
 
@@ -61,7 +60,10 @@ void BattleSystem::Render()
 	Player->Render(); // <- Don't bother checking if player is true because if player is not true, something is wrong, thus a crash should be efficient in telling one that. c:
 	for (std::vector<BaseObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 	{
-		(*it)->Render();
+		if ((*it)->Active && (*it)->Visible)
+		{
+			(*it)->Render();
+		}
 	}
 }
 
@@ -99,9 +101,16 @@ void BattleSystem::UpdateInventoryScreen(float dt)
 
 void BattleSystem::UpdatePESPhase(float dt)
 {
+	Boundary2D TempBounds;
+	TempBounds.CalculateValues(BaseExterior->GetPosition(), BaseExterior->GetDimensions());
 	for (std::vector<BaseObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 	{
-		(*it)->Update(dt);
+		if ((*it)->Active)
+		{
+			if (TempBounds.CheckCollision((*it)->GetPosition(), Vector3()))
+				(*it)->Update(dt);
+			else (*it)->Active = false;
+		}
 	}
 	UpdatePlayer(dt);
 	UpdatePhysics(dt);
@@ -122,6 +131,7 @@ void BattleSystem::UpdateFleePhase(float dt)
 // Player Calls
 void BattleSystem::UpdatePlayer(float dt)
 {
+	Attack_Bullet();
 	UpdateControls(dt);
 	UpdateITimer(dt);
 	Player->Update(dt);
@@ -259,5 +269,14 @@ int BattleSystem::BatchCreateAttacks(const int& AttackType)
 // Attack Calls // Think of better names later // Pass Vel Pos Offset?
 void BattleSystem::Attack_Bullet()
 {
-	// Creation Func
+	Boundary2D TempBounds;
+	TempBounds.CalculateValues(BaseExterior->GetPosition(), BaseExterior->GetDimensions());
+	Vector3 SpawnPos = CenterPosition + Vector3(Math::RandFloatMinMax(-CenterPosition.x, CenterPosition.x), Math::RandFloatMinMax(-CenterPosition.y, CenterPosition.y));
+	if (TempBounds.CheckCollision(SpawnPos, Vector3()))
+	{
+		Vector3 DVec = (Player->GetPosition() - SpawnPos).Normalize() * 500;
+		// Use a fetch Func
+		BaseObject* NewObj = new BaseObject("ayylmao", 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), DVec, 0, Vector3(0, 0, 1));
+		cBS_ObjectContainer.push_back(NewObj);
+	}
 }

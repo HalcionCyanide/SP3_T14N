@@ -4,7 +4,7 @@
 \author Ryan Lim Rui An
 \par email: 150577L@mymail.nyp.edu.sg
 \brief
-Defines an object that exists within the 2D battle screen
+Defines the minimum standard for an object that exists within the game
 */
 /****************************************************************************/
 
@@ -70,7 +70,7 @@ private:
 
 	// If other parameters are required, 
 	// consider inheriting this class and adding them into the new class,
-	// if the required parameters are not generic. ~ Ryan
+	// if the required parameters are not generic. - Ryan
 };
 
 #endif //_BASE_OBJECT_H
