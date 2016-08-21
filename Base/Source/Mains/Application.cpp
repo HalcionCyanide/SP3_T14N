@@ -176,7 +176,11 @@ void Application::Init()
 	battlescreen->Init();
 	Scene_System::accessing().AddScene(*battlescreen);
 
+#ifdef _DEBUG
     assert(loadGlobalStuff());
+#else
+    loadGlobalStuff();
+#endif
 }
 
 void Application::Run()
