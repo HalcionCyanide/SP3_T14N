@@ -6,6 +6,7 @@
 #include "SceneTown3.h"
 #include "SceneFreeField.h"
 #include "..\\Classes\\PlayerObject.h"
+#include "..\\Conditions\\questManager.h"
 
 std::string Scene_2::id_ = "Scene 2";
 
@@ -25,6 +26,9 @@ void Scene_2::Init()
 {
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	
+	questManager QM;
+	QM.readFile("Source//Conditions//questData.csv");
+
     Mtx44 perspective;
     perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
     projectionStack->LoadMatrix(perspective);
@@ -39,6 +43,10 @@ void Scene_2::Init()
 
 	newMesh = MeshBuilder::GenerateQuad("ParticleW", Color(1, 1, 1));
 	newMesh->textureArray[0] = LoadTGA("Image//ParticleWhite.tga");
+	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+
+	newMesh = MeshBuilder::GenerateQuad("ayylmao", Color(1, 1, 1));
+	newMesh->textureArray[0] = LoadTGA("Image//weed.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	Player = new PlayerObject();

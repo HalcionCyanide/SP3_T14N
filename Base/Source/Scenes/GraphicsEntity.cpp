@@ -646,6 +646,7 @@ bool GraphicsEntity::loadingMeshDriven(const std::string &fileLocation)
 				theValues.clear();
 			}
 		}
+        file.close();
 		return true;
 	}
 	return false;
