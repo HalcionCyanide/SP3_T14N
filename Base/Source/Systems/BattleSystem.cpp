@@ -25,8 +25,8 @@ void BattleSystem::Init()
 	Player = new BaseObject("ayylmao", 3, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), Vector3(0, 0, 0), 0, Vector3(0, 0, 1));
 
 	// Background If Needed
-	BaseExterior = new BaseObject("GBox", 0.f, CenterPosition + Vector3(0, CenterPosition.y * 0.1f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.65f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.90f, 1), Vector3(), 0, Vector3(0, 0, 1));
-	BaseInterior = new BaseObject("GBox", 0.f, CenterPosition + Vector3(0, CenterPosition.y * 0.1f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.55f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.75f, 1), Vector3(), 0, Vector3(0, 0, 1));
+	BaseExterior = new BaseObject("GBox", 0.f, CenterPosition + Vector3(0, CenterPosition.y * 0.1f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.85f, 1), Vector3(), 0, Vector3(0, 0, 1));
+	BaseInterior = new BaseObject("GBox", 0.f, CenterPosition + Vector3(0, CenterPosition.y * 0.1f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.7f, 1), Vector3(), 0, Vector3(0, 0, 1));
 
 
 }
@@ -88,12 +88,13 @@ void BattleSystem::Exit()
 // State Calls
 void BattleSystem::UpdatePlayerTurn(float dt)
 {
-
+	// UI Pops In from bottom
+	// Mouse Toggle On if WASD mode
 }
 
 void BattleSystem::UpdateInventoryScreen(float dt)
 {
-
+	// Text Buttons of Usable Items
 }
 
 void BattleSystem::UpdatePESPhase(float dt)
@@ -102,32 +103,41 @@ void BattleSystem::UpdatePESPhase(float dt)
 	{
 		(*it)->Update(dt);
 	}
-	UpdateControls(dt);
 	UpdatePlayer(dt);
-	UpdateITimer(dt);
 	UpdatePhysics(dt);
 }
 
 void BattleSystem::UpdateSealPhase(float dt)
 {
-
+	// Monster Lerp to Center, GB derender, Seal Appears, Monster Shrink and go into seal, blah blah
 }
 
 void BattleSystem::UpdateFleePhase(float dt)
 {
-
+	// Survive 1 turn of PES at double damage
+	// Escape Screen
 }
 
 
 // Player Calls
 void BattleSystem::UpdatePlayer(float dt)
 {
+	UpdateControls(dt);
+	UpdateITimer(dt);
 	Player->Update(dt);
 }
 
 void BattleSystem::UpdateITimer(float dt)
 {
-
+	if (isInvincible && IFrameTimer > Math::EPSILON)
+	{
+		IFrameTimer -= dt;
+		if (isInvincible && IFrameTimer < Math::EPSILON)
+		{
+			isInvincible = false;
+			IFrameTimer = 0.f;
+		}
+	}
 }
 
 void BattleSystem::UpdateControls(float dt)
@@ -138,14 +148,14 @@ void BattleSystem::UpdateControls(float dt)
 	{
 		CursorPosition = Scene_System::accessing().cSS_InputManager->GetMousePosition();
 	}
-	float ForceIncrement = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f;
+	float ForceIncrement = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f;
 	switch (MouseModeSelected)
 	{
 	case (true) :
 	{
 		Vector3 PlayerDirection = (CursorPosition - Player->GetPosition());
 		if (!PlayerDirection.IsZero())
-			if (PlayerDirection.LengthSquared() < (Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.15f))
+			if (PlayerDirection.LengthSquared() < (Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.2f))
 				PlayerDirection.SetZero();
 			else PlayerDirection.Normalize();
 			PlayerActingForce.Set(ForceIncrement * PlayerDirection.x, ForceIncrement * PlayerDirection.y);
@@ -206,7 +216,17 @@ void BattleSystem::UpdateControls(float dt)
 // Physics Related
 void BattleSystem::UpdatePhysics(float dt)
 {
-	// Do CCheck & CRes if required
+	if (!isInvincible && cBS_ObjectContainer.size() > 0)
+	{
+		for (std::vector<BaseObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
+		{
+			if (CollisionCheck(*Player, **it, dt))
+			{
+				// HP Decrement Should Be In CRes
+				CollisionResponse(*Player, **it, dt);
+			}
+		}
+	}
 }
 
 bool BattleSystem::CollisionCheck(const BaseObject& BaseObject1, const BaseObject& BaseObject2, float dt)
