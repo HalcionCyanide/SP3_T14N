@@ -286,8 +286,10 @@ void BattleSystem::Attack_Bullet()
 {
 	Boundary2D TempBounds;
 	TempBounds.CalculateValues(BaseExterior->GetPosition(), BaseExterior->GetDimensions());
+	Boundary2D TempBounds2;
+	TempBounds2.CalculateValues(BaseInterior->GetPosition(), BaseInterior->GetDimensions());
 	Vector3 SpawnPos = CenterPosition + Vector3(Math::RandFloatMinMax(-CenterPosition.x, CenterPosition.x), Math::RandFloatMinMax(-CenterPosition.y, CenterPosition.y));
-	if (TempBounds.CheckCollision(SpawnPos, Vector3()))
+	if (TempBounds.CheckCollision(SpawnPos, Vector3()) && !TempBounds2.CheckCollision(SpawnPos, Vector3()))
 	{
 		Vector3 DVec = (Player->GetPosition() - SpawnPos).Normalize() * 700; // * Projectile Speed;
 		// Use a fetch Func
