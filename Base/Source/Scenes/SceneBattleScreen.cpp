@@ -22,6 +22,23 @@ SceneBattleScreen::~SceneBattleScreen()
 
 void SceneBattleScreen::Init()
 {
+	/* Plans - Ryan
+	Considerable Alternative- 
+	Create a 2dobj manager class
+	Inherit said class and create battlescreen manager class
+	Put cameraBS in said class animate via class
+	Result: Scene file is clean
+
+	Current-
+	Follow physics
+	Create a list of projectiles
+	Check player against said list
+	All codes in scene
+	Don't have to separate stuff
+	Faster to get player vals, but messy
+	Result: weed.tga
+
+	*/
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 
 	Mtx44 perspective;
@@ -32,22 +49,25 @@ void SceneBattleScreen::Init()
 	PlayerScale = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.03f;
 
 	Mesh* newMesh = MeshBuilder::GenerateQuad("Player", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//TFB_GEM.tga");
+	newMesh->textureArray[0] = LoadTGA("Image//weed.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	newMesh = MeshBuilder::GenerateQuad("GBox", Color(1, 1, 1));
 	newMesh->textureArray[0] = LoadTGA("Image//GBox.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	Player = new BattleScreenObject("Player", 3, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), Vector3(0, 0, 0), 0, Vector3(0, 0, 1));
+	Player = new BaseObject("Player", 3, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), Vector3(0, 0, 0), 0, Vector3(0, 0, 1));
 
 	camera.Init(Vector3(0, 0, 1), Vector3(0, 0, 0), Vector3(0, 1, 0));
-	//camera.CameraIsLocked = true;
 
 	CurrentMousePosition = Scene_System::accessing().cSS_InputManager->GetMousePosition();
 
-	BaseExterior = new UI_Element(UI_Element::UI_UNASSIGNED, "GBox", CenterPosition, CenterPosition, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.65f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.90f, 1), CenterPosition);
-	BaseInterior = new UI_Element(UI_Element::UI_UNASSIGNED, "GBox", CenterPosition, CenterPosition, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.55f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.75f, 1), CenterPosition);
+	// Exterior == Guidelines to position UI properly
+	// Projectile Objects will most probably spawn within the gap between exterior and interior and move towards the player. 
+	// Trap Objects will spawn a marker within the interior box and the marker will change to it after set time
+	Vector3 BSG_Center(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.6f, 0);
+	BaseExterior = new UI_Element(UI_Element::UI_UNASSIGNED, "GBox", BSG_Center, BSG_Center, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.75f, 1), BSG_Center);
+	BaseInterior = new UI_Element(UI_Element::UI_UNASSIGNED, "GBox", BSG_Center, BSG_Center, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.4f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.6f, 1), BSG_Center);
 }
 
 void SceneBattleScreen::Update(float dt)
@@ -69,9 +89,9 @@ void SceneBattleScreen::Update(float dt)
 		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
 	}
 
-	for (std::vector<BattleScreenObject*>::iterator it = ProjectileContainer.begin(); it != ProjectileContainer.end(); ++it)
+	for (std::vector<BaseObject*>::iterator it = ProjectileContainer.begin(); it != ProjectileContainer.end(); ++it)
 	{
-		BattleScreenObject* go = (BattleScreenObject*)*it;
+		BaseObject* go = (BaseObject*)*it;
 		go->Update((float)dt);
 	}
 
@@ -224,9 +244,9 @@ void SceneBattleScreen::RenderPassMain()
 
 	SceneGraphics->RenderMesh("reference", false);
 
-	for (std::vector<BattleScreenObject*>::iterator it = ProjectileContainer.begin(); it != ProjectileContainer.end(); ++it)
+	for (std::vector<BaseObject*>::iterator it = ProjectileContainer.begin(); it != ProjectileContainer.end(); ++it)
 	{
-		BattleScreenObject* go = (BattleScreenObject*)*it;
+		BaseObject* go = (BaseObject*)*it;
 		go->Render();
 	}
 
@@ -309,7 +329,7 @@ void SceneBattleScreen::Exit()
 {
 	if (theInteractiveMap)
 		delete theInteractiveMap;
-	for (std::vector<BattleScreenObject*>::iterator it = ProjectileContainer.begin(); it != ProjectileContainer.end(); ++it)
+	for (std::vector<BaseObject*>::iterator it = ProjectileContainer.begin(); it != ProjectileContainer.end(); ++it)
 	{
 		if (*it)
 		{
@@ -319,4 +339,8 @@ void SceneBattleScreen::Exit()
 	}
 	if (Player)
 		delete Player;
+	if (BaseInterior)
+		delete BaseInterior;
+	if (BaseExterior)
+		delete BaseExterior;
 }

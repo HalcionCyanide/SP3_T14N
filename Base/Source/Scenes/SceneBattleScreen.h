@@ -5,10 +5,10 @@
 #include "..\\Systems\\Scene_System.h"
 #include "GraphicsEntity.h"
 #include "..\\Classes\\GameObject.h"
-#include "..\\Classes\\Camera3.h"
+#include "..\\Classes\\CameraBS.h"
 #include "..\\Systems\\BillboardManager.h"
 #include "..\\Systems\\UI_System.h"
-#include "..\\Misc\\BattleScreenObject.h"
+#include "..\\Misc\\BaseObject.h"
 
 class SceneBattleScreen : public SceneEntity
 {
@@ -22,7 +22,7 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
-	Camera camera;
+	CameraBS camera;
 
 private:
 	// Shadow GPass
@@ -37,8 +37,8 @@ private:
 	double framerates;
 	GenericEntity *theInteractiveMap;
 
-	BattleScreenObject* Player = nullptr;
-	std::vector<BattleScreenObject*> ProjectileContainer;
+	BaseObject* Player = nullptr;
+	std::vector<BaseObject*> ProjectileContainer;
 
 	UI_Element* BaseExterior;
 	UI_Element* BaseInterior;
@@ -47,7 +47,7 @@ private:
 	Vector3 CurrentMousePosition;
 	float PlayerScale;
 	Vector3 ActingForce;
-	bool MouseModeSelected = false;
+	bool MouseModeSelected = true;
 	bool isInvincible = false;
 	float IFrameTimer = 0;
 	const float FrictionDecrementMultiplier = 0.8f;

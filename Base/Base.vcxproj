@@ -11,9 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Classes\CameraBS.cpp" />
     <ClCompile Include="Source\Mains\Application.cpp" />
     <ClCompile Include="Source\Classes\Billboard.cpp" />
-    <ClCompile Include="Source\Misc\BattleScreenObject.cpp" />
+    <ClCompile Include="Source\Misc\BaseObject.cpp" />
     <ClCompile Include="Source\Systems\BillboardManager.cpp" />
     <ClCompile Include="Source\Classes\Boundary.cpp" />
     <ClCompile Include="Source\Classes\Boundary2D.cpp" />
@@ -61,6 +62,7 @@
     <ClInclude Include="Source\Classes\Boundary2D.h" />
     <ClInclude Include="Source\Classes\Camera.h" />
     <ClInclude Include="Source\Classes\Camera3.h" />
+    <ClInclude Include="Source\Classes\CameraBS.h" />
     <ClInclude Include="Source\Classes\CItem.h" />
     <ClInclude Include="Source\Classes\Commands.h" />
     <ClInclude Include="Source\Classes\GameMap.h" />
@@ -80,7 +82,7 @@
     <ClInclude Include="Source\Conditions\Quest.h" />
     <ClInclude Include="Source\Conditions\questManager.h" />
     <ClInclude Include="Source\Mains\Application.h" />
-    <ClInclude Include="Source\Misc\BattleScreenObject.h" />
+    <ClInclude Include="Source\Misc\BaseObject.h" />
     <ClInclude Include="Source\Misc\BoundsBuilder.h" />
     <ClInclude Include="Source\Misc\DepthFBO.h" />
     <ClInclude Include="Source\Misc\DetectMemoryLeak.h" />

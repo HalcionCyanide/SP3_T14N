@@ -1,6 +1,6 @@
 /****************************************************************************/
 /*!
-\file BattleScreenObject.h
+\file BaseObject.h
 \author Ryan Lim Rui An
 \par email: 150577L@mymail.nyp.edu.sg
 \brief
@@ -8,26 +8,27 @@ Defines an object that exists within the 2D battle screen
 */
 /****************************************************************************/
 
-#ifndef _BATTLESCREENOBJECT_H
-#define _BATTLESCREENOBJECT_H
+#ifndef _BASE_OBJECT_H
+#define _BASE_OBJECT_H
 
 #include "..\\Classes\\GenericEntity.h"
+#include "..\\Classes\\Mesh.h"
 #include "Vector3.h"
 #include "Mtx44.h"
-#include "..\\Classes\\Mesh.h"
 #include <string>
 
-class BattleScreenObject : public GenericEntity
+class BaseObject : public GenericEntity
 {
 public:
 	// Constructors
-	BattleScreenObject();
-	BattleScreenObject(const std::string& MeshName, const float& Mass, const Vector3& Position, const Vector3& Dimensions, const Vector3& Velocity, const float& RotationAngle, const Vector3& RotationAxis);
+	BaseObject();
+	BaseObject(const std::string& MeshName, const float& Mass, const Vector3& Position, const Vector3& Dimensions, const Vector3& Velocity, const float& RotationAngle, const Vector3& RotationAxis);
 
 	// Destructor
-	virtual ~BattleScreenObject();
+	virtual ~BaseObject();
 
-	bool Active;
+	bool Active;	 // Updates if true
+	bool Visible;	 // Renders if it and Active is true 
 
 	// Virtual
 	virtual void Init(const std::string& MeshName, const float& Mass, const Vector3& Position, const Vector3& Dimensions, const Vector3& Velocity, const float& RotationAngle, const Vector3& RotationAxis);
@@ -57,7 +58,7 @@ public:
 	Vector3 GetVelocity() const;
 
 private:
-	// BSO's Parameters
+	// Parameters
 	Mesh* StoredMesh;
 	std::string MeshName;
 	Vector3 Position;
@@ -66,6 +67,10 @@ private:
 	Vector3 RotationAxis;
 	float Mass;
 	Vector3 Velocity;
+
+	// If other parameters are required, 
+	// consider inheriting this class and adding them into the new class,
+	// if the required parameters are not generic. ~ Ryan
 };
 
-#endif //_BATTLESCREENOBJECT_H
+#endif //_BASE_OBJECT_H

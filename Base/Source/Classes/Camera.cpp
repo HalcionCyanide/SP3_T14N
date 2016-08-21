@@ -28,7 +28,7 @@ void Camera::Reset()
 void Camera::Update(double dt)
 {
 	static const float CAMERA_SPEED = 20.f;
-	/*if(Application::IsKeyPressed(VK_LEFT) || Application::IsKeyPressed('A'))
+	if(Application::IsKeyPressed(VK_LEFT) || Application::IsKeyPressed('A'))
 	{
 	position.x -= (float)(CAMERA_SPEED * 0.2 * dt);
 	}
@@ -42,10 +42,6 @@ void Camera::Update(double dt)
 	}
 	if(Application::IsKeyPressed(VK_DOWN) || Application::IsKeyPressed('S'))
 	{
-<<<<<<< HEAD:Base/Source/Camera.cpp
 		position.y -= (float)(CAMERA_SPEED * 0.2 * dt);
-=======
-	position.y -= (float)(CAMERA_SPEED * 0.2 * dt);
->>>>>>> ab5a85f05485912636525a3765b25538f6987043:Base/Source/Classes/Camera.cpp
-	}*/
+	}
 }

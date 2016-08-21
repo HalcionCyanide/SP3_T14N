@@ -177,7 +177,10 @@
     <ClCompile Include="Source\Misc\Utility.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Misc\BattleScreenObject.cpp">
+    <ClCompile Include="Source\Misc\BaseObject.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Classes\CameraBS.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -326,10 +329,13 @@
     <ClInclude Include="Source\Systems\UI_System.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Misc\BattleScreenObject.h">
+    <ClInclude Include="Source\Classes\UI_Element.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Classes\UI_Element.h">
+    <ClInclude Include="Source\Classes\CameraBS.h">
+      <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Misc\BaseObject.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
   </ItemGroup>
