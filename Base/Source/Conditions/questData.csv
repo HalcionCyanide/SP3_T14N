@@ -1,0 +1,64 @@
+ID,Name,ConditionName,Value,Description
+1,Monster Collector,collection,10,Capture 10 Monsters!
+2,Monster Collector,collection,15,Capture 15 Monsters!
+3,Monster Collector,collection,20,Capture 20 Monsters!
+4,Monster Collector,collection,25,Capture 25 Monsters!
+5,Monster Collector,collection,30,Capture 30 Monsters!
+6,Rating up!,rating,20,Achieve a rating of 20 or higher.
+7,Rating up!,rating,40,Achieve a rating of 40 or higher.
+8,Rating up!,rating,60,Achieve a rating of 60 or higher.
+9,Rating up!,rating,80,Achieve a rating of 80 or higher.
+10,The Fractal Binding,collection,1,Capture a monster.
+11,The Fractal Binding,interact,NPC_guardcaptain,Report to the Guard Captain.
+12,The Fractal Binding,capture,BOSS_Reaper,Capture the Reaper.
+13,The Fractal Binding,interact,NPC_T1door,Leave the City.
+14,The Fractal Binding,interact,NPC_villagechief,Find the village chief.
+15,The Fractal Binding,interact,NPC_villager,Find the villagers.
+16,The Fractal Binding,goto,10;10;10;,Search the graveyard.
+17,The Fractal Binding,goto,0;0;0;,Cleanse the graveyard.
+18,The Fractal Binding,capture,BOSS_Manticore,Capture the Manticore.
+19,The Fractal Binding,interact,NPC_mStranger,Talk to the Mysterious Stranger.
+20,The Fractal Binding,interact,NPC_guardcaptain,Return to the Castle for instructions.
+21,The Fractal Binding,interact,NPC_mStranger,Reach the Cursed Woods.
+22,The Fractal Binding,capture,BOSS_Balrog,Capture the Balrog.
+23,Rebuilding hope,interact,NPC_rocks,Mine the rocks.
+24,Rebuilding hope,interact,NPC_wood,Chop the wood.
+25,Rebuilding hope,interact,NPC_carpenter,Bring them back to the carpenter.
+26,Rebuilding hope,interact,NPC_rocks,Mine the rocks.
+27,Rebuilding hope,interact,NPC_wood,Chop the wood.
+28,Rebuilding hope,interact,NPC_carpenter,Bring them back to the carpenter.
+29,Rebuilding hope,goto,20;20;20;,Rebuild the Homes.
+30,Rebuilding hope,interact,NPC_rocks,Mine the rocks.
+31,Rebuilding hope,interact,NPC_wood,Chop the wood.
+32,Rebuilding hope,interact,NPC_carpenter,Bring them back to the carpenter.
+33,Rebuilding hope,interact,NPC_rocks,Mine the rocks.
+34,Rebuilding hope,interact,NPC_wood,Chop the wood.
+35,Rebuilding hope,interact,NPC_carpenter,Bring them back to the carpenter.
+36,Rebuilding hope,goto,30;20;30;,Rebuild the Gate.
+37,End of Tyranny,goto,10;0;10;,Put out all the cursed fires around the Crypt.
+38,End of Tyranny,goto,15;0;5;,Put out all the cursed fires around the Crypt.
+39,End of Tyranny,goto,25;0;40;,Put out all the cursed fires around the Crypt.
+40,End of Tyranny,goto,35;0;20;,Put out all the cursed fires around the Crypt.
+41,The path less traveled,goto,20;0;10;,Find a Map piece.
+42,The path less traveled,goto,25;0;40;,Find a Map piece.
+43,The path less traveled,goto,"30,0,20;",Find a Map piece.
+44,The path less traveled,goto,"20,0,0;",Find a Map piece.
+45,The path less traveled,interact,NPC_mapguy,Speak to the royal cartographer.
+46,The path less traveled,goto,60;0;15,Go to the location mentioned.
+47,The path less traveled,capture,MOB_pandora,Capture the Pandora's Box.
+48,Purification,interact,NPC_priest,Bring the Rosary to the Church Priest.
+49,Purification,interact,NPC_guardcaptain,Speak to the Guard Captain.
+50,Purification,goto,10;10;10,Return to the graveyard.
+51,Solomon's Gate,interact,NPC_villagechief,Speak to the Village Chief.
+52,Solomon's Gate,rating,70,Achieve a rating of 70 or higher.
+53,Solomon's Gate,capture,BOSS_skullknight,Capture the Skull Knight.
+54,Solomon's Gate,interact,NPC_villagechief,Speak to the Village Chief.
+55,Solomon's Gate,interact,NPC_fakevial,Acquire a Blood Vial.
+56,Solomon's Gate,interact,NPC_villagechief,Speak to the Village Chief.
+57,Solomon's Gate,interact,NPC_guardcaptain,Report to the Guard Captain.
+58,Solomon's Gate,interact,NPC_fakedoor,Return to the Cursed Woods.
+59,A friend in need,interact,NPC_guardcaptain,Speak to the Guard Captain.
+60,A friend in need,interact,NPC_noblelady,Pass the note to the Noble Lady.
+61,A friend in need,interact,NPC_guardcaptain,Speak to the Guard Captain.
+62,A friend in need,interact,NPC_fakeflower,Get a Fresh Flower
+63,A friend in need,interact,NPC_noblelady,Give the Fresh Flower to the Noble Lady.

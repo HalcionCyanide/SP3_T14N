@@ -1,5 +1,6 @@
 #ifndef GENERICCONDITIONS_H_
 #define GENERICCONDITIONS_H_
+#include <string>
 
 template<class Type>
 struct Data
@@ -12,9 +13,9 @@ struct Data
 struct genericCondition
 {
 	genericCondition(){};
-	//genericCondition(const T &data) { value = data; }
 	virtual ~genericCondition(){};
 
+	virtual void setValue(std::string) = 0;
 	virtual void Update(double dt) = 0;
 };
 
