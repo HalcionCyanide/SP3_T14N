@@ -85,7 +85,7 @@ void SceneBattleScreen::Update(float dt)
 
 void SceneBattleScreen::PlayerUpdate(float dt)
 {
-	if (BaseInterior->UI_Bounds->CheckCollision(Scene_System::accessing().cSS_InputManager->GetMousePosition(), Vector3()))
+	if (BaseInterior->UI_Bounds->CheckCollision(Scene_System::accessing().cSS_InputManager->GetMousePosition()))
 	{
 		CurrentMousePosition = Scene_System::accessing().cSS_InputManager->GetMousePosition();
 	}

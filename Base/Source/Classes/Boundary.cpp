@@ -12,40 +12,19 @@ Boundary::Boundary(const Boundary &bounds)
 	this->RotationValue = bounds.RotationValue;
 }
 
-bool Boundary::CheckCollision(const Boundary &object)const
+bool Boundary::CheckCollision(const Boundary &object)
 {
-	if (abs(this->Position.x - object.Position.x) > (this->Scale.x + object.Scale.x) * 0.5f) return false;
-	if (abs(this->Position.z - object.Position.z) > (this->Scale.z + object.Scale.z) * 0.5f) return false;
+	for (int i = 0; i < VerticesNo; ++i)
+	{
+		if (!this->Projected[i].DetermineCollision(object.Projected[i]))
+			return false;
+	}
 	return true;
 }
 
-bool Boundary::CheckCollision(const Vector3 &point, const Vector3 &vel)const
+bool Boundary::CheckCollision(const Vector3 &point, const Vector3 &scale)
 {
-	Vector3 w0 = this->Position;
-	Vector3 b1 = point;
-	Vector3 N = this->Normal;
-	float h = this->Scale.x;
-	float l = this->Scale.z;
-	Vector3 NP(-N.z, N.x);
-	Vector3 rV = vel;
-	Vector3 rD = w0 - b1;
-
-	if ((w0 - b1).Dot(N) < 0)
-		N = -N;
-
-	Vector3 fw0 = this->Position;
-	Vector3 fb1 = point;
-	Vector3 fN = this->FlipNormal;
-	float fh = this->FlipScale.x;
-	float fl = this->FlipScale.z;
-	Vector3 fNP = Vector3(-fN.z, fN.y, fN.x);
-	Vector3 frV = vel;
-	Vector3 frD = fw0 - fb1;
-
-	if ((fw0 - fb1).Dot(fN) < 0)
-		fN = -fN;
-
-	return (abs(rD.Dot(N)) < h / 2 && abs(rD.Dot(NP)) < l / 2 && rV.Dot(N) > 0)/* || (abs(frD.Dot(fN)) < fh / 2 && abs(frD.Dot(fNP)) < l / 2 && frV.Dot(fN) > 0)*/;
+	return false;
 }
 
 void Boundary::CalculateValues(const Vector3 &pos, const Vector3 &scale, const float &rotation)
@@ -53,7 +32,6 @@ void Boundary::CalculateValues(const Vector3 &pos, const Vector3 &scale, const f
 	SetPosition(pos);
 	SetScale(scale + Vector3(5, 5, 5));
 	SetRotation(rotation);
-	SetNormal();
 }
 
 void Boundary::SetPosition(const Vector3 &position)
@@ -64,22 +42,11 @@ void Boundary::SetPosition(const Vector3 &position)
 void Boundary::SetScale(const Vector3 &scale)
 {
 	this->Scale = scale;
-	this->FlipScale = Vector3(scale.z, scale.y, scale.x);
 }
 
 void Boundary::SetRotation(const float &rotation)
 {
 	this->RotationValue = rotation;
-}
-
-void Boundary::SetNormal()
-{
-	Mtx44 Rotation;
-	Rotation.SetToRotation(this->RotationValue, 0, 1, 0);
-	this->Normal = Vector3(sin(Math::DegreeToRadian(RotationValue)), 0, cos(Math::DegreeToRadian(RotationValue)));
-	Rotation.SetToZero();
-	Rotation.SetToRotation(this->RotationValue + 180.f, 0, 1, 0);
-	this->FlipNormal = Vector3(sin(Math::DegreeToRadian(RotationValue + 90.f)), 0, cos(Math::DegreeToRadian(RotationValue + 90.f)));
 }
 
 Vector3 Boundary::GetPosition()const
@@ -92,22 +59,54 @@ Vector3 Boundary::GetScale()const
 	return Scale;
 }
 
-Vector3 Boundary::GetFlipScale()const
+void Boundary::SetAxes(const Vector3 &pos, const Vector3 &scale, const float &rotation)
 {
-	return FlipScale;
+	this->Axes = new Vector3[VerticesNo];
+	for (int i = 0; i < VerticesNo; ++i)
+	{
+		Vector3 point1 = Vertices[i];
+		Vector3 point2 = Vertices[i + 1 == VerticesNo ? 0 : i + 1];
+		Vector3 N = point1.Cross(point2);
+		Axes[i] = N;
+		Axes[i].Normalize();
+	}
 }
 
-float Boundary::GetRotation()const
+void Boundary::SetVertices()
 {
-	return RotationValue;
+	//Currently limit to 4 Vertices only, will need to change if have more
+	Vertices = new Vector3[VerticesNo];
+	Mtx44 Rotation;
+	Rotation.SetToRotation(this->RotationValue, 0, 1, 0);
+	Vector3 Scale = Rotation * this->Scale;
+	Vertices[0] = Vector3(this->Position.x + Scale.z, this->Position.y, this->Position.z + Scale.z);
+	Vertices[1] = Vector3(this->Position.x + Scale.z, this->Position.y, this->Position.z - Scale.z);
+	Vertices[2] = Vector3(this->Position.x - Scale.z, this->Position.y, this->Position.z - Scale.z);
+	Vertices[3] = Vector3(this->Position.x - Scale.z, this->Position.y, this->Position.z + Scale.z);
 }
 
-Vector3 Boundary::GetNormal()const
+void Boundary::SetProjection(const Projection &value)
 {
-	return this->Normal;
+	Projected = new Projection[VerticesNo];
+	for (int i = 0; i < VerticesNo; ++i)
+	{
+		Projected[i] = *Projecting(Axes[i]);
+	}
 }
 
-Vector3 Boundary::GetFlipNormal()const
+
+Projection* Boundary::Projecting(const Vector3 &axis)
 {
-	return FlipNormal;
+	float min, max;
+	min = max = axis.Dot(this->Vertices[0]);
+	for (int i = 1; i < VerticesNo; ++i)
+	{
+		float value = axis.Dot(this->Vertices[i]);
+		if (value < min)
+			min = value;
+		else if (value > max)
+			max = value;
+	}
+	Projection* proj = new Projection(min, max);
+	return proj;
 }

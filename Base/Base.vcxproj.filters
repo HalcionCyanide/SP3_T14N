@@ -186,6 +186,9 @@
     <ClCompile Include="Source\Classes\MusicEntity.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Classes\Projection.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Classes\Billboard.h">
@@ -342,6 +345,9 @@
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="Source\Classes\MusicEntity.h">
+      <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Classes\Projection.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
   </ItemGroup>
