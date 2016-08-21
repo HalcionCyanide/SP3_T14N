@@ -3,6 +3,13 @@
 #include <string>
 #include "../Classes/Boundary2D.h"
 
+// To Do List
+// Enemy Class [params: atk rate, atk type, atk damage]
+// Projectile Class [params: accel, mass, inherit baseobj]
+// Upgrade UI_Sys
+// Coll Check Sys
+// If possible, partitioning
+
 BattleSystem::BattleSystem()
 {
 	//Init();
@@ -118,6 +125,7 @@ void BattleSystem::UpdatePESPhase(float dt)
 			else (*it)->Active = false;
 		}
 	}
+	BatchCreateAttacks(0);
 	UpdatePlayer(dt);
 	UpdatePhysics(dt);
 }
@@ -137,7 +145,6 @@ void BattleSystem::UpdateFleePhase(float dt)
 // Player Calls
 void BattleSystem::UpdatePlayer(float dt)
 {
-	Attack_Bullet();
 	UpdateControls(dt);
 	UpdateITimer(dt);
 	Player->Update(dt);
@@ -247,11 +254,13 @@ void BattleSystem::UpdatePhysics(float dt)
 
 bool BattleSystem::CollisionCheck(const BaseObject& BaseObject1, const BaseObject& BaseObject2, float dt)
 {
+	// Consider Making a projectile class that holds coltype as well as bounds
 	return false;
 }
 
 bool BattleSystem::CollisionResponse(const BaseObject& BaseObject1, const BaseObject& BaseObject2, float dt)
 {
+	// Do stuff like hp decrement
 	return false;
 }
 
@@ -280,7 +289,7 @@ void BattleSystem::Attack_Bullet()
 	Vector3 SpawnPos = CenterPosition + Vector3(Math::RandFloatMinMax(-CenterPosition.x, CenterPosition.x), Math::RandFloatMinMax(-CenterPosition.y, CenterPosition.y));
 	if (TempBounds.CheckCollision(SpawnPos, Vector3()))
 	{
-		Vector3 DVec = (Player->GetPosition() - SpawnPos).Normalize() * 500;
+		Vector3 DVec = (Player->GetPosition() - SpawnPos).Normalize() * 700; // * Projectile Speed;
 		// Use a fetch Func
 		BaseObject* NewObj = new BaseObject("ayylmao", 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), DVec, 0, Vector3(0, 0, 1));
 		cBS_ObjectContainer.push_back(NewObj);
