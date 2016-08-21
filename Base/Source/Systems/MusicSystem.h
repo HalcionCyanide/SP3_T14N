@@ -3,7 +3,7 @@
 
 #include "GenericSystem.h"
 //#include "..\\Classes\\SingletonTemplate.h"
-#include "../Classes/MusicEntity.h"
+#include "../Classes/MusicEntity2D.h"
 
 class MusicSystem : public GenericSystem
 {
@@ -17,6 +17,7 @@ public:
 
 private:
     ISoundEngine *musicEngine;
+    bool beginLoadingMusic(const std::string &fileName);
 };
 
 #endif

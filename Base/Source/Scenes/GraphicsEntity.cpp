@@ -1,5 +1,7 @@
 #include "GraphicsEntity.h"
-#include <assert.h>
+#ifdef _DEBUG
+    #include <assert.h>
+#endif
 #include <fstream>
 #include <sstream>
 #include "..\\Systems\\Scene_System.h"
@@ -474,36 +476,46 @@ void GraphicsEntity::RenderMesh(Mesh &mesh, const bool &enableLight)
 void GraphicsEntity::RenderText(const std::string &meshName, const std::string &text, Color &color)
 {
 	std::map<std::string, Mesh*>::iterator it = meshList.find(meshName);
+#ifdef _DEBUG
 	assert(it != meshList.end());
+#endif
 	RenderText(*it->second, text, color);
 }
 
 void GraphicsEntity::RenderTextOnScreen(const std::string &meshName, const std::string &text, Color &color, const float &size, const float &x, const float &y)
 {
 	std::map<std::string, Mesh*>::iterator it = meshList.find(meshName);
-	assert(it != meshList.end());
-	RenderTextOnScreen(*it->second, text, color, size, x, y);
+#ifdef _DEBUG
+    assert(it != meshList.end());
+#endif
+    RenderTextOnScreen(*it->second, text, color, size, x, y);
 }
 
 void GraphicsEntity::RenderMeshIn2D(const std::string &meshName, const bool &enableLight, const float &size, const float &x, const float &y)
 {
 	std::map<std::string, Mesh*>::iterator it = meshList.find(meshName);
-	assert(it != meshList.end());
-	RenderMeshIn2D(*it->second, enableLight, size, x, y);
+#ifdef _DEBUG
+    assert(it != meshList.end());
+#endif
+    RenderMeshIn2D(*it->second, enableLight, size, x, y);
 }
 
 void GraphicsEntity::RenderMeshIn2D(const std::string &meshName, const bool &enableLight, const float &sizeX, const float &sizeY, const float &x, const float &y)
 {
 	std::map<std::string, Mesh*>::iterator it = meshList.find(meshName);
-	assert(it != meshList.end());
-	RenderMeshIn2D(*it->second, enableLight, sizeX, sizeY, x, y);
+#ifdef _DEBUG
+    assert(it != meshList.end());
+#endif
+    RenderMeshIn2D(*it->second, enableLight, sizeX, sizeY, x, y);
 }
 
 void GraphicsEntity::RenderMesh(const std::string &meshName, const bool &enableLight)
 {
 	std::map<std::string, Mesh*>::iterator it = meshList.find(meshName);
-	assert(it != meshList.end());
-	RenderMesh(*it->second, enableLight);
+#ifdef _DEBUG
+    assert(it != meshList.end());
+#endif
+    RenderMesh(*it->second, enableLight);
 }
 
 void GraphicsEntity::SetHUD(const bool& m_bHUDmode)

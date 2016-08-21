@@ -180,9 +180,6 @@
     <ClCompile Include="Source\Systems\MusicSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Classes\MusicEntity.cpp">
-      <Filter>Source Files\Classes</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Classes\BaseObject.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
@@ -190,6 +187,12 @@
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="Source\Classes\CameraBS.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Classes\MusicEntity2D.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Classes\MusicEntity3D.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -344,9 +347,6 @@
     <ClInclude Include="Source\Systems\MusicSystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Classes\MusicEntity.h">
-      <Filter>Header Files\Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Classes\BaseObject.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
@@ -354,6 +354,12 @@
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="Source\Classes\CameraBS.h">
+      <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Classes\MusicEntity2D.h">
+      <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Classes\MusicEntity3D.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
   </ItemGroup>

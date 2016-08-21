@@ -1,4 +1,4 @@
-#include "MusicEntity.h"
+#include "MusicEntity2D.h"
 
 MusicEntity2D::MusicEntity2D()
     : GenericEntity()

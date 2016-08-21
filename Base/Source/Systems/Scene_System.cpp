@@ -1,5 +1,7 @@
 #include "Scene_System.h"
-#include <assert.h>
+#ifdef _DEBUG
+    #include <assert.h>
+#endif
 
 void Scene_System::Init()
 {
@@ -10,12 +12,16 @@ void Scene_System::Init()
 
 void Scene_System::Update(double dt)
 {
+#ifdef _DEBUG
     assert(dt > 0 || dt < 0 || dt == 0);    //Make there is no joker
+#endif
 }
 
 void Scene_System::AddScene(SceneEntity &sceneObject)
 {
+#ifdef _DEBUG
     assert(graphics_scene != nullptr);  //Ensuring the Graphics are being added before the logics
+#endif
 	if (SceneHistory.empty() == true)
     {
 		SceneHistory.push(&sceneObject);
@@ -33,8 +39,10 @@ void Scene_System::RemoveScene(SceneEntity &sceneObject)
 
 void Scene_System::SwitchScene(const std::string &id_)
 {
-	assert(graphics_scene != nullptr);  //Ensuring the Graphics are being added before the logics
-	std::map<std::string, SceneEntity*>::iterator it = theSceneList.find(id_);
+#ifdef _DEBUG
+    assert(graphics_scene != nullptr);  //Ensuring the Graphics are being added before the logics
+#endif
+    std::map<std::string, SceneEntity*>::iterator it = theSceneList.find(id_);
 	if (it != theSceneList.end())
 	{
 		SceneHistory.push(it->second);
@@ -69,7 +77,9 @@ SceneEntity &Scene_System::getGraphicsScene()
 
 void Scene_System::setGraphics_Scene(SceneEntity &sceneObject)
 {
-    assert(graphics_scene == nullptr); //There can only be 1 Graphic Scene
+#ifdef _DEBUG
+    assert(graphics_scene != nullptr);  //Ensuring the Graphics are being added before the logics
+#endif
     graphics_scene = &sceneObject;
 }
 

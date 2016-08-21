@@ -4,7 +4,9 @@
 #include "..\\Scenes\\GraphicsEntity.h"
 
 #include <fstream>
+#ifdef _DEBUG
 #include <assert.h>
+#endif
 #include <sstream>
 #include "..\\Misc\\SimpleCommand.h"
 #include "..\\Scenes\\Scene_MainMenu.h"
@@ -291,7 +293,9 @@ void Application::Exit()
 bool Application::loadGlobalStuff()
 {
     std::ifstream file("Image//GlobalDriven.csv");
+#ifdef _DEBUG
     assert(file.is_open());
+#endif
     if (file.is_open())
     {
         std::string data = "";
