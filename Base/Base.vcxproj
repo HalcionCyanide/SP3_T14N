@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Classes\MusicEntity.cpp" />
     <ClCompile Include="Source\Mains\Application.cpp" />
     <ClCompile Include="Source\Classes\Billboard.cpp" />
     <ClCompile Include="Source\Misc\BattleScreenObject.cpp" />
@@ -33,6 +34,7 @@
     <ClCompile Include="Source\Misc\LoadTGA.cpp" />
     <ClCompile Include="Source\Classes\GameMap.cpp" />
     <ClCompile Include="Source\Classes\NPC.cpp" />
+    <ClCompile Include="Source\Systems\MusicSystem.cpp" />
     <ClCompile Include="Source\Systems\NPCManager.cpp" />
     <ClCompile Include="Source\Classes\PlayerObject.cpp" />
     <ClCompile Include="Source\Conditions\Quest.cpp" />
@@ -69,6 +71,7 @@
     <ClInclude Include="Source\Classes\Light.h" />
     <ClInclude Include="Source\Classes\Material.h" />
     <ClInclude Include="Source\Classes\Mesh.h" />
+    <ClInclude Include="Source\Classes\MusicEntity.h" />
     <ClInclude Include="Source\Classes\NPC.h" />
     <ClInclude Include="Source\Classes\PlayerObject.h" />
     <ClInclude Include="Source\Classes\Scene.h" />
@@ -103,6 +106,7 @@
     <ClInclude Include="Source\Systems\BillboardManager.h" />
     <ClInclude Include="Source\Systems\GenericSystem.h" />
     <ClInclude Include="Source\Systems\InputManager.h" />
+    <ClInclude Include="Source\Systems\MusicSystem.h" />
     <ClInclude Include="Source\Systems\NPCManager.h" />
     <ClInclude Include="Source\Systems\Scene_System.h" />
     <ClInclude Include="Source\Systems\UI_System.h" />
