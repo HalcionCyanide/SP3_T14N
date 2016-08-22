@@ -2,27 +2,27 @@
 #include <sstream>
 
 gotoCondition::gotoCondition()
-	: theRequirement(0)
+	: theRequirement(Vector3(0,0,0))
 	, dist(0)
 {
 }
 
 gotoCondition::gotoCondition(std::string i)
-	: theRequirement(0)
+	: theRequirement(Vector3(0, 0, 0))
 	, dist(0)
 {
 	unsigned short num = 0;
 	std::istringstream iss(i);
 	std::string data = "";
 	//Tikam Tikam write it. Pray it works.
-	while (getline(iss, data, ':'))
+	while (getline(iss, data, ';'))
 	{
 		if (num == 0)
-			theRequirement.value_->x = stof(data);
+				theRequirement.value_.x = stof(data);
 		else if (num == 1)
-			theRequirement.value_->y = stof(data);
+			theRequirement.value_.y = stof(data);
 		else if (num == 2)
-			theRequirement.value_->z = stof(data);
+			theRequirement.value_.z = stof(data);
 		++num;
 	}
 }
@@ -40,11 +40,11 @@ void gotoCondition::setValue(std::string i)
 	while (getline(iss, data, ':'))
 	{
 		if (num == 0)
-			theRequirement.value_->x = stof(data);
+			theRequirement.value_.x = stof(data);
 		else if (num == 1)
-			theRequirement.value_->y = stof(data);
+			theRequirement.value_.y = stof(data);
 		else if (num == 2)
-			theRequirement.value_->z = stof(data);
+			theRequirement.value_.z = stof(data);
 		++num;
 	}
 }

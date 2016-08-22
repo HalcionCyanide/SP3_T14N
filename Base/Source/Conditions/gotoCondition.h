@@ -15,7 +15,7 @@ public:
 	virtual void Update(double dt);
 private:
 	int dist;
-	Data<Vector3*> theRequirement;
+	Data<Vector3> theRequirement;
 };
 
 #endif
