@@ -48,9 +48,10 @@ bool MusicEntity2D::OnNotify(const std::string &theEvent)
 
 void MusicEntity2D::Play()
 {
-    if (HistoryOfPlayTimes.size() < maxTimeToPlay)
+    if (HistoryOfPlayTimes.size() < maxTimeToPlay || unlimitedTimes == true)
     {
-
+        ISound *thEffect = MusicSystem::accessing().musicEngine->play2D(SoundSource, loopIt, false, true);
+        HistoryOfPlayTimes.push(thEffect);
     }
 }
 

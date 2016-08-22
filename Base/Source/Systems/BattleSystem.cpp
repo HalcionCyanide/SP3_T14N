@@ -96,11 +96,11 @@ void BattleSystem::Exit()
 		delete *it;
 	}
 	cBS_ObjectContainer.clear();
-    if (CurrentEnemy)
-    {
-        delete CurrentEnemy;
-        CurrentEnemy = nullptr;
-    }
+    //if (CurrentEnemy)
+    //{
+    //    delete CurrentEnemy;
+    //    CurrentEnemy = nullptr;
+    //}
 }
 
 void BattleSystem::SetEnemy(Enemy& Enemy)

@@ -2,6 +2,8 @@
 #include <fstream>
 #include "../Classes/MusicEntity3D.h"
 #include "Scene_System.h"
+#include <sstream>
+#include <set>
 
 void MusicSystem::Init()
 {
@@ -33,6 +35,27 @@ bool MusicSystem::beginLoadingMusic(const std::string &fileName)
     std::ifstream file(fileName.c_str());
     if (file.is_open())
     {
+        std::string data = "";
+        std::vector<std::string> keys;
+        std::vector<std::string> values;
+        std::set<std::string> keepingTrackOfFileNames;
+        while (getline(file, data))
+        {
+            if (data == "")
+                continue;
+            std::string token = "";
+            std::istringstream iss(data);
+            if (keys.empty())
+            {
+                while (getline(iss, token, ','))
+                    keys.push_back(token);
+            }
+            else {
+                while (getline(iss, token, ','))
+                    values.push_back(token);
+
+            }
+        }
 
         file.close();
         return true;
