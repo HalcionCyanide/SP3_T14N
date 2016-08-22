@@ -31,7 +31,7 @@ void ratingCondition::Update(double dt)
 	if(!satisfied)
 	{
 		/*counter = player.rating;*/
-		if (theRequirement >= counter)
+		if (theRequirement <= counter)
 		{
 			satisfied = true;
 		}

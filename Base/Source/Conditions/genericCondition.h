@@ -16,6 +16,13 @@ struct Data
 		else
 			return false;
 	}
+	bool operator<=(const Type& rhs)
+	{
+		if (value_ <= rhs)
+			return true;
+		else
+			return false;
+	}
 };
 
 struct genericCondition
