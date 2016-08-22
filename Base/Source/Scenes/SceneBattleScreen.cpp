@@ -162,7 +162,7 @@ void SceneBattleScreen::RenderPassMain()
 		modelStack->PushMatrix();
 		modelStack->Translate(Scene_System::accessing().cSS_InputManager->GetMousePosition().x, Scene_System::accessing().cSS_InputManager->GetMousePosition().y, 0);
 		modelStack->Rotate(0, 0, 1, 0);
-		modelStack->Scale(BSystem.Player->GetDimensions().x * 0.5f, BSystem.Player->GetDimensions().y * 0.5f, 1);
+		modelStack->Scale(BSystem.PlayerObj->GetDimensions().x * 0.5f, BSystem.PlayerObj->GetDimensions().y * 0.5f, 1);
 		SceneGraphics->RenderMesh("TFB_Gem", false);
 		modelStack->PopMatrix();
 	}
@@ -174,12 +174,12 @@ void SceneBattleScreen::RenderPassMain()
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 25);
 
 	ss.str("");
-	ss << "Player Pos:" << BSystem.Player->GetPosition();
+	ss << "Player Pos:" << BSystem.PlayerObj->GetPosition();
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
 
 	ss.str("");
-	ss << "Player Vel:" << BSystem.Player->GetVelocity();
+	ss << "Player Vel:" << BSystem.PlayerObj->GetVelocity();
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
 

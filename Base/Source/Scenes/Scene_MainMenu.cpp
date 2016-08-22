@@ -400,7 +400,7 @@ void Scene_MainMenu::RenderPassMain()
 	for (auto it : testingRenderingStuff)
 	{
 		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
-		if (the3DObject && (camera.position - camera.target).Normalize().Dot(the3DObject->GetPos().Normalized()) < 1.f)
+		if (the3DObject && (camera.position - camera.target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
 			the3DObject->Render();
 	}
 	//<!> will remove soon <!>

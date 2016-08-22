@@ -356,6 +356,12 @@
     <ClInclude Include="Source\Classes\CameraBS.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Classes\Enemy.h">
+      <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Classes\Projectile.h">
+      <Filter>Header Files\Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\GPass.fragmentshader">

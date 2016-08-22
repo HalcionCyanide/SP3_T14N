@@ -45,21 +45,24 @@ void Scene_2::Init()
 	newMesh->textureArray[0] = LoadTGA("Image//weed.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
+	//<!> There can only be 1 Player
 	Player = new PlayerObject();
-	Player->Init("Player", camera.position - Vector3(0, camera.PlayerHeight, 0) , Vector3(2, 1, 2), 0.0f, Vector3(1, 0, 0), true);
+	Player->Init("Player", 1, camera.position - Vector3(0, camera.PlayerHeight, 0), Vector3(2, 1, 2), Vector3(), camera.CurrentCameraRotation.y, Vector3(0, 1));
 	std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find("cube");
-	Player->SetMesh(*it->second);
-    Player->setName("PLayer 1");
-    Player->SetRotation(camera.CurrentCameraRotation.y, Vector3(0, 1, 0));
+	Player->setName("PLayer 1");
+	Player->SetMesh(it->second);
+
 	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
-	PlayerPTR->setVel(Vector3(10.f, 0.f, 0.f));
-	PlayerPTR->SetPos(Vector3(Player->GetPos().x, camera.PlayerHeight + TerrainYScale * ReadHeightMap(m_heightMap, (Player->GetPos().x / TerrainXScale), (Player->GetPos().z / TerrainXScale)), Player->GetPos().z));
+	//PlayerPTR->cameraObject = &camera;
+	PlayerPTR->SetVelocity(Vector3(10.f, 0.f, 0.f));
+	PlayerPTR->SetPosition(Vector3(Player->GetPosition().x, camera.PlayerHeight + TerrainYScale * ReadHeightMap(m_heightMap, (Player->GetPosition().x / TerrainXScale), (Player->GetPosition().z / TerrainXScale)), Player->GetPosition().z));
+	//<!> There can only be 1 Player
 
 	GameObject* ObjectA = new GameObject();
-	ObjectA->Init("ObjectA", Vector3(15, 0, 15), Vector3(10, 10, 10), 0.0f, Vector3(1, 0, 0), true);
-	ObjectA->SetPos(Vector3(ObjectA->GetPos().x, TerrainYScale * ReadHeightMap(m_heightMap, (ObjectA->GetPos().x / TerrainXScale), (ObjectA->GetPos().z / TerrainXScale)) + ObjectA->GetScale().y * 0.5f, ObjectA->GetPos().z));
+	ObjectA->Init("ObjectA", 1, Vector3(15, 0, 15), Vector3(10, 10, 10), 0.0f, 0, Vector3(0, 1, 0));
+	ObjectA->SetPosition(Vector3(ObjectA->GetPosition().x, TerrainYScale * ReadHeightMap(m_heightMap, (ObjectA->GetPosition().x / TerrainXScale), (ObjectA->GetPosition().z / TerrainXScale)) + ObjectA->GetDimensions().y * 0.5f, ObjectA->GetPosition().z));
 	it = SceneGraphics->meshList.find("cube");
-	ObjectA->SetMesh(*it->second);
+	ObjectA->SetMesh(it->second);
 	ObjectA->SetBounds();
 	ObjectVec.push_back(ObjectA);
 
@@ -112,10 +115,10 @@ void Scene_2::Update(float dt)
 
 	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
 	PlayerPTR->Update(dt);
-	PlayerPTR->SetRotation(camera.CurrentCameraRotation.y, Vector3(0, 1, 0));
+	PlayerPTR->SetRotationAngle(camera.CurrentCameraRotation.y);
 
 	camera.Update(dt);
-	camera.position = PlayerPTR->GetPos();
+	camera.position = PlayerPTR->GetPosition();
 	camera.UpdateCameraVectors();
 
 }

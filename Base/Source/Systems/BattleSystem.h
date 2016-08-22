@@ -2,9 +2,11 @@
 #define _BATTLESYSTEM_H
 
 #include "../Classes/BaseObject.h"
+#include "../Classes/Enemy.h"
 #include "GenericSystem.h"
 #include "Vector3.h"
 #include <vector>
+#include "../Classes/Enemy.h"
 
 class BattleSystem : public GenericSystem
 {
@@ -23,7 +25,7 @@ public:
 	virtual ~BattleSystem();
 
 	//Public Variables
-	BaseObject* Player;
+	BaseObject* PlayerObj;
 	BS_State BattleState = BS_PlayerEvasionStage;// = BS_Null;
 
 	// Public Function Calls
@@ -32,9 +34,7 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
-	// Enemy* Enemy <- To Store Attack Patterns and Stats
-	// void SetEnemy(const Enemy&)
-	// Misc. Enemy Functions
+	Enemy* CurrentEnemy; //<- To Store Attack Patterns and Stats
 
 private:
 	// Private Variables
@@ -44,7 +44,7 @@ private:
 	Vector3 CenterPosition;
 	BaseObject* BaseExterior;
 	BaseObject* BaseInterior;
-	bool MouseModeSelected = true;
+	bool MouseModeSelected = false;
 	bool isInvincible = false;
 	float IFrameTimer = 0;
 	const float FrictionDecrementMultiplier = 0.8f;
