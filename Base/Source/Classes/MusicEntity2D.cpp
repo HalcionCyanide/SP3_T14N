@@ -36,12 +36,12 @@ void MusicEntity2D::Init(const std::string &theName, const float &theVol, const 
     SoundSource = 
         MusicSystem::accessing().musicEngine->addSoundSourceFromFile(theName.c_str());
     volume_ = theVol;
-    setNumTimeToPlay(playHowManyTime);
-    setUnlimitedPlayTimes(unlimitedTimes);
-    constantLooping(loop);
+    SetNumTimeToPlay(playHowManyTime);
+    SetUnlimitedPlayTimes(unlimitedTimes);
+    ConstantLooping(loop);
 }
 
-bool MusicEntity2D::onNotify(const std::string &theEvent)
+bool MusicEntity2D::OnNotify(const std::string &theEvent)
 {
     return true;
 }
@@ -68,18 +68,34 @@ void MusicEntity2D::Update(double dt)
     }
 }
 
-void MusicEntity2D::constantLooping(const bool &loop)
+void MusicEntity2D::ConstantLooping(const bool &loop)
 {
     loopIt = loop;
 }
 
-void MusicEntity2D::setUnlimitedPlayTimes(const bool &playTimes)
+void MusicEntity2D::SetUnlimitedPlayTimes(const bool &playTimes)
 {
     unlimitedTimes = playTimes;
 }
 
-void MusicEntity2D::setNumTimeToPlay(const int &numTime)
+void MusicEntity2D::SetNumTimeToPlay(const int &numTime)
 {
     if (numTime > 0)
         maxTimeToPlay = numTime;
+}
+
+void MusicEntity2D::SetPosition(const Vector3 &pos)
+{
+
+}
+
+void MusicEntity2D::Stop()
+{
+    while (HistoryOfPlayTimes.size() > 0)
+    {
+        ISound *theEffect = HistoryOfPlayTimes.front();
+        theEffect->drop();
+        theEffect = 0;
+        HistoryOfPlayTimes.pop();
+    }
 }

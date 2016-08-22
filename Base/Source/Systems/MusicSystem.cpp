@@ -40,3 +40,24 @@ bool MusicSystem::beginLoadingMusic(const std::string &fileName)
     return false;
 }
 
+bool MusicSystem::playBackgroundMusic(const std::string &songName)
+{
+    strMEmap::iterator it = all_the_Music.find(songName);
+    if (it != all_the_Music.end())
+    {
+        it->second->Play();
+        return true;
+    }
+    return false;
+}
+
+bool MusicSystem::playMusic(const std::string &songName)
+{
+    strMEmap::iterator it = all_the_Music.find(songName);
+    if (it != all_the_Music.end())
+    {
+        it->second->Play();
+        return true;
+    }
+    return false;
+}

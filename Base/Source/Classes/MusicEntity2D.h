@@ -4,6 +4,8 @@
 #include "GenericEntity.h"
 #include "irrklang.h"
 #include <queue>
+#include "Vector3.h"
+
 using namespace irrklang;
 
 class MusicEntity2D : public GenericEntity
@@ -16,10 +18,13 @@ public:
     virtual void Play();
     virtual void Update(double dt);
     virtual void SetVolume(const float &theNum);
-    virtual bool onNotify(const std::string &theEvent);
-    virtual void setUnlimitedPlayTimes(const bool &playTimes);
-    virtual void constantLooping(const bool &loop);
-    virtual void setNumTimeToPlay(const int &numTime);
+    virtual bool OnNotify(const std::string &theEvent);
+    virtual void SetPosition(const Vector3 &pos);
+    virtual void SetUnlimitedPlayTimes(const bool &playTimes);
+    virtual void ConstantLooping(const bool &loop);
+    virtual void SetNumTimeToPlay(const int &numTime);
+
+    virtual void Stop();
 
 protected:
     ISoundSource *SoundSource;

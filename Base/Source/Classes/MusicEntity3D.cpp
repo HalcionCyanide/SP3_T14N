@@ -37,10 +37,10 @@ vec3df MusicEntity3D::convertFromVectorToSuitableIrrklangVector(const Vector3 &t
 void MusicEntity3D::Init(const std::string &theName, const Vector3 &thePos, const float &theVol, const int &playHowManyTime, const bool &unlimitedTimes, const bool &loop)
 {
     MusicEntity2D::Init(theName, theVol, playHowManyTime, unlimitedTimes, loop);
-    setPosition(thePos);
+    SetPosition(thePos);
 }
 
-void MusicEntity3D::setPosition(const Vector3 &pos)
+void MusicEntity3D::SetPosition(const Vector3 &pos)
 {
     position = convertFromVectorToSuitableIrrklangVector(pos);
 }

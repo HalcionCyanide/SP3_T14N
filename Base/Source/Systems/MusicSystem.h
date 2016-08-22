@@ -5,6 +5,8 @@
 #include "../Classes/MusicEntity2D.h"
 #include <map>
 
+typedef std::map<std::string, MusicEntity2D*> strMEmap;
+
 class MusicSystem : public GenericSystem, public SingletonTemplate<MusicSystem>
 {
 public:
@@ -16,8 +18,13 @@ public:
     ISoundEngine *musicEngine;
     std::map<std::string, MusicEntity2D*> all_the_Music;
 
+    virtual bool playMusic(const std::string &songName);
+
+    virtual bool playBackgroundMusic(const std::string &songName);
+
 private:
     bool beginLoadingMusic(const std::string &fileName);
+    MusicEntity2D *theOnlyBackgroundMusic;
 };
 
 #endif
