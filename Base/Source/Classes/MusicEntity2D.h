@@ -11,9 +11,12 @@ public:
     MusicEntity2D();
     virtual ~MusicEntity2D();
 
+    virtual void SetVolume(const float &theNum);
+
 protected:
     ISound *SoundEffects;
     ISoundSource *SoundSource;
+    float volume_;
 };
 
 #endif
