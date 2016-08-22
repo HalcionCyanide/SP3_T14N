@@ -6,9 +6,10 @@ class questManager
 {
 public:
 	questManager();
-	~questManager();
+	virtual ~questManager();
 
-	void readFile(const std::string);
+	virtual void readFile(const std::string);
+	virtual void Update(double dt);
 
 	std::vector<Quest*> allQuests;
 

@@ -6,7 +6,6 @@
 #include "SceneTown3.h"
 #include "SceneFreeField.h"
 #include "..\\Classes\\PlayerObject.h"
-#include "..\\Conditions\\questManager.h"
 
 std::string Scene_2::id_ = "Scene 2";
 
@@ -26,9 +25,6 @@ void Scene_2::Init()
 {
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	
-	questManager QM;
-	QM.readFile("Source//Conditions//questData.csv");
-
     Mtx44 perspective;
     perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
     projectionStack->LoadMatrix(perspective);
@@ -76,7 +72,7 @@ void Scene_2::Init()
 
 void Scene_2::Update(float dt)
 {
-    GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
+	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
     SceneGraphics->Update(dt);
 
 	//Update Camera's Minimum Possible & Current Y Pos
