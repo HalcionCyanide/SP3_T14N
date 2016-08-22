@@ -10,8 +10,6 @@
 #include <vector>
 #include "..\\Systems\\BillboardManager.h"
 #include "..\\Classes\\GameObject.h"
-#include "..\\Conditions\\questManager.h"
-
 
 class Scene_2 : public SceneEntity
 {
@@ -50,5 +48,4 @@ private:
 	std::vector<GameObject*> ObjectVec;
 	GameObject* Player;
     double framerates;
-	questManager QM;
 };

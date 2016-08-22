@@ -51,7 +51,6 @@ public:
 	float GetUIHeight();
 
 	InputManager *cSS_InputManager;
-
 private:
 	float cSS_UIWidth = 0;
 	float cSS_UIHeight = 0;
