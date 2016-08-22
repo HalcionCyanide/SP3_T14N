@@ -30,6 +30,6 @@ void MusicSystem::onNotify(const std::string &theMessage)
 
 bool MusicSystem::beginLoadingMusic(const std::string &fileName)
 {
-
+    std::ifstream file(fileName.c_str());
     return false;
 }

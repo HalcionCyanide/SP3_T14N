@@ -11,6 +11,7 @@
 
 BattleSystem::BattleSystem()
 {
+    CurrentEnemy = nullptr;
 	//Init();
 }
 
@@ -98,7 +99,10 @@ void BattleSystem::Exit()
 	}
 	cBS_ObjectContainer.clear();
     if (CurrentEnemy)
+    {
         delete CurrentEnemy;
+        CurrentEnemy = nullptr;
+    }
 }
 
 // Private Function Calls
