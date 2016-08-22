@@ -11,3 +11,8 @@ MusicEntity3D::~MusicEntity3D()
 {
 
 }
+
+void MusicEntity3D::Init()
+{
+
+}

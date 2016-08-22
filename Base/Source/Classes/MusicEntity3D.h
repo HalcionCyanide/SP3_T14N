@@ -7,11 +7,13 @@ class MusicEntity3D : public MusicEntity2D
 {
 public:
     MusicEntity3D();
+
     virtual ~MusicEntity3D();
 
-
+    virtual void Init();
 
 protected:
+    vec3df position;
 };
 
 #endif

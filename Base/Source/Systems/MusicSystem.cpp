@@ -4,6 +4,7 @@
 #ifdef _DEBUG
     #include <assert.h>
 #endif
+#include "Scene_System.h"
 
 MusicSystem::MusicSystem()
     : musicEngine(nullptr)
@@ -27,9 +28,11 @@ void MusicSystem::Init()
 #endif
 }
 
+//This is gonna be a pain
 void MusicSystem::Update(double dt)
 {
-
+    //How to update listener position
+    musicEngine->update();
 }
 
 void MusicSystem::onNotify(const std::string &theMessage)
