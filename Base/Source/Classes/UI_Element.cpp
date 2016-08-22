@@ -10,6 +10,11 @@ UI_Element::UI_Element(const UI_Element::UI_TYPES& UI_Type, const std::string& n
 
 UI_Element::~UI_Element()
 {
+	if (UI_Bounds)
+	{
+		delete UI_Bounds;
+		UI_Bounds = nullptr;
+	}
 	Exit();
 }
 

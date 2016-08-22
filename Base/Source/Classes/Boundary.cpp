@@ -1,7 +1,15 @@
 #include "Boundary.h"
 
+Boundary::Boundary()
+{
+	Vertices = nullptr;
+	Axes = nullptr;
+}
+
 Boundary::Boundary(const Vector3 &pos, const Vector3 &scale, const float &rotation)
 {
+	Vertices = nullptr;
+	Axes = nullptr;
 	CalculateValues(pos, scale, rotation);
 }
 
@@ -15,19 +23,33 @@ Boundary::Boundary(const Boundary &bounds)
 	this->VerticesNo = bounds.VerticesNo;
 }
 
+Boundary::~Boundary()
+{
+	if (Axes)
+	{
+		delete []Axes;
+		Axes = nullptr;
+	}
+	if (Vertices)
+	{
+		delete[]Vertices;
+		Vertices = nullptr;
+	}
+}
+
 bool Boundary::CheckCollision(Boundary &object)
 {
 	for (int i = 0; i < VerticesNo; ++i)
 	{
-		Projection* point1 = this->Projecting(this->Axes[i]);
-		Projection* point2 = object.Projecting(this->Axes[i]);
+		Projection* point1 = &Projecting(this->Axes[i]);
+		Projection* point2 = &object.Projecting(this->Axes[i]);
 		if (!point1->DetermineCollision(*point2))
 			return false;
 	}
 	for (int i = 0; i < VerticesNo; ++i)
 	{
-		Projection* point1 = this->Projecting(object.Axes[i]);
-		Projection* point2 = object.Projecting(object.Axes[i]);
+		Projection* point1 = &Projecting(object.Axes[i]);
+		Projection* point2 = &object.Projecting(object.Axes[i]);
 		if (!point1->DetermineCollision(*point2))
 			return false;
 	}
@@ -38,9 +60,9 @@ bool Boundary::CheckCollision(const Vector3 &point)
 {
 	for (int i = 0; i < VerticesNo; ++i)
 	{
-		Projection* point1 = this->Projecting(this->Axes[i]);
-		Projection* point2 = this->ProjectingPoint(point, this->Axes[i]);
-		if (!point1->DetermineCollision(*point2))
+		Projection* point1 = &Projecting(this->Axes[i]);
+		Projection* point2 = &ProjectingPoint(point, this->Axes[i]);
+		if (point1->DetermineCollision(*point2))
 			return false;
 	}
 	return true;
@@ -51,8 +73,8 @@ void Boundary::CalculateValues(const Vector3 &pos, const Vector3 &scale, const f
 	SetPosition(pos);
 	SetScale(scale + Vector3(5, 5, 5));
 	SetRotation(rotation);
-	SetAxes();
 	SetVertices();
+	SetAxes();
 }
 
 void Boundary::SetPosition(const Vector3 &position)
@@ -82,6 +104,11 @@ Vector3 Boundary::GetScale()const
 
 void Boundary::SetAxes()
 {
+	if (Axes)
+	{
+		delete[]Axes;
+		Axes = nullptr;
+	}
 	this->Axes = new Vector3[VerticesNo];
 	for (int i = 0; i < VerticesNo; ++i)
 	{
@@ -96,17 +123,27 @@ void Boundary::SetAxes()
 void Boundary::SetVertices()
 {
 	//Currently limit to 4 Vertices only, will need to change if have more
+	if (Vertices)
+	{
+		delete[]Vertices;
+		Vertices = nullptr;
+	}
 	Vertices = new Vector3[VerticesNo];
 	Mtx44 Rotation;
 	Rotation.SetToRotation(this->RotationValue, 0, 1, 0);
 	Vector3 Scale = Rotation * this->Scale;
-	Vertices[0] = Vector3(this->Position.x + Scale.z, this->Position.y, this->Position.z + Scale.z);
-	Vertices[1] = Vector3(this->Position.x + Scale.z, this->Position.y, this->Position.z - Scale.z);
-	Vertices[2] = Vector3(this->Position.x - Scale.z, this->Position.y, this->Position.z - Scale.z);
-	Vertices[3] = Vector3(this->Position.x - Scale.z, this->Position.y, this->Position.z + Scale.z);
+	Vertices[0] = Vector3(this->Position.x + Scale.x/2, 0, this->Position.z + Scale.z/2);
+	Vertices[1] = Vector3(this->Position.x + Scale.x/2, 0, this->Position.z - Scale.z/2);
+	Vertices[2] = Vector3(this->Position.x - Scale.x/2, 0, this->Position.z - Scale.z/2);
+	Vertices[3] = Vector3(this->Position.x - Scale.x/2, 0, this->Position.z + Scale.z/2);
 }
 
-Projection* Boundary::Projecting(const Vector3 &axis)
+void Boundary::SetVerticeNo(const int &value)
+{
+	this->VerticesNo = value;
+}
+
+Projection& Boundary::Projecting(const Vector3 &axis)
 {
 	float min, max;
 	min = max = axis.Dot(this->Vertices[0]);
@@ -118,14 +155,14 @@ Projection* Boundary::Projecting(const Vector3 &axis)
 		else if (value > max)
 			max = value;
 	}
-	Projection* proj = new Projection(min, max);
+	Projection proj(min, max);
 	return proj;
 }
 
-Projection* Boundary::ProjectingPoint(const Vector3 &point, const Vector3 &axis)
+Projection& Boundary::ProjectingPoint(const Vector3 &point, const Vector3 &axis)
 {
 	float min, max;
 	min = max = axis.Dot(point);
-	Projection* proj = new Projection(min, max);
+	Projection proj(min, max);
 	return proj;
 }

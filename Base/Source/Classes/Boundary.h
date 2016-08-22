@@ -8,12 +8,12 @@
 class Boundary
 {
 public:
-	Boundary(){};
+	Boundary();
 	Boundary(const Vector3 &pos, const Vector3 &scale, const float &rotationValue = 0);
 	Boundary(const Boundary &bounds);
-	virtual ~Boundary(){};
+	virtual ~Boundary();
 
-	virtual bool CheckCollision(Boundary &object);
+	virtual bool CheckCollision( Boundary &object);
 	virtual bool CheckCollision(const Vector3 &point);
 	virtual void CalculateValues(const Vector3 &pos, const Vector3 &scale, const float &rotation = 0);
 
@@ -27,16 +27,17 @@ public:
 
 	virtual void SetAxes();
 	virtual void SetVertices();
+	virtual void SetVerticeNo(const int &value);
 
 	Vector3 GetVerticeArray()const;
 
-	Projection* Projecting(const Vector3 &axis);
-	Projection* ProjectingPoint(const Vector3 &point, const Vector3 &axis);
+	Projection& Projecting(const Vector3 &axis);
+	Projection& ProjectingPoint(const Vector3 &point, const Vector3 &axis);
 
-private:
+protected:
 	Vector3* Axes;
 	Vector3* Vertices;
-	int VerticesNo;
+	int VerticesNo = 4;
 
 	float RotationValue;
 	Vector3 Position, Scale;

@@ -15,16 +15,17 @@ PlayerObject::PlayerObject()
 	JUMPMAXSPEED = 60.0f;
 	JUMPACCEL = 250.0f;
 	m_bJumping = false;
-	if (Bounds)
-	{
-		delete Bounds;
-		Bounds = nullptr;
-	}
+	if (!Bounds)
+		Bounds = new Boundary();
+	//if (Bounds)
+	//{
+	//	delete Bounds;
+	//	Bounds = nullptr;
+	//}
 }
 
 PlayerObject::~PlayerObject()
 {
-
 }
 
 void PlayerObject::Update(double dt)
@@ -53,12 +54,15 @@ void PlayerObject::Update(double dt)
 			//CheckBoundary here
 			for (std::vector<GameObject*>::iterator it = theBoundaries->begin(); it != theBoundaries->end(); ++it)
 			{
-				if (MovementValues.IsEqual(0, MovementValues.x) == false && CheckCollision(*(*it)->GetBoundary(), Xprediction))
+				Bounds->CalculateValues(Xprediction, this->Scale, this->RotationAngle);
+				CheckCollision(*(*it)->GetBoundary(), *Bounds);
+				if (MovementValues.IsEqual(0, MovementValues.x) == false && !CheckCollision(*(*it)->GetBoundary(), *Bounds))
 				{
-					CheckCollision(*(*it)->GetBoundary(), Xprediction);
+					CheckCollision(*(*it)->GetBoundary(), *Bounds);
 					MovementValues.x = 0;
 				}
-				if (MovementValues.IsEqual(0, MovementValues.z) == false && CheckCollision(*(*it)->GetBoundary(), Zprediction))
+				Bounds->CalculateValues(Zprediction, this->Scale, this->RotationAngle);
+				if (MovementValues.IsEqual(0, MovementValues.z) == false && !CheckCollision(*(*it)->GetBoundary(), *Bounds))
 					MovementValues.z = 0;
 				if (MovementValues.IsZero())
 					break;
@@ -130,6 +134,11 @@ void PlayerObject::setPlayerBoundaries(std::vector<GameObject*> &Playerboundary)
 }
 
 bool PlayerObject::CheckCollision(Boundary &object, const Vector3 &Prediction)
+{
+	return object.CheckCollision(Prediction);
+}
+
+bool PlayerObject::CheckCollision(Boundary &object, Boundary &Prediction)
 {
 	return object.CheckCollision(Prediction);
 }
