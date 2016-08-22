@@ -1,7 +1,6 @@
 #ifndef interact_CONDITION_H_
 #define interact_CONDITION_H_
 #include "genericCondition.h"
-#include "..\\Classes\\GameObject.h"
 #include "..\\Classes\\NPC.h"
 
 class interactCondition : public genericCondition

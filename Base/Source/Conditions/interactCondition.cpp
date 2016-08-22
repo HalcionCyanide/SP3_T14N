@@ -27,7 +27,7 @@ void interactCondition::Update(double dt)
 	//some pseudocode*/
 	if (!satisfied)
 	{
-		if (theRequirement.value_->getINTT())
+		if (theRequirement.value_->getInteracting())
 		{
 			satisfied = true;
 		}

@@ -9,7 +9,7 @@ public:
 	NPC();
 	virtual ~NPC();
 
-	bool getINTT();
+	bool getInteracting();
 
 	virtual void Update(float);
 private:

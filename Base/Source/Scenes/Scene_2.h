@@ -10,6 +10,8 @@
 #include <vector>
 #include "..\\Systems\\BillboardManager.h"
 #include "..\\Classes\\GameObject.h"
+#include "..\\Conditions\\questManager.h"
+
 
 class Scene_2 : public SceneEntity
 {
@@ -24,8 +26,6 @@ public:
     virtual void Exit();
 
 	Camera3 camera;
-
-
 private:
 	// Shadow GPass
 	void RenderPassGPass();
@@ -49,6 +49,6 @@ private:
 
 	std::vector<GameObject*> ObjectVec;
 	GameObject* Player;
-
     double framerates;
+	questManager QM;
 };

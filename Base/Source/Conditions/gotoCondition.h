@@ -1,7 +1,6 @@
 #ifndef goto_CONDITION_H_
 #define goto_CONDITION_H_
 #include "genericCondition.h"
-#include "..\\Classes\\GameObject.h"
 #include "Vector3.h"
 
 class gotoCondition : public genericCondition

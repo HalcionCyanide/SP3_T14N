@@ -9,7 +9,7 @@ class Quest : public GenericEntity
 {
 public:
 	Quest();
-	~Quest();
+	virtual ~Quest();
 
 	void setID(int);
 	int getID();
@@ -23,6 +23,8 @@ public:
 	void setCondition(std::string, std::string);
 
 	friend std::ostream& operator<<(std::ostream&, const Quest&);
+
+	virtual void Update(double dt);
 private:
 	int id;
 	std::vector<genericCondition*> conditions;

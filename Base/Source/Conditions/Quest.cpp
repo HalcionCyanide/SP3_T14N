@@ -90,3 +90,16 @@ std::ostream& operator<<(std::ostream& os, const Quest& quest)
 	os << quest.name_ << "\n" << quest.questDesc << "\n";
 	return os;
 }
+
+void Quest::Update(double dt)
+{
+	if (active)
+	{
+		int i = 0;
+		for (std::vector<genericCondition*>::iterator it = conditions.begin(); it != conditions.end(); ++it)
+		{
+			conditions.at(i)->Update(dt);
+			i++;
+		}
+	}
+}

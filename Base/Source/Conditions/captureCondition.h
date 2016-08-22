@@ -1,7 +1,6 @@
 #ifndef capture_CONDITION_H_
 #define capture_CONDITION_H_
 #include "genericCondition.h"
-#include "..\\Classes\\GameObject.h"
 
 class captureCondition : public genericCondition
 {

@@ -13,7 +13,7 @@ NPC::~NPC()
 
 }
 
-bool NPC::getINTT()
+bool NPC::getInteracting()
 {
 	return interacting;
 }
