@@ -41,8 +41,8 @@ ID,Name,ConditionName,Value,Description
 40,End of Tyranny,goto,35;0;20;,Put out all the cursed fires around the Crypt.
 41,The path less traveled,goto,20;0;10;,Find a Map piece.
 42,The path less traveled,goto,25;0;40;,Find a Map piece.
-43,The path less traveled,goto,"30,0,20;",Find a Map piece.
-44,The path less traveled,goto,"20,0,0;",Find a Map piece.
+43,The path less traveled,goto,30;0;20;,Find a Map piece.
+44,The path less traveled,goto,20;0;0;,Find a Map piece.
 45,The path less traveled,interact,NPC_mapguy,Speak to the royal cartographer.
 46,The path less traveled,goto,60;0;15,Go to the location mentioned.
 47,The path less traveled,capture,MOB_pandora,Capture the Pandora's Box.

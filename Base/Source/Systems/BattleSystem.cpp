@@ -4,8 +4,6 @@
 #include "../Classes/Boundary2D.h"
 
 // To Do List
-// Enemy Class [params: atk rate, atk type, atk damage]
-// Projectile Class [params: accel, mass, inherit baseobj]
 // Upgrade UI_Sys
 // Coll Check Sys
 
@@ -29,13 +27,13 @@ void BattleSystem::Init()
 	// Note Init Player and Enemy Here
 	CenterPosition.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 	PlayerScale = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.03f;
-	PlayerObj = new BaseObject("TFB_Gem", 3, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), Vector3(0, 0, 0), 0, Vector3(0, 0, 1));
+	PlayerObj = new BattleScreenObject("ayylmao", 3, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), Vector3(0, 0, 0), 0, Vector3(0, 0, 1));
 
 	// Background If Needed
-	BaseExterior = new BaseObject("GBox", 0.f, CenterPosition + Vector3(0, CenterPosition.y * 0.1f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.85f, 1), Vector3(), 0, Vector3(0, 0, 1));
-	BaseInterior = new BaseObject("GBox", 0.f, CenterPosition + Vector3(0, CenterPosition.y * 0.1f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.7f, 1), Vector3(), 0, Vector3(0, 0, 1));
+	BaseExterior = new BattleScreenObject("GBox", 0.f, CenterPosition + Vector3(0, CenterPosition.y * 0.1f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.85f, 1), Vector3(), 0, Vector3(0, 0, 1));
+	BaseInterior = new BattleScreenObject("GBox", 0.f, CenterPosition + Vector3(0, CenterPosition.y * 0.1f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.7f, 1), Vector3(), 0, Vector3(0, 0, 1));
 	
-	CurrentEnemy = new Enemy();
+	//CurrentEnemy = new Enemy();
 }
 
 void BattleSystem::Update(double dt)
@@ -66,7 +64,7 @@ void BattleSystem::Render()
 	//BaseExterior->Render();
 	BaseInterior->Render();
 	PlayerObj->Render(); // <- Don't bother checking if player is true because if player is not true, something is wrong, thus a crash should be efficient in telling one that. c:
-	for (std::vector<BaseObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
+	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 	{
 		if ((*it)->Active && (*it)->Visible)
 		{
@@ -92,7 +90,7 @@ void BattleSystem::Exit()
 		delete BaseInterior;
 		BaseInterior = nullptr;
 	}
-	for (std::vector<BaseObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
+	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 	{
 		(*it)->Exit();
 		delete *it;
@@ -103,6 +101,11 @@ void BattleSystem::Exit()
         delete CurrentEnemy;
         CurrentEnemy = nullptr;
     }
+}
+
+void BattleSystem::SetEnemy(Enemy& Enemy)
+{
+	CurrentEnemy = &Enemy;
 }
 
 // Private Function Calls
@@ -122,7 +125,7 @@ void BattleSystem::UpdatePESPhase(float dt)
 {
 	Boundary2D TempBounds;
 	TempBounds.ResetValues(BaseExterior->GetPosition(), BaseExterior->GetDimensions());
-	for (std::vector<BaseObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
+	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 	{
 		if ((*it)->Active)
 		{
@@ -203,42 +206,49 @@ void BattleSystem::UpdateControls(float dt)
 			if (PlayerDirection.LengthSquared() < (Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.2f))
 				PlayerDirection.SetZero();
 			else PlayerDirection.Normalize();
-			PlayerActingForce.Set(ForceIncrement * PlayerDirection.x, ForceIncrement * PlayerDirection.y);
+			PlayerObj->SetAcceleration(Vector3(ForceIncrement * PlayerDirection.x, ForceIncrement * PlayerDirection.y));
 			break;
 	}
 	case (false) :
 	{
 		if (Scene_System::accessing().cSS_InputManager->GetKeyValue('W'))
 		{
-			PlayerActingForce.y = ForceIncrement;
+			Vector3 Accel = PlayerObj->GetAcceleration();
+			Accel.y = ForceIncrement;
+			PlayerObj->SetAcceleration(Accel);
 		}
 		if (Scene_System::accessing().cSS_InputManager->GetKeyValue('S'))
 		{
-			PlayerActingForce.y = -ForceIncrement;
+			Vector3 Accel = PlayerObj->GetAcceleration();
+			Accel.y = -ForceIncrement;
+			PlayerObj->SetAcceleration(Accel); 
 		}
 		if (!Scene_System::accessing().cSS_InputManager->GetKeyValue('W') && !Scene_System::accessing().cSS_InputManager->GetKeyValue('S'))
 		{
-			PlayerActingForce.y = 0;
+			Vector3 Accel = PlayerObj->GetAcceleration();
+			Accel.y = 0;
+			PlayerObj->SetAcceleration(Accel);
 		}
 		if (Scene_System::accessing().cSS_InputManager->GetKeyValue('A'))
 		{
-			PlayerActingForce.x = -ForceIncrement;
+			Vector3 Accel = PlayerObj->GetAcceleration();
+			Accel.x = -ForceIncrement;
+			PlayerObj->SetAcceleration(Accel);
 		}
 		if (Scene_System::accessing().cSS_InputManager->GetKeyValue('D'))
 		{
-			PlayerActingForce.x = ForceIncrement;
+			Vector3 Accel = PlayerObj->GetAcceleration();
+			Accel.x = ForceIncrement;
+			PlayerObj->SetAcceleration(Accel);
 		}
 		if (!Scene_System::accessing().cSS_InputManager->GetKeyValue('A') && !Scene_System::accessing().cSS_InputManager->GetKeyValue('D'))
 		{
-			PlayerActingForce.x = 0;
+			Vector3 Accel = PlayerObj->GetAcceleration();
+			Accel.x = 0;
+			PlayerObj->SetAcceleration(Accel);
 		}
 		break;
 	}
-	}
-	if (PlayerObj->GetMass() > Math::EPSILON)
-	{
-		// Velocity Due To Acceleration If Mass Exists
-		PlayerObj->SetVelocity(PlayerObj->GetVelocity() + PlayerActingForce * (1.f / PlayerObj->GetMass()) * dt);
 	}
 	PlayerObj->SetVelocity(PlayerObj->GetVelocity() - PlayerObj->GetVelocity()*FrictionDecrementMultiplier * dt);
 	Vector3 FwdPos = PlayerObj->GetPosition() + PlayerObj->GetVelocity() * dt;
@@ -261,26 +271,86 @@ void BattleSystem::UpdatePhysics(float dt)
 {
 	if (!isInvincible && cBS_ObjectContainer.size() > 0)
 	{
-		for (std::vector<BaseObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
+		for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 		{
-			if (CollisionCheck(*PlayerObj, **it, dt))
-			{
-				// HP Decrement Should Be In CRes
-				CollisionResponse(*PlayerObj, **it, dt);
-			}
+			if ((*it)->Active && (*it)->Visible)
+				if (CollisionCheck(*PlayerObj, **it, dt))
+				{
+					// HP Decrement Should Be In CRes
+					if (CollisionResponse(*PlayerObj, **it, dt))
+					{
+						(*it)->Active = false;
+					}
+				}
 		}
 	}
 }
 
-bool BattleSystem::CollisionCheck(const BaseObject& BaseObject1, const BaseObject& BaseObject2, float dt)
+bool BattleSystem::CollisionCheck(const BattleScreenObject& BSO1, const BattleScreenObject& BSO2, float dt)
 {
-	// Consider Making a projectile class that holds coltype as well as bounds
+	// Consider Making a projectile class that holds coltype
+	switch (BSO2.Type)
+	{
+		case BattleScreenObject::BS_Normal:
+		{
+
+			break;
+		}
+		case BattleScreenObject::BS_Bullet:
+		{
+			// Simple Circle BC.
+			float CombinedRadiusSquared = (BSO1.GetDimensions().x * 0.5f + BSO2.GetDimensions().x * 0.5f) * (BSO1.GetDimensions().x * 0.5f + BSO2.GetDimensions().x * 0.5f);
+			float DistSquared = ((BSO1.GetPosition() + BSO1.GetVelocity() * dt) - (BSO2.GetPosition() + BSO2.GetVelocity() * dt)).LengthSquared();
+			Vector3 RelativeVelocity = BSO2.GetVelocity() - BSO1.GetVelocity();
+			Vector3 RelativeDisplacement = BSO1.GetPosition() - BSO2.GetPosition();
+			if (DistSquared < CombinedRadiusSquared &&
+				RelativeVelocity.Dot(RelativeDisplacement) > 0) // Check Angle Between Relative Velocity Vectors in attempt to see if the angle between them is smaller than zero
+			{
+				return true;
+			}
+			break;
+		}
+		case BattleScreenObject::BS_Trap:
+		{
+
+			break;
+		}
+		case BattleScreenObject::BS_Bouncer:
+		{
+
+			break;
+		}
+	}
 	return false;
 }
 
-bool BattleSystem::CollisionResponse(const BaseObject& BaseObject1, const BaseObject& BaseObject2, float dt)
+bool BattleSystem::CollisionResponse(const BattleScreenObject& BSO1, const BattleScreenObject& BSO2, float dt)
 {
 	// Do stuff like hp decrement
+	switch (BSO2.Type)
+	{
+	case BattleScreenObject::BS_Normal:
+	{
+
+		break;
+	}
+	case BattleScreenObject::BS_Bullet:
+	{
+
+		return true;
+		break;
+	}
+	case BattleScreenObject::BS_Trap:
+	{
+
+		break;
+	}
+	case BattleScreenObject::BS_Bouncer:
+	{
+
+		break;
+	}
+	}
 	return false;
 }
 
@@ -313,9 +383,11 @@ void BattleSystem::Attack_Bullet()
 	Vector3 SpawnPos = CenterPosition + Vector3(Math::RandFloatMinMax(-CenterPosition.x - XSpawn, CenterPosition.x + XSpawn), Math::RandFloatMinMax(-CenterPosition.y - YSpawn, CenterPosition.y + YSpawn));
 	if (TempBounds.CheckCollision(SpawnPos) && !TempBounds2.CheckCollision(SpawnPos))
 	{
-		Vector3 DVec = (PlayerObj->GetPosition() - SpawnPos).Normalize() * 100; // * Projectile Speed;
+		Vector3 DVec = (PlayerObj->GetPosition() - SpawnPos).Normalize() * 800; // * Projectile Speed;
 		// Use a fetch Func
-		BaseObject* NewObj = new BaseObject("ayylmao", 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), DVec, 0, Vector3(0, 0, 1));
+		BattleScreenObject* NewObj = new BattleScreenObject("TFB_Gem", 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), DVec, 0, Vector3(0, 0, 1));
+		NewObj->Type = BattleScreenObject::BS_Bullet;
+		NewObj->SetMass(5.f);
 		cBS_ObjectContainer.push_back(NewObj);
 	}
 	else Attack_Bullet();

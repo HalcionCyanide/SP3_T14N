@@ -3,13 +3,22 @@
 
 #include "..\\Classes\\SceneEntity.h"
 #include "..\\Systems\\Scene_System.h"
+/****************************************************************************/
+/*!
+\file SceneBattleScreen.cpp
+\author Ryan Lim Rui An
+\par email: 150577L@mymail.nyp.edu.sg
+\brief
+Defines the battle screen scene
+*/
+/****************************************************************************/
+
 #include "GraphicsEntity.h"
 #include "..\\Classes\\GameObject.h"
 #include "..\\Classes\\CameraBS.h"
 #include "..\\Systems\\BillboardManager.h"
 #include "..\\Systems\\UI_System.h"
 #include "..\\Classes\\BaseObject.h"
-#include "..\\Systems\\BattleSystem.h"
 
 class SceneBattleScreen : public SceneEntity
 {
@@ -34,8 +43,6 @@ private:
 
 	double framerates;
 	GenericEntity *theInteractiveMap;
-
-	BattleSystem BSystem;
 };
 
 #endif //_SCENE_BATTLE_SCREEN_H
