@@ -5,7 +5,7 @@
 #include "..\\Classes\\GenericEntity.h"
 #include <string>
 
-class GenericSystem/* : public SingletonTemplate<GenericSystem>*/
+class GenericSystem
 {
 public:
     virtual void Init() = 0;

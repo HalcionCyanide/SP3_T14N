@@ -34,7 +34,7 @@ public:
 	bool AtTarget = false;
 	bool BoundsActive = true;
 
-	Boundary* UI_Bounds;
+	Boundary2D* UI_Bounds;
 
 	void SwapOriginalWithTarget();
 

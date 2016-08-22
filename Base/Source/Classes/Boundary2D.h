@@ -13,6 +13,6 @@ public:
 	virtual ~Boundary2D(){};
 
 	virtual bool CheckCollision(const Boundary2D &object)const;
-	virtual bool CheckCollision(const Vector3 &point, const Vector3 &null)const;
+	virtual bool CheckCollision(const Vector3 &point)const;
 };
 #endif

@@ -1,15 +1,27 @@
 #include "Quest.h"
+#include "collectionCondition.h"
+#include "ratingCondition.h"
 
-Quest::Quest()
+Quest::Quest() : GenericEntity()
 {
-	id++;
-	questName = "";
+	id = 0;
+	name_ = "";
+	questDesc = "";
 	active = false;
-	completed = false;
 }
 
 Quest::~Quest()
 {
+	for (auto it : conditions)
+	{
+		delete it;
+	}
+	conditions.clear();
+}
+
+void Quest::setID(int i)
+{
+	id = i;
 }
 
 int Quest::getID()
@@ -17,19 +29,9 @@ int Quest::getID()
 	return id;
 }
 
-void Quest::setName(std::string i)
-{
-	questName = i;
-}
-
-std::string Quest::getName()
-{
-	return questName;
-}
-
 void Quest::setDesc(std::string i)
 {
-	questDesc = 1;
+	questDesc = i;
 }
 
 std::string Quest::getDesc()
@@ -47,18 +49,33 @@ void Quest::setActive(bool temp)
 	active = temp;
 }
 
-bool Quest::getComplete()
+void Quest::setCondition(std::string i, std::string value)
 {
-	return completed;
+	if (i.find("collection") != std::string::npos)
+	{
+		conditions.push_back(new collectionCondition(std::stoi(value)));
+	}
+	if (i.find("rating") != std::string::npos)
+	{
+		conditions.push_back(new ratingCondition(std::stoi(value)));
+	}
+	/*else if (i.find("interact") != std::string::npos)
+	{
+		conditions.push_back(new interactCondition());
+	}
+	else if (i.find("goto") != std::string::npos)
+	{
+		conditions.push_back(new gotoCondition());
+	}
+	else if (i.find("capture") != std::string::npos)
+	{
+		conditions.push_back(new captureCondition());
+	}*/
 }
 
-void Quest::setComplete(bool temp)
-{
-	completed = temp;
-}
 
 std::ostream& operator<<(std::ostream& os, const Quest& quest)
 {
-	os << quest.questName << "\n" << quest.questDesc << "\n";
+	os << quest.name_ << "\n" << quest.questDesc << "\n";
 	return os;
 }

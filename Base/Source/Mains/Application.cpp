@@ -4,7 +4,9 @@
 #include "..\\Scenes\\GraphicsEntity.h"
 
 #include <fstream>
+#ifdef _DEBUG
 #include <assert.h>
+#endif
 #include <sstream>
 #include "..\\Misc\\SimpleCommand.h"
 #include "..\\Scenes\\Scene_MainMenu.h"
@@ -176,11 +178,58 @@ void Application::Init()
 	battlescreen->Init();
 	Scene_System::accessing().AddScene(*battlescreen);
 
+    //<!> testing writing to files.
+    //Apparently, GlobalDriven.csv must not stay open when writing to this data. 
+    //fstream doesn't work when writing to it but works whent reading to it
+    //it appears that the file cannot be open twice at the same time.
+    //1st Method:
+    //std::fstream writeData("Image//GlobalDriven.csv");
+    //assert(writeData.is_open());
+    //std::string theCancer = "Allahu Akbar";
+    //std::string data = "";
+    //while (getline(writeData, data))
+    //{ 
+    //    if (data.find("Forward_Button:") != std::string::npos)
+    //        writeData << "Forward_Button:W" << std::endl;
+    //}
+    //writeData.close();
+    //2nd Method: This works but way too troublesome since we are opening and closing the same file twice! A programmer should be as lazy as possible
+    //std::vector<std::string> all_the_lines;
+    //std::ifstream readFile("Image//GlobalDriven.csv");
+    //std::string data = "";
+    //while (getline(readFile, data))
+    //    all_the_lines.push_back(data);
+    //readFile.close();
+    //std::ofstream writeFile("Image//GlobalDriven.csv");
+    //for (unsigned num = 0, MAX_LINES = all_the_lines.size(); num < MAX_LINES; ++num)
+    //{
+    //    if (all_the_lines[num].find("Forward_Button:") != std::string::npos)
+    //    {
+    //        writeFile << "Forward_Button:W" << std::endl;
+    //    }
+    //    else if (all_the_lines[num].find("Backward_Button:") != std::string::npos)
+    //    {
+    //        writeFile << "Backward_Button:S" << std::endl;
+    //    }
+    //    else if (all_the_lines[num].find("Right_Button:") != std::string::npos)
+    //    {
+    //        writeFile << "Right_Button:A" << std::endl;
+    //    }
+    //    else if (all_the_lines[num].find("Left_Button:") != std::string::npos)
+    //    {
+    //        writeFile << "Left_Button:D" << std::endl;
+    //    }
+    //    else
+    //        writeFile << all_the_lines[num] << std::endl;
+    //}
+    //writeFile.close(); 
+    //<!> testing writing to files. So removing soon
 #ifdef _DEBUG
     assert(loadGlobalStuff());
 #else
     loadGlobalStuff();
 #endif
+
 }
 
 void Application::Run()
@@ -244,6 +293,9 @@ void Application::Exit()
 bool Application::loadGlobalStuff()
 {
     std::ifstream file("Image//GlobalDriven.csv");
+#ifdef _DEBUG
+    assert(file.is_open());
+#endif
     if (file.is_open())
     {
         std::string data = "";
@@ -283,6 +335,7 @@ bool Application::loadGlobalStuff()
                 SimpleCommand::m_allTheKeys[SimpleCommand::JUMP_COMMAND] = KeyAndToken[1][0];
             }
         }
+        file.close();
         return true;
     }
     return false;

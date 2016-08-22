@@ -7,11 +7,13 @@ class collectionCondition : public genericCondition
 {
 public:
 	collectionCondition();
+	collectionCondition(int);
 	virtual ~collectionCondition();
 
+	virtual void setValue(std::string);
 	virtual void Update(double dt);
 private:
-	GameObject* target;
+	int counter;
     Data<int> theRequirement;
 };
 

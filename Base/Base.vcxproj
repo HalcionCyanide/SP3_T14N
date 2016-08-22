@@ -13,7 +13,10 @@
   <ItemGroup>
     <ClCompile Include="Source\Classes\BaseObject.cpp" />
     <ClCompile Include="Source\Classes\CameraBS.cpp" />
-    <ClCompile Include="Source\Classes\MusicEntity.cpp" />
+    <ClCompile Include="Source\Classes\MusicEntity2D.cpp" />
+    <ClCompile Include="Source\Classes\MusicEntity3D.cpp" />
+    <ClCompile Include="Source\Classes\Projection.cpp" />
+    <ClCompile Include="Source\Conditions\ratingCondition.cpp" />
     <ClCompile Include="Source\Mains\Application.cpp" />
     <ClCompile Include="Source\Classes\Billboard.cpp" />
     <ClCompile Include="Source\Systems\BattleSystem.cpp" />
@@ -69,17 +72,17 @@
     <ClInclude Include="Source\Classes\CameraBS.h" />
     <ClInclude Include="Source\Classes\CItem.h" />
     <ClInclude Include="Source\Classes\Commands.h" />
-    <ClInclude Include="Source\Classes\Enemy.h" />
     <ClInclude Include="Source\Classes\GameMap.h" />
     <ClInclude Include="Source\Classes\GameObject.h" />
     <ClInclude Include="Source\Classes\GenericEntity.h" />
     <ClInclude Include="Source\Classes\Light.h" />
     <ClInclude Include="Source\Classes\Material.h" />
     <ClInclude Include="Source\Classes\Mesh.h" />
-    <ClInclude Include="Source\Classes\MusicEntity.h" />
+    <ClInclude Include="Source\Classes\MusicEntity2D.h" />
+    <ClInclude Include="Source\Classes\MusicEntity3D.h" />
     <ClInclude Include="Source\Classes\NPC.h" />
     <ClInclude Include="Source\Classes\PlayerObject.h" />
-    <ClInclude Include="Source\Classes\Projectile.h" />
+    <ClInclude Include="Source\Classes\Projection.h" />
     <ClInclude Include="Source\Classes\Scene.h" />
     <ClInclude Include="Source\Classes\SceneEntity.h" />
     <ClInclude Include="Source\Classes\singletontemplate.h" />
@@ -88,6 +91,7 @@
     <ClInclude Include="Source\Conditions\genericCondition.h" />
     <ClInclude Include="Source\Conditions\Quest.h" />
     <ClInclude Include="Source\Conditions\questManager.h" />
+    <ClInclude Include="Source\Conditions\ratingCondition.h" />
     <ClInclude Include="Source\Mains\Application.h" />
     <ClInclude Include="Source\Misc\BoundsBuilder.h" />
     <ClInclude Include="Source\Misc\DepthFBO.h" />
@@ -118,11 +122,11 @@
     <ClInclude Include="Source\Systems\UI_System.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Image\questData.csv" />
     <None Include="Shader\GPass.fragmentshader" />
     <None Include="Shader\GPass.vertexshader" />
     <None Include="Shader\Shadow.fragmentshader" />
     <None Include="Shader\Shadow.vertexshader" />
+    <None Include="Source\Conditions\questData.csv" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9B172635-4E2B-46F1-A403-08F4194D00F5}</ProjectGuid>

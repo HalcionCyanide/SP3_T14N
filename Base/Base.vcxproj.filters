@@ -180,7 +180,7 @@
     <ClCompile Include="Source\Systems\MusicSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Classes\MusicEntity.cpp">
+    <ClCompile Include="Source\Classes\Projection.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
     <ClCompile Include="Source\Classes\BaseObject.cpp">
@@ -191,6 +191,15 @@
     </ClCompile>
     <ClCompile Include="Source\Classes\CameraBS.cpp">
       <Filter>Source Files\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Classes\MusicEntity2D.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Classes\MusicEntity3D.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Conditions\ratingCondition.cpp">
+      <Filter>Source Files\Conditions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -344,7 +353,7 @@
     <ClInclude Include="Source\Systems\MusicSystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Classes\MusicEntity.h">
+    <ClInclude Include="Source\Classes\Projection.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
     <ClInclude Include="Source\Classes\BaseObject.h">
@@ -356,11 +365,14 @@
     <ClInclude Include="Source\Classes\CameraBS.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Classes\Enemy.h">
+    <ClInclude Include="Source\Classes\MusicEntity2D.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Classes\Projectile.h">
+    <ClInclude Include="Source\Classes\MusicEntity3D.h">
       <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Conditions\ratingCondition.h">
+      <Filter>Header Files\Conditions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -376,7 +388,7 @@
     <None Include="Shader\Shadow.vertexshader">
       <Filter>Shader</Filter>
     </None>
-    <None Include="Image\questData.csv">
+    <None Include="Source\Conditions\questData.csv">
       <Filter>Source Files\Conditions</Filter>
     </None>
   </ItemGroup>

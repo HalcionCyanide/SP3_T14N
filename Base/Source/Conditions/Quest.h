@@ -2,17 +2,17 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include "..\\Classes\\genericEntity.h"
 #include "genericCondition.h"
-class Quest
+
+class Quest : public GenericEntity
 {
 public:
 	Quest();
 	~Quest();
 
+	void setID(int);
 	int getID();
-
-	void setName(std::string);
-	std::string getName();
 
 	void setDesc(std::string);
 	std::string getDesc();
@@ -20,17 +20,13 @@ public:
 	bool getActive();
 	void setActive(bool);
 
-	bool getComplete();
-	void setComplete(bool);
+	void setCondition(std::string, std::string);
 
 	friend std::ostream& operator<<(std::ostream&, const Quest&);
 private:
 	int id;
-	std::string questName;
+	std::vector<genericCondition*> conditions;
 	std::string questDesc;
 	bool active;
-	bool completed;
-    //template<class T>
-    //std::vector<genericCondition<T>*> bunch;
 };
 

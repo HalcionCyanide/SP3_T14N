@@ -100,6 +100,7 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
 		}
 		theLineCounter++;
 	}
+    file.close();
 	theNumOfTiles_MapWidth = theScreenMap.begin()->second.size();
 	theNumOfTiles_MapHeight = theLineCounter;
 
@@ -248,7 +249,7 @@ bool GameMap::loadThoseLegends(const std::string &fileName)
 				theValues.clear();
 			}
 		}
-
+        file.close();
 		return true;
 	}
 	return false;
