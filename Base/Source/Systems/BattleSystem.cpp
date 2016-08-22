@@ -120,7 +120,7 @@ void BattleSystem::UpdatePESPhase(float dt)
 	{
 		if ((*it)->Active)
 		{
-			if (TempBounds.CheckCollision((*it)->GetPosition(), Vector3()))
+			if (TempBounds.CheckCollision((*it)->GetPosition()))
 				(*it)->Update(dt);
 			else (*it)->Active = false;
 		}
@@ -167,7 +167,7 @@ void BattleSystem::UpdateControls(float dt)
 {
 	Boundary2D TempBounds;
 	TempBounds.CalculateValues(BaseInterior->GetPosition(), BaseInterior->GetDimensions());
-	if (TempBounds.CheckCollision(Scene_System::accessing().cSS_InputManager->GetMousePosition(), Vector3()))
+	if (TempBounds.CheckCollision(Scene_System::accessing().cSS_InputManager->GetMousePosition()))
 	{
 		CursorPosition = Scene_System::accessing().cSS_InputManager->GetMousePosition();
 	}
@@ -289,7 +289,7 @@ void BattleSystem::Attack_Bullet()
 	Boundary2D TempBounds2;
 	TempBounds2.CalculateValues(BaseInterior->GetPosition(), BaseInterior->GetDimensions());
 	Vector3 SpawnPos = CenterPosition + Vector3(Math::RandFloatMinMax(-CenterPosition.x, CenterPosition.x), Math::RandFloatMinMax(-CenterPosition.y, CenterPosition.y));
-	if (TempBounds.CheckCollision(SpawnPos, Vector3()) && !TempBounds2.CheckCollision(SpawnPos, Vector3()))
+	if (TempBounds.CheckCollision(SpawnPos) && !TempBounds2.CheckCollision(SpawnPos))
 	{
 		Vector3 DVec = (Player->GetPosition() - SpawnPos).Normalize() * 700; // * Projectile Speed;
 		// Use a fetch Func

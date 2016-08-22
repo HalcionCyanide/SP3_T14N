@@ -15,6 +15,7 @@
     <ClCompile Include="Source\Classes\CameraBS.cpp" />
     <ClCompile Include="Source\Classes\MusicEntity2D.cpp" />
     <ClCompile Include="Source\Classes\MusicEntity3D.cpp" />
+    <ClCompile Include="Source\Classes\Projection.cpp" />
     <ClCompile Include="Source\Mains\Application.cpp" />
     <ClCompile Include="Source\Classes\Billboard.cpp" />
     <ClCompile Include="Source\Systems\BattleSystem.cpp" />
@@ -80,6 +81,7 @@
     <ClInclude Include="Source\Classes\MusicEntity3D.h" />
     <ClInclude Include="Source\Classes\NPC.h" />
     <ClInclude Include="Source\Classes\PlayerObject.h" />
+    <ClInclude Include="Source\Classes\Projection.h" />
     <ClInclude Include="Source\Classes\Scene.h" />
     <ClInclude Include="Source\Classes\SceneEntity.h" />
     <ClInclude Include="Source\Classes\singletontemplate.h" />
