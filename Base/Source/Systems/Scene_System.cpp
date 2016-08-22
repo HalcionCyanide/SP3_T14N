@@ -104,4 +104,9 @@ void Scene_System::clearEverything()
 	{
 		SceneHistory.pop();
 	}
+    for (auto it : EnemyData)
+    {
+        delete it.second;
+    }
+    EnemyData.clear();
 }
