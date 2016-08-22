@@ -1,7 +1,6 @@
 #ifndef RATING_CONDITION_H_
 #define RATING_CONDITION_H_
 #include "genericCondition.h"
-#include "..\\Classes\\GameObject.h"
 
 class ratingCondition : public genericCondition
 {

@@ -1,7 +1,6 @@
 #ifndef COLLECTION_CONDITION_H_
 #define COLLECTION_CONDITION_H_
 #include "genericCondition.h"
-#include "..\\Classes\\GameObject.h"
 
 class collectionCondition : public genericCondition
 {

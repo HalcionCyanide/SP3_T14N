@@ -24,6 +24,18 @@ struct to_upper
 	}
 };
 
+void questManager::Update(double dt)
+{
+	int i = 0;
+	for (std::vector<Quest*>::iterator it = allQuests.begin(); it != allQuests.end(); ++it)
+	{
+		if (allQuests.at(i)->getActive())
+		{
+			allQuests.at(i)->Update(dt);
+		}
+	}
+}
+
 void questManager::readFile(const std::string fileName)
 {
 	std::string temp = "";
@@ -36,6 +48,7 @@ void questManager::readFile(const std::string fileName)
 	{
 		std::vector<std::string> theKeys;
 		std::vector<std::string> theValues;
+		unsigned tempID = 0;
 		while (std::getline(file,temp))
 		{
 			if (temp == "" || temp == "\n" || temp == "\r")
@@ -83,8 +96,11 @@ void questManager::readFile(const std::string fileName)
 				pos = it - theKeys.begin();
 				tempQuest->setDesc(theValues[pos]);
 
+				tempQuest->setID(tempID);
+
 				allQuests.push_back(tempQuest);
 				theValues.clear();
+				tempID++;
 			}
 
 		}

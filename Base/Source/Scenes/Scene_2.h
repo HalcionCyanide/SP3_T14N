@@ -24,8 +24,6 @@ public:
     virtual void Exit();
 
 	Camera3 camera;
-
-
 private:
 	// Shadow GPass
 	void RenderPassGPass();
@@ -49,6 +47,5 @@ private:
 
 	std::vector<GameObject*> ObjectVec;
 	GameObject* Player;
-
     double framerates;
 };

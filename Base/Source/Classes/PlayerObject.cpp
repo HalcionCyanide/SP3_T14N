@@ -15,16 +15,17 @@ PlayerObject::PlayerObject()
 	JUMPMAXSPEED = 60.0f;
 	JUMPACCEL = 250.0f;
 	m_bJumping = false;
-	if (Bounds)
-	{
-		delete Bounds;
-		Bounds = nullptr;
-	}
+	if (!Bounds)
+		Bounds = new Boundary();
+	//if (Bounds)
+	//{
+	//	delete Bounds;
+	//	Bounds = nullptr;
+	//}
 }
 
 PlayerObject::~PlayerObject()
 {
-
 }
 
 void PlayerObject::Update(double dt)
@@ -47,21 +48,24 @@ void PlayerObject::Update(double dt)
 		if (theBoundaries)
 		{
 			Vector3 Xprediction;
-			Xprediction.Set(GetPosition().x + MovementValues.x, GetPosition().y, GetPosition().z);
+			Xprediction.Set(GetPosition().x + MovementValues.x, 0, GetPosition().z);
 			Vector3 Zprediction;
-			Zprediction.Set(GetPosition().x, GetPosition().y, GetPosition().z + MovementValues.z);
+			Zprediction.Set(GetPosition().x, 0, GetPosition().z + MovementValues.z);
 			//CheckBoundary here
 			for (std::vector<GameObject*>::iterator it = theBoundaries->begin(); it != theBoundaries->end(); ++it)
 			{
-				if (MovementValues.IsEqual(0, MovementValues.x) == false && CheckCollision(*(*it)->GetBoundary(), Xprediction))
-				{
-					CheckCollision(*(*it)->GetBoundary(), Xprediction);
-					MovementValues.x = 0;
-				}
-				if (MovementValues.IsEqual(0, MovementValues.z) == false && CheckCollision(*(*it)->GetBoundary(), Zprediction))
-					MovementValues.z = 0;
-				if (MovementValues.IsZero())
-					break;
+				//Bounds->ResetValues(Xprediction, this->GetDimensions(), this->GetRotationAngle());
+				//CheckCollision(*(*it)->GetBoundary(), *Bounds);
+				//if (MovementValues.IsEqual(0, MovementValues.x) == false && CheckCollision(*(*it)->GetBoundary(), *Bounds))
+				//{
+				//	CheckCollision(*(*it)->GetBoundary(), *Bounds);
+				//	MovementValues.x = 0;
+				//}
+				//Bounds->ResetValues(Zprediction, this->GetDimensions(), this->GetRotationAngle());
+				//if (MovementValues.IsEqual(0, MovementValues.z) == false && CheckCollision(*(*it)->GetBoundary(), *Bounds))
+				//	MovementValues.z = 0;
+				//if (MovementValues.IsZero())
+				//	break;
 			}
 		}
 		SetPosition(GetPosition() + MovementValues);
@@ -131,9 +135,14 @@ void PlayerObject::setPlayerBoundaries(std::vector<GameObject*> &Playerboundary)
 	theBoundaries = &Playerboundary;
 }
 
-bool PlayerObject::CheckCollision(const Boundary &object, const Vector3 &Prediction)
+bool PlayerObject::CheckCollision(Boundary &object, const Vector3 &Prediction)
 {
-	return false/*object.CheckCollision(Prediction)*/;
+	return object.CheckCollision(Prediction);
+}
+
+bool PlayerObject::CheckCollision(Boundary &object, Boundary &Prediction)
+{
+	return object.CheckCollision(Prediction);
 }
 
 void PlayerObject::DecomposePlayerInertia(float dt)

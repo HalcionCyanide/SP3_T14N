@@ -29,7 +29,7 @@ void collectionCondition::Update(double dt)
 	//stuff to increase the number, please remember to increase the counter as you go along.
 
 	/*
-	counter = capturedMonsters.size(); //eventually a vector for captured monsters. <?>
+	counter = capturedMonsters.size(); //eventually a vector for captured monsters. <?>*/
 	if(!satisfied)
 	{
 		if(theRequirement <= counter)
@@ -39,5 +39,4 @@ void collectionCondition::Update(double dt)
 	{
 		return;
 	}
-	*/
 }

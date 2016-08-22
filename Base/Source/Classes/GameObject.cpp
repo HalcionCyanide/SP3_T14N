@@ -33,7 +33,7 @@ void GameObject::SetBounds()
 {
 	if (Bounds == nullptr)
 		Bounds = new Boundary();
-	Bounds->CalculateValues(GetPosition(), GetDimensions(), GetRotationAngle());
+	Bounds->ResetValues(GetPosition(), GetDimensions(), GetRotationAngle());
 }
 
 Boundary* GameObject::GetBoundary()const

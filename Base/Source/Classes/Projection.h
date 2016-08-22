@@ -1,6 +1,8 @@
 #ifndef PROJECTION_H
 #define PROJECTION_H
 
+#include "Vector3.h"
+
 class Projection
 {
 public:
@@ -16,6 +18,7 @@ public:
 	float GetMax()const;
 
 	bool DetermineCollision(const Projection &value);
+	bool DetermineCollision(const float &value);
 private:
 	float min;
 	float max;
