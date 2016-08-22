@@ -121,7 +121,7 @@ void BattleSystem::UpdateInventoryScreen(float dt)
 void BattleSystem::UpdatePESPhase(float dt)
 {
 	Boundary2D TempBounds;
-	TempBounds.CalculateValues(BaseExterior->GetPosition(), BaseExterior->GetDimensions());
+	TempBounds.ResetValues(BaseExterior->GetPosition(), BaseExterior->GetDimensions());
 	for (std::vector<BaseObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 	{
 		if ((*it)->Active)
@@ -188,7 +188,7 @@ void BattleSystem::UpdateITimer(float dt)
 void BattleSystem::UpdateControls(float dt)
 {
 	Boundary2D TempBounds;
-	TempBounds.CalculateValues(BaseInterior->GetPosition(), BaseInterior->GetDimensions());
+	TempBounds.ResetValues(BaseInterior->GetPosition(), BaseInterior->GetDimensions());
 	if (TempBounds.CheckCollision(Scene_System::accessing().cSS_InputManager->GetMousePosition()))
 	{
 		CursorPosition = Scene_System::accessing().cSS_InputManager->GetMousePosition();
@@ -242,13 +242,13 @@ void BattleSystem::UpdateControls(float dt)
 	}
 	PlayerObj->SetVelocity(PlayerObj->GetVelocity() - PlayerObj->GetVelocity()*FrictionDecrementMultiplier * dt);
 	Vector3 FwdPos = PlayerObj->GetPosition() + PlayerObj->GetVelocity() * dt;
-	if (abs(FwdPos.x - TempBounds.GetPosition().x) > TempBounds.GetScale().x * 0.5f - PlayerObj->GetDimensions().x * 0.5f)
+	if (abs(FwdPos.x - TempBounds.GetPosition().x) > TempBounds.GetDimension().x * 0.5f - PlayerObj->GetDimensions().x * 0.5f)
 	{
 		if (abs(PlayerObj->GetVelocity().x * 0.5f) < Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.01f)
 			PlayerObj->SetVelocity(Vector3(0, PlayerObj->GetVelocity().y, 0.f));
 		else PlayerObj->SetVelocity(Vector3(-PlayerObj->GetVelocity().x * 0.5f, PlayerObj->GetVelocity().y, 0.f));
 	}		
-	if (abs(FwdPos.y - TempBounds.GetPosition().y) > TempBounds.GetScale().y * 0.5f - PlayerObj->GetDimensions().y * 0.5f)
+	if (abs(FwdPos.y - TempBounds.GetPosition().y) > TempBounds.GetDimension().y * 0.5f - PlayerObj->GetDimensions().y * 0.5f)
 	{
 		if (abs(PlayerObj->GetVelocity().y * 0.5f) < Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.01f)
 			PlayerObj->SetVelocity(Vector3(PlayerObj->GetVelocity().x, 0, 0.f));
@@ -305,11 +305,11 @@ int BattleSystem::BatchCreateAttacks(const int& AttackType)
 void BattleSystem::Attack_Bullet()
 {
 	Boundary2D TempBounds;
-	TempBounds.CalculateValues(BaseExterior->GetPosition(), BaseExterior->GetDimensions());
+	TempBounds.ResetValues(BaseExterior->GetPosition(), BaseExterior->GetDimensions());
 	Boundary2D TempBounds2;
-	TempBounds2.CalculateValues(BaseInterior->GetPosition(), BaseInterior->GetDimensions());
-	float XSpawn = TempBounds.GetScale().x * 0.5f - TempBounds2.GetScale().x * 0.5f;
-	float YSpawn = TempBounds.GetScale().x * 0.5f - TempBounds2.GetScale().x * 0.5f;
+	TempBounds2.ResetValues(BaseInterior->GetPosition(), BaseInterior->GetDimensions());
+	float XSpawn = TempBounds.GetDimension().x * 0.5f - TempBounds2.GetDimension().x * 0.5f;
+	float YSpawn = TempBounds.GetDimension().x * 0.5f - TempBounds2.GetDimension().x * 0.5f;
 	Vector3 SpawnPos = CenterPosition + Vector3(Math::RandFloatMinMax(-CenterPosition.x - XSpawn, CenterPosition.x + XSpawn), Math::RandFloatMinMax(-CenterPosition.y - YSpawn, CenterPosition.y + YSpawn));
 	if (TempBounds.CheckCollision(SpawnPos) && !TempBounds2.CheckCollision(SpawnPos))
 	{

@@ -33,7 +33,7 @@ void UI_Element::Init(const std::string& name, const Vector3& Position, const Ve
 		this->Dimensions = Dimensions;
 		this->UI_Text = UI_Text;
 		UI_Bounds = new Boundary2D();
-		UI_Bounds->CalculateValues(Position, Dimensions);
+		UI_Bounds->ResetValues(Position, Dimensions);
 	}
 }
 
@@ -47,7 +47,7 @@ void UI_Element::Update(float dt)
 	float Check = (TargetPosition - Position).LengthSquared();
 	if (!AtTarget && Active && Check > 1.f)
 	{
-		UI_Bounds->CalculateValues(Position, Dimensions);
+		UI_Bounds->ResetValues(Position, Dimensions);
 		Vector3 DirVec = TargetPosition - Position;
 		Position += DirVec * 2 * dt;
 		if (Check < 1.f)
@@ -60,7 +60,7 @@ void UI_Element::Update(float dt, const Vector3& MousePosition, bool& ClickSucce
 	float Check = (TargetPosition - Position).LengthSquared();
 	if (!AtTarget && Active && Check > 1.f)
 	{
-		UI_Bounds->CalculateValues(Position, Dimensions);
+		UI_Bounds->ResetValues(Position, Dimensions);
 		Vector3 DirVec = TargetPosition - Position;
 		Position += DirVec * 3 * dt;
 		if (Check < 1.f)
