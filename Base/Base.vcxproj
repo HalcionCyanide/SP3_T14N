@@ -16,6 +16,7 @@
     <ClCompile Include="Source\Classes\MusicEntity2D.cpp" />
     <ClCompile Include="Source\Classes\MusicEntity3D.cpp" />
     <ClCompile Include="Source\Classes\Projection.cpp" />
+    <ClCompile Include="Source\Conditions\ratingCondition.cpp" />
     <ClCompile Include="Source\Mains\Application.cpp" />
     <ClCompile Include="Source\Classes\Billboard.cpp" />
     <ClCompile Include="Source\Systems\BattleSystem.cpp" />
@@ -90,6 +91,7 @@
     <ClInclude Include="Source\Conditions\genericCondition.h" />
     <ClInclude Include="Source\Conditions\Quest.h" />
     <ClInclude Include="Source\Conditions\questManager.h" />
+    <ClInclude Include="Source\Conditions\ratingCondition.h" />
     <ClInclude Include="Source\Mains\Application.h" />
     <ClInclude Include="Source\Misc\BoundsBuilder.h" />
     <ClInclude Include="Source\Misc\DepthFBO.h" />

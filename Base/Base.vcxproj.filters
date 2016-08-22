@@ -198,6 +198,9 @@
     <ClCompile Include="Source\Classes\MusicEntity3D.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Conditions\ratingCondition.cpp">
+      <Filter>Source Files\Conditions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Classes\Billboard.h">
@@ -367,6 +370,9 @@
     </ClInclude>
     <ClInclude Include="Source\Classes\MusicEntity3D.h">
       <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Conditions\ratingCondition.h">
+      <Filter>Header Files\Conditions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -14,7 +14,6 @@ public:
 	virtual void Update(double dt);
 private:
 	int counter;
-	//GameObject* target;
     Data<int> theRequirement;
 };
 
