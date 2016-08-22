@@ -16,7 +16,9 @@
 #include "..\\Scenes\\SceneTown1.h"
 #include "..\\Scenes\\SceneTown2.h"
 #include "..\\Scenes\\SceneTown3.h"
-
+//<!> Removing soon due to testing
+#include "../Systems/MusicSystem.h"
+//<!> Removing soon due to testing
 //Include GLEW
 #include <GL/glew.h>
 
@@ -80,7 +82,7 @@ void Application::Init()
 {
 	// Initialize the default values of the Scene_System
 	Scene_System::accessing().Init();
-
+    MusicSystem::accessing().Init();
 	//Start Sound Engine with Default params
 	//theSoundEngine = createIrrKlangDevice();
 	//theSoundEngine->setSoundVolume(0.25f);
