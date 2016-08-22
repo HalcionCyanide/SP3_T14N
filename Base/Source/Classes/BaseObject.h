@@ -37,7 +37,7 @@ public:
 	virtual void Exit();
 
 	// Setters
-	void SetMesh(Mesh* &Mesh);
+	void SetMesh(Mesh* Mesh);
 	void SetMesh(const std::string& MeshName);
 	void SetPosition(const Vector3& Position);
 	void SetDimensions(const Vector3& Dimensions);
@@ -46,6 +46,7 @@ public:
 	void SetMass(const float& Mass);
 	void SetVelocity(const Vector3& Velocity);
 	void SetParameters(const std::string& MeshName, const float& Mass, const Vector3& Position, const Vector3& Dimensions, const Vector3& Velocity, const float& RotationAngle, const Vector3& RotationAxis);
+	void SetParameters(Mesh* Mesh, const float& Mass, const Vector3& Position, const Vector3& Dimensions, const Vector3& Velocity, const float& RotationAngle, const Vector3& RotationAxis);
 
 	// Getters
 	Mesh* GetMesh() const;
