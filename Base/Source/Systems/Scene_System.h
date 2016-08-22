@@ -1,8 +1,8 @@
 /******************************************************************************/
 /*!
-\file           Scene_System.h
+\file        Scene_System.h
 \author      Lee Sek Heng
-\par            email: 150629Z@mymail.nyp.edu.sg
+\par         email: 150629Z@mymail.nyp.edu.sg
 \brief
 A System that handles all the scene as well as most of the global variables.
 GraphicsEntity resides here.
@@ -18,6 +18,7 @@ GraphicsEntity resides here.
 #include <stack>
 #include "InputManager.h"
 #include "..\\Classes\\Boundary.h"
+#include "..\\Systems\\BattleSystem.h"
 
 class InputManager;
 /******************************************************************************/
@@ -45,17 +46,12 @@ public:
 	virtual void setGraphics_Scene(SceneEntity&);
     virtual void clearEverything();
 
-	void SetUIDimensions(const float &width, const float &height);
-
-	float GetUIWidth();
-	float GetUIHeight();
-
 	InputManager *cSS_InputManager;
 
-private:
-	float cSS_UIWidth = 0;
-	float cSS_UIHeight = 0;
+	BattleSystem BattleSystem;
+	std::map<std::string, Enemy*> EnemyData;
 
+private:
 	std::stack<SceneEntity* > SceneHistory;
 
     std::map<std::string, SceneEntity*> theSceneList;

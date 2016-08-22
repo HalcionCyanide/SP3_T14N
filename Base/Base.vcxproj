@@ -12,13 +12,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Classes\BaseObject.cpp" />
+    <ClCompile Include="Source\Classes\BattleScreenObject.cpp" />
     <ClCompile Include="Source\Classes\CameraBS.cpp" />
+    <ClCompile Include="Source\Classes\GlobalPlayer.cpp" />
     <ClCompile Include="Source\Classes\MusicEntity2D.cpp" />
     <ClCompile Include="Source\Classes\MusicEntity3D.cpp" />
     <ClCompile Include="Source\Classes\Projection.cpp" />
     <ClCompile Include="Source\Conditions\ratingCondition.cpp" />
     <ClCompile Include="Source\Mains\Application.cpp" />
     <ClCompile Include="Source\Classes\Billboard.cpp" />
+    <ClCompile Include="Source\Misc\LoadEnemyData.cpp" />
     <ClCompile Include="Source\Systems\BattleSystem.cpp" />
     <ClCompile Include="Source\Systems\BillboardManager.cpp" />
     <ClCompile Include="Source\Classes\Boundary.cpp" />
@@ -72,9 +75,11 @@
     <ClInclude Include="Source\Classes\CameraBS.h" />
     <ClInclude Include="Source\Classes\CItem.h" />
     <ClInclude Include="Source\Classes\Commands.h" />
+    <ClInclude Include="Source\Classes\Enemy.h" />
     <ClInclude Include="Source\Classes\GameMap.h" />
     <ClInclude Include="Source\Classes\GameObject.h" />
     <ClInclude Include="Source\Classes\GenericEntity.h" />
+    <ClInclude Include="Source\Classes\GlobalPlayer.h" />
     <ClInclude Include="Source\Classes\Light.h" />
     <ClInclude Include="Source\Classes\Material.h" />
     <ClInclude Include="Source\Classes\Mesh.h" />
@@ -82,6 +87,7 @@
     <ClInclude Include="Source\Classes\MusicEntity3D.h" />
     <ClInclude Include="Source\Classes\NPC.h" />
     <ClInclude Include="Source\Classes\PlayerObject.h" />
+    <ClInclude Include="Source\Classes\BattleScreenObject.h" />
     <ClInclude Include="Source\Classes\Projection.h" />
     <ClInclude Include="Source\Classes\Scene.h" />
     <ClInclude Include="Source\Classes\SceneEntity.h" />
@@ -97,6 +103,7 @@
     <ClInclude Include="Source\Misc\DepthFBO.h" />
     <ClInclude Include="Source\Misc\DetectMemoryLeak.h" />
     <ClInclude Include="Source\Misc\GameObjectBuilder.h" />
+    <ClInclude Include="Source\Misc\LoadEnemyData.h" />
     <ClInclude Include="Source\Misc\LoadHmap.h" />
     <ClInclude Include="Source\Misc\LoadOBJ.h" />
     <ClInclude Include="Source\Misc\LoadTGA.h" />

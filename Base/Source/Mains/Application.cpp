@@ -144,8 +144,7 @@ void Application::Init()
 
 	float ScreenHeight = 100; // <!>
 	float ScreenWidth = ScreenHeight * ((float)cA_WindowWidth / (float)cA_WindowHeight);
-	Scene_System::accessing().SetUIDimensions(ScreenWidth, ScreenHeight);
-
+	
 	GraphicsEntity* SceneGraphics = new GraphicsEntity();
 	SceneGraphics->Init();
 	Scene_System::accessing().setGraphics_Scene(*SceneGraphics);

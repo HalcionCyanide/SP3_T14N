@@ -103,19 +103,3 @@ void Scene_System::clearEverything()
 		SceneHistory.pop();
 	}
 }
-
-void Scene_System::SetUIDimensions(const float &width, const float &height)
-{
-	cSS_UIWidth = width;
-	cSS_UIHeight = height;
-}
-
-float Scene_System::GetUIWidth()
-{
-	return cSS_UIWidth;
-}
-
-float Scene_System::GetUIHeight()
-{
-	return cSS_UIHeight;
-}
