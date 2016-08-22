@@ -10,7 +10,7 @@ void MusicSystem::Init()
 {
     musicEngine = createIrrKlangDevice();
 #ifdef _DEBUG
-    assert(beginLoadingMusic("Image//MusicDriven.csv"));
+    assert(beginLoadingMusic("DrivenFiles//MusicDriven.csv"));
 #else
     beginLoadingMusic("Image//MusicDriven.csv");
 #endif

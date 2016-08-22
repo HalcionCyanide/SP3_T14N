@@ -97,6 +97,8 @@ void BattleSystem::Exit()
 		delete *it;
 	}
 	cBS_ObjectContainer.clear();
+    if (CurrentEnemy)
+        delete CurrentEnemy;
 }
 
 // Private Function Calls

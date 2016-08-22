@@ -39,7 +39,7 @@ void SceneFreeField::Init()
 	camera.Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
 
 	// Initiallise Model Specific Meshes Here
-	Mesh* newMesh = MeshBuilder::GenerateTerrain("FreeField", "Image//heightmap5.raw", m_heightMap);
+	Mesh* newMesh = MeshBuilder::GenerateTerrain("FreeField", "HeightMapFiles//heightmap5.raw", m_heightMap);
 	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
@@ -55,7 +55,7 @@ void SceneFreeField::Init()
 	theInteractiveMap = new GameMap();
 	GameMap *theMap = dynamic_cast<GameMap*>(theInteractiveMap);
 	theMap->setName("scene open field logic map");
-	theMap->LoadMap("Image//FreeField_1_Layout.csv", m_heightMap, TerrainScale, objVec, BManager);
+	theMap->LoadMap("DrivenFiles//FreeField_1_Layout.csv", m_heightMap, TerrainScale, objVec, BManager);
 
 	//<!> There can only be 1 Player
 	Player = new PlayerObject();

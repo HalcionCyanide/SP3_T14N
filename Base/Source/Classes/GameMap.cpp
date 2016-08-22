@@ -20,7 +20,7 @@ GameMap::GameMap(void)
 
 	if (bunchOfLegends.empty())
 	{
-		loadThoseLegends("Image//MapLegend.csv");
+		loadThoseLegends("DrivenFiles//MapLegend.csv");
 	}
 }
 

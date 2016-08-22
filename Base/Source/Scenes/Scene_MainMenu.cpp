@@ -40,7 +40,7 @@ void Scene_MainMenu::Init()
 	projectionStack->LoadMatrix(perspective);
 
 	// Initiallise Model Specific Meshes Here
-	Mesh* newMesh = MeshBuilder::GenerateTerrain("terrain", "Image//heightmap_MainMenu.raw", m_heightMap);
+	Mesh* newMesh = MeshBuilder::GenerateTerrain("terrain", "HeightMapFiles//heightmap_MainMenu.raw", m_heightMap);
 	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));

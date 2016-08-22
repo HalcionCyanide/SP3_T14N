@@ -39,7 +39,7 @@ void SceneTown2::Init()
 	camera.Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
 
 	// Initiallise Model Specific Meshes Here
-	Mesh* newMesh = MeshBuilder::GenerateTerrain("town2", "Image//heightmap_Town2.raw", m_heightMap);
+	Mesh* newMesh = MeshBuilder::GenerateTerrain("town2", "HeightMapFiles//heightmap_Town2.raw", m_heightMap);
 	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
@@ -50,7 +50,7 @@ void SceneTown2::Init()
 	theInteractiveMap = new GameMap();
 	GameMap *theMap = dynamic_cast<GameMap*>(theInteractiveMap);
 	theMap->setName("scene town 2 logic map");
-	theMap->LoadMap("Image//Town2Layout.csv", m_heightMap, TerrainScale, objVec, BManager);
+	theMap->LoadMap("DrivenFiles//Town2Layout.csv", m_heightMap, TerrainScale, objVec, BManager);
 
 	//<!> There can only be 1 Player
 	Player = new PlayerObject();
