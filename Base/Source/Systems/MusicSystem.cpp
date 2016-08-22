@@ -39,3 +39,4 @@ bool MusicSystem::beginLoadingMusic(const std::string &fileName)
     }
     return false;
 }
+
