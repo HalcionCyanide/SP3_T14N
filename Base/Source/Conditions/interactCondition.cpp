@@ -6,14 +6,18 @@ interactCondition::interactCondition()
 	//target = nullptr;
 }
 
-interactCondition::interactCondition(NPC* i)
+interactCondition::interactCondition(std::string)
 	: theRequirement(nullptr)
 {
-	theRequirement = i;
 }
 
 interactCondition::~interactCondition()
 {
+}
+
+void interactCondition::setValue(std::string)
+{
+
 }
 
 void interactCondition::Update(double dt)

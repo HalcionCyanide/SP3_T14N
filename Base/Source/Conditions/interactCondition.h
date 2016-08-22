@@ -8,9 +8,10 @@ class interactCondition : public genericCondition
 {
 public:
 	interactCondition();
-	interactCondition(NPC*);
+	interactCondition(std::string);
 	virtual ~interactCondition();
 
+	virtual void setValue(std::string);
 	virtual void Update(double dt);
 private:
 	Data<NPC*> theRequirement;

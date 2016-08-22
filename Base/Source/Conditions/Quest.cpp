@@ -1,6 +1,9 @@
 #include "Quest.h"
 #include "collectionCondition.h"
 #include "ratingCondition.h"
+#include "interactCondition.h"
+#include "captureCondition.h"
+#include "gotoCondition.h"
 
 Quest::Quest() : GenericEntity()
 {
@@ -61,14 +64,22 @@ void Quest::setCondition(std::string i, std::string value)
 	}
 	/*else if (i.find("interact") != std::string::npos)
 	{
-		conditions.push_back(new interactCondition());
-	}
+		//PASS IN NPC NAME
+
+		conditions.push_back(new interactCondition(value));
+	}*/
 	else if (i.find("goto") != std::string::npos)
 	{
-		conditions.push_back(new gotoCondition());
+		//SPLIT THE STRING FROM X:X:X to a VECTOR3
+		//SET THE CONDITION.
+	
+		conditions.push_back(new gotoCondition(value));
 	}
+	/*
 	else if (i.find("capture") != std::string::npos)
 	{
+		//PASS IN MONSTER NAME
+
 		conditions.push_back(new captureCondition());
 	}*/
 }

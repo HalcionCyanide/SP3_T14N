@@ -8,7 +8,7 @@ class gotoCondition : public genericCondition
 {
 public:
 	gotoCondition();
-	gotoCondition(int);
+	gotoCondition(std::string);
 	virtual ~gotoCondition();
 
 	virtual void setValue(std::string);

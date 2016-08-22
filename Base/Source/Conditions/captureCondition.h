@@ -10,7 +10,6 @@ public:
 	//captureCondition(Monster* i);
 	virtual ~captureCondition();
 
-	virtual void setValue(std::string);
 	virtual void Update(double dt);
 private:
 	//Data<Monster*> theRequirement;

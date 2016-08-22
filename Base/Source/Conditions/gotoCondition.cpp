@@ -1,5 +1,5 @@
 #include "gotoCondition.h"
-
+#include <sstream>
 
 gotoCondition::gotoCondition()
 	: theRequirement(0)
@@ -7,14 +7,46 @@ gotoCondition::gotoCondition()
 {
 }
 
-gotoCondition::gotoCondition(int i)
+gotoCondition::gotoCondition(std::string i)
 	: theRequirement(0)
-	, dist(i)
+	, dist(0)
 {
+	unsigned short num = 0;
+	std::istringstream iss(i);
+	std::string data = "";
+	//Tikam Tikam write it. Pray it works.
+	while (getline(iss, data, ':'))
+	{
+		if (num == 0)
+			theRequirement.value_->x = stof(data);
+		else if (num == 1)
+			theRequirement.value_->y = stof(data);
+		else if (num == 2)
+			theRequirement.value_->z = stof(data);
+		++num;
+	}
 }
 
 gotoCondition::~gotoCondition()
 {
+}
+
+void gotoCondition::setValue(std::string i)
+{
+	unsigned short num = 0;
+	std::istringstream iss(i);
+	std::string data = "";
+	//Tikam Tikam write it. Pray it works.
+	while (getline(iss, data, ':'))
+	{
+		if (num == 0)
+			theRequirement.value_->x = stof(data);
+		else if (num == 1)
+			theRequirement.value_->y = stof(data);
+		else if (num == 2)
+			theRequirement.value_->z = stof(data);
+		++num;
+	}
 }
 
 void gotoCondition::Update(double dt)

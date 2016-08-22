@@ -1,6 +1,9 @@
 #include "NPC.h"
 
 NPC::NPC()
+	:	id(0)
+	, name("")
+	, interacting(false)
 {
 
 }
