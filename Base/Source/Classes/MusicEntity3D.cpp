@@ -5,6 +5,7 @@ MusicEntity3D::MusicEntity3D()
     name_ = "";
     SoundEffects = nullptr;
     SoundSource = nullptr;
+    position.set(0, 0, 0);
 }
 
 MusicEntity3D::~MusicEntity3D()

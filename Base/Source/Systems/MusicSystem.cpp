@@ -6,18 +6,6 @@
 #endif
 #include "Scene_System.h"
 
-MusicSystem::MusicSystem()
-    : musicEngine(nullptr)
-{
-    Init();
-}
-
-MusicSystem::~MusicSystem()
-{
-    if (musicEngine)
-        musicEngine->drop();
-}
-
 void MusicSystem::Init()
 {
     musicEngine = createIrrKlangDevice();
