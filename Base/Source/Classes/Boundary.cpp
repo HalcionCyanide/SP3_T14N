@@ -271,7 +271,7 @@ bool Boundary::CheckCollision(const Boundary &object)
 		if (!point1.DetermineCollision(point2))
 			return false;
 	}
-	for (int i = 0; i < this->VerticeNo; ++i)
+	for (int i = 0; i < object.VerticeNo; ++i)
 	{
 		Projection point1 = SetProjection(object.Axis[i], this->Vertices);
 		Projection point2 = SetProjection(object.Axis[i], object.Vertices);
@@ -305,10 +305,10 @@ void Boundary::ResetValues(const Vector3 &position, const Vector3 &dimension, co
 Projection Boundary::SetProjection(const Vector3 &axis, Vector3* vertice)
 {
 	float min, max;
-	min = max = axis.Dot(vertice[0]);
+	min = max = (axis.x * vertice[0].x + axis.z * vertice[0].z);
 	for (int i = 1; i < this->VerticeNo; ++i)
 	{
-		float value = axis.Dot(vertice[0]);
+		float value = (axis.x * vertice[i].x + axis.z * vertice[i].z);
 		if (value < min)
 			min = value;
 		else if (value > max)
