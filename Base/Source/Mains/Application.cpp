@@ -292,7 +292,7 @@ void Application::Exit()
 
 bool Application::loadGlobalStuff()
 {
-    std::ifstream file("Image//GlobalDriven.csv");
+    std::ifstream file("DrivenFiles//GlobalDriven.csv");
 #ifdef _DEBUG
     assert(file.is_open());
 #endif

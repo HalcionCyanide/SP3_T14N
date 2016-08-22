@@ -20,7 +20,7 @@ GameMap::GameMap(void)
 
 	if (bunchOfLegends.empty())
 	{
-		loadThoseLegends("Image//MapLegend.csv");
+		loadThoseLegends("DrivenFiles//MapLegend.csv");
 	}
 }
 
@@ -77,11 +77,12 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
 				if (the3Dobject)
 				{
 					GameObject *aCopyOfIt = new GameObject(*the3Dobject);
-					aCopyOfIt->SetPos(Vector3((float)num_Column, 0, (float)theLineCounter));
+					aCopyOfIt->SetPosition(Vector3((float)num_Column, 0, (float)theLineCounter));
 					if (token.size() > 1)
 					{
 						std::string strRotation = token.substr(2);
-						aCopyOfIt->SetRotation(stof(strRotation), Vector3(0, 1, 0));
+						aCopyOfIt->SetRotationAngle(stof(strRotation));
+						aCopyOfIt->SetRotationAxis(Vector3(0, 1, 0));
 					}
 					theRenderingStuff.push_back(aCopyOfIt);
 					it->second.push_back(itLegend->first);
@@ -110,14 +111,14 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
 	for (std::vector<GameObject*>::iterator it = theRenderingStuff.begin(), end = theRenderingStuff.end(); it != end; ++it)
 	{
 		GameObject *the3DObj = dynamic_cast<GameObject*>(*it);
-		the3DObj->SetPos(Vector3(
-			((the3DObj->GetPos().x - ((float)theNumOfTiles_MapWidth / 2.f)) * tileSizeXYZ.x) + (tileSizeXYZ.x * 0.5f),
+		the3DObj->SetPosition(Vector3(
+			((the3DObj->GetPosition().x - ((float)theNumOfTiles_MapWidth / 2.f)) * tileSizeXYZ.x) + (tileSizeXYZ.x * 0.5f),
 			0,
-			((the3DObj->GetPos().z - ((float)theNumOfTiles_MapHeight / 2.f)) * tileSizeXYZ.z) - (tileSizeXYZ.z * 0.5f)
+			((the3DObj->GetPosition().z - ((float)theNumOfTiles_MapHeight / 2.f)) * tileSizeXYZ.z) - (tileSizeXYZ.z * 0.5f)
 			));
-		the3DObj->SetPos(Vector3(the3DObj->GetPos().x,
-			(the3DObj->GetScale().y*0.5f) + terrainSize.y * ReadHeightMap(theHeightMap, the3DObj->GetPos().x / terrainSize.x, the3DObj->GetPos().z / terrainSize.z) - 0.5f,
-			the3DObj->GetPos().z
+		the3DObj->SetPosition(Vector3(the3DObj->GetPosition().x,
+			(the3DObj->GetDimensions().y*0.5f) + terrainSize.y * ReadHeightMap(theHeightMap, the3DObj->GetPosition().x / terrainSize.x, the3DObj->GetPosition().z / terrainSize.z) - 0.5f,
+			the3DObj->GetPosition().z
 			));
 		//<!>
 		the3DObj->SetBounds();
@@ -206,42 +207,38 @@ bool GameMap::loadThoseLegends(const std::string &fileName)
 					}
 					else if (theKeys[num].find("MESHID") != std::string::npos)
 					{
-						std::map<std::string, Mesh*>::iterator it = graphics->meshList.find(theValues[num]);
-						if (it != graphics->meshList.end())
-						{
-							GameObject*go = dynamic_cast<GameObject*>(theObject);
-							go->SetMesh(*it->second);
-						}
+						GameObject*go = dynamic_cast<GameObject*>(theObject);
+						go->SetMesh(theValues[num]);
 					}
 					else if (theKeys[num].find("SCALEX") != std::string::npos)
 					{
 						GameObject*go = dynamic_cast<GameObject*>(theObject);
-						go->SetScale(Vector3(stof(theValues[num]), go->GetScale().y, go->GetScale().z));
+						go->SetDimensions(Vector3(stof(theValues[num]), go->GetDimensions().y, go->GetDimensions().z));
 					}
 					else if (theKeys[num].find("SCALEY") != std::string::npos)
 					{
 						GameObject*go = dynamic_cast<GameObject*>(theObject);
-						go->SetScale(Vector3(go->GetScale().x, stof(theValues[num]), go->GetScale().z));
+						go->SetDimensions(Vector3(go->GetDimensions().x, stof(theValues[num]), go->GetDimensions().z));
 					}
 					else if (theKeys[num].find("SCALEZ") != std::string::npos)
 					{
 						GameObject*go = dynamic_cast<GameObject*>(theObject);
-						go->SetScale(Vector3(go->GetScale().x, go->GetScale().y, stof(theValues[num])));
+						go->SetDimensions(Vector3(go->GetDimensions().x, go->GetDimensions().y, stof(theValues[num])));
 					}
 					else if (theKeys[num].find("ACTIVE") != std::string::npos)
 					{
 						GameObject*go = dynamic_cast<GameObject*>(theObject);
 						if (theValues[num] == "0")
-							go->SetActive(false);
+							go->Active = false;
 						else
-							go->SetActive(true);
+							go->Active = true;
 					}
 					else if (theKeys[num].find("BILLBOARD") != std::string::npos)
 					{
 						GameObject*go = dynamic_cast<GameObject*>(theObject);
 						if (theValues[num] != "0")
 						{
-							theObject = new Billboard(go->GetPos(), go->GetScale(), Vector3(0, 0, 0), Vector3(0, 0, 0), go->GetMesh().name);
+							theObject = new Billboard(go->GetPosition(), go->GetDimensions(), Vector3(0, 0, 0), Vector3(0, 0, 0), go->GetMeshName());
 							delete go;
 						}
 						else

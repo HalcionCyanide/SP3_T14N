@@ -68,7 +68,7 @@ void BaseObject::Exit()
 }
 
 // Setters
-void BaseObject::SetMesh(Mesh* &Mesh)
+void BaseObject::SetMesh(Mesh* Mesh)
 {
 	this->StoredMesh = Mesh;
 }
@@ -112,6 +112,17 @@ void BaseObject::SetMass(const float& Mass)
 void BaseObject::SetParameters(const std::string& MeshName, const float& Mass, const Vector3& Position, const Vector3& Dimensions, const Vector3& Velocity, const float& RotationAngle, const Vector3& RotationAxis)
 {
 	SetMesh(MeshName);
+	this->Position = Position;
+	this->Dimensions = Dimensions;
+	this->Velocity = Velocity;
+	this->RotationAngle = RotationAngle;
+	this->RotationAxis = RotationAxis;
+	this->Mass = Mass;
+}
+
+void BaseObject::SetParameters(Mesh* Mesh, const float& Mass, const Vector3& Position, const Vector3& Dimensions, const Vector3& Velocity, const float& RotationAngle, const Vector3& RotationAxis)
+{
+	SetMesh(Mesh);
 	this->Position = Position;
 	this->Dimensions = Dimensions;
 	this->Velocity = Velocity;

@@ -6,23 +6,11 @@
 #endif
 #include "Scene_System.h"
 
-MusicSystem::MusicSystem()
-    : musicEngine(nullptr)
-{
-    Init();
-}
-
-MusicSystem::~MusicSystem()
-{
-    if (musicEngine)
-        musicEngine->drop();
-}
-
 void MusicSystem::Init()
 {
     musicEngine = createIrrKlangDevice();
 #ifdef _DEBUG
-    assert(beginLoadingMusic("Image//MusicDriven.csv"));
+    assert(beginLoadingMusic("DrivenFiles//MusicDriven.csv"));
 #else
     beginLoadingMusic("Image//MusicDriven.csv");
 #endif
@@ -42,6 +30,6 @@ void MusicSystem::onNotify(const std::string &theMessage)
 
 bool MusicSystem::beginLoadingMusic(const std::string &fileName)
 {
-
+    std::ifstream file(fileName.c_str());
     return false;
 }

@@ -48,9 +48,9 @@ void PlayerObject::Update(double dt)
 		if (theBoundaries)
 		{
 			Vector3 Xprediction;
-			Xprediction.Set(Pos.x + MovementValues.x, Pos.y, Pos.z);
+			Xprediction.Set(GetPosition().x + MovementValues.x, GetPosition().y, GetPosition().z);
 			Vector3 Zprediction;
-			Zprediction.Set(Pos.x, Pos.y, Pos.z + MovementValues.z);
+			Zprediction.Set(GetPosition().x, GetPosition().y, GetPosition().z + MovementValues.z);
 			//CheckBoundary here
 			for (std::vector<GameObject*>::iterator it = theBoundaries->begin(); it != theBoundaries->end(); ++it)
 			{
@@ -68,7 +68,7 @@ void PlayerObject::Update(double dt)
 					break;
 			}
 		}
-		SetPos(Pos + MovementValues);
+		SetPosition(GetPosition() + MovementValues);
 		MovementValues.SetZero();
 	}
 	//if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
@@ -95,7 +95,9 @@ void PlayerObject::Update(double dt)
 	}
 	if (m_bJumping == false)
 	{
+		Vector3 Pos = GetPosition();
 		Pos.y = Application::cA_CurrentTerrainY;
+		SetPosition(Pos);
 	}
 	if (!vel_.IsZero())
 	{
@@ -124,8 +126,8 @@ void PlayerObject::setAccel(const Vector3 &theacceleration)
 
 void PlayerObject::walkDirection(const float &degree, const float &byHowMuch)
 {
-	MovementValues.x = (float)(sin(Math::DegreeToRadian(RotationAngle + degree)) * vel_.x * (float)(m_ElapsedTime)* byHowMuch);
-	MovementValues.z = (float)(cos(Math::DegreeToRadian(RotationAngle + degree)) * vel_.x * (float)(m_ElapsedTime)* byHowMuch);
+	MovementValues.x = (float)(sin(Math::DegreeToRadian(GetRotationAngle() + degree)) * vel_.x * (float)(m_ElapsedTime)* byHowMuch);
+	MovementValues.z = (float)(cos(Math::DegreeToRadian(GetRotationAngle() + degree)) * vel_.x * (float)(m_ElapsedTime)* byHowMuch);
 }
 
 void PlayerObject::setPlayerBoundaries(std::vector<GameObject*> &Playerboundary)
@@ -216,12 +218,14 @@ void PlayerObject::UpdateJump(const float dt)
 		JumpVel += GRAVITY * dt;
 
 		// Update the camera and target position
-		Pos.y += JumpVel * (float)dt;
+		SetPosition(GetPosition() + Vector3(0, JumpVel * (float)dt));
 
 		// Check if the camera has reached the ground
-		if (Pos.y <= Application::cA_MinimumTerrainY)
+		if (GetPosition().y <= Application::cA_MinimumTerrainY)
 		{
+			Vector3 Pos = GetPosition();
 			Pos.y = Application::cA_CurrentTerrainY;
+			SetPosition(Pos);
 			JumpVel = 0.0f;
 			m_bJumping = false;
 		}
@@ -233,27 +237,27 @@ void PlayerObject::P_ForwardMovement(const float dt)
 	//Velocity = Acceleration x Time
 	vel_.x += MaxWalkSpeed * (float)dt;
 	if (vel_.x > MaxWalkSpeed) { vel_.x = MaxWalkSpeed; }
-	MovementValues.x += (float)(sin(Math::DegreeToRadian(RotationAngle)) * (float)dt * vel_.x);
-	MovementValues.z += (float)(cos(Math::DegreeToRadian(RotationAngle)) * (float)dt * vel_.x);
+	MovementValues.x += (float)(sin(Math::DegreeToRadian(GetRotationAngle())) * (float)dt * vel_.x);
+	MovementValues.z += (float)(cos(Math::DegreeToRadian(GetRotationAngle())) * (float)dt * vel_.x);
 }
 void PlayerObject::P_BackwardMovement(const float dt)
 {
 	vel_.x -= MaxWalkSpeed * (float)dt;
 	if (vel_.x < -MaxWalkSpeed) { vel_.x = -MaxWalkSpeed; }
-	MovementValues.x -= (float)(sin(Math::DegreeToRadian(RotationAngle + 180)) * (float)dt * vel_.x);
-	MovementValues.z -= (float)(cos(Math::DegreeToRadian(RotationAngle + 180)) * (float)dt * vel_.x);
+	MovementValues.x -= (float)(sin(Math::DegreeToRadian(GetRotationAngle() + 180)) * (float)dt * vel_.x);
+	MovementValues.z -= (float)(cos(Math::DegreeToRadian(GetRotationAngle() + 180)) * (float)dt * vel_.x);
 }
 void PlayerObject::P_LeftMovement(const float dt)
 {
 	vel_.z -= MaxWalkSpeed * (float)dt;
 	if (vel_.z < -MaxWalkSpeed) { vel_.z = -MaxWalkSpeed; }
-	MovementValues.x -= (float)(sin(Math::DegreeToRadian(RotationAngle + 90)) * (float)dt * vel_.z);
-	MovementValues.z -= (float)(cos(Math::DegreeToRadian(RotationAngle + 90)) * (float)dt * vel_.z);
+	MovementValues.x -= (float)(sin(Math::DegreeToRadian(GetRotationAngle() + 90)) * (float)dt * vel_.z);
+	MovementValues.z -= (float)(cos(Math::DegreeToRadian(GetRotationAngle() + 90)) * (float)dt * vel_.z);
 }
 void PlayerObject::P_RightMovement(const float dt)
 {
 	vel_.z += MaxWalkSpeed * (float)dt;
 	if (vel_.z > MaxWalkSpeed) { vel_.z = MaxWalkSpeed; }
-	MovementValues.x += (float)(sin(Math::DegreeToRadian(RotationAngle + 270)) * (float)dt * vel_.z);
-	MovementValues.z += (float)(cos(Math::DegreeToRadian(RotationAngle + 270)) * (float)dt * vel_.z);
+	MovementValues.x += (float)(sin(Math::DegreeToRadian(GetRotationAngle() + 270)) * (float)dt * vel_.z);
+	MovementValues.z += (float)(cos(Math::DegreeToRadian(GetRotationAngle() + 270)) * (float)dt * vel_.z);
 }

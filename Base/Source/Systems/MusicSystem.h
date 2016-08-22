@@ -4,16 +4,15 @@
 #include "GenericSystem.h"
 #include "../Classes/MusicEntity2D.h"
 
-class MusicSystem : public GenericSystem
+class MusicSystem : public GenericSystem, SingletonTemplate<MusicSystem>
 {
 public:
-    MusicSystem();
-    virtual ~MusicSystem();
-
     virtual void Init();
     //This is gonna be a pain
     virtual void Update(double dt);
     virtual void onNotify(const std::string &theMessage);
+
+    
 
 private:
     ISoundEngine *musicEngine;

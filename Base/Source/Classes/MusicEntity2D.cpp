@@ -24,3 +24,9 @@ void MusicEntity2D::Init()
 {
 
 }
+
+bool MusicEntity2D::onNotify(const std::string &theEvent)
+{
+
+    return true;
+}

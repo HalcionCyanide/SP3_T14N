@@ -8,10 +8,10 @@
 // Projectile Class [params: accel, mass, inherit baseobj]
 // Upgrade UI_Sys
 // Coll Check Sys
-// If possible, partitioning
 
 BattleSystem::BattleSystem()
 {
+    CurrentEnemy = nullptr;
 	//Init();
 }
 
@@ -29,12 +29,13 @@ void BattleSystem::Init()
 	// Note Init Player and Enemy Here
 	CenterPosition.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 	PlayerScale = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.03f;
-	Player = new BaseObject("TFB_Gem", 3, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), Vector3(0, 0, 0), 0, Vector3(0, 0, 1));
+	PlayerObj = new BaseObject("TFB_Gem", 3, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), Vector3(0, 0, 0), 0, Vector3(0, 0, 1));
 
 	// Background If Needed
 	BaseExterior = new BaseObject("GBox", 0.f, CenterPosition + Vector3(0, CenterPosition.y * 0.1f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.85f, 1), Vector3(), 0, Vector3(0, 0, 1));
 	BaseInterior = new BaseObject("GBox", 0.f, CenterPosition + Vector3(0, CenterPosition.y * 0.1f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.7f, 1), Vector3(), 0, Vector3(0, 0, 1));
-
+	
+	CurrentEnemy = new Enemy();
 }
 
 void BattleSystem::Update(double dt)
@@ -62,9 +63,9 @@ void BattleSystem::Update(double dt)
 
 void BattleSystem::Render()
 {
-	BaseExterior->Render();
+	//BaseExterior->Render();
 	BaseInterior->Render();
-	Player->Render(); // <- Don't bother checking if player is true because if player is not true, something is wrong, thus a crash should be efficient in telling one that. c:
+	PlayerObj->Render(); // <- Don't bother checking if player is true because if player is not true, something is wrong, thus a crash should be efficient in telling one that. c:
 	for (std::vector<BaseObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 	{
 		if ((*it)->Active && (*it)->Visible)
@@ -76,10 +77,10 @@ void BattleSystem::Render()
 
 void BattleSystem::Exit()
 {
-	if (Player)
+	if (PlayerObj)
 	{
-		delete Player;
-		Player = nullptr;
+		delete PlayerObj;
+		PlayerObj = nullptr;
 	}
 	if (BaseExterior != nullptr)
 	{
@@ -97,6 +98,11 @@ void BattleSystem::Exit()
 		delete *it;
 	}
 	cBS_ObjectContainer.clear();
+    if (CurrentEnemy)
+    {
+        delete CurrentEnemy;
+        CurrentEnemy = nullptr;
+    }
 }
 
 // Private Function Calls
@@ -125,7 +131,24 @@ void BattleSystem::UpdatePESPhase(float dt)
 			else (*it)->Active = false;
 		}
 	}
-	BatchCreateAttacks(0);
+	CurrentEnemy->CurrentTime += dt;
+	if (CurrentEnemy->CurrentEnemyWave < CurrentEnemy->MaxEnemyWave)
+	{
+		if (CurrentEnemy->CurrentAttackCount < CurrentEnemy->AttacksPerWave)
+		{
+			if (CurrentEnemy->CurrentTime > CurrentEnemy->AttackSpeed)
+			{
+				CurrentEnemy->CurrentTime = 0;
+				CurrentEnemy->CurrentAttackCount++;
+				BatchCreateAttacks(0);
+			}
+		}
+		else
+		{
+			CurrentEnemy->CurrentAttackCount = 0;
+			CurrentEnemy->CurrentEnemyWave++;
+		}
+	}
 	UpdatePlayer(dt);
 	UpdatePhysics(dt);
 }
@@ -141,13 +164,12 @@ void BattleSystem::UpdateFleePhase(float dt)
 	// Escape Screen
 }
 
-
 // Player Calls
 void BattleSystem::UpdatePlayer(float dt)
 {
 	UpdateControls(dt);
 	UpdateITimer(dt);
-	Player->Update(dt);
+	PlayerObj->Update(dt);
 }
 
 void BattleSystem::UpdateITimer(float dt)
@@ -176,7 +198,7 @@ void BattleSystem::UpdateControls(float dt)
 	{
 	case (true) :
 	{
-		Vector3 PlayerDirection = (CursorPosition - Player->GetPosition());
+		Vector3 PlayerDirection = (CursorPosition - PlayerObj->GetPosition());
 		if (!PlayerDirection.IsZero())
 			if (PlayerDirection.LengthSquared() < (Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.2f))
 				PlayerDirection.SetZero();
@@ -213,28 +235,26 @@ void BattleSystem::UpdateControls(float dt)
 		break;
 	}
 	}
-	if (Player->GetMass() > Math::EPSILON)
+	if (PlayerObj->GetMass() > Math::EPSILON)
 	{
 		// Velocity Due To Acceleration If Mass Exists
-		Player->SetVelocity(Player->GetVelocity() + PlayerActingForce * (1.f / Player->GetMass()) * dt);
+		PlayerObj->SetVelocity(PlayerObj->GetVelocity() + PlayerActingForce * (1.f / PlayerObj->GetMass()) * dt);
 	}
-	Player->SetVelocity(Player->GetVelocity() - Player->GetVelocity()*FrictionDecrementMultiplier * dt);
-	Vector3 FwdPos = Player->GetPosition() + Player->GetVelocity() * dt;
-	if (abs(FwdPos.x - TempBounds.GetPosition().x) > TempBounds.GetScale().x * 0.5f - Player->GetDimensions().x * 0.5f)
+	PlayerObj->SetVelocity(PlayerObj->GetVelocity() - PlayerObj->GetVelocity()*FrictionDecrementMultiplier * dt);
+	Vector3 FwdPos = PlayerObj->GetPosition() + PlayerObj->GetVelocity() * dt;
+	if (abs(FwdPos.x - TempBounds.GetPosition().x) > TempBounds.GetScale().x * 0.5f - PlayerObj->GetDimensions().x * 0.5f)
 	{
-		if (abs(Player->GetVelocity().x * 0.5f) < Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.01f)
-			Player->SetVelocity(Vector3(0, Player->GetVelocity().y, 0.f));
-		else Player->SetVelocity(Vector3(-Player->GetVelocity().x * 0.5f, Player->GetVelocity().y, 0.f));
+		if (abs(PlayerObj->GetVelocity().x * 0.5f) < Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.01f)
+			PlayerObj->SetVelocity(Vector3(0, PlayerObj->GetVelocity().y, 0.f));
+		else PlayerObj->SetVelocity(Vector3(-PlayerObj->GetVelocity().x * 0.5f, PlayerObj->GetVelocity().y, 0.f));
 	}		
-	if (abs(FwdPos.y - TempBounds.GetPosition().y) > TempBounds.GetScale().y * 0.5f - Player->GetDimensions().y * 0.5f)
+	if (abs(FwdPos.y - TempBounds.GetPosition().y) > TempBounds.GetScale().y * 0.5f - PlayerObj->GetDimensions().y * 0.5f)
 	{
-		if (abs(Player->GetVelocity().y * 0.5f) < Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.01f)
-			Player->SetVelocity(Vector3(Player->GetVelocity().x, 0, 0.f));
-		else Player->SetVelocity(Vector3(Player->GetVelocity().x, -Player->GetVelocity().y * 0.5f, 0.f));
+		if (abs(PlayerObj->GetVelocity().y * 0.5f) < Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.01f)
+			PlayerObj->SetVelocity(Vector3(PlayerObj->GetVelocity().x, 0, 0.f));
+		else PlayerObj->SetVelocity(Vector3(PlayerObj->GetVelocity().x, -PlayerObj->GetVelocity().y * 0.5f, 0.f));
 	}
-
 }
-
 
 // Physics Related
 void BattleSystem::UpdatePhysics(float dt)
@@ -243,10 +263,10 @@ void BattleSystem::UpdatePhysics(float dt)
 	{
 		for (std::vector<BaseObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 		{
-			if (CollisionCheck(*Player, **it, dt))
+			if (CollisionCheck(*PlayerObj, **it, dt))
 			{
 				// HP Decrement Should Be In CRes
-				CollisionResponse(*Player, **it, dt);
+				CollisionResponse(*PlayerObj, **it, dt);
 			}
 		}
 	}
@@ -288,12 +308,15 @@ void BattleSystem::Attack_Bullet()
 	TempBounds.CalculateValues(BaseExterior->GetPosition(), BaseExterior->GetDimensions());
 	Boundary2D TempBounds2;
 	TempBounds2.CalculateValues(BaseInterior->GetPosition(), BaseInterior->GetDimensions());
-	Vector3 SpawnPos = CenterPosition + Vector3(Math::RandFloatMinMax(-CenterPosition.x, CenterPosition.x), Math::RandFloatMinMax(-CenterPosition.y, CenterPosition.y));
+	float XSpawn = TempBounds.GetScale().x * 0.5f - TempBounds2.GetScale().x * 0.5f;
+	float YSpawn = TempBounds.GetScale().x * 0.5f - TempBounds2.GetScale().x * 0.5f;
+	Vector3 SpawnPos = CenterPosition + Vector3(Math::RandFloatMinMax(-CenterPosition.x - XSpawn, CenterPosition.x + XSpawn), Math::RandFloatMinMax(-CenterPosition.y - YSpawn, CenterPosition.y + YSpawn));
 	if (TempBounds.CheckCollision(SpawnPos) && !TempBounds2.CheckCollision(SpawnPos))
 	{
-		Vector3 DVec = (Player->GetPosition() - SpawnPos).Normalize() * 700; // * Projectile Speed;
+		Vector3 DVec = (PlayerObj->GetPosition() - SpawnPos).Normalize() * 100; // * Projectile Speed;
 		// Use a fetch Func
 		BaseObject* NewObj = new BaseObject("ayylmao", 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), DVec, 0, Vector3(0, 0, 1));
 		cBS_ObjectContainer.push_back(NewObj);
 	}
+	else Attack_Bullet();
 }

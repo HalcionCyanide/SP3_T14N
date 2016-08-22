@@ -13,7 +13,7 @@ public:
 
     virtual void Init();
     virtual void SetVolume(const float &theNum);
-
+    virtual bool onNotify(const std::string &theEvent);
 
 protected:
     ISound *SoundEffects;

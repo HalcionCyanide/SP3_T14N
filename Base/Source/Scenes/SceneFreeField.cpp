@@ -39,7 +39,7 @@ void SceneFreeField::Init()
 	camera.Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
 
 	// Initiallise Model Specific Meshes Here
-	Mesh* newMesh = MeshBuilder::GenerateTerrain("FreeField", "Image//heightmap5.raw", m_heightMap);
+	Mesh* newMesh = MeshBuilder::GenerateTerrain("FreeField", "HeightMapFiles//heightmap5.raw", m_heightMap);
 	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
@@ -55,21 +55,23 @@ void SceneFreeField::Init()
 	theInteractiveMap = new GameMap();
 	GameMap *theMap = dynamic_cast<GameMap*>(theInteractiveMap);
 	theMap->setName("scene open field logic map");
-	theMap->LoadMap("Image//FreeField_1_Layout.csv", m_heightMap, TerrainScale, objVec, BManager);
+	theMap->LoadMap("DrivenFiles//FreeField_1_Layout.csv", m_heightMap, TerrainScale, objVec, BManager);
 
+	//<!> There can only be 1 Player
 	Player = new PlayerObject();
-	Player->Init("Player", camera.position - Vector3(0, camera.PlayerHeight, 0), Vector3(2, 1, 2), 0.0f, Vector3(1, 0, 0), true);
+	Player->Init("Player", 1, camera.position - Vector3(0, camera.PlayerHeight, 0), Vector3(2, 1, 2), Vector3(), camera.CurrentCameraRotation.y, Vector3(0, 1));
 	std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find("cube");
-	Player->SetMesh(*it->second);
-	Player->setName("Player 1");
-	Player->SetRotation(camera.CurrentCameraRotation.y, Vector3(0, 1, 0));
+	Player->setName("PLayer 1");
+	Player->SetMesh(it->second);
+
 	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
 	//PlayerPTR->cameraObject = &camera;
-	PlayerPTR->setVel(Vector3(10.f, 0.f, 0.f));
-	PlayerPTR->SetPos(Vector3(Player->GetPos().x, camera.PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPos().x / TerrainScale.x), (Player->GetPos().z / TerrainScale.z)), Player->GetPos().z));
+	PlayerPTR->SetVelocity(Vector3(10.f, 0.f, 0.f));
+	PlayerPTR->SetPosition(Vector3(Player->GetPosition().x, camera.PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPosition().x / TerrainScale.x), (Player->GetPosition().z / TerrainScale.z)), Player->GetPosition().z));
 	PlayerPTR->setPlayerBoundaries(objVec);
-	camera.position = PlayerPTR->GetPos();
+	camera.position = PlayerPTR->GetPosition();
 	camera.UpdateCameraVectors();
+	//<!> There can only be 1 Player
 }
 
 void SceneFreeField::Update(float dt)
@@ -122,10 +124,10 @@ void SceneFreeField::Update(float dt)
 
 	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
 	PlayerPTR->Update(dt);
-	PlayerPTR->SetRotation(camera.CurrentCameraRotation.y, Vector3(0, 1, 0));
+	PlayerPTR->SetRotationAngle(camera.CurrentCameraRotation.y);
 
 	camera.Update(dt);
-	camera.position = PlayerPTR->GetPos();
+	camera.position = PlayerPTR->GetPosition();
 	camera.UpdateCameraVectors();
 }
 
@@ -164,7 +166,7 @@ void SceneFreeField::RenderShadowCasters()
 	for (auto it : objVec)
 	{
 		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
-		if (the3DObject && (camera.position - camera.target).Normalize().Dot(the3DObject->GetPos().Normalized()) < 1.f)
+		if (the3DObject && (camera.position - camera.target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
 			the3DObject->Render();
 	}
 	//<!> will remove soon <!>
