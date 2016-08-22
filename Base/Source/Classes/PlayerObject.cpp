@@ -129,9 +129,9 @@ void PlayerObject::setPlayerBoundaries(std::vector<GameObject*> &Playerboundary)
 	theBoundaries = &Playerboundary;
 }
 
-bool PlayerObject::CheckCollision(const Boundary &object, const Vector3 &Prediction)
+bool PlayerObject::CheckCollision(Boundary &object, const Vector3 &Prediction)
 {
-	return false/*object.CheckCollision(Prediction)*/;
+	return object.CheckCollision(Prediction);
 }
 
 void PlayerObject::DecomposePlayerInertia(float dt)

@@ -13,8 +13,8 @@ public:
 	Boundary(const Boundary &bounds);
 	virtual ~Boundary(){};
 
-	virtual bool CheckCollision(const Boundary &object);
-	virtual bool CheckCollision(const Vector3 &point, const Vector3 &scale);
+	virtual bool CheckCollision(Boundary &object);
+	virtual bool CheckCollision(const Vector3 &point);
 	virtual void CalculateValues(const Vector3 &pos, const Vector3 &scale, const float &rotation = 0);
 
 	virtual void SetPosition(const Vector3 &position);
@@ -25,18 +25,17 @@ public:
 	Vector3 GetScale()const;
 	float GetRotation()const;
 
-	virtual void SetAxes(const Vector3 &pos, const Vector3 &scale, const float &rotation);
+	virtual void SetAxes();
 	virtual void SetVertices();
-	virtual void SetProjection(const Projection &value);
 
 	Vector3 GetVerticeArray()const;
 
 	Projection* Projecting(const Vector3 &axis);
+	Projection* ProjectingPoint(const Vector3 &point, const Vector3 &axis);
 
 private:
 	Vector3* Axes;
 	Vector3* Vertices;
-	Projection* Projected;
 	int VerticesNo;
 
 	float RotationValue;

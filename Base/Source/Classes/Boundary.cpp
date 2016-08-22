@@ -10,21 +10,40 @@ Boundary::Boundary(const Boundary &bounds)
 	this->Position = bounds.Position;
 	this->Scale = bounds.Scale;
 	this->RotationValue = bounds.RotationValue;
+	this->Axes = bounds.Axes;
+	this->Vertices = bounds.Vertices;
+	this->VerticesNo = bounds.VerticesNo;
 }
 
-bool Boundary::CheckCollision(const Boundary &object)
+bool Boundary::CheckCollision(Boundary &object)
 {
 	for (int i = 0; i < VerticesNo; ++i)
 	{
-		if (!this->Projected[i].DetermineCollision(object.Projected[i]))
+		Projection* point1 = this->Projecting(this->Axes[i]);
+		Projection* point2 = object.Projecting(this->Axes[i]);
+		if (!point1->DetermineCollision(*point2))
+			return false;
+	}
+	for (int i = 0; i < VerticesNo; ++i)
+	{
+		Projection* point1 = this->Projecting(object.Axes[i]);
+		Projection* point2 = object.Projecting(object.Axes[i]);
+		if (!point1->DetermineCollision(*point2))
 			return false;
 	}
 	return true;
 }
 
-bool Boundary::CheckCollision(const Vector3 &point, const Vector3 &scale)
+bool Boundary::CheckCollision(const Vector3 &point)
 {
-	return false;
+	for (int i = 0; i < VerticesNo; ++i)
+	{
+		Projection* point1 = this->Projecting(this->Axes[i]);
+		Projection* point2 = this->ProjectingPoint(point, this->Axes[i]);
+		if (!point1->DetermineCollision(*point2))
+			return false;
+	}
+	return true;
 }
 
 void Boundary::CalculateValues(const Vector3 &pos, const Vector3 &scale, const float &rotation)
@@ -32,6 +51,8 @@ void Boundary::CalculateValues(const Vector3 &pos, const Vector3 &scale, const f
 	SetPosition(pos);
 	SetScale(scale + Vector3(5, 5, 5));
 	SetRotation(rotation);
+	SetAxes();
+	SetVertices();
 }
 
 void Boundary::SetPosition(const Vector3 &position)
@@ -59,7 +80,7 @@ Vector3 Boundary::GetScale()const
 	return Scale;
 }
 
-void Boundary::SetAxes(const Vector3 &pos, const Vector3 &scale, const float &rotation)
+void Boundary::SetAxes()
 {
 	this->Axes = new Vector3[VerticesNo];
 	for (int i = 0; i < VerticesNo; ++i)
@@ -85,16 +106,6 @@ void Boundary::SetVertices()
 	Vertices[3] = Vector3(this->Position.x - Scale.z, this->Position.y, this->Position.z + Scale.z);
 }
 
-void Boundary::SetProjection(const Projection &value)
-{
-	Projected = new Projection[VerticesNo];
-	for (int i = 0; i < VerticesNo; ++i)
-	{
-		Projected[i] = *Projecting(Axes[i]);
-	}
-}
-
-
 Projection* Boundary::Projecting(const Vector3 &axis)
 {
 	float min, max;
@@ -107,6 +118,14 @@ Projection* Boundary::Projecting(const Vector3 &axis)
 		else if (value > max)
 			max = value;
 	}
+	Projection* proj = new Projection(min, max);
+	return proj;
+}
+
+Projection* Boundary::ProjectingPoint(const Vector3 &point, const Vector3 &axis)
+{
+	float min, max;
+	min = max = axis.Dot(point);
 	Projection* proj = new Projection(min, max);
 	return proj;
 }
