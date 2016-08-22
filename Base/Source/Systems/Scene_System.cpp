@@ -78,7 +78,7 @@ SceneEntity &Scene_System::getGraphicsScene()
 void Scene_System::setGraphics_Scene(SceneEntity &sceneObject)
 {
 #ifdef _DEBUG
-    assert(graphics_scene != nullptr);  //Ensuring the Graphics are being added before the logics
+    assert(graphics_scene == nullptr);  //Ensuring the Graphics are being added before the logics
 #endif
     graphics_scene = &sceneObject;
 }

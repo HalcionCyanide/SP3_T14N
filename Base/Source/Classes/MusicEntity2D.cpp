@@ -19,3 +19,8 @@ void MusicEntity2D::SetVolume(const float &theNum)
     volume_ = theNum;
     volume_ = Math::Clamp(volume_, 0.01f, 1.f);
 }
+
+void MusicEntity2D::Init()
+{
+
+}
