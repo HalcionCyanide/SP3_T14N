@@ -22,9 +22,12 @@ public:
 
     virtual bool playBackgroundMusic(const std::string &songName);
 
+    virtual void clearEverything();
+
 private:
     bool beginLoadingMusic(const std::string &fileName);
     MusicEntity2D *theOnlyBackgroundMusic;
+    size_t loopingAndFindKey(std::vector<std::string> &theKeys, const std::string &whatyouwant);
 };
 
 #endif

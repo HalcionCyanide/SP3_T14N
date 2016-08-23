@@ -211,13 +211,13 @@
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
     <ClCompile Include="Source\Conditions\captureCondition.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Conditions</Filter>
     </ClCompile>
     <ClCompile Include="Source\Conditions\gotoCondition.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Conditions</Filter>
     </ClCompile>
     <ClCompile Include="Source\Conditions\interactCondition.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Conditions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -405,16 +405,13 @@
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
     <ClInclude Include="Source\Conditions\captureCondition.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Conditions</Filter>
     </ClInclude>
     <ClInclude Include="Source\Conditions\gotoCondition.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Conditions</Filter>
     </ClInclude>
     <ClInclude Include="Source\Conditions\interactCondition.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Classes\EnemyProjectile.h">
-      <Filter>Header Files\Classes</Filter>
+      <Filter>Header Files\Conditions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

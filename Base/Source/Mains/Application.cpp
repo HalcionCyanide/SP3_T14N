@@ -230,7 +230,6 @@ void Application::Init()
 #else
     loadGlobalStuff();
 #endif
-
 }
 
 void Application::Run()
@@ -247,7 +246,7 @@ void Application::Run()
 		{
 			Update();
 			Scene_System::accessing().getCurrScene().Render();
-		}
+        }
 		//Swap buffers
 		glfwSwapBuffers(m_window);
 		//Get and organize events, like keyboard and mouse input, window resizing, etc...
@@ -256,6 +255,7 @@ void Application::Run()
 
 	} //Check if the ESC key had been pressed or if the window had been closed
 	Scene_System::accessing().clearEverything();
+    MusicSystem::accessing().clearEverything();
 }
 
 void Application::Update()

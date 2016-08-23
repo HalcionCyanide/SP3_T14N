@@ -21,6 +21,7 @@ MusicEntity2D::~MusicEntity2D()
             theFront->drop();
             theFront = 0;
         }
+        HistoryOfPlayTimes.pop();
     }
 }
 
@@ -30,15 +31,14 @@ void MusicEntity2D::SetVolume(const float &theNum)
     volume_ = Math::Clamp(volume_, 0.01f, 1.f);
 }
 
-void MusicEntity2D::Init(const std::string &theName, const float &theVol, const int &playHowManyTime, const bool &unlimitedTimes, const bool &loop)
+void MusicEntity2D::Init(const std::string &theName, const std::string &fileName, const float &theVol, const int &playHowManyTime, const bool &unlimitedTimes, const bool &loop)
 {
     setName(theName);
-    SoundSource = 
-        MusicSystem::accessing().musicEngine->addSoundSourceFromFile(theName.c_str());
-    volume_ = theVol;
+    setISoundSouce(fileName);
+    SetVolume(theVol);
     SetNumTimeToPlay(playHowManyTime);
     SetUnlimitedPlayTimes(unlimitedTimes);
-    ConstantLooping(loop);
+    SetConstantLooping(loop);
 }
 
 bool MusicEntity2D::OnNotify(const std::string &theEvent)
@@ -69,7 +69,7 @@ void MusicEntity2D::Update(double dt)
     }
 }
 
-void MusicEntity2D::ConstantLooping(const bool &loop)
+void MusicEntity2D::SetConstantLooping(const bool &loop)
 {
     loopIt = loop;
 }
@@ -95,8 +95,38 @@ void MusicEntity2D::Stop()
     while (HistoryOfPlayTimes.size() > 0)
     {
         ISound *theEffect = HistoryOfPlayTimes.front();
-        theEffect->drop();
-        theEffect = 0;
+        if (theEffect)
+        {
+            theEffect->drop();
+            theEffect = 0;
+        }
         HistoryOfPlayTimes.pop();
     }
+}
+
+float MusicEntity2D::getVolume()
+{
+    return volume_;
+}
+
+unsigned MusicEntity2D::getMaxTimesToPlay()
+{
+    return maxTimeToPlay;
+}
+
+bool MusicEntity2D::getLooping()
+{
+    return loopIt;
+}
+
+bool MusicEntity2D::getUnlimitedTimes()
+{
+    return unlimitedTimes;
+}
+
+void MusicEntity2D::setISoundSouce(const std::string &theFile)
+{
+    fileName = theFile;
+    SoundSource =
+        MusicSystem::accessing().musicEngine->addSoundSourceFromFile(fileName.c_str());
 }
