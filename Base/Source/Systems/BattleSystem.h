@@ -8,6 +8,7 @@
 #include <vector>
 #include "../Classes/Enemy.h"
 #include "../Classes/Boundary2D.h"
+#include "../Systems/BillboardManager.h"
 
 class BattleSystem : public GenericSystem
 {
@@ -41,10 +42,12 @@ public:
 	//void SetPlayer();
 	void SetEnemy(Enemy&);
 
+	BillboardManager BManager;
+
 private:
 	// Private Variables
 	Enemy* CurrentEnemy; //<- To Store Attack Patterns and Stats
-
+	EnemyProjectile* CurrentProjectile;
 	Boundary2D InteriorBounds, ExteriorBounds;
 
 	Vector3 CursorPosition;

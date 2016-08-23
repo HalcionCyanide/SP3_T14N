@@ -166,25 +166,32 @@ vec2 poissonDisk[64] = vec2[](
 
 float getShadowEffect(float cosTheta)
 {
-	//Original
-	float visibility = 1.0;
-	float bias = 0.005;
-	if(texture2D(shadowMap, shadowCoord.xy).x < shadowCoord.z - bias) {
-		visibility = 0.25;
-	}
-	return visibility;
+	//CHANGE THIS VARIABLE TO SWAP SHADOWS
+	bool UseUpgradedShaders = true;
+	//
 
-	// Poisson Shadow Sampling
-	/*float visibility = 1.0;
-	float bias = 0.0015 * tan(acos(cosTheta));
-	float SampleSpread = 2400 - (shadowSamplingCount * 25); // How near samples are to one another, nearer = more
-	for (int i = 0; i < shadowSamplingCount; i++){
-		if ( texture( shadowMap, shadowCoord.xy + poissonDisk[i]/SampleSpread ).x  <  shadowCoord.z-bias ){
-			visibility -= 0.8f/shadowSamplingCount;
-			visibility = clamp(visibility, 0, 1 );
+	float visibility = 1.0;
+	if (!UseUpgradedShaders || shadowSamplingCount < 2)
+	{
+		//Original
+		float bias = 0.005;
+		if(texture2D(shadowMap, shadowCoord.xy).x < shadowCoord.z - bias) {
+			visibility = 0.25;
 		}
 	}
-	return visibility;*/
+	else 
+	{
+		// Poisson Shadow Sampling
+		float bias = 0.0015 * tan(acos(cosTheta));
+		float SampleSpread = 2400 - (shadowSamplingCount * 25); // How near samples are to one another, nearer = more
+		for (int i = 0; i < shadowSamplingCount; i++){
+			if ( texture( shadowMap, shadowCoord.xy + poissonDisk[i]/SampleSpread ).x  <  shadowCoord.z-bias ){
+				visibility -= 0.8f/shadowSamplingCount;
+				visibility = clamp(visibility, 0, 1 );
+			}
+		}
+	}
+	return visibility;
 }
 
 void main(){
