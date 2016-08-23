@@ -18,9 +18,11 @@ class BattleScreenObject : public BaseObject
 public:
 	enum BS_OBJECT
 	{
+		BS_Null,
 		BS_Normal,
 		BS_Bullet,
 		BS_Trap,
+		BS_Expander,
 		BS_Bouncer,
 	};
 
