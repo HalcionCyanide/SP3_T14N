@@ -28,15 +28,45 @@ void BattleScreenObject::Update(double dt)
 			Active = false;
 	if (Active) // Still can update if invisible
 	{
-		Vector3 StoredVelocity = GetVelocity();
-		if (GravityAffected)
-			SetVelocity(GetVelocity() + Vector3(0, -9.8f) * (float)dt); // For Gravity
-		if (GetMass() > Math::EPSILON)
+		switch (Type)
 		{
-			SetVelocity(GetVelocity() + Acceleration * (1.f / GetMass()) * (float)dt);
+		case BS_Bullet:
+		{
+			Vector3 StoredVelocity = GetVelocity();
+			if (GravityAffected)
+				SetVelocity(GetVelocity() + Vector3(0, -9.8f) * (float)dt); // For Gravity
+			if (GetMass() > Math::EPSILON)
+			{
+				SetVelocity(GetVelocity() + Acceleration * (1.f / GetMass()) * (float)dt);
+			}
+			SetPosition(GetPosition() + (StoredVelocity + GetVelocity()) * 0.5f * (float)dt);
+			SetRotationAngle(Math::RadianToDegree(atan2(-GetVelocity().x, GetVelocity().y)));
+			break;
 		}
-		SetPosition(GetPosition() + (StoredVelocity + GetVelocity()) * 0.5f * (float)dt);
-		SetRotationAngle(Math::RadianToDegree(atan2(-GetVelocity().x, GetVelocity().y)));
+		case BS_Trap:
+		{
+			if (LifeTimer > (LifeTime * 0.25f))
+			{
+				Visible = true;
+				SetRotationAngle(GetRotationAngle() + GetRotationAngle() * dt * dt);
+				SetDimensions(GetDimensions() + GetVelocity().LengthSquared() * GetDimensions() * dt  * dt);
+			}
+			break;
+		}
+		default:
+		{
+			Vector3 StoredVelocity = GetVelocity();
+			if (GravityAffected)
+				SetVelocity(GetVelocity() + Vector3(0, -9.8f) * (float)dt); // For Gravity
+			if (GetMass() > Math::EPSILON)
+			{
+				SetVelocity(GetVelocity() + Acceleration * (1.f / GetMass()) * (float)dt);
+			}
+			SetPosition(GetPosition() + (StoredVelocity + GetVelocity()) * 0.5f * (float)dt);
+			SetRotationAngle(Math::RadianToDegree(atan2(-GetVelocity().x, GetVelocity().y)));
+			break;
+		}
+		}
 	}
 }
 

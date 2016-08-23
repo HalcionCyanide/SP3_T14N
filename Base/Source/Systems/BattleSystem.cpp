@@ -54,6 +54,9 @@ void BattleSystem::Update(double dt)
 	case BS_Flee:
 		UpdateFleePhase((float)dt);
 		break;
+	case BS_Fail:
+		// U Fail
+		break;
 	}
 }
 
@@ -104,7 +107,12 @@ BattleScreenObject* BattleSystem::GetInactiveBSO()
 	{
 		for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 			if (!(*it)->Active)
+			{
+				(*it)->LifeTimer = 0;
+				(*it)->LifeTime = -1;
+				(*it)->Visible = true;
 				return *it;
+			}
 	}
 	// No Active/Container has nothing, make more BSOs
 	for (unsigned short i = 0; i < 5; ++i)
@@ -338,7 +346,17 @@ bool BattleSystem::CollisionCheck(const BattleScreenObject& BSO1, const BattleSc
 		}
 		case BattleScreenObject::BS_Trap:
 		{
-
+			// Simple Circle BC.
+			float CombinedRadiusSquared = (BSO1.GetDimensions().x * 0.5f + BSO2.GetDimensions().x * 0.5f) * (BSO1.GetDimensions().x * 0.5f + BSO2.GetDimensions().x * 0.5f);
+			float DistSquared = ((BSO1.GetPosition() + BSO1.GetVelocity() * dt) - (BSO2.GetPosition() + BSO2.GetVelocity() * dt)).LengthSquared();
+			Vector3 RelativeVelocity = BSO2.GetVelocity() - BSO1.GetVelocity();
+			Vector3 RelativeDisplacement = BSO1.GetPosition() - BSO2.GetPosition();
+			if (DistSquared < CombinedRadiusSquared &&
+				RelativeVelocity.Dot(RelativeDisplacement) > 0) // Check Angle Between Relative Velocity Vectors in attempt to see if the angle between them is smaller than zero
+			{
+				return true;
+			}
+			break;
 			break;
 		}
 		case BattleScreenObject::BS_Bouncer:
@@ -358,22 +376,36 @@ bool BattleSystem::CollisionResponse(const BattleScreenObject& BSO1, const Battl
 	case BattleScreenObject::BS_Normal:
 	{
 
+		return true;
 		break;
 	}
 	case BattleScreenObject::BS_Bullet:
 	{
-
+		EnemyProjectile* P = nullptr;
+		for (std::vector<EnemyProjectile*>::iterator it = CurrentEnemy->cE_Projectiles.begin(); it != CurrentEnemy->cE_Projectiles.end(); ++it)
+		{
+			if ((*it)->getName() == BSO2.GetMeshName())
+				P = *it;
+		}
+		if (P != nullptr)
+		{
+			Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetCurrentHealth() - P->DamagePerAttack);
+			isInvincible = true;
+			IFrameTimer = 10;
+		}
 		return true;
 		break;
 	}
 	case BattleScreenObject::BS_Trap:
 	{
 
+		return true;
 		break;
 	}
 	case BattleScreenObject::BS_Bouncer:
 	{
 
+		return true;
 		break;
 	}
 	}
@@ -388,21 +420,21 @@ int BattleSystem::BatchCreateAttacks(EnemyProjectile& CurrentProjectile)
 	{
 		int AttackCount = Math::RandIntMinMax(1, CurrentProjectile.BatchCreateCount);
 		for (unsigned short i = 0; i < AttackCount; ++i)
-			Attack_Bullet(CurrentProjectile); 
+			Attack_Bullet(CurrentProjectile);
 		return AttackCount;
 	}
 	else if (CurrentProjectile.AttackType == "Bouncer")
 	{
 		int AttackCount = Math::RandIntMinMax(1, CurrentProjectile.BatchCreateCount);
 		for (unsigned short i = 0; i < AttackCount; ++i)
-			Attack_Bullet(CurrentProjectile);
+			Attack_Trap(CurrentProjectile);
 		return AttackCount;
 	}
 	else if (CurrentProjectile.AttackType == "Trap")
 	{
 		int AttackCount = Math::RandIntMinMax(1, CurrentProjectile.BatchCreateCount);
 		for (unsigned short i = 0; i < AttackCount; ++i)
-			Attack_Bullet(CurrentProjectile);
+			Attack_Trap(CurrentProjectile);
 		return AttackCount;
 	}
 	return 0;
@@ -426,4 +458,24 @@ void BattleSystem::Attack_Bullet(EnemyProjectile& CurrentProjectile)
 		BSO->SetMass(3.f);
 	}
 	else Attack_Bullet(CurrentProjectile);
+}
+
+void BattleSystem::Attack_Trap(EnemyProjectile& CurrentProjectile)
+{
+	Vector3 SpawnPos = PlayerObj->GetPosition();
+	float RAngle = Math::RandFloatMinMax(-360.f, 360.f);
+	BattleScreenObject* BSO = GetInactiveBSO();
+	BSO->SetParameters("CrossMarker", 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), 0, RAngle, Vector3(0, 0, 1));
+	BSO->Type = BattleScreenObject::BS_Null;
+	BSO->Active = true;
+	BSO->LifeTime = 1;
+
+	BSO = GetInactiveBSO();
+	BSO->SetParameters(CurrentProjectile.StoredMesh, 3, SpawnPos + Vector3(0, 0, -1), Vector3(PlayerScale, PlayerScale, 1), Vector3(CurrentProjectile.ScalarAcceleration, CurrentProjectile.ScalarAcceleration), RAngle, Vector3(0, 0, 1));
+	CurrentProjectile.setName(BSO->GetMeshName());
+	BSO->Type = BattleScreenObject::BS_Trap;
+	BSO->Visible = false;
+	BSO->Active = true;
+	BSO->LifeTime = 4;
+	BSO->SetMass(3.f);
 }

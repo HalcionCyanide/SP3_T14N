@@ -135,7 +135,7 @@ bool LoadEnemyData(const char *file_path, std::map<std::string, Enemy*> &EMap)
 										if (CSV_Values.size() > pos)
 											if (CSV_Values[pos] != "")
 											{
-												TempP->BatchCreateCount = stof(CSV_Values[pos]);
+												TempP->BatchCreateCount = stoi(CSV_Values[pos]);
 												Temp->cE_Projectiles.push_back(TempP);
 												EMap.insert(std::pair<std::string, Enemy*>(Temp->getName(), Temp));
 											}

@@ -20,6 +20,7 @@ public:
 		BS_PlayerEvasionStage,
 		BS_Seal,
 		BS_Flee,
+		BS_Fail,
 	};
 
 	BattleSystem();
@@ -51,7 +52,7 @@ private:
 	Vector3 CenterPosition;
 	BattleScreenObject* BaseExterior;
 	BattleScreenObject* BaseInterior;
-	bool MouseModeSelected = false;
+	bool MouseModeSelected = true;
 	bool isInvincible = false;
 	float IFrameTimer = 0;
 	const float FrictionDecrementMultiplier = 0.8f;
@@ -79,6 +80,7 @@ private:
 
 	// Attack Calls // Think of better names later
 	void Attack_Bullet(EnemyProjectile& CurrentProjectile);
+	void Attack_Trap(EnemyProjectile& CurrentProjectile);
 
 	// Base Object Container [The container that holds the enemy projectiles/attacks]
 	std::vector<BattleScreenObject*> cBS_ObjectContainer;

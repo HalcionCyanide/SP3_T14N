@@ -19,8 +19,10 @@ GraphicsEntity resides here.
 #include "InputManager.h"
 #include "..\\Classes\\Boundary.h"
 #include "..\\Systems\\BattleSystem.h"
+#include "..\\Classes\\GlobalPlayer.h"
 
 class InputManager;
+class GlobalPlayer;
 /******************************************************************************/
 /*!
 Class Scene_System:
@@ -50,6 +52,8 @@ public:
 
 	BattleSystem BattleSystem;
 	std::map<std::string, Enemy*> EnemyData;
+
+	GlobalPlayer* gPlayer;
 
 private:
 	std::stack<SceneEntity* > SceneHistory;
