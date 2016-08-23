@@ -13,6 +13,16 @@ NPC::~NPC()
 
 }
 
+void NPC::setID(int id)
+{
+	this->id = id;
+}
+
+void NPC::setFlavourText(std::string i)
+{
+	flavourText = i;
+}
+
 bool NPC::getInteracting()
 {
 	return interacting;

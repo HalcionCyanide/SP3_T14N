@@ -1,11 +1,6 @@
 #include "BattleSystem.h"
 #include "Scene_System.h"
 #include <string>
-#include "../Classes/Boundary2D.h"
-
-// To Do List
-// Upgrade UI_Sys
-// Coll Check Sys
 
 BattleSystem::BattleSystem()
 {
@@ -34,6 +29,9 @@ void BattleSystem::Init()
 	BaseInterior = new BattleScreenObject("GBox", 0.f, CenterPosition + Vector3(0, CenterPosition.y * 0.1f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.7f, 1), Vector3(), 0, Vector3(0, 0, 1));
 	
 	//CurrentEnemy = new Enemy();
+
+	ExteriorBounds.ResetValues(BaseExterior->GetPosition(), BaseExterior->GetDimensions());
+	InteriorBounds.ResetValues(BaseInterior->GetPosition(), BaseInterior->GetDimensions());
 }
 
 void BattleSystem::Update(double dt)
@@ -103,6 +101,25 @@ void BattleSystem::Exit()
     //}
 }
 
+BattleScreenObject* BattleSystem::GetInactiveBSO()
+{
+	// Container has stuff
+	if (cBS_ObjectContainer.size() > 0)
+	{
+		for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
+			if (!(*it)->Active)
+				return *it;
+	}
+	// No Active/Container has nothing, make more BSOs
+	for (unsigned short i = 0; i < 5; ++i)
+	{
+		BattleScreenObject* BSO = new BattleScreenObject("", 1, 0, Vector3(1, 1, 1), 0, 0, Vector3(0, 0, 1));
+		BSO->Active = false;
+		cBS_ObjectContainer.push_back(BSO);
+	}
+	return cBS_ObjectContainer.back();
+}
+
 void BattleSystem::SetEnemy(Enemy& Enemy)
 {
 	CurrentEnemy = &Enemy;
@@ -123,13 +140,11 @@ void BattleSystem::UpdateInventoryScreen(float dt)
 
 void BattleSystem::UpdatePESPhase(float dt)
 {
-	Boundary2D TempBounds;
-	TempBounds.ResetValues(BaseExterior->GetPosition(), BaseExterior->GetDimensions());
 	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 	{
 		if ((*it)->Active)
 		{
-			if (TempBounds.CheckCollision((*it)->GetPosition()))
+			if (ExteriorBounds.CheckCollision((*it)->GetPosition()))
 				(*it)->Update(dt);
 			else (*it)->Active = false;
 		}
@@ -172,7 +187,6 @@ void BattleSystem::UpdatePlayer(float dt)
 {
 	UpdateControls(dt);
 	UpdateITimer(dt);
-	PlayerObj->Update(dt);
 }
 
 void BattleSystem::UpdateITimer(float dt)
@@ -190,9 +204,7 @@ void BattleSystem::UpdateITimer(float dt)
 
 void BattleSystem::UpdateControls(float dt)
 {
-	Boundary2D TempBounds;
-	TempBounds.ResetValues(BaseInterior->GetPosition(), BaseInterior->GetDimensions());
-	if (TempBounds.CheckCollision(Scene_System::accessing().cSS_InputManager->GetMousePosition()))
+	if (InteriorBounds.CheckCollision(Scene_System::accessing().cSS_InputManager->GetMousePosition()))
 	{
 		CursorPosition = Scene_System::accessing().cSS_InputManager->GetMousePosition();
 	}
@@ -252,18 +264,33 @@ void BattleSystem::UpdateControls(float dt)
 	}
 	PlayerObj->SetVelocity(PlayerObj->GetVelocity() - PlayerObj->GetVelocity()*FrictionDecrementMultiplier * dt);
 	Vector3 FwdPos = PlayerObj->GetPosition() + PlayerObj->GetVelocity() * dt;
-	if (abs(FwdPos.x - TempBounds.GetPosition().x) > TempBounds.GetDimension().x * 0.5f - PlayerObj->GetDimensions().x * 0.5f)
+	if (abs(FwdPos.x - InteriorBounds.GetPosition().x) > InteriorBounds.GetDimension().x * 0.5f - PlayerObj->GetDimensions().x * 0.5f)
 	{
 		if (abs(PlayerObj->GetVelocity().x * 0.5f) < Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.01f)
-			PlayerObj->SetVelocity(Vector3(0, PlayerObj->GetVelocity().y, 0.f));
-		else PlayerObj->SetVelocity(Vector3(-PlayerObj->GetVelocity().x * 0.5f, PlayerObj->GetVelocity().y, 0.f));
+		{
+			PlayerObj->SetVelocity(Vector3(0.f, PlayerObj->GetVelocity().y, 0.f));
+			PlayerObj->SetAcceleration(Vector3(-PlayerObj->GetAcceleration().x * 0.5f, PlayerObj->GetAcceleration().y, 0.f));
+		}
+		else 
+		{
+			PlayerObj->SetVelocity(Vector3(-PlayerObj->GetVelocity().x * 0.5f, PlayerObj->GetVelocity().y, 0.f));
+			PlayerObj->SetAcceleration(Vector3(-PlayerObj->GetAcceleration().x * 0.5f, PlayerObj->GetAcceleration().y, 0.f));
+		}
 	}		
-	if (abs(FwdPos.y - TempBounds.GetPosition().y) > TempBounds.GetDimension().y * 0.5f - PlayerObj->GetDimensions().y * 0.5f)
+	if (abs(FwdPos.y - InteriorBounds.GetPosition().y) > InteriorBounds.GetDimension().y * 0.5f - PlayerObj->GetDimensions().y * 0.5f)
 	{
 		if (abs(PlayerObj->GetVelocity().y * 0.5f) < Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.01f)
-			PlayerObj->SetVelocity(Vector3(PlayerObj->GetVelocity().x, 0, 0.f));
-		else PlayerObj->SetVelocity(Vector3(PlayerObj->GetVelocity().x, -PlayerObj->GetVelocity().y * 0.5f, 0.f));
+		{
+			PlayerObj->SetVelocity(Vector3(PlayerObj->GetVelocity().x, 0.f, 0.f));
+			PlayerObj->SetAcceleration(Vector3(PlayerObj->GetAcceleration().x, -PlayerObj->GetAcceleration().y * 0.5f, 0.f));
+		}
+		else
+		{
+			PlayerObj->SetVelocity(Vector3(PlayerObj->GetVelocity().x, -PlayerObj->GetVelocity().y * 0.5f, 0.f));
+			PlayerObj->SetAcceleration(Vector3(PlayerObj->GetAcceleration().x, -PlayerObj->GetAcceleration().y * 0.5f, 0.f));
+		}
 	}
+	PlayerObj->Update(dt);
 }
 
 // Physics Related
@@ -361,7 +388,7 @@ int BattleSystem::BatchCreateAttacks(const int& AttackType)
 	switch (AttackType)
 	{
 	case 0: 
-		int AttackCount = Math::RandIntMinMax(1, 5);
+		int AttackCount = Math::RandIntMinMax(1, 3);
 		for (unsigned short i = 0; i < AttackCount; ++i)
 			Attack_Bullet(); 
 		return AttackCount;
@@ -371,24 +398,21 @@ int BattleSystem::BatchCreateAttacks(const int& AttackType)
 }
 
 
-// Attack Calls // Think of better names later // Pass Vel Pos Offset?
+// Attack Calls
 void BattleSystem::Attack_Bullet()
 {
-	Boundary2D TempBounds;
-	TempBounds.ResetValues(BaseExterior->GetPosition(), BaseExterior->GetDimensions());
-	Boundary2D TempBounds2;
-	TempBounds2.ResetValues(BaseInterior->GetPosition(), BaseInterior->GetDimensions());
-	float XSpawn = TempBounds.GetDimension().x * 0.5f - TempBounds2.GetDimension().x * 0.5f;
-	float YSpawn = TempBounds.GetDimension().x * 0.5f - TempBounds2.GetDimension().x * 0.5f;
+	// Spawn a bullet at the exterior of the GBox, fire it at the player.
+	float XSpawn = ExteriorBounds.GetDimension().x * 0.5f - InteriorBounds.GetDimension().x * 0.5f;
+	float YSpawn = ExteriorBounds.GetDimension().x * 0.5f - InteriorBounds.GetDimension().x * 0.5f;
 	Vector3 SpawnPos = CenterPosition + Vector3(Math::RandFloatMinMax(-CenterPosition.x - XSpawn, CenterPosition.x + XSpawn), Math::RandFloatMinMax(-CenterPosition.y - YSpawn, CenterPosition.y + YSpawn));
-	if (TempBounds.CheckCollision(SpawnPos) && !TempBounds2.CheckCollision(SpawnPos))
+	if (ExteriorBounds.CheckCollision(SpawnPos) && !InteriorBounds.CheckCollision(SpawnPos))
 	{
-		Vector3 DVec = (PlayerObj->GetPosition() - SpawnPos).Normalize() * 800; // * Projectile Speed;
-		// Use a fetch Func
-		BattleScreenObject* NewObj = new BattleScreenObject("TFB_Gem", 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), DVec, 0, Vector3(0, 0, 1));
-		NewObj->Type = BattleScreenObject::BS_Bullet;
-		NewObj->SetMass(5.f);
-		cBS_ObjectContainer.push_back(NewObj);
+		Vector3 DVec = (PlayerObj->GetPosition() - SpawnPos).Normalize() * 200; // * Projectile Speed;
+		BattleScreenObject* BSO = GetInactiveBSO();
+		BSO->SetParameters("TFB_Gem", 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), DVec, 0, Vector3(0, 0, 1));
+		BSO->Type = BattleScreenObject::BS_Bullet;
+		BSO->Active = true;
+		BSO->SetMass(3.f);
 	}
 	else Attack_Bullet();
 }
