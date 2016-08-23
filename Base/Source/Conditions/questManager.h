@@ -12,6 +12,5 @@ public:
 	virtual void Update(double dt);
 
 	std::vector<Quest*> allQuests;
-
-	Quest tempQuest;
+	std::vector<Quest*> completedQuests;
 };

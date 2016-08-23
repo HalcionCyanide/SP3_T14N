@@ -8,8 +8,9 @@ void Scene_System::Init()
     //currScene = nullptr;
     graphics_scene = nullptr;
 	cSS_InputManager = new InputManager();
+	gPlayer = new GlobalPlayer(1, 420, 1337, false);
 
-	//QM.readFile("Source//Conditions//questData.csv");
+	QM.readFile("Source//Conditions//questData.csv");
 }
 
 void Scene_System::Update(double dt)
@@ -109,4 +110,13 @@ void Scene_System::clearEverything()
         delete it.second;
     }
     EnemyData.clear();
+    if (gPlayer)
+        delete gPlayer;
+    gPlayer = nullptr;
+
+    for (auto it : QM.allQuests)
+    {
+        delete it;
+    }
+    QM.allQuests.clear();
 }

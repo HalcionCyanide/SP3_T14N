@@ -17,33 +17,28 @@ void UI_System::Init()
 
 void UI_System::Update(double dt)
 {
-	for (std::vector<UI_Element*>::iterator it = cUIS_ElementContainer.begin(); it != cUIS_ElementContainer.end(); ++it)
+	for (std::vector<UI_Layer*>::iterator it = cUIS_LayerContainer.begin(); it != cUIS_LayerContainer.end(); ++it)
 	{
-		if ((*it)->Active)
+		if ((*it)->cUI_Layer.size() > 0)
 			(*it)->Update((float)dt);
 	}
 }
 
 void UI_System::Render()
 {
-	for (std::vector<UI_Element*>::iterator it = cUIS_ElementContainer.begin(); it != cUIS_ElementContainer.end(); ++it)
+	for (std::vector<UI_Layer*>::iterator it = cUIS_LayerContainer.begin(); it != cUIS_LayerContainer.end(); ++it)
 	{
-		if ((*it)->Active)
+		if ((*it)->cUI_Layer.size() > 0)
 			(*it)->Render();
 	}
 }
 
 void UI_System::Exit()
 {
-    for (std::vector<UI_Element*>::iterator it = cUIS_ElementContainer.begin(); it != cUIS_ElementContainer.end(); ++it)
+	for (std::vector<UI_Layer*>::iterator it = cUIS_LayerContainer.begin(); it != cUIS_LayerContainer.end(); ++it)
     {
         (*it)->Exit();
         delete *it;
     }
-    cUIS_ElementContainer.clear();
-}
-
-void UI_System::AddUIElement(const UI_Element::UI_TYPES& UI_Type, const std::string& name, const Vector3& Position, const Vector3& SpawnPosition, const Vector3& Dimension, const Vector3& TargetPosition, const std::string& UI_Text)
-{
-	cUIS_ElementContainer.push_back(new UI_Element(UI_Type, name, Position, SpawnPosition, Dimension, TargetPosition, UI_Text));
+	cUIS_LayerContainer.clear();
 }

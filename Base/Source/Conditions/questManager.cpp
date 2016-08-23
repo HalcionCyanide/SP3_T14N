@@ -9,11 +9,7 @@ questManager::questManager()
 
 questManager::~questManager()
 {
-	for (auto it : allQuests)
-	{
-		delete it;
-	}
-	allQuests.clear();
+
 }
 
 struct to_upper
@@ -32,6 +28,7 @@ void questManager::Update(double dt)
 		if (allQuests.at(i)->getActive())
 		{
 			allQuests.at(i)->Update(dt);
+			i++;
 		}
 	}
 }
@@ -102,7 +99,6 @@ void questManager::readFile(const std::string fileName)
 				theValues.clear();
 				tempID++;
 			}
-
-		}
+        }
 	}
 }

@@ -3,7 +3,7 @@
 
 #include "GenericSystem.h"
 #include "Vector3.h"
-#include "..\\Classes\\UI_Element.h"
+#include "..\\Classes\\UI_Layer.h"
 
 #include <vector>
 
@@ -18,10 +18,7 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
-	void AddUIElement(const UI_Element::UI_TYPES& UI_Type, const std::string& name, const Vector3& Position, const Vector3& SpawnPosition, const Vector3& Dimension, const Vector3& TargetPosition, const std::string& UI_Text = "");
-
-//private:
-	std::vector<UI_Element*> cUIS_ElementContainer;
+	std::vector<UI_Layer*> cUIS_LayerContainer;
 
 };
 

@@ -11,6 +11,7 @@ Quest::Quest() : GenericEntity()
 	name_ = "";
 	questDesc = "";
 	active = false;
+	satisfied = false;
 }
 
 Quest::~Quest()
@@ -98,8 +99,16 @@ void Quest::Update(double dt)
 		int i = 0;
 		for (std::vector<genericCondition*>::iterator it = conditions.begin(); it != conditions.end(); ++it)
 		{
-			conditions.at(i)->Update(dt);
-			i++;
+			if (!satisfied)
+			{
+				conditions.at(i)->Update(dt);
+				satisfied = conditions.at(i)->satisfied;
+				i++;
+			}
+			else
+			{
+				active = false;
+			}
 		}
 	}
 }

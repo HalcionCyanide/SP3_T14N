@@ -7,6 +7,7 @@
 #include "Vector3.h"
 #include <vector>
 #include "../Classes/Enemy.h"
+#include "../Classes/Boundary2D.h"
 
 class BattleSystem : public GenericSystem
 {
@@ -19,6 +20,7 @@ public:
 		BS_PlayerEvasionStage,
 		BS_Seal,
 		BS_Flee,
+		BS_Fail,
 	};
 
 	BattleSystem();
@@ -34,6 +36,8 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
+	BattleScreenObject* GetInactiveBSO();
+
 	//void SetPlayer();
 	void SetEnemy(Enemy&);
 
@@ -41,12 +45,14 @@ private:
 	// Private Variables
 	Enemy* CurrentEnemy; //<- To Store Attack Patterns and Stats
 
+	Boundary2D InteriorBounds, ExteriorBounds;
+
 	Vector3 CursorPosition;
 	float PlayerScale;
 	Vector3 CenterPosition;
 	BattleScreenObject* BaseExterior;
 	BattleScreenObject* BaseInterior;
-	bool MouseModeSelected = false;
+	bool MouseModeSelected = true;
 	bool isInvincible = false;
 	float IFrameTimer = 0;
 	const float FrictionDecrementMultiplier = 0.8f;
@@ -70,10 +76,11 @@ private:
 	bool CollisionResponse(const BattleScreenObject&, const BattleScreenObject&, float dt);
 
 	// Enemy Calls [Based on type use a specific attack call]
-	int BatchCreateAttacks(const int& AttackType);
+	int BatchCreateAttacks(EnemyProjectile& CurrentProjectile);
 
 	// Attack Calls // Think of better names later
-	void Attack_Bullet();
+	void Attack_Bullet(EnemyProjectile& CurrentProjectile);
+	void Attack_Trap(EnemyProjectile& CurrentProjectile);
 
 	// Base Object Container [The container that holds the enemy projectiles/attacks]
 	std::vector<BattleScreenObject*> cBS_ObjectContainer;

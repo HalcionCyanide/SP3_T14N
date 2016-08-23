@@ -7,5 +7,6 @@
 #include "../Classes/Enemy.h"
 
 bool LoadEnemyData(const char *file_path, std::map<std::string, Enemy*> &EMap);
+bool removingSpecificCharInStr(std::string &theStr, const char &theChar);
 
 #endif
