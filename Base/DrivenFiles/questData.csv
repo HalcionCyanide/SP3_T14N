@@ -1,0 +1,64 @@
+id,Name,ConditionName,Value,Description,Qorigin
+1,Monster Collector,collection,10,Capture 10 Monsters!,NPC_guardcaptain
+2,Monster Collector,collection,15,Capture 15 Monsters!,NPC_guardcaptain
+3,Monster Collector,collection,20,Capture 20 Monsters!,NPC_guardcaptain
+4,Monster Collector,collection,25,Capture 25 Monsters!,NPC_guardcaptain
+5,Monster Collector,collection,30,Capture 30 Monsters!,NPC_guardcaptain
+6,Rating up!,rating,20,Achieve a rating of 20 or higher.,NPC_guardcaptain
+7,Rating up!,rating,40,Achieve a rating of 40 or higher.,NPC_guardcaptain
+8,Rating up!,rating,60,Achieve a rating of 60 or higher.,NPC_guardcaptain
+9,Rating up!,rating,80,Achieve a rating of 80 or higher.,NPC_guardcaptain
+10,The Fractal Binding,collection,1,Capture a monster.,NPC_guardcaptain
+11,The Fractal Binding,interact,NPC_guardcaptain,Report to the Guard Captain.,NPC_guardcaptain
+12,The Fractal Binding,capture,BOSS_Reaper,Capture the Reaper.,NPC_guardcaptain
+13,The Fractal Binding,interact,NPC_T1door,Leave the City.,NPC_guardcaptain
+14,The Fractal Binding,interact,NPC_villagechief,Find the village chief.,NPC_guardcaptain
+15,The Fractal Binding,interact,NPC_villager,Find the villagers.,NPC_guardcaptain
+16,The Fractal Binding,goto,10;10;10;,Search the graveyard.,NPC_guardcaptain
+17,The Fractal Binding,goto,0;0;0;,Cleanse the graveyard.,NPC_guardcaptain
+18,The Fractal Binding,capture,BOSS_Manticore,Capture the Manticore.,NPC_guardcaptain
+19,The Fractal Binding,interact,NPC_mStranger,Talk to the Mysterious Stranger.,NPC_guardcaptain
+20,The Fractal Binding,interact,NPC_guardcaptain,Return to the Castle for instructions.,NPC_guardcaptain
+21,The Fractal Binding,interact,NPC_mStranger,Reach the Cursed Woods.,NPC_guardcaptain
+22,The Fractal Binding,capture,BOSS_Balrog,Capture the Balrog.,NPC_guardcaptain
+23,Rebuilding hope,interact,NPC_rocks,Mine the rocks.,NPC_guardcaptain
+24,Rebuilding hope,interact,NPC_wood,Chop the wood.,NPC_guardcaptain
+25,Rebuilding hope,interact,NPC_carpenter,Bring them back to the carpenter.,NPC_guardcaptain
+26,Rebuilding hope,interact,NPC_rocks,Mine the rocks.,NPC_guardcaptain
+27,Rebuilding hope,interact,NPC_wood,Chop the wood.,NPC_guardcaptain
+28,Rebuilding hope,interact,NPC_carpenter,Bring them back to the carpenter.,NPC_guardcaptain
+29,Rebuilding hope,goto,20;20;20;,Rebuild the Homes.,NPC_guardcaptain
+30,Rebuilding hope,interact,NPC_rocks,Mine the rocks.,NPC_guardcaptain
+31,Rebuilding hope,interact,NPC_wood,Chop the wood.,NPC_guardcaptain
+32,Rebuilding hope,interact,NPC_carpenter,Bring them back to the carpenter.,NPC_guardcaptain
+33,Rebuilding hope,interact,NPC_rocks,Mine the rocks.,NPC_guardcaptain
+34,Rebuilding hope,interact,NPC_wood,Chop the wood.,NPC_guardcaptain
+35,Rebuilding hope,interact,NPC_carpenter,Bring them back to the carpenter.,NPC_guardcaptain
+36,Rebuilding hope,goto,30;20;30;,Rebuild the Gate.,NPC_guardcaptain
+37,End of Tyranny,goto,10;0;10;,Put out all the cursed fires around the Crypt.,NPC_guardcaptain
+38,End of Tyranny,goto,15;0;5;,Put out all the cursed fires around the Crypt.,NPC_guardcaptain
+39,End of Tyranny,goto,25;0;40;,Put out all the cursed fires around the Crypt.,NPC_guardcaptain
+40,End of Tyranny,goto,35;0;20;,Put out all the cursed fires around the Crypt.,NPC_guardcaptain
+41,The path less traveled,goto,20;0;10;,Find a Map piece.,NPC_guardcaptain
+42,The path less traveled,goto,25;0;40;,Find a Map piece.,NPC_guardcaptain
+43,The path less traveled,goto,30;0;20;,Find a Map piece.,NPC_guardcaptain
+44,The path less traveled,goto,20;0;0;,Find a Map piece.,NPC_guardcaptain
+45,The path less traveled,interact,NPC_mapguy,Speak to the royal cartographer.,NPC_guardcaptain
+46,The path less traveled,goto,60;0;15,Go to the location mentioned.,NPC_guardcaptain
+47,The path less traveled,capture,MOB_pandora,Capture the Pandora's Box.,NPC_guardcaptain
+48,Purification,interact,NPC_priest,Bring the Rosary to the Church Priest.,NPC_guardcaptain
+49,Purification,interact,NPC_guardcaptain,Speak to the Guard Captain.,NPC_guardcaptain
+50,Purification,goto,10;10;10,Return to the graveyard.,NPC_guardcaptain
+51,Solomon's Gate,interact,NPC_villagechief,Speak to the Village Chief.,NPC_guardcaptain
+52,Solomon's Gate,rating,70,Achieve a rating of 70 or higher.,NPC_guardcaptain
+53,Solomon's Gate,capture,BOSS_skullknight,Capture the Skull Knight.,NPC_guardcaptain
+54,Solomon's Gate,interact,NPC_villagechief,Speak to the Village Chief.,NPC_guardcaptain
+55,Solomon's Gate,interact,NPC_fakevial,Acquire a Blood Vial.,NPC_guardcaptain
+56,Solomon's Gate,interact,NPC_villagechief,Speak to the Village Chief.,NPC_guardcaptain
+57,Solomon's Gate,interact,NPC_guardcaptain,Report to the Guard Captain.,NPC_guardcaptain
+58,Solomon's Gate,interact,NPC_fakedoor,Return to the Cursed Woods.,NPC_guardcaptain
+59,A friend in need,interact,NPC_guardcaptain,Speak to the Guard Captain.,NPC_guardcaptain
+60,A friend in need,interact,NPC_noblelady,Pass the note to the Noble Lady.,NPC_guardcaptain
+61,A friend in need,interact,NPC_guardcaptain,Speak to the Guard Captain.,NPC_guardcaptain
+62,A friend in need,interact,NPC_fakeflower,Get a Fresh Flower,NPC_guardcaptain
+63,A friend in need,interact,NPC_noblelady,Give the Fresh Flower to the Noble Lady.,NPC_guardcaptain

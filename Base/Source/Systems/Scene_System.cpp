@@ -1,4 +1,5 @@
 #include "Scene_System.h"
+#include "..\\NPCs\\NPC_GuardCapt.h"
 #ifdef _DEBUG
     #include <assert.h>
 #endif
@@ -10,7 +11,10 @@ void Scene_System::Init()
 	cSS_InputManager = new InputManager();
 	gPlayer = new GlobalPlayer(1, 420, 1337, false);
 
-	QM.readFile("Source//Conditions//questData.csv");
+	QM.readFile("DrivenFiles//questData.csv");
+	GuardCapt* Guard_captain = new GuardCapt();
+	Guard_captain->Init();
+	allNPCs.push_back(Guard_captain);
 }
 
 void Scene_System::Update(double dt)
@@ -119,4 +123,10 @@ void Scene_System::clearEverything()
         delete it;
     }
     QM.allQuests.clear();
+
+	for (auto it : allNPCs)
+	{
+		delete it;
+	}
+	allNPCs.clear();
 }

@@ -20,19 +20,6 @@ struct to_upper
 	}
 };
 
-void questManager::Update(double dt)
-{
-	int i = 0;
-	for (std::vector<Quest*>::iterator it = allQuests.begin(); it != allQuests.end(); ++it)
-	{
-		if (allQuests.at(i)->getActive())
-		{
-			allQuests.at(i)->Update(dt);
-			i++;
-		}
-	}
-}
-
 void questManager::readFile(const std::string fileName)
 {
 	std::string temp = "";
@@ -92,6 +79,10 @@ void questManager::readFile(const std::string fileName)
 				it = std::find(theKeys.begin(), theKeys.end(), "DESCRIPTION");
 				pos = it - theKeys.begin();
 				tempQuest->setDesc(theValues[pos]);
+
+				it = std::find(theKeys.begin(), theKeys.end(), "QORIGIN");
+				pos = it - theKeys.begin();
+				tempQuest->setGiver(theValues[pos]);
 
 				tempQuest->setID(tempID);
 

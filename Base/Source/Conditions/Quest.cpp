@@ -12,6 +12,7 @@ Quest::Quest() : GenericEntity()
 	questDesc = "";
 	active = false;
 	satisfied = false;
+	giver = "";
 }
 
 Quest::~Quest()
@@ -33,6 +34,16 @@ int Quest::getID()
 	return id;
 }
 
+std::string Quest::getGiver()
+{
+	return giver;
+}
+
+void Quest::setGiver(std::string i)
+{
+	giver = i;
+}
+
 void Quest::setDesc(std::string i)
 {
 	questDesc = i;
@@ -51,6 +62,11 @@ bool Quest::getActive()
 void Quest::setActive(bool temp)
 {
 	active = temp;
+}
+
+std::vector<genericCondition*> Quest::getConds()
+{
+	return conditions;
 }
 
 void Quest::setCondition(std::string i, std::string value)
@@ -94,21 +110,17 @@ std::ostream& operator<<(std::ostream& os, const Quest& quest)
 
 void Quest::Update(double dt)
 {
-	if (active)
+	for (std::vector<genericCondition*>::iterator it = conditions.begin(); it != conditions.end(); ++it)
 	{
-		int i = 0;
-		for (std::vector<genericCondition*>::iterator it = conditions.begin(); it != conditions.end(); ++it)
+		genericCondition* gg = (genericCondition*)*it;
+		if (!gg->satisfied)
 		{
-			if (!satisfied)
-			{
-				conditions.at(i)->Update(dt);
-				satisfied = conditions.at(i)->satisfied;
-				i++;
-			}
-			else
-			{
-				active = false;
-			}
+			gg->Update(dt);
+			satisfied = gg->satisfied;
+		}
+		else
+		{
+			active = false;
 		}
 	}
 }
