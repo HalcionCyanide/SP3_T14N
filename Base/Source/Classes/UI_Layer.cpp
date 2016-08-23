@@ -45,7 +45,12 @@ void UI_Layer::Render()
 
 void UI_Layer::Exit()
 {
-
+	for (std::vector<UI_Element*>::iterator it = cUI_Layer.begin(); it != cUI_Layer.end(); ++it)
+	{
+		(*it)->Exit();
+		delete *it;
+	}
+	cUI_Layer.clear();
 }
 
 void UI_Layer::AddUIElement(const UI_Element::UI_TYPES& UI_Type, const std::string& name, const Vector3& Position, const Vector3& SpawnPosition, const Vector3& Dimension, const Vector3& TargetPosition, const std::string& UI_Text)
