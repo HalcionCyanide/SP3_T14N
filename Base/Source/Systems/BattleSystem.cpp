@@ -313,7 +313,7 @@ void BattleSystem::UpdatePhysics(float dt)
 					// HP Decrement Should Be In CRes
 					if (CollisionResponse(*PlayerObj, **it, dt))
 					{
-						(*it)->Active = false;
+						//(*it)->Active = false;
 					}
 				}
 		}
@@ -391,14 +391,25 @@ bool BattleSystem::CollisionResponse(const BattleScreenObject& BSO1, const Battl
 		{
 			Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetCurrentHealth() - P->DamagePerAttack);
 			isInvincible = true;
-			IFrameTimer = 10;
+			IFrameTimer = 1;
 		}
 		return true;
 		break;
 	}
 	case BattleScreenObject::BS_Trap:
 	{
-
+		EnemyProjectile* P = nullptr;
+		for (std::vector<EnemyProjectile*>::iterator it = CurrentEnemy->cE_Projectiles.begin(); it != CurrentEnemy->cE_Projectiles.end(); ++it)
+		{
+			if ((*it)->getName() == BSO2.GetMeshName())
+				P = *it;
+		}
+		if (P != nullptr)
+		{
+			Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetCurrentHealth() - P->DamagePerAttack);
+			isInvincible = true;
+			IFrameTimer = 1;
+		}
 		return true;
 		break;
 	}
@@ -465,13 +476,13 @@ void BattleSystem::Attack_Trap(EnemyProjectile& CurrentProjectile)
 	Vector3 SpawnPos = PlayerObj->GetPosition();
 	float RAngle = Math::RandFloatMinMax(-360.f, 360.f);
 	BattleScreenObject* BSO = GetInactiveBSO();
-	BSO->SetParameters("CrossMarker", 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), 0, RAngle, Vector3(0, 0, 1));
+	BSO->SetParameters("CrossMarker", 3, SpawnPos + Vector3(0, 0, -1), Vector3(PlayerScale, PlayerScale, 1), 0, RAngle, Vector3(0, 0, 1));
 	BSO->Type = BattleScreenObject::BS_Null;
 	BSO->Active = true;
 	BSO->LifeTime = 1;
 
 	BSO = GetInactiveBSO();
-	BSO->SetParameters(CurrentProjectile.StoredMesh, 3, SpawnPos + Vector3(0, 0, -1), Vector3(PlayerScale, PlayerScale, 1), Vector3(CurrentProjectile.ScalarAcceleration, CurrentProjectile.ScalarAcceleration), RAngle, Vector3(0, 0, 1));
+	BSO->SetParameters(CurrentProjectile.StoredMesh, 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), Vector3(CurrentProjectile.ScalarAcceleration, CurrentProjectile.ScalarAcceleration), RAngle, Vector3(0, 0, 1));
 	CurrentProjectile.setName(BSO->GetMeshName());
 	BSO->Type = BattleScreenObject::BS_Trap;
 	BSO->Visible = false;
