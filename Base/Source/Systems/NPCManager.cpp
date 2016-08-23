@@ -8,7 +8,11 @@ NPCManager::NPCManager()
 
 NPCManager::~NPCManager()
 {
-
+	for (auto it : allNPCs)
+	{
+		delete it;
+	}
+	allNPCs.clear();
 }
 
 struct to_upper
