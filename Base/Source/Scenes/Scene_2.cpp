@@ -163,6 +163,10 @@ void Scene_2::RenderShadowCasters()
 	}
 	for (auto it : Scene_System::accessing().allNPCs)
 	{
+		if ((camera.position - it->GetPosition()).LengthSquared() < 900)
+		{
+			it->SetRotationAngle(Math::RadianToDegree(atan2(camera.position.x - it->GetPosition().x, camera.position.z - it->GetPosition().z)));
+		}
 		it->Render();
 	}
 }
