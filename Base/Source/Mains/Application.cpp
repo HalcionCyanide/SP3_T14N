@@ -230,7 +230,7 @@ void Application::Init()
 #else
     loadGlobalStuff();
 #endif
-
+    MusicSystem::accessing().playBackgroundMusic("footstep");
 }
 
 void Application::Run()

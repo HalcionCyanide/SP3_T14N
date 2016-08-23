@@ -11,9 +11,9 @@ MusicEntity3D::MusicEntity3D()
     position.set(0, 0, 0);
 }
 
-MusicEntity3D::MusicEntity3D(const std::string &theName, const Vector3 &thePos, const float &theVol, const int &playHowManyTime, const bool &unlimitedTimes, const bool &loop)
+MusicEntity3D::MusicEntity3D(const std::string &theName, const std::string &fileName, const Vector3 &thePos, const float &theVol, const int &playHowManyTime, const bool &unlimitedTimes, const bool &loop)
 {
-    Init(theName, thePos, theVol, playHowManyTime, unlimitedTimes, loop);
+    Init(theName, fileName, thePos, theVol, playHowManyTime, unlimitedTimes, loop);
 }
 
 MusicEntity3D::~MusicEntity3D()
@@ -34,9 +34,9 @@ vec3df MusicEntity3D::convertFromVectorToSuitableIrrklangVector(const Vector3 &t
     return vec3df(theVec.x, theVec.y, theVec.z);
 }
 
-void MusicEntity3D::Init(const std::string &theName, const Vector3 &thePos, const float &theVol, const int &playHowManyTime, const bool &unlimitedTimes, const bool &loop)
+void MusicEntity3D::Init(const std::string &theName, const std::string &fileName, const Vector3 &thePos, const float &theVol, const int &playHowManyTime, const bool &unlimitedTimes, const bool &loop)
 {
-    MusicEntity2D::Init(theName, theVol, playHowManyTime, unlimitedTimes, loop);
+    MusicEntity2D::Init(theName, fileName, theVol, playHowManyTime, unlimitedTimes, loop);
     SetPosition(thePos);
 }
 

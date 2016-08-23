@@ -27,6 +27,7 @@ public:
 private:
     bool beginLoadingMusic(const std::string &fileName);
     MusicEntity2D *theOnlyBackgroundMusic;
+    size_t loopingAndFindKey(std::vector<std::string> &theKeys, const std::string &whatyouwant);
 };
 
 #endif
