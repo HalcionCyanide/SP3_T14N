@@ -24,14 +24,6 @@ void Billboard::Init(const Vector3& Position, const Vector3& Dimensions, const V
         this->MeshName = MeshName;
         StoredMesh = it->second;
     }
-    //for (auto it : SceneGraphics->meshList)
-    //{
-    //    if (MeshName == it.first)
-    //    {
-    //        StoredMesh = it.second;
-    //        break;
-    //    }
-    //}
     this->Position = Position;
     this->Dimensions = Dimensions;
     this->Velocity = Velocity;
@@ -57,11 +49,16 @@ void Billboard::Render()
 {
 	if (Active && StoredMesh)
 	{
+		float TimeRatio = 1;
+		if (LifeTime != -1)
+			TimeRatio = 1.1f - CurrentTime / LifeTime;
 		GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 		Scene_System::accessing().getCurrScene().modelStack->PushMatrix();
-		Scene_System::accessing().getCurrScene().modelStack->Translate(Position.x, Position.y, Position.z);
-		Scene_System::accessing().getCurrScene().modelStack->Scale(Dimensions.x, Dimensions.y, Dimensions.z);
-		SceneGraphics->RenderMesh(*StoredMesh, true);
+		Scene_System::accessing().getCurrScene().modelStack->Translate(Position.x, Position.y, Position.z); 
+		if (LifeTime != -1)
+			Scene_System::accessing().getCurrScene().modelStack->Rotate(TimeRatio * 360, 0, 0, 1);
+		Scene_System::accessing().getCurrScene().modelStack->Scale(TimeRatio * Dimensions.x, TimeRatio * Dimensions.y, TimeRatio * Dimensions.z);
+		SceneGraphics->RenderMesh(*StoredMesh, LifeTime == -1);
 		Scene_System::accessing().getCurrScene().modelStack->PopMatrix();
 	}
 }

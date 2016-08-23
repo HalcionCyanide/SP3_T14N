@@ -416,10 +416,10 @@
     <ClInclude Include="Source\Conditions\interactCondition.h">
       <Filter>Header Files\Conditions</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Classes\EnemyProjectile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Classes\UI_Layer.h">
+      <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Classes\EnemyProjectile.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
   </ItemGroup>

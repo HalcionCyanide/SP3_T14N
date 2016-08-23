@@ -16,7 +16,6 @@ Defines the battle screen scene
 #include "GraphicsEntity.h"
 #include "..\\Classes\\GameObject.h"
 #include "..\\Classes\\CameraBS.h"
-#include "..\\Systems\\BillboardManager.h"
 #include "..\\Systems\\UI_System.h"
 #include "..\\Classes\\BaseObject.h"
 
@@ -38,8 +37,6 @@ private:
 	// Shadow GPass
 	void RenderPassGPass();
 	void RenderPassMain();
-
-	BillboardManager BManager;
 
 	double framerates;
 	GenericEntity *theInteractiveMap;

@@ -41,6 +41,7 @@ void SceneBattleScreen::Init()
 
 	camera.Init(Vector3(0, 0, 1), Vector3(0, 0, 0), Vector3(0, 1, 0));
 	Scene_System::accessing().BattleSystem.Init();
+	Scene_System::accessing().BattleSystem.BManager.Init();
 }
 
 void SceneBattleScreen::Update(float dt)
@@ -62,7 +63,7 @@ void SceneBattleScreen::Update(float dt)
 		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
 	}
 
-	BManager.UpdateContainer(dt, camera.position);
+	Scene_System::accessing().BattleSystem.BManager.UpdateContainer(dt, camera.position);
 
 	camera.Update(dt);
 	Scene_System::accessing().BattleSystem.Update(dt);
@@ -142,22 +143,6 @@ void SceneBattleScreen::RenderPassMain()
 
 	Scene_System::accessing().BattleSystem.Render();
 
-	for (std::vector<Billboard*>::iterator it = BManager.BillboardContainer.begin(); it != BManager.BillboardContainer.end(); ++it)
-	{
-		if ((*it)->Active)
-		{
-			float TimeRatio = 1;
-			if ((*it)->GetLifeTime() != -1)
-				TimeRatio = 1.1f - (*it)->GetCurrTime() / (*it)->GetLifeTime();
-			modelStack->PushMatrix();
-			modelStack->Translate((*it)->GetPosition().x, (*it)->GetPosition().y, (*it)->GetPosition().z);
-			modelStack->Rotate(Math::RadianToDegree(atan2(camera.position.x - (*it)->GetPosition().x, camera.position.z - (*it)->GetPosition().z)), 0, 1, 0);
-			modelStack->Scale(TimeRatio * (*it)->GetDimensions().x, TimeRatio *(*it)->GetDimensions().y, TimeRatio *(*it)->GetDimensions().z);
-			SceneGraphics->RenderMesh((*it)->GetMeshName(), false);
-			modelStack->PopMatrix();
-		}
-	}
-
 	SceneGraphics->SetHUD(true);
 
 	if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
@@ -210,4 +195,5 @@ void SceneBattleScreen::Exit()
 	if (theInteractiveMap)
 		delete theInteractiveMap;
 	Scene_System::accessing().BattleSystem.Exit();
+	Scene_System::accessing().BattleSystem.BManager.Exit();
 }
