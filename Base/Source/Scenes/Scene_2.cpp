@@ -45,6 +45,10 @@ void Scene_2::Init()
 	newMesh->textureArray[0] = LoadTGA("Image//weed.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
+	newMesh = MeshBuilder::GenerateQuad("ayylmao2", Color(1, 1, 1));
+	newMesh->textureArray[0] = LoadTGA("Image//SekHeng.tga");
+	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+
 	//<!> There can only be 1 Player
 	Player = new PlayerObject();
 	Player->Init("Player", 1, camera.position - Vector3(0, camera.PlayerHeight, 0), Vector3(2, 1, 2), Vector3(), camera.CurrentCameraRotation.y, Vector3(0, 1));

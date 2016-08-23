@@ -13,6 +13,7 @@ BattleSystem::~BattleSystem()
 	Exit();
 }
 
+const std::string BattleSystem::UI_Text[10] = { "", "Check", "Inventory", "Seal", "Flee" };
 
 // Public Function Calls
 void BattleSystem::Init()
@@ -22,7 +23,7 @@ void BattleSystem::Init()
 	// Note Init Player and Enemy Here
 	CenterPosition.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 	PlayerScale = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.03f;
-	PlayerObj = new BattleScreenObject("ayylmao", 3, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), Vector3(0, 0, 0), 0, Vector3(0, 0, 1));
+	PlayerObj = new BattleScreenObject("ayylmao2", 3, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), Vector3(0, 0, 0), 0, Vector3(0, 0, 1));
 
 	// Background If Needed
 	BaseExterior = new BattleScreenObject("GBox", 0.f, CenterPosition + Vector3(0, CenterPosition.y * 0.1f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.85f, 1), Vector3(), 0, Vector3(0, 0, 1));
@@ -35,6 +36,17 @@ void BattleSystem::Init()
 	InteriorBounds.SetPosition(BaseInterior->GetPosition());
 	InteriorBounds.SetDimensions(BaseInterior->GetDimensions());
 	InteriorBounds.ResetValues();
+
+	UI_Sys.Init();
+
+	UI_Layer* NewL = new UI_Layer();
+
+	NewL->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.4f, -CenterPosition.y * 0.5f, 0), Vector3(CenterPosition.x * 0.4f, -CenterPosition.y * 0.5f, 0), Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.4f, CenterPosition.y * 0.2f, 0), UI_Text[1]);
+	NewL->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.8f, -CenterPosition.y * 0.5f, 0), Vector3(CenterPosition.x * 0.8f, -CenterPosition.y * 0.5f, 0), Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.8f, CenterPosition.y * 0.2f, 0), UI_Text[2]);
+	NewL->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 1.2f, -CenterPosition.y * 0.5f, 0), Vector3(CenterPosition.x * 1.2f, -CenterPosition.y * 0.5f, 0), Vector3(400, 100, 1), Vector3(CenterPosition.x * 1.2f, CenterPosition.y * 0.2f, 0), UI_Text[3]);
+	NewL->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 1.6f, -CenterPosition.y * 0.5f, 0), Vector3(CenterPosition.x * 1.6f, -CenterPosition.y * 0.5f, 0), Vector3(400, 100, 1), Vector3(CenterPosition.x * 1.6f, CenterPosition.y * 0.2f, 0), UI_Text[4]);
+
+	UI_Sys.cUIS_LayerContainer.push_back(NewL);
 }
 
 void BattleSystem::Update(double dt)
@@ -66,6 +78,7 @@ void BattleSystem::Update(double dt)
 void BattleSystem::Render()
 {
 	BManager.Render();
+	UI_Sys.Render();
 
 	//BaseExterior->Render();
 	BaseInterior->Render();
@@ -140,6 +153,30 @@ void BattleSystem::UpdatePlayerTurn(float dt)
 {
 	// UI Pops In from bottom
 	// Mouse Toggle On if WASD mode
+	for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(); it != UI_Sys.cUIS_LayerContainer.end(); ++it)
+	{
+		for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
+		{
+			if ((*it2)->Active)
+			{
+				bool ClickSucceeded = false;
+				(*it2)->BoundsActive = true;
+				(*it2)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+				if (ClickSucceeded)
+				{
+					BattleState = BS_PlayerEvasionStage;
+					for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it)
+					{
+						(*it)->SwapOriginalWithTarget();
+					}
+					int EnemyAttack = Math::RandIntMinMax(0, CurrentEnemy->cE_Projectiles.size() - 1);
+					CurrentProjectile = CurrentEnemy->cE_Projectiles[EnemyAttack];
+				}
+				else if ((*it2)->Active)
+					(*it2)->Update((float)dt);
+			}
+		}
+	}
 }
 
 void BattleSystem::UpdateInventoryScreen(float dt)
@@ -149,19 +186,20 @@ void BattleSystem::UpdateInventoryScreen(float dt)
 
 void BattleSystem::UpdatePESPhase(float dt)
 {
+	int ActiveCount = 0;
 	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 	{
 		if ((*it)->Active)
 		{
 			if (ExteriorBounds.CheckCollision((*it)->GetPosition()))
+			{
 				(*it)->Update(dt);
+				++ActiveCount;
+			}
 			else (*it)->Active = false;
 		}
 	}
 	CurrentEnemy->CurrentTime += dt;
-	int EnemyAttack = Math::RandIntMinMax(0, CurrentEnemy->cE_Projectiles.size()-1);
-
-	CurrentProjectile = CurrentEnemy->cE_Projectiles[EnemyAttack];
 
 	if (CurrentEnemy->CurrentEnemyWave < CurrentEnemy->MaxEnemyWave)
 	{
@@ -174,11 +212,15 @@ void BattleSystem::UpdatePESPhase(float dt)
 				BatchCreateAttacks(*CurrentProjectile);
 			}
 		}
-		else // For Testing <!> Normal-> Wait for all proj inactive swap phase
+	}
+	if (CurrentEnemy->CurrentAttackCount == CurrentProjectile->AttacksPerWave && ActiveCount == 0)
+	{
+		CurrentEnemy->CurrentAttackCount = 0;
+		CurrentEnemy->CurrentEnemyWave++;
+		BattleState = BS_PlayerTurn;
+		for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it)
 		{
-			CurrentEnemy->CurrentAttackCount = 0;
-			CurrentEnemy->CurrentEnemyWave++;
-			//BattleState = BS_PlayerTurn;
+			(*it)->SwapOriginalWithTarget();
 		}
 	}
 	UpdatePlayer(dt);
@@ -209,7 +251,7 @@ void BattleSystem::UpdateITimer(float dt)
 	{
 		IFrameTimer -= dt;
 		int RPcount = Math::RandIntMinMax(1, 2);
-		for (/*unsigned*/ int i = 0; i < RPcount; ++i)
+		for (int i = 0; i < RPcount; ++i)
 			BManager.AddParticle("ParticleW", PlayerObj->GetPosition(), Vector3(PlayerScale * 0.75f, PlayerScale * 0.75f, 1), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0), Vector3(0, 0, 1), 2);
 
 		if (isInvincible && IFrameTimer < Math::EPSILON)
