@@ -210,6 +210,15 @@
     <ClCompile Include="Source\Classes\GlobalPlayer.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Conditions\captureCondition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Conditions\gotoCondition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Conditions\interactCondition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Classes\Billboard.h">
@@ -393,6 +402,18 @@
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
     <ClInclude Include="Source\Classes\GlobalPlayer.h">
+      <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Conditions\captureCondition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Conditions\gotoCondition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Conditions\interactCondition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Classes\EnemyProjectile.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
   </ItemGroup>

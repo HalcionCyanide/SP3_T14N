@@ -79,6 +79,7 @@
     <ClInclude Include="Source\Classes\CItem.h" />
     <ClInclude Include="Source\Classes\Commands.h" />
     <ClInclude Include="Source\Classes\Enemy.h" />
+    <ClInclude Include="Source\Classes\EnemyProjectile.h" />
     <ClInclude Include="Source\Classes\GameMap.h" />
     <ClInclude Include="Source\Classes\GameObject.h" />
     <ClInclude Include="Source\Classes\GenericEntity.h" />

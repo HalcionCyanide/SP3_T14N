@@ -75,10 +75,10 @@ private:
 	bool CollisionResponse(const BattleScreenObject&, const BattleScreenObject&, float dt);
 
 	// Enemy Calls [Based on type use a specific attack call]
-	int BatchCreateAttacks(const int& AttackType);
+	int BatchCreateAttacks(EnemyProjectile& CurrentProjectile);
 
 	// Attack Calls // Think of better names later
-	void Attack_Bullet();
+	void Attack_Bullet(EnemyProjectile& CurrentProjectile);
 
 	// Base Object Container [The container that holds the enemy projectiles/attacks]
 	std::vector<BattleScreenObject*> cBS_ObjectContainer;

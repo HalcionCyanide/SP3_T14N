@@ -94,11 +94,7 @@ void BattleSystem::Exit()
 		delete *it;
 	}
 	cBS_ObjectContainer.clear();
-    //if (CurrentEnemy)
-    //{
-    //    delete CurrentEnemy;
-    //    CurrentEnemy = nullptr;
-    //}
+    
 }
 
 BattleScreenObject* BattleSystem::GetInactiveBSO()
@@ -150,15 +146,18 @@ void BattleSystem::UpdatePESPhase(float dt)
 		}
 	}
 	CurrentEnemy->CurrentTime += dt;
+	int EnemyAttack = Math::RandIntMinMax(0, CurrentEnemy->cE_Projectiles.size()-1);
+	EnemyProjectile* CurrentProjectile = CurrentEnemy->cE_Projectiles[EnemyAttack];
+
 	if (CurrentEnemy->CurrentEnemyWave < CurrentEnemy->MaxEnemyWave)
 	{
-		if (CurrentEnemy->CurrentAttackCount < CurrentEnemy->AttacksPerWave)
+		if (CurrentEnemy->CurrentAttackCount < CurrentProjectile->AttacksPerWave)
 		{
-			if (CurrentEnemy->CurrentTime > CurrentEnemy->AttackSpeed)
+			if (CurrentEnemy->CurrentTime > CurrentProjectile->AttackSpeed)
 			{
 				CurrentEnemy->CurrentTime = 0;
 				CurrentEnemy->CurrentAttackCount++;
-				BatchCreateAttacks(0);
+				BatchCreateAttacks(*CurrentProjectile);
 			}
 		}
 		else
@@ -383,23 +382,35 @@ bool BattleSystem::CollisionResponse(const BattleScreenObject& BSO1, const Battl
 
 
 // Enemy Calls [Based on type use a specific attack call]
-int BattleSystem::BatchCreateAttacks(const int& AttackType)
+int BattleSystem::BatchCreateAttacks(EnemyProjectile& CurrentProjectile)
 {
-	switch (AttackType)
+	if (CurrentProjectile.AttackType == "Bullet")
 	{
-	case 0: 
-		int AttackCount = Math::RandIntMinMax(1, 3);
+		int AttackCount = Math::RandIntMinMax(1, CurrentProjectile.BatchCreateCount);
 		for (unsigned short i = 0; i < AttackCount; ++i)
-			Attack_Bullet(); 
+			Attack_Bullet(CurrentProjectile); 
 		return AttackCount;
-		break;
+	}
+	else if (CurrentProjectile.AttackType == "Bouncer")
+	{
+		int AttackCount = Math::RandIntMinMax(1, CurrentProjectile.BatchCreateCount);
+		for (unsigned short i = 0; i < AttackCount; ++i)
+			Attack_Bullet(CurrentProjectile);
+		return AttackCount;
+	}
+	else if (CurrentProjectile.AttackType == "Trap")
+	{
+		int AttackCount = Math::RandIntMinMax(1, CurrentProjectile.BatchCreateCount);
+		for (unsigned short i = 0; i < AttackCount; ++i)
+			Attack_Bullet(CurrentProjectile);
+		return AttackCount;
 	}
 	return 0;
 }
 
 
 // Attack Calls
-void BattleSystem::Attack_Bullet()
+void BattleSystem::Attack_Bullet(EnemyProjectile& CurrentProjectile)
 {
 	// Spawn a bullet at the exterior of the GBox, fire it at the player.
 	float XSpawn = ExteriorBounds.GetDimension().x * 0.5f - InteriorBounds.GetDimension().x * 0.5f;
@@ -407,12 +418,12 @@ void BattleSystem::Attack_Bullet()
 	Vector3 SpawnPos = CenterPosition + Vector3(Math::RandFloatMinMax(-CenterPosition.x - XSpawn, CenterPosition.x + XSpawn), Math::RandFloatMinMax(-CenterPosition.y - YSpawn, CenterPosition.y + YSpawn));
 	if (ExteriorBounds.CheckCollision(SpawnPos) && !InteriorBounds.CheckCollision(SpawnPos))
 	{
-		Vector3 DVec = (PlayerObj->GetPosition() - SpawnPos).Normalize() * 200; // * Projectile Speed;
+		Vector3 DVec = (PlayerObj->GetPosition() - SpawnPos).Normalize() * CurrentProjectile.ScalarAcceleration; 
 		BattleScreenObject* BSO = GetInactiveBSO();
-		BSO->SetParameters("TFB_Gem", 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), DVec, 0, Vector3(0, 0, 1));
+		BSO->SetParameters(CurrentProjectile.StoredMesh, 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), DVec, 0, Vector3(0, 0, 1));
 		BSO->Type = BattleScreenObject::BS_Bullet;
 		BSO->Active = true;
 		BSO->SetMass(3.f);
 	}
-	else Attack_Bullet();
+	else Attack_Bullet(CurrentProjectile);
 }

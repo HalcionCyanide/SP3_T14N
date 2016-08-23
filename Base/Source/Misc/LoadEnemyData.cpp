@@ -6,13 +6,6 @@
 #include "..\\Systems\\Scene_System.h"
 #include "..\\Scenes\\GraphicsEntity.h"
 
-//void convertStringToUpperCaps(std::string &theString)
-//{
-//	for (std::string::iterator it = theString.begin(), end = theString.end(); it != end; ++it) {
-//		(*it) = toupper(*it);
-//	}
-//}
-
 bool LoadEnemyData(const char *file_path, std::map<std::string, Enemy*> &EMap)
 {
 	std::ifstream fileStream(file_path, std::ios::binary);
@@ -29,6 +22,7 @@ bool LoadEnemyData(const char *file_path, std::map<std::string, Enemy*> &EMap)
 	{
 		if (CurrentLineOfText == "" || CurrentLineOfText == "\n" || CurrentLineOfText == "\r")
 			continue;
+		removingSpecificCharInStr(CurrentLineOfText, '\r');
 		std::string CurrentFragmentedSubString;
 		std::istringstream iss(CurrentLineOfText);
 		if (CSV_Keys.empty())
@@ -61,54 +55,115 @@ bool LoadEnemyData(const char *file_path, std::map<std::string, Enemy*> &EMap)
 			std::map<std::string, Mesh*>::iterator iter = SceneGraphics->meshList.find(Temp->MeshName);
 			if (iter != SceneGraphics->meshList.end())
 			{
-				Temp->StoredMeshes[0] = iter->second;
+				Temp->EnemyMesh = iter->second;
 			}
 
 			it = std::find(CSV_Keys.begin(), CSV_Keys.end(), "SPELLPOWER");
 			pos = it - CSV_Keys.begin();
 			Temp->SpellPower = stoi(CSV_Values[pos]);
 
-			it = std::find(CSV_Keys.begin(), CSV_Keys.end(), "ATTACKSPEED");
-			pos = it - CSV_Keys.begin();
-			Temp->AttackSpeed = stof(CSV_Values[pos]);
-
-			it = std::find(CSV_Keys.begin(), CSV_Keys.end(), "ATTACKSPERWAVE");
-			pos = it - CSV_Keys.begin();
-			Temp->AttacksPerWave = stoi(CSV_Values[pos]);
-
-			it = std::find(CSV_Keys.begin(), CSV_Keys.end(), "DAMAGEPERATTACK");
-			pos = it - CSV_Keys.begin();
-			Temp->DamagePerAttack = stof(CSV_Values[pos]);
-
 			it = std::find(CSV_Keys.begin(), CSV_Keys.end(), "MAXENEMYWAVE");
 			pos = it - CSV_Keys.begin();
 			Temp->MaxEnemyWave = stoi(CSV_Values[pos]);
 
-			for (unsigned short num = 1; num < Enemy::MAX_MESHES; ++num)
+			int num = 1;
+			while (CSV_Values.size() - 1 > pos)
 			{
 				std::ostringstream ss;
-				ss << "PROJECTILE" << num << "MESHNAME";
+				EnemyProjectile* TempP = new EnemyProjectile();
+				ss << "P" << num << "MESHNAME";
 				it = std::find(CSV_Keys.begin(), CSV_Keys.end(), ss.str());
 				pos = it - CSV_Keys.begin();
+				if (CSV_Values.size() > pos)
 				if (CSV_Values[pos] != "")
 				{
 					GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 					std::map<std::string, Mesh*>::iterator iter = SceneGraphics->meshList.find(CSV_Values[pos]);
 					if (iter != SceneGraphics->meshList.end())
 					{
-						Temp->StoredMeshes[num] = iter->second;
+						TempP->StoredMesh = iter->second;
 					}
+
 					ss.str("");
-					ss << "PROJECTILE" << num << "TYPE";
+					ss << "P" << num << "TYPE";
 					it = std::find(CSV_Keys.begin(), CSV_Keys.end(), ss.str());
 					pos = it - CSV_Keys.begin();
-					Temp->ProjectileTypes[num - 1] = CSV_Values[pos];
+					if (CSV_Values.size() > pos)
+					if (CSV_Values[pos] != "")
+					{
+						TempP->AttackType = CSV_Values[pos];
+
+						ss.str("");
+						ss << "P" << num << "ATTACKSPEED";
+						it = std::find(CSV_Keys.begin(), CSV_Keys.end(), ss.str());
+						pos = it - CSV_Keys.begin();
+						if (CSV_Values.size() > pos)
+						if (CSV_Values[pos] != "")
+						{
+							TempP->AttackSpeed = stof(CSV_Values[pos]);
+
+							ss.str("");
+							ss << "P" << num << "ATTACKSPERWAVE";
+							it = std::find(CSV_Keys.begin(), CSV_Keys.end(), ss.str());
+							pos = it - CSV_Keys.begin();
+							if (CSV_Values.size() > pos)
+							if (CSV_Values[pos] != "")
+							{
+								TempP->AttacksPerWave = stoi(CSV_Values[pos]);
+
+								ss.str("");
+								ss << "P" << num << "DAMAGEPERATTACK";
+								it = std::find(CSV_Keys.begin(), CSV_Keys.end(), ss.str());
+								pos = it - CSV_Keys.begin();
+								if (CSV_Values.size() > pos)
+								if (CSV_Values[pos] != "")
+								{
+									TempP->DamagePerAttack = stoi(CSV_Values[pos]);
+
+									ss.str("");
+									ss << "P" << num << "SCALARACCELERATION";
+									it = std::find(CSV_Keys.begin(), CSV_Keys.end(), ss.str());
+									pos = it - CSV_Keys.begin();
+									if (CSV_Values.size() > pos)
+									if (CSV_Values[pos] != "")
+									{
+										TempP->ScalarAcceleration = stof(CSV_Values[pos]);
+										ss.str("");
+										ss << "P" << num << "BATCHCREATECOUNT";
+										it = std::find(CSV_Keys.begin(), CSV_Keys.end(), ss.str());
+										pos = it - CSV_Keys.begin();
+										if (CSV_Values.size() > pos)
+											if (CSV_Values[pos] != "")
+											{
+												TempP->BatchCreateCount = stof(CSV_Values[pos]);
+												Temp->cE_Projectiles.push_back(TempP);
+												EMap.insert(std::pair<std::string, Enemy*>(Temp->getName(), Temp));
+											}
+									}
+								}
+							}
+						}
+					}
 				}
+				num++;
 			}
-			EMap.insert(std::pair<std::string, Enemy*>(Temp->getName(), Temp));
 			CSV_Values.clear();
 		}
 	}
 	fileStream.close();
 	return true;
+}
+
+bool removingSpecificCharInStr(std::string &theStr, const char &theChar)
+{
+	for (size_t num = 0, sizeOfStr = theStr.size(); num < sizeOfStr; ++num)
+	{
+		if (theStr[num] == theChar)
+		{
+			theStr.erase(num);
+			return true;
+			break;
+		}
+	}
+	return false;
 }
