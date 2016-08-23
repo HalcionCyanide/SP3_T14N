@@ -4,10 +4,12 @@
 #include "Scene_System.h"
 #include <sstream>
 #include <set>
+#include "../Scenes/GraphicsEntity.h"
 
 void MusicSystem::Init()
 {
     musicEngine = createIrrKlangDevice();
+    theOnlyBackgroundMusic = nullptr;
     beginLoadingMusic("DrivenFiles//MusicDriven.csv");
 }
 
@@ -35,6 +37,7 @@ bool MusicSystem::beginLoadingMusic(const std::string &fileName)
     std::ifstream file(fileName.c_str());
     if (file.is_open())
     {
+        MusicEntity2D *theMusic = nullptr;
         std::string data = "";
         std::vector<std::string> keys;
         std::vector<std::string> values;
@@ -48,13 +51,32 @@ bool MusicSystem::beginLoadingMusic(const std::string &fileName)
             if (keys.empty())
             {
                 while (getline(iss, token, ','))
+                {
+                    convertStringToUpperCaps(token);
                     keys.push_back(token);
+                }
             }
             else {
                 while (getline(iss, token, ','))
                     values.push_back(token);
 
+                std::vector<std::string>::iterator it;
+                it = std::find(keys.begin(), keys.end(), "SOUNDTYPE");
+                size_t pos = it - keys.begin();
+                if (values[pos].find("3D") != std::string::npos)
+                    theMusic = new MusicEntity3D();
+                else if (values[pos] != "")
+                    theMusic = new MusicEntity2D();
+                if (theMusic) {
+                    it = std::find(keys.begin(), keys.end(), "SOUNDFILENAME");
+                    pos = it - keys.begin();
+                    theMusic->setName(values[pos]);
+
+
+                }
             }
+            all_the_Music.insert(std::pair<std::string, MusicEntity2D*>(theMusic->getName(), theMusic));
+            theMusic = nullptr;
         }
 
         file.close();
@@ -83,4 +105,15 @@ bool MusicSystem::playMusic(const std::string &songName)
         return true;
     }
     return false;
+}
+
+void MusicSystem::clearEverything()
+{
+    for (auto it : all_the_Music)
+    {
+        delete it.second;
+    }
+    all_the_Music.clear();
+    theOnlyBackgroundMusic = nullptr;
+    musicEngine->drop();
 }

@@ -100,3 +100,23 @@ void MusicEntity2D::Stop()
         HistoryOfPlayTimes.pop();
     }
 }
+
+float MusicEntity2D::getVolume()
+{
+    return volume_;
+}
+
+unsigned MusicEntity2D::getMaxTimesToPlay()
+{
+    return maxTimeToPlay;
+}
+
+bool MusicEntity2D::getLooping()
+{
+    return loopIt;
+}
+
+bool MusicEntity2D::getUnlimitedTimes()
+{
+    return unlimitedTimes;
+}

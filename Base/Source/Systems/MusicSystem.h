@@ -22,6 +22,8 @@ public:
 
     virtual bool playBackgroundMusic(const std::string &songName);
 
+    virtual void clearEverything();
+
 private:
     bool beginLoadingMusic(const std::string &fileName);
     MusicEntity2D *theOnlyBackgroundMusic;

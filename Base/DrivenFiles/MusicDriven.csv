@@ -1,1 +1,1 @@
-SoundName
+SoundName,SoundType,volume,TimesToPlay,unlimitedtimes,loop //Only for background music

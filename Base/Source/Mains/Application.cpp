@@ -256,6 +256,7 @@ void Application::Run()
 
 	} //Check if the ESC key had been pressed or if the window had been closed
 	Scene_System::accessing().clearEverything();
+    MusicSystem::accessing().clearEverything();
 }
 
 void Application::Update()

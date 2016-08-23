@@ -26,6 +26,11 @@ public:
 
     virtual void Stop();
 
+    float getVolume();
+    unsigned getMaxTimesToPlay();
+    bool getUnlimitedTimes();
+    bool getLooping();
+
 protected:
     ISoundSource *SoundSource;
     float volume_;
