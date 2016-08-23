@@ -1,13 +1,13 @@
 #include "interactCondition.h"
 
 interactCondition::interactCondition()
-	: theRequirement(nullptr)
+	//: theRequirement(nullptr)
 {
 	//target = nullptr;
 }
 
 interactCondition::interactCondition(std::string)
-	: theRequirement(nullptr)
+	//: theRequirement(nullptr)
 {
 }
 
@@ -27,7 +27,7 @@ void interactCondition::Update(double dt)
 	//some pseudocode*/
 	if (!satisfied)
 	{
-		if (theRequirement.value_->getInteracting())
+		//if (theRequirement.value_->getInteracting())
 		{
 			satisfied = true;
 		}
