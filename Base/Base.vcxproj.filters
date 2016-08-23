@@ -49,6 +49,12 @@
     <Filter Include="Header Files\Conditions">
       <UniqueIdentifier>{47f81c5e-7d8a-4528-b657-8867fa45b334}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\NPCs">
+      <UniqueIdentifier>{2e73fa48-2fbc-4d71-a4c9-986a7928e33a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\NPCs">
+      <UniqueIdentifier>{e95cd003-cd0c-4ace-a2c1-1ec4a4f0bf35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\shader.cpp">
@@ -127,9 +133,6 @@
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
     <ClCompile Include="Source\Conditions\Quest.cpp">
-      <Filter>Source Files\Conditions</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Conditions\questManager.cpp">
       <Filter>Source Files\Conditions</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scenes\Scene_2.cpp">
@@ -216,6 +219,12 @@
     <ClCompile Include="Source\Classes\UI_Layer.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\NPCs\NPC_GuardCapt.cpp">
+      <Filter>Source Files\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Systems\questManager.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Classes\Billboard.h">
@@ -279,9 +288,6 @@
       <Filter>Header Files\Conditions</Filter>
     </ClInclude>
     <ClInclude Include="Source\Conditions\Quest.h">
-      <Filter>Header Files\Conditions</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Conditions\questManager.h">
       <Filter>Header Files\Conditions</Filter>
     </ClInclude>
     <ClInclude Include="Source\Mains\Application.h">
@@ -404,11 +410,20 @@
     <ClInclude Include="Source\Conditions\interactCondition.h">
       <Filter>Header Files\Conditions</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Classes\EnemyProjectile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Classes\UI_Layer.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Classes\EnemyProjectile.h">
-      <Filter>Header Files\Classes</Filter>
+    <ClInclude Include="Source\NPCs\GenericNPC.h">
+      <Filter>Header Files\NPCs</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\NPCs\NPC_GuardCapt.h">
+      <Filter>Header Files\NPCs</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Systems\questManager.h">
+      <Filter>Header Files\Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

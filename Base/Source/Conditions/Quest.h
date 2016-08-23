@@ -20,6 +20,10 @@ public:
 	bool getActive();
 	void setActive(bool);
 
+	std::string getGiver();
+	void setGiver(std::string);
+
+	std::vector<genericCondition*> getConds();
 	void setCondition(std::string, std::string);
 
 	friend std::ostream& operator<<(std::ostream&, const Quest&);
@@ -30,6 +34,7 @@ private:
 	int id;
 	std::vector<genericCondition*> conditions;
 	std::string questDesc;
+	std::string giver;
 	bool active;
 };
 

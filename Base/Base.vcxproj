@@ -26,6 +26,7 @@
     <ClCompile Include="Source\Mains\Application.cpp" />
     <ClCompile Include="Source\Classes\Billboard.cpp" />
     <ClCompile Include="Source\Misc\LoadEnemyData.cpp" />
+    <ClCompile Include="Source\NPCs\NPC_GuardCapt.cpp" />
     <ClCompile Include="Source\Systems\BattleSystem.cpp" />
     <ClCompile Include="Source\Systems\BillboardManager.cpp" />
     <ClCompile Include="Source\Classes\Boundary.cpp" />
@@ -48,7 +49,6 @@
     <ClCompile Include="Source\Systems\MusicSystem.cpp" />
     <ClCompile Include="Source\Classes\PlayerObject.cpp" />
     <ClCompile Include="Source\Conditions\Quest.cpp" />
-    <ClCompile Include="Source\Conditions\questManager.cpp" />
     <ClCompile Include="Source\Scenes\SceneBattleScreen.cpp" />
     <ClCompile Include="Source\Scenes\SceneFreeField.cpp" />
     <ClCompile Include="Source\Scenes\SceneTown1.cpp" />
@@ -59,6 +59,7 @@
     <ClCompile Include="Source\Misc\MeshBuilder.cpp" />
     <ClCompile Include="Source\Scenes\Scene_2.cpp" />
     <ClCompile Include="Source\Scenes\Scene_MainMenu.cpp" />
+    <ClCompile Include="Source\Systems\questManager.cpp" />
     <ClCompile Include="Source\Systems\Scene_System.cpp" />
     <ClCompile Include="Source\shader.cpp" />
     <ClCompile Include="Source\Misc\SimpleCommand.cpp" />
@@ -102,7 +103,6 @@
     <ClInclude Include="Source\Conditions\gotoCondition.h" />
     <ClInclude Include="Source\Conditions\interactCondition.h" />
     <ClInclude Include="Source\Conditions\Quest.h" />
-    <ClInclude Include="Source\Conditions\questManager.h" />
     <ClInclude Include="Source\Conditions\ratingCondition.h" />
     <ClInclude Include="Source\Mains\Application.h" />
     <ClInclude Include="Source\Misc\BoundsBuilder.h" />
@@ -117,6 +117,8 @@
     <ClInclude Include="Source\Misc\shader.hpp" />
     <ClInclude Include="Source\Misc\SimpleCommand.h" />
     <ClInclude Include="Source\Misc\Utility.h" />
+    <ClInclude Include="Source\NPCs\GenericNPC.h" />
+    <ClInclude Include="Source\NPCs\NPC_GuardCapt.h" />
     <ClInclude Include="Source\Scenes\GraphicsEntity.h" />
     <ClInclude Include="Source\Scenes\SceneBattleScreen.h" />
     <ClInclude Include="Source\Scenes\SceneFreeField.h" />
@@ -130,6 +132,7 @@
     <ClInclude Include="Source\Systems\GenericSystem.h" />
     <ClInclude Include="Source\Systems\InputManager.h" />
     <ClInclude Include="Source\Systems\MusicSystem.h" />
+    <ClInclude Include="Source\Systems\questManager.h" />
     <ClInclude Include="Source\Systems\Scene_System.h" />
     <ClInclude Include="Source\Systems\UI_System.h" />
   </ItemGroup>

@@ -70,8 +70,10 @@ void Scene_2::Init()
 	ObjectA->SetBounds();
 	ObjectVec.push_back(ObjectA);
 
-
 	PlayerPTR->setPlayerBoundaries(ObjectVec);
+
+	Scene_System::accessing().allNPCs.at(0)->Init("NPC_guardcaptain", 1, Vector3(0, 0, 0), Vector3(10, 10, 10), Vector3(0,0,0),0.f,Vector3(0,1,0));
+	Scene_System::accessing().allNPCs.at(0)->SetPosition(Vector3(Scene_System::accessing().allNPCs.at(0)->GetPosition().x, TerrainYScale * ReadHeightMap(m_heightMap, (Scene_System::accessing().allNPCs.at(0)->GetPosition().x / TerrainXScale), (Scene_System::accessing().allNPCs.at(0)->GetPosition().z / TerrainXScale)) + Scene_System::accessing().allNPCs.at(0)->GetDimensions().y * 0.5f, Scene_System::accessing().allNPCs.at(0)->GetPosition().z));
 }
 
 void Scene_2::Update(float dt)
@@ -158,6 +160,10 @@ void Scene_2::RenderShadowCasters()
 	for (auto itt : ObjectVec)
 	{
 		itt->Render();
+	}
+	for (auto it : Scene_System::accessing().allNPCs)
+	{
+		it->Render();
 	}
 }
 
