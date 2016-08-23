@@ -22,7 +22,7 @@ void UI_Layer::Update(double dt)
 	float Check = DirVec.LengthSquared();
 	if (Check > 1.f)
 	{
-		LayerCenterPosition += DirVec * 3 * dt;
+		LayerCenterPosition += DirVec * 3 * (float)dt;
 	}
 
 	for (std::vector<UI_Element*>::iterator it = cUI_Layer.begin(); it != cUI_Layer.end(); ++it)

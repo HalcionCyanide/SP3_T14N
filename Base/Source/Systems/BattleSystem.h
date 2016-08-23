@@ -9,6 +9,7 @@
 #include "../Classes/Enemy.h"
 #include "../Classes/Boundary2D.h"
 #include "../Systems/BillboardManager.h"
+#include "..\\Systems\\UI_System.h"
 
 class BattleSystem : public GenericSystem
 {
@@ -29,7 +30,7 @@ public:
 
 	//Public Variables
 	BattleScreenObject* PlayerObj;
-	BS_State BattleState = BS_PlayerEvasionStage;// = BS_Null;
+	BS_State BattleState = BS_PlayerTurn;// = BS_Null;
 
 	// Public Function Calls
 	virtual void Init();
@@ -43,9 +44,11 @@ public:
 	void SetEnemy(Enemy&);
 
 	BillboardManager BManager;
+	UI_System UI_Sys;
 
 private:
 	// Private Variables
+	static const std::string UI_Text[10];
 	Enemy* CurrentEnemy; //<- To Store Attack Patterns and Stats
 	EnemyProjectile* CurrentProjectile;
 	Boundary2D InteriorBounds, ExteriorBounds;
