@@ -29,9 +29,12 @@ void BattleSystem::Init()
 	BaseInterior = new BattleScreenObject("GBox", 0.f, CenterPosition + Vector3(0, CenterPosition.y * 0.1f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.7f, 1), Vector3(), 0, Vector3(0, 0, 1));
 	
 	//CurrentEnemy = new Enemy();
-
-	ExteriorBounds.ResetValues(BaseExterior->GetPosition(), BaseExterior->GetDimensions());
-	InteriorBounds.ResetValues(BaseInterior->GetPosition(), BaseInterior->GetDimensions());
+	ExteriorBounds.SetPosition(BaseExterior->GetPosition());
+	ExteriorBounds.SetDimensions(BaseExterior->GetDimensions());
+	ExteriorBounds.ResetValues();
+	InteriorBounds.SetPosition(BaseInterior->GetPosition());
+	InteriorBounds.SetDimensions(BaseInterior->GetDimensions());
+	InteriorBounds.ResetValues();
 }
 
 void BattleSystem::Update(double dt)
@@ -271,7 +274,7 @@ void BattleSystem::UpdateControls(float dt)
 	}
 	PlayerObj->SetVelocity(PlayerObj->GetVelocity() - PlayerObj->GetVelocity()*FrictionDecrementMultiplier * dt);
 	Vector3 FwdPos = PlayerObj->GetPosition() + PlayerObj->GetVelocity() * dt;
-	if (abs(FwdPos.x - InteriorBounds.GetPosition().x) > InteriorBounds.GetDimension().x * 0.5f - PlayerObj->GetDimensions().x * 0.5f)
+	if (abs(FwdPos.x - InteriorBounds.GetPosition().x) > InteriorBounds.GetDimensions().x * 0.5f - PlayerObj->GetDimensions().x * 0.5f)
 	{
 		if (abs(PlayerObj->GetVelocity().x * 0.5f) < Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.01f)
 		{
@@ -284,7 +287,7 @@ void BattleSystem::UpdateControls(float dt)
 			PlayerObj->SetAcceleration(Vector3(-PlayerObj->GetAcceleration().x * 0.5f, PlayerObj->GetAcceleration().y, 0.f));
 		}
 	}		
-	if (abs(FwdPos.y - InteriorBounds.GetPosition().y) > InteriorBounds.GetDimension().y * 0.5f - PlayerObj->GetDimensions().y * 0.5f)
+	if (abs(FwdPos.y - InteriorBounds.GetPosition().y) > InteriorBounds.GetDimensions().y * 0.5f - PlayerObj->GetDimensions().y * 0.5f)
 	{
 		if (abs(PlayerObj->GetVelocity().y * 0.5f) < Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.01f)
 		{
@@ -456,8 +459,8 @@ int BattleSystem::BatchCreateAttacks(EnemyProjectile& CurrentProjectile)
 void BattleSystem::Attack_Bullet(EnemyProjectile& CurrentProjectile)
 {
 	// Spawn a bullet at the exterior of the GBox, fire it at the player.
-	float XSpawn = ExteriorBounds.GetDimension().x * 0.5f - InteriorBounds.GetDimension().x * 0.5f;
-	float YSpawn = ExteriorBounds.GetDimension().x * 0.5f - InteriorBounds.GetDimension().x * 0.5f;
+	float XSpawn = ExteriorBounds.GetDimensions().x * 0.5f - InteriorBounds.GetDimensions().x * 0.5f;
+	float YSpawn = ExteriorBounds.GetDimensions().x * 0.5f - InteriorBounds.GetDimensions().x * 0.5f;
 	Vector3 SpawnPos = CenterPosition + Vector3(Math::RandFloatMinMax(-CenterPosition.x - XSpawn, CenterPosition.x + XSpawn), Math::RandFloatMinMax(-CenterPosition.y - YSpawn, CenterPosition.y + YSpawn));
 	if (ExteriorBounds.CheckCollision(SpawnPos) && !InteriorBounds.CheckCollision(SpawnPos))
 	{

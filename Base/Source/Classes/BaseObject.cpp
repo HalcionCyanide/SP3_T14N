@@ -15,7 +15,7 @@ Defines the minimum standard for an object that exists within the game
 // Constructors
 BaseObject::BaseObject()
 {
-	SetParameters("", 0, Vector3(), Vector3(1, 1, 1), Vector3(), 0, Vector3(0, 0, 1));
+	SetParameters(nullptr, 0, Vector3(), Vector3(1, 1, 1), Vector3(), 0, Vector3(0, 0, 1));
 }
 
 BaseObject::BaseObject(const std::string& MeshName, const float& Mass, const Vector3& Position, const Vector3& Dimensions, const Vector3& Velocity, const float& RotationAngle, const Vector3& RotationAxis)

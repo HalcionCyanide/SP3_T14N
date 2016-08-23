@@ -1,6 +1,6 @@
 #include "Boundary2D.h"
 
-Boundary2D::Boundary2D() :Boundary()
+Boundary2D::Boundary2D()
 {}
 
 Boundary2D::Boundary2D(const Vector3 &pos, const Vector3 &scale, const float &rotationAngle)
@@ -12,9 +12,6 @@ Boundary2D::Boundary2D(const Boundary2D &bounds)
 {
 	//this->SetPosition(bounds.GetPosition());
 	//this->SetDimension(bounds.GetDimension());
-	this->SetVerticeNo(bounds.GetVerticeNo());
-	this->Vertices = bounds.Vertices;
-	this->Axis = bounds.Axis;
 }
 
 Boundary2D::~Boundary2D()
