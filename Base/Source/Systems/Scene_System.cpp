@@ -110,4 +110,13 @@ void Scene_System::clearEverything()
         delete it.second;
     }
     EnemyData.clear();
+    if (gPlayer)
+        delete gPlayer;
+    gPlayer = nullptr;
+
+    for (auto it : QM.allQuests)
+    {
+        delete it;
+    }
+    QM.allQuests.clear();
 }
