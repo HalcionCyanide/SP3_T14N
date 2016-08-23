@@ -230,7 +230,6 @@ void Application::Init()
 #else
     loadGlobalStuff();
 #endif
-    MusicSystem::accessing().playBackgroundMusic("footstep");
 }
 
 void Application::Run()
@@ -247,7 +246,7 @@ void Application::Run()
 		{
 			Update();
 			Scene_System::accessing().getCurrScene().Render();
-		}
+        }
 		//Swap buffers
 		glfwSwapBuffers(m_window);
 		//Get and organize events, like keyboard and mouse input, window resizing, etc...

@@ -95,8 +95,11 @@ void MusicEntity2D::Stop()
     while (HistoryOfPlayTimes.size() > 0)
     {
         ISound *theEffect = HistoryOfPlayTimes.front();
-        theEffect->drop();
-        theEffect = 0;
+        if (theEffect)
+        {
+            theEffect->drop();
+            theEffect = 0;
+        }
         HistoryOfPlayTimes.pop();
     }
 }
