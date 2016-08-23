@@ -41,6 +41,8 @@ private:
     BillboardManager BManager;
     GameObject* Player;
 
+	GameObject* playerbox;
+
     double framerates;
     GenericEntity *theInteractiveMap;
     std::vector<GameObject*> objVec;

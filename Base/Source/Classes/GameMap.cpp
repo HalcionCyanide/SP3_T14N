@@ -83,6 +83,7 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
 						std::string strRotation = token.substr(2);
 						aCopyOfIt->SetRotationAngle(stof(strRotation));
 						aCopyOfIt->SetRotationAxis(Vector3(0, 1, 0));
+						aCopyOfIt->SetBounds();
 					}
 					theRenderingStuff.push_back(aCopyOfIt);
 					it->second.push_back(itLegend->first);

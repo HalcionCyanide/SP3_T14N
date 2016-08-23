@@ -42,31 +42,31 @@ void PlayerObject::Update(double dt)
 		MaxWalkSpeed -= BaseWalkSpeed * (float)dt;
 		//Math::Clamp(CurrentWalkSpeed, 0.f, MaxWalkSpeed);
 	}
-
+	
 	if (MovementValues.IsZero() == false)
 	{
 		if (theBoundaries)
 		{
-			//Vector3 Xprediction;
-			//Xprediction.Set(GetPosition().x + MovementValues.x, 0, GetPosition().z);
-			//Vector3 Zprediction;
-			//Zprediction.Set(GetPosition().x, 0, GetPosition().z + MovementValues.z);
-			////CheckBoundary here
-			//for (std::vector<GameObject*>::iterator it = theBoundaries->begin(); it != theBoundaries->end(); ++it)
-			//{
-			//	Bounds->ResetValues(Xprediction, this->GetDimensions(), this->GetRotationAngle());
-			//	CheckCollision(*(*it)->GetBoundary(), *Bounds);
-			//	if (MovementValues.IsEqual(0, MovementValues.x) == false && CheckCollision(*(*it)->GetBoundary(), *Bounds))
-			//	{
-			//		CheckCollision(*(*it)->GetBoundary(), *Bounds);
-			//		MovementValues.x = 0;
-			//	}
-			//	Bounds->ResetValues(Zprediction, this->GetDimensions(), this->GetRotationAngle());
-			//	if (MovementValues.IsEqual(0, MovementValues.z) == false && CheckCollision(*(*it)->GetBoundary(), *Bounds))
-			//		MovementValues.z = 0;
-			//	if (MovementValues.IsZero())
-			//		break;
-			//}
+			Vector3 Xprediction;
+			Xprediction.Set(BaseObject::GetPosition().x + MovementValues.x, 0, BaseObject::GetPosition().z);
+			Vector3 Zprediction;
+			Zprediction.Set(BaseObject::GetPosition().x, 0, BaseObject::GetPosition().z + MovementValues.z);
+			//CheckBoundary here
+			for (std::vector<GameObject*>::iterator it = theBoundaries->begin(); it != theBoundaries->end(); ++it)
+			{
+				//Bounds->ResetValues();
+				CheckCollision(*(*it)->GetBoundary(), Xprediction);
+				if (MovementValues.IsEqual(0, MovementValues.x) == false && CheckCollision(*(*it)->GetBoundary(), Zprediction))
+				{
+					CheckCollision(*(*it)->GetBoundary(), Xprediction);
+					MovementValues.x = 0;
+				}
+				//Bounds->ResetValues();
+				if (MovementValues.IsEqual(0, MovementValues.z) == false && CheckCollision(*(*it)->GetBoundary(), Zprediction))
+					MovementValues.z = 0;
+				if (MovementValues.IsZero())
+					break;
+			}
 		}
 		SetPosition(GetPosition() + MovementValues);
 		MovementValues.SetZero();
@@ -105,6 +105,7 @@ void PlayerObject::Update(double dt)
 	}
 
 	UpdateJump((float)dt);
+
 }
 
 void PlayerObject::SetJump(const float &speed, const float &max_speed, const float &accel)

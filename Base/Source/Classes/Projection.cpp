@@ -39,10 +39,10 @@ float Projection::GetMax()const
 
 bool Projection::DetermineCollision(const Projection &value)
 {
-	return (this->min > value.max || value.min > this->max);
+	return ((this->min < value.max && this->max > value.max) || (this->max > value.min && this->min < value.min));
 }
 
 bool Projection::DetermineCollision(const float &value)
 {
-	return (value > this->min && value < this->max);
+	return (value < this->min && value < this->max);
 }

@@ -18,6 +18,7 @@ SceneTown2::SceneTown2()
 	setName(id_);
 	theInteractiveMap = nullptr;
 	Player = nullptr;
+	playerbox = nullptr;
 }
 
 SceneTown2::~SceneTown2()
@@ -67,6 +68,10 @@ void SceneTown2::Init()
 	camera.position = PlayerPTR->GetPosition();
 	camera.UpdateCameraVectors();
 	//<!> There can only be 1 Player
+
+	playerbox = Player;
+	it = SceneGraphics->meshList.find("cube");
+	playerbox->SetMesh(it->second);
 }
 
 void SceneTown2::Update(float dt)
@@ -121,10 +126,20 @@ void SceneTown2::Update(float dt)
 	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
 	PlayerPTR->Update(dt);
 	PlayerPTR->SetRotationAngle(camera.CurrentCameraRotation.y);
+	PlayerPTR->GetBoundary()->ResetValues();
 
 	camera.Update(dt);
 	camera.position = PlayerPTR->GetPosition();
 	camera.UpdateCameraVectors();
+
+	playerbox->SetPosition(Vector3(PlayerPTR->GetPosition().x, PlayerPTR->GetPosition().y - 5, PlayerPTR->GetPosition().z));
+	//playerbox->SetPosition(PlayerPTR->GetPosition());
+
+	playerbox->GetBoundary()->ResetValues();
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('R'))
+	{
+		PlayerPTR->SetPosition(camera.defaultPosition);
+	}
 }
 
 void SceneTown2::RenderTerrain()
@@ -163,6 +178,7 @@ void SceneTown2::RenderShadowCasters()
 		if (the3DObject && (camera.position - camera.target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
 			the3DObject->Render();
 	}
+	playerbox->Render();
 	//<!> will remove soon <!>
 }
 
