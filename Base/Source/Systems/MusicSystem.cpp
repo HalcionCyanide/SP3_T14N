@@ -146,3 +146,8 @@ size_t MusicSystem::loopingAndFindKey(std::vector<std::string> &theKeys, const s
     }
     return thePosOfVec;
 }
+
+void MusicSystem::setPlayerPos(Vector3 &pos)
+{
+    playerPos = &pos;
+}
