@@ -12,6 +12,6 @@ public:
 
 	void readFile(const std::string);
 
-	std::vector<NPC> allNPC;
-	NPC tempQuest;
+	std::vector<NPC*> allNPCs;
+	NPC tempNPC;
 };

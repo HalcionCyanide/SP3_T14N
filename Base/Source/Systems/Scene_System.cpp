@@ -8,8 +8,6 @@ void Scene_System::Init()
     //currScene = nullptr;
     graphics_scene = nullptr;
 	cSS_InputManager = new InputManager();
-
-	QM.readFile("Source//Conditions//questData.csv");
 }
 
 void Scene_System::Update(double dt)
