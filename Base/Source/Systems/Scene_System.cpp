@@ -8,6 +8,8 @@ void Scene_System::Init()
     //currScene = nullptr;
     graphics_scene = nullptr;
 	cSS_InputManager = new InputManager();
+
+	//QM.readFile("Source//Conditions//questData.csv");
 }
 
 void Scene_System::Update(double dt)
@@ -102,20 +104,9 @@ void Scene_System::clearEverything()
 	{
 		SceneHistory.pop();
 	}
-}
-
-void Scene_System::SetUIDimensions(const float &width, const float &height)
-{
-	cSS_UIWidth = width;
-	cSS_UIHeight = height;
-}
-
-float Scene_System::GetUIWidth()
-{
-	return cSS_UIWidth;
-}
-
-float Scene_System::GetUIHeight()
-{
-	return cSS_UIHeight;
+    for (auto it : EnemyData)
+    {
+        delete it.second;
+    }
+    EnemyData.clear();
 }

@@ -3,20 +3,28 @@
 
 #include "GenericSystem.h"
 #include "../Classes/MusicEntity2D.h"
+#include <map>
 
-class MusicSystem : public GenericSystem, SingletonTemplate<MusicSystem>
+typedef std::map<std::string, MusicEntity2D*> strMEmap;
+
+class MusicSystem : public GenericSystem, public SingletonTemplate<MusicSystem>
 {
 public:
     virtual void Init();
     //This is gonna be a pain
     virtual void Update(double dt);
     virtual void onNotify(const std::string &theMessage);
+  
+    ISoundEngine *musicEngine;
+    std::map<std::string, MusicEntity2D*> all_the_Music;
 
-    
+    virtual bool playMusic(const std::string &songName);
+
+    virtual bool playBackgroundMusic(const std::string &songName);
 
 private:
-    ISoundEngine *musicEngine;
     bool beginLoadingMusic(const std::string &fileName);
+    MusicEntity2D *theOnlyBackgroundMusic;
 };
 
 #endif

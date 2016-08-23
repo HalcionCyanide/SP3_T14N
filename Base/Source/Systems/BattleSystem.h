@@ -1,7 +1,7 @@
 #ifndef _BATTLESYSTEM_H
 #define _BATTLESYSTEM_H
 
-#include "../Classes/BaseObject.h"
+#include "../Classes/BattleScreenObject.h"
 #include "../Classes/Enemy.h"
 #include "GenericSystem.h"
 #include "Vector3.h"
@@ -25,7 +25,7 @@ public:
 	virtual ~BattleSystem();
 
 	//Public Variables
-	BaseObject* PlayerObj;
+	BattleScreenObject* PlayerObj;
 	BS_State BattleState = BS_PlayerEvasionStage;// = BS_Null;
 
 	// Public Function Calls
@@ -34,16 +34,20 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
-	Enemy* CurrentEnemy; //<- To Store Attack Patterns and Stats
+	BattleScreenObject* GetInactiveBSO();
+
+	//void SetPlayer();
+	void SetEnemy(Enemy&);
 
 private:
 	// Private Variables
+	Enemy* CurrentEnemy; //<- To Store Attack Patterns and Stats
+
 	Vector3 CursorPosition;
 	float PlayerScale;
-	Vector3 PlayerActingForce;
 	Vector3 CenterPosition;
-	BaseObject* BaseExterior;
-	BaseObject* BaseInterior;
+	BattleScreenObject* BaseExterior;
+	BattleScreenObject* BaseInterior;
 	bool MouseModeSelected = false;
 	bool isInvincible = false;
 	float IFrameTimer = 0;
@@ -64,8 +68,8 @@ private:
 
 	// Physics Related
 	void UpdatePhysics(float dt);
-	bool CollisionCheck(const BaseObject& BaseObject1, const BaseObject& BaseObject2, float dt);
-	bool CollisionResponse(const BaseObject& BaseObject1, const BaseObject& BaseObject2, float dt);
+	bool CollisionCheck(const BattleScreenObject&, const BattleScreenObject&, float dt);
+	bool CollisionResponse(const BattleScreenObject&, const BattleScreenObject&, float dt);
 
 	// Enemy Calls [Based on type use a specific attack call]
 	int BatchCreateAttacks(const int& AttackType);
@@ -74,7 +78,7 @@ private:
 	void Attack_Bullet();
 
 	// Base Object Container [The container that holds the enemy projectiles/attacks]
-	std::vector<BaseObject*> cBS_ObjectContainer;
+	std::vector<BattleScreenObject*> cBS_ObjectContainer;
 
 };
 

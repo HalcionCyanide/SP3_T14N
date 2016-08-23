@@ -1,0 +1,2 @@
+EnemyID,EnemyName,SpellPower,AttackSpeed,AttacksPerWave,DamagePerAttack,MaxEnemyWave,Projectile1MeshName,Projectile1Type,Projectile2MeshName,Projectile2Type,Projectile3MeshName,Projectile3Type
+1,ayylmao,1337,0.42,42,420,42,ayylmao,Bullet,,,,

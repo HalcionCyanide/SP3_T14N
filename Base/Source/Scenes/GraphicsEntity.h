@@ -26,6 +26,8 @@ A GraphicsEntity so that Shaders, objects and texture that is needed across all 
 #define MAX_NUM_LIGHTS 2
 #endif
 
+void convertStringToUpperCaps(std::string &theString);
+
 /******************************************************************************/
 /*!
 Class GraphicsEntity:

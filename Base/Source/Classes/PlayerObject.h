@@ -20,7 +20,8 @@ public:
     virtual void setAccel(const Vector3 &theacceleration);
 
     virtual void setPlayerBoundaries(std::vector<GameObject*> &Playerboundary);
-	virtual bool CheckCollision(const Boundary &object, const Vector3 &Prediction);
+	virtual bool CheckCollision(Boundary &object, const Vector3 &Prediction);
+	virtual bool CheckCollision(Boundary &object, Boundary &Prediction);
 
 	Vector3 vel_;
 
