@@ -123,12 +123,6 @@
     <ClCompile Include="Source\Misc\MeshBuilder.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Classes\NPC.cpp">
-      <Filter>Source Files\Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Systems\NPCManager.cpp">
-      <Filter>Source Files\Systems</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Classes\PlayerObject.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
@@ -266,9 +260,6 @@
     <ClInclude Include="Source\Classes\Mesh.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Classes\NPC.h">
-      <Filter>Header Files\Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Classes\SceneEntity.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
@@ -357,9 +348,6 @@
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="Source\Systems\InputManager.h">
-      <Filter>Header Files\Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Systems\NPCManager.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="Source\Systems\Scene_System.h">
