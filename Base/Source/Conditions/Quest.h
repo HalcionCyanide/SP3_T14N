@@ -25,6 +25,7 @@ public:
 	friend std::ostream& operator<<(std::ostream&, const Quest&);
 
 	virtual void Update(double dt);
+	bool satisfied;
 private:
 	int id;
 	std::vector<genericCondition*> conditions;

@@ -35,7 +35,7 @@ void NPCManager::readFile(const std::string fileName)
 	{
 		std::vector<std::string> theKeys;
 		std::vector<std::string> theValues;
-		unsigned tempID = 0;
+		unsigned tempID = 1;
 		while (std::getline(file, temp))
 		{
 			if (temp == "" || temp == "\n" || temp == "\r")

@@ -19,6 +19,7 @@ GraphicsEntity resides here.
 #include "InputManager.h"
 #include "..\\Classes\\Boundary.h"
 #include "..\\Systems\\BattleSystem.h"
+#include "..\\Conditions\\questManager.h"
 
 class InputManager;
 /******************************************************************************/
@@ -50,7 +51,7 @@ public:
 
 	BattleSystem BattleSystem;
 	std::map<std::string, Enemy*> EnemyData;
-
+	questManager QM;
 private:
 	std::stack<SceneEntity* > SceneHistory;
 
