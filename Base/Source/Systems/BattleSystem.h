@@ -7,6 +7,7 @@
 #include "Vector3.h"
 #include <vector>
 #include "../Classes/Enemy.h"
+#include "../Classes/Boundary2D.h"
 
 class BattleSystem : public GenericSystem
 {
@@ -42,6 +43,8 @@ public:
 private:
 	// Private Variables
 	Enemy* CurrentEnemy; //<- To Store Attack Patterns and Stats
+
+	Boundary2D InteriorBounds, ExteriorBounds;
 
 	Vector3 CursorPosition;
 	float PlayerScale;
