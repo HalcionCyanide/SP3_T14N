@@ -76,108 +76,203 @@ void Scene_MainMenu::Init()
 
 void Scene_MainMenu::InitSceneUIElems()
 {
+	UI_Layer* NewL = new UI_Layer();
+
 	Vector3 CenterPosition(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
-	UI_Sys.AddUIElement(UI_Element::UI_LOGO, "TFB_Logo", CenterPosition * 3, CenterPosition * 3, Vector3(1300, 1300, 1), CenterPosition * 1.35f);
+	NewL->AddUIElement(UI_Element::UI_LOGO, "TFB_Logo", CenterPosition * 3, CenterPosition * 3, Vector3(1300, 1300, 1), CenterPosition * 1.35f);
 
-	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", CenterPosition * -2.f, CenterPosition * -2.f, Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), UI_Text[1]);
-	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", CenterPosition * -2.5f, CenterPosition * -2.5f, Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), UI_Text[2]);
-	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", CenterPosition * -3.f, CenterPosition * -3.f, Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), UI_Text[3]);
+	NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", CenterPosition * -2.f, CenterPosition * -2.f, Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), UI_Text[1]);
+	NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", CenterPosition * -2.5f, CenterPosition * -2.5f, Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), UI_Text[2]);
+	NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", CenterPosition * -3.f, CenterPosition * -3.f, Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), UI_Text[3]);
 
-	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[4]);
-	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[5]);
-	UI_Sys.AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[6]);
+	NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[4]);
+	NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[5]);
+	NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[6]);
 
-
+	UI_Sys.cUIS_LayerContainer.push_back(NewL);
 }
 
 void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cState)
 {
-	for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_ElementContainer.begin(); it != UI_Sys.cUIS_ElementContainer.end(); ++it)
+	//for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_ElementContainer.begin(); it != UI_Sys.cUIS_ElementContainer.end(); ++it)
+	//{
+	//	if ((*it)->Active)
+	//	{
+	//		bool ClickSucceeded = false;
+	//		if (CurrentMenuState == S_FIRSTLEVEL)
+	//		{
+	//			(*it)->BoundsActive = true;
+	//			if (((*it)->UI_Text == UI_Text[1] || (*it)->UI_Text == UI_Text[2] || (*it)->UI_Text == UI_Text[3]))
+	//			{
+	//				(*it)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+	//				if (ClickSucceeded)
+	//				{
+	//					if (((*it)->UI_Text == UI_Text[1]))
+	//					{
+	//						// Start
+	//						CurrentMenuState = S_SECONDLEVEL;
+	//						for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_ElementContainer.begin(); it != UI_Sys.cUIS_ElementContainer.end(); ++it)
+	//						{
+	//							if (((*it)->UI_Text == UI_Text[1] || (*it)->UI_Text == UI_Text[2] || (*it)->UI_Text == UI_Text[3]))
+	//							{
+	//								(*it)->SwapOriginalWithTarget();
+	//							}
+	//							else if (((*it)->UI_Text == UI_Text[4] || (*it)->UI_Text == UI_Text[5] || (*it)->UI_Text == UI_Text[6]))
+	//							{
+	//								(*it)->SwapOriginalWithTarget();
+	//							}
+	//						}
+	//					}
+	//					else if (((*it)->UI_Text == UI_Text[2]))
+	//					{
+	//						// Settings
+	//						Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+	//						std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.begin();
+	//						Scene_System::accessing().BattleSystem.SetEnemy(*it->second);
+	//						Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
+	//					}
+	//					else if (((*it)->UI_Text == UI_Text[3]))
+	//					{
+	//						// Exit
+	//						Application::ExitGame = true;
+	//					}
+	//				}
+	//			}
+	//			else if ((*it)->Active)
+	//				(*it)->Update((float)dt);
+	//		}
+	//		else if (CurrentMenuState == S_SECONDLEVEL)
+	//		{
+	//			if (((*it)->UI_Text == UI_Text[4] || (*it)->UI_Text == UI_Text[5] || (*it)->UI_Text == UI_Text[6]))
+	//			{
+	//				(*it)->BoundsActive = true;
+	//				(*it)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+	//				if (ClickSucceeded)
+	//				{
+	//					if (((*it)->UI_Text == UI_Text[4]))
+	//					{
+	//						// Start
+	//						Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+	//						Scene_System::accessing().SwitchScene(SceneTown1::id_);
+	//						//Scene_System::accessing().SwitchScene(SceneTown1::id_);
+	//					}
+	//					else if (((*it)->UI_Text == UI_Text[5]))
+	//					{
+	//						// Load
+	//					}
+	//					else if (((*it)->UI_Text == UI_Text[6]))
+	//					{
+	//						// Return
+	//						CurrentMenuState = S_FIRSTLEVEL;
+	//						for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_ElementContainer.begin(); it != UI_Sys.cUIS_ElementContainer.end(); ++it)
+	//						{
+	//							if (((*it)->UI_Text == UI_Text[4] || (*it)->UI_Text == UI_Text[5] || (*it)->UI_Text == UI_Text[6]))
+	//							{
+	//								(*it)->SwapOriginalWithTarget();
+	//							}
+	//							else if (((*it)->UI_Text == UI_Text[1] || (*it)->UI_Text == UI_Text[2] || (*it)->UI_Text == UI_Text[3]))
+	//							{
+	//								(*it)->SwapOriginalWithTarget();
+	//							}
+	//						}
+	//					}
+	//				}
+	//			}
+	//			else if ((*it)->Active)
+	//				(*it)->Update((float)dt);
+	//		}
+	//	}
+	//}
+	bool ClickSucceeded = false;
+	for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(); it != UI_Sys.cUIS_LayerContainer.end(); ++it)
 	{
-		if ((*it)->Active)
+		for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
 		{
-			bool ClickSucceeded = false;
-			if (CurrentMenuState == S_FIRSTLEVEL)
+			if ((*it2)->Active)
 			{
-				(*it)->BoundsActive = true;
-				if (((*it)->UI_Text == UI_Text[1] || (*it)->UI_Text == UI_Text[2] || (*it)->UI_Text == UI_Text[3]))
+				bool ClickSucceeded = false;
+				if (CurrentMenuState == S_FIRSTLEVEL)
 				{
-					(*it)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
-					if (ClickSucceeded)
+					(*it2)->BoundsActive = true;
+					if (((*it2)->UI_Text == UI_Text[1] || (*it2)->UI_Text == UI_Text[2] || (*it2)->UI_Text == UI_Text[3]))
 					{
-						if (((*it)->UI_Text == UI_Text[1]))
+						(*it2)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+						if (ClickSucceeded)
 						{
-							// Start
-							CurrentMenuState = S_SECONDLEVEL;
-							for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_ElementContainer.begin(); it != UI_Sys.cUIS_ElementContainer.end(); ++it)
+							if (((*it2)->UI_Text == UI_Text[1]))
 							{
-								if (((*it)->UI_Text == UI_Text[1] || (*it)->UI_Text == UI_Text[2] || (*it)->UI_Text == UI_Text[3]))
+								// Start
+								CurrentMenuState = S_SECONDLEVEL;
+								for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
 								{
-									(*it)->SwapOriginalWithTarget();
-								}
-								else if (((*it)->UI_Text == UI_Text[4] || (*it)->UI_Text == UI_Text[5] || (*it)->UI_Text == UI_Text[6]))
-								{
-									(*it)->SwapOriginalWithTarget();
+									if (((*it2)->UI_Text == UI_Text[1] || (*it2)->UI_Text == UI_Text[2] || (*it2)->UI_Text == UI_Text[3]))
+									{
+										(*it2)->SwapOriginalWithTarget();
+									}
+									else if (((*it2)->UI_Text == UI_Text[4] || (*it2)->UI_Text == UI_Text[5] || (*it2)->UI_Text == UI_Text[6]))
+									{
+										(*it2)->SwapOriginalWithTarget();
+									}
 								}
 							}
-						}
-						else if (((*it)->UI_Text == UI_Text[2]))
-						{
-							// Settings
-							Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-							std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.begin();
-							Scene_System::accessing().BattleSystem.SetEnemy(*it->second);
-							Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
-						}
-						else if (((*it)->UI_Text == UI_Text[3]))
-						{
-							// Exit
-							Application::ExitGame = true;
-						}
-					}
-				}
-				else if ((*it)->Active)
-					(*it)->Update((float)dt);
-			}
-			else if (CurrentMenuState == S_SECONDLEVEL)
-			{
-				if (((*it)->UI_Text == UI_Text[4] || (*it)->UI_Text == UI_Text[5] || (*it)->UI_Text == UI_Text[6]))
-				{
-					(*it)->BoundsActive = true;
-					(*it)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
-					if (ClickSucceeded)
-					{
-						if (((*it)->UI_Text == UI_Text[4]))
-						{
-							// Start
-							Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-							Scene_System::accessing().SwitchScene(SceneTown1::id_);
-							//Scene_System::accessing().SwitchScene(SceneTown1::id_);
-						}
-						else if (((*it)->UI_Text == UI_Text[5]))
-						{
-							// Load
-						}
-						else if (((*it)->UI_Text == UI_Text[6]))
-						{
-							// Return
-							CurrentMenuState = S_FIRSTLEVEL;
-							for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_ElementContainer.begin(); it != UI_Sys.cUIS_ElementContainer.end(); ++it)
+							else if (((*it2)->UI_Text == UI_Text[2]))
 							{
-								if (((*it)->UI_Text == UI_Text[4] || (*it)->UI_Text == UI_Text[5] || (*it)->UI_Text == UI_Text[6]))
-								{
-									(*it)->SwapOriginalWithTarget();
-								}
-								else if (((*it)->UI_Text == UI_Text[1] || (*it)->UI_Text == UI_Text[2] || (*it)->UI_Text == UI_Text[3]))
-								{
-									(*it)->SwapOriginalWithTarget();
-								}
+								// Settings
+								Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+								std::map<std::string, Enemy*>::iterator it2 = Scene_System::accessing().EnemyData.begin();
+								Scene_System::accessing().BattleSystem.SetEnemy(*it2->second);
+								Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
+							}
+							else if (((*it2)->UI_Text == UI_Text[3]))
+							{
+								// Exit2
+								Application::ExitGame = true;
 							}
 						}
 					}
+					else if ((*it2)->Active)
+						(*it2)->Update((float)dt);
 				}
-				else if ((*it)->Active)
-					(*it)->Update((float)dt);
+				else if (CurrentMenuState == S_SECONDLEVEL)
+				{
+					if (((*it2)->UI_Text == UI_Text[4] || (*it2)->UI_Text == UI_Text[5] || (*it2)->UI_Text == UI_Text[6]))
+					{
+						(*it2)->BoundsActive = true;
+						(*it2)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+						if (ClickSucceeded)
+						{
+							if (((*it2)->UI_Text == UI_Text[4]))
+							{
+								// Start
+								Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+								Scene_System::accessing().SwitchScene(SceneTown1::id_);
+								//Scene_System::accessing().Swit2chScene(SceneTown1::id_);
+							}
+							else if (((*it2)->UI_Text == UI_Text[5]))
+							{
+								// Load
+							}
+							else if (((*it2)->UI_Text == UI_Text[6]))
+							{
+								// Return
+								CurrentMenuState = S_FIRSTLEVEL;
+								for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
+								{
+									if (((*it2)->UI_Text == UI_Text[4] || (*it2)->UI_Text == UI_Text[5] || (*it2)->UI_Text == UI_Text[6]))
+									{
+										(*it2)->SwapOriginalWithTarget();
+									}
+									else if (((*it2)->UI_Text == UI_Text[1] || (*it2)->UI_Text == UI_Text[2] || (*it2)->UI_Text == UI_Text[3]))
+									{
+										(*it2)->SwapOriginalWithTarget();
+									}
+								}
+							}
+						}
+					}
+					else if ((*it2)->Active)
+						(*it2)->Update((float)dt);
+				}
 			}
 		}
 	}

@@ -80,7 +80,7 @@ void UI_Element::Update(float dt, const Vector3& MousePosition, bool& ClickSucce
 	}
 }
 
-void UI_Element::Render()
+void UI_Element::Render(const Vector3& LayerPos)
 {
 	if (Active)
 	{

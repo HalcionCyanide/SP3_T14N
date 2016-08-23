@@ -110,4 +110,7 @@ void Scene_System::clearEverything()
         delete it.second;
     }
     EnemyData.clear();
+
+	if (gPlayer)
+		delete gPlayer;
 }
