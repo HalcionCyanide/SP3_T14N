@@ -172,12 +172,28 @@ Mesh *getMeshPtr(const std::string &meshName)
 {
     Mesh *thePtr = nullptr;
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
-    std::map<std::string, Mesh*>::iterator iter = SceneGraphics->meshList.find(meshName);
+    if (SceneGraphics)
+    {
+        std::map<std::string, Mesh*>::iterator iter = SceneGraphics->meshList.find(meshName);
+        if (iter != SceneGraphics->meshList.end())
+        {
+            thePtr = iter->second;
+        }
+    }
     return thePtr;
 }
 
 Mesh &getMeshRef(const std::string &meshName)
 {
     Mesh *thePtr = nullptr;
+    GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
+    if (SceneGraphics)
+    {
+        std::map<std::string, Mesh*>::iterator iter = SceneGraphics->meshList.find(meshName);
+        if (iter != SceneGraphics->meshList.end())
+        {
+            thePtr = iter->second;
+        }
+    }
     return (*thePtr);
 }

@@ -209,7 +209,7 @@ void BattleSystem::UpdateITimer(float dt)
 	{
 		IFrameTimer -= dt;
 		int RPcount = Math::RandIntMinMax(1, 2);
-		for (unsigned int i = 0; i < RPcount; ++i)
+		for (/*unsigned*/ int i = 0; i < RPcount; ++i)
 			BManager.AddParticle("ParticleW", PlayerObj->GetPosition(), Vector3(PlayerScale * 0.75f, PlayerScale * 0.75f, 1), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0), Vector3(0, 0, 1), 2);
 
 		if (isInvincible && IFrameTimer < Math::EPSILON)
