@@ -177,7 +177,7 @@ void SceneBattleScreen::RenderPassMain()
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 25);
 
 	ss.str("");
-	ss << "Player Acc:" << Scene_System::accessing().BattleSystem.PlayerObj->GetAcceleration();
+	ss << "Player HP:" << Scene_System::accessing().gPlayer->GetCurrentHealth();
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
 

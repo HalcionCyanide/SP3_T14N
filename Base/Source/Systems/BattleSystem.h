@@ -20,6 +20,7 @@ public:
 		BS_PlayerEvasionStage,
 		BS_Seal,
 		BS_Flee,
+		BS_Fail,
 	};
 
 	BattleSystem();
@@ -79,6 +80,7 @@ private:
 
 	// Attack Calls // Think of better names later
 	void Attack_Bullet(EnemyProjectile& CurrentProjectile);
+	void Attack_Trap(EnemyProjectile& CurrentProjectile);
 
 	// Base Object Container [The container that holds the enemy projectiles/attacks]
 	std::vector<BattleScreenObject*> cBS_ObjectContainer;

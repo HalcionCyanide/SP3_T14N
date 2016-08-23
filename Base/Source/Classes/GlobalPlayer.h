@@ -13,6 +13,8 @@ Defines the global player
 
 #include "PlayerObject.h"
 
+class PlayerObject;
+
 class GlobalPlayer : public GenericEntity
 {
 public:
