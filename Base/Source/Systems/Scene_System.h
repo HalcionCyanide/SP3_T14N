@@ -20,6 +20,7 @@ GraphicsEntity resides here.
 #include "..\\Classes\\Boundary.h"
 #include "..\\Systems\\BattleSystem.h"
 #include "..\\Classes\\GlobalPlayer.h"
+#include "..\\Conditions\\questManager.h"
 
 class InputManager;
 class GlobalPlayer;
@@ -53,8 +54,9 @@ public:
 	BattleSystem BattleSystem;
 	std::map<std::string, Enemy*> EnemyData;
 
-	GlobalPlayer* gPlayer;
+    GlobalPlayer* gPlayer;
 
+	questManager QM;
 private:
 	std::stack<SceneEntity* > SceneHistory;
 

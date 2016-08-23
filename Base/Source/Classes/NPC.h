@@ -1,6 +1,7 @@
 #ifndef NPC_H_
 #define NPC_H_
 #include "GameObject.h"
+#include "..\\Conditions\\questManager.h"
 //#include "Dialouge.h"
 
 class NPC : public GameObject
@@ -19,8 +20,8 @@ public:
 private:
 	//Dialouge* mySpeech;
 	unsigned id;
-	std::string name;
 	std::string flavourText;
 	bool interacting;
+	std::vector<Quest*> myQuests;
 };
 #endif

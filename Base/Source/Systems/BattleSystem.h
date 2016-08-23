@@ -52,7 +52,7 @@ private:
 	Vector3 CenterPosition;
 	BattleScreenObject* BaseExterior;
 	BattleScreenObject* BaseInterior;
-	bool MouseModeSelected = false;
+	bool MouseModeSelected = true;
 	bool isInvincible = false;
 	float IFrameTimer = 0;
 	const float FrictionDecrementMultiplier = 0.8f;

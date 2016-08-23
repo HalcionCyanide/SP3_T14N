@@ -10,7 +10,7 @@ void Scene_System::Init()
 	cSS_InputManager = new InputManager();
 	gPlayer = new GlobalPlayer(1, 420, 1337, false);
 
-	//QM.readFile("Source//Conditions//questData.csv");
+	QM.readFile("Source//Conditions//questData.csv");
 }
 
 void Scene_System::Update(double dt)

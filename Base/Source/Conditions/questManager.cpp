@@ -32,6 +32,7 @@ void questManager::Update(double dt)
 		if (allQuests.at(i)->getActive())
 		{
 			allQuests.at(i)->Update(dt);
+			i++;
 		}
 	}
 }
