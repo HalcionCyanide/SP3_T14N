@@ -103,6 +103,25 @@ void BattleSystem::Exit()
     //}
 }
 
+BattleScreenObject* BattleSystem::GetInactiveBSO()
+{
+	// Container has stuff
+	if (cBS_ObjectContainer.size() > 0)
+	{
+		for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
+			if (!(*it)->Active)
+				return *it;
+	}
+	// No Active/Container has nothing, make more BSOs
+	for (unsigned short i = 0; i < 5; ++i)
+	{
+		BattleScreenObject* BSO = new BattleScreenObject("", 1, 0, Vector3(1, 1, 1), 0, 0, Vector3(0, 0, 1));
+		BSO->Active = false;
+		cBS_ObjectContainer.push_back(BSO);
+	}
+	return cBS_ObjectContainer.back();
+}
+
 void BattleSystem::SetEnemy(Enemy& Enemy)
 {
 	CurrentEnemy = &Enemy;
@@ -384,11 +403,11 @@ void BattleSystem::Attack_Bullet()
 	if (TempBounds.CheckCollision(SpawnPos) && !TempBounds2.CheckCollision(SpawnPos))
 	{
 		Vector3 DVec = (PlayerObj->GetPosition() - SpawnPos).Normalize() * 800; // * Projectile Speed;
-		// Use a fetch Func
-		BattleScreenObject* NewObj = new BattleScreenObject("TFB_Gem", 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), DVec, 0, Vector3(0, 0, 1));
+		BattleScreenObject* NewObj = GetInactiveBSO();
+		NewObj->SetParameters("TFB_Gem", 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), DVec, 0, Vector3(0, 0, 1));
 		NewObj->Type = BattleScreenObject::BS_Bullet;
+		NewObj->Active = true;
 		NewObj->SetMass(5.f);
-		cBS_ObjectContainer.push_back(NewObj);
 	}
 	else Attack_Bullet();
 }

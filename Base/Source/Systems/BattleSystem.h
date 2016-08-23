@@ -34,6 +34,8 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
+	BattleScreenObject* GetInactiveBSO();
+
 	//void SetPlayer();
 	void SetEnemy(Enemy&);
 
