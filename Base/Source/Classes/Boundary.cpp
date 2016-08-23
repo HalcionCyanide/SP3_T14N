@@ -51,7 +51,6 @@ void Boundary::SetVertices()
 	Vertices.clear();
 	Mtx44 Rotation;
 	Rotation.SetToRotation(this->GetRotationAngle(), 0, 1, 0);
-	Vector3 dimension = this->GetDimensions() * 0.5f;
 	Vertices.push_back(this->GetPosition() + (Rotation * Vector3(this->GetDimensions().x, 0, this->GetDimensions().z) * 0.5f));
 	Vertices.push_back(this->GetPosition() + (Rotation * Vector3(this->GetDimensions().x, 0, -this->GetDimensions().z) * 0.5f));
 	Vertices.push_back(this->GetPosition() + (Rotation * Vector3(-this->GetDimensions().x, 0, -this->GetDimensions().z) * 0.5f));
