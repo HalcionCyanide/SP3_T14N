@@ -51,11 +51,10 @@ void Boundary::SetVertices()
 	Vertices.clear();
 	Mtx44 Rotation;
 	Rotation.SetToRotation(this->GetRotationAngle(), 0, 1, 0);
-	Vector3 dimension = Rotation * this->GetDimensions();
-	Vertices.push_back(Vector3(this->GetPosition().x + dimension.x / 2, 0, this->GetPosition().z + dimension.z / 2));
-	Vertices.push_back(Vector3(this->GetPosition().x + dimension.x / 2, 0, this->GetPosition().z - dimension.z / 2));
-	Vertices.push_back(Vector3(this->GetPosition().x - dimension.x / 2, 0, this->GetPosition().z - dimension.z / 2));
-	Vertices.push_back(Vector3(this->GetPosition().x - dimension.x / 2, 0, this->GetPosition().z + dimension.z / 2));
+	Vertices.push_back(this->GetPosition() + (Rotation * Vector3(this->GetDimensions().x, 0, this->GetDimensions().z) * 0.5f));
+	Vertices.push_back(this->GetPosition() + (Rotation * Vector3(this->GetDimensions().x, 0, -this->GetDimensions().z) * 0.5f));
+	Vertices.push_back(this->GetPosition() + (Rotation * Vector3(-this->GetDimensions().x, 0, -this->GetDimensions().z) * 0.5f));
+	Vertices.push_back(this->GetPosition() + (Rotation * Vector3(-this->GetDimensions().x, 0, this->GetDimensions().z) * 0.5f));
 	Rotation.SetToZero();
 }
 
