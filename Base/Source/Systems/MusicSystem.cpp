@@ -11,13 +11,20 @@ void MusicSystem::Init()
     musicEngine = createIrrKlangDevice();
     theOnlyBackgroundMusic = nullptr;
     beginLoadingMusic("DrivenFiles//MusicDriven.csv");
+    musicEngine->setListenerPosition(vec3df(0, 0, 0), vec3df(0, 0, 0));
+    musicEngine->update();
+    m_accumulatedTime = TimeUpdate = 0;
 }
 
 //This is gonna be a pain
 void MusicSystem::Update(double dt)
 {
     //How to update listener position
-    musicEngine->update();
+    m_accumulatedTime += dt;
+    if (m_accumulatedTime > TimeUpdate)
+    {
+        musicEngine->update();
+    }
     for (std::map<std::string, MusicEntity2D*>::iterator it = all_the_Music.begin(), end = all_the_Music.end(); it != end; ++it)
     {
         it->second->Update(dt);
@@ -150,4 +157,9 @@ size_t MusicSystem::loopingAndFindKey(std::vector<std::string> &theKeys, const s
 void MusicSystem::setPlayerPos(Vector3 &pos)
 {
     playerPos = &pos;
+}
+
+void MusicSystem::setTimeToUpdate(const double &dt)
+{
+    TimeUpdate = dt;
 }
