@@ -48,8 +48,8 @@ void BattleScreenObject::Update(double dt)
 			if (LifeTimer > (LifeTime * 0.25f))
 			{
 				Visible = true;
-				SetRotationAngle(GetRotationAngle() + GetRotationAngle() * dt * dt);
-				SetDimensions(GetDimensions() + GetVelocity().LengthSquared() * GetDimensions() * dt  * dt);
+				SetRotationAngle(GetRotationAngle() + GetRotationAngle() * (float)dt * (float)dt);
+				SetDimensions(GetDimensions() + GetVelocity().LengthSquared() * GetDimensions() * (float)dt  * (float)dt);
 			}
 			break;
 		}
