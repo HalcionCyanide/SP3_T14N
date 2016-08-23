@@ -59,7 +59,6 @@ public:
     GlobalPlayer* gPlayer;
 
 	questManager QM;
-	GlobalPlayer* gPlayer;
 
 private:
 	std::stack<SceneEntity* > SceneHistory;
