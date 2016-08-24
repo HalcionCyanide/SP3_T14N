@@ -13,7 +13,7 @@
 
 std::string Scene_MainMenu::id_ = "Scene Main Menu";
 
-const std::string Scene_MainMenu::UI_Text[10] = { "", "Start", "Settings", "Exit", "New Game", "Load Game", "Return" };
+const std::string Scene_MainMenu::UI_Text[10] = { "", "Start", "Battle Test", "Exit", "New Game", "Load Game", "Return" };
 
 Scene_MainMenu::Scene_MainMenu()
 	: SceneEntity()
