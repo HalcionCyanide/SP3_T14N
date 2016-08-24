@@ -1,7 +1,7 @@
 #ifndef NPC_GUARDCAPT_H_
 #define NPC_GUARDCAPT_H_
 
-#include <vector>
+#include <list>
 #include "GenericNPC.h"
 #include "Vector3.h"
 
@@ -12,7 +12,9 @@ public:
 	virtual ~GuardCapt();
 
 	virtual void Init();
-	virtual void Update(double dt);	
+	virtual void Update(double dt);
+
+	std::list<Quest*> available;
 };
 
 #endif

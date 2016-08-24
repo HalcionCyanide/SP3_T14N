@@ -12,15 +12,6 @@ GuardCapt::~GuardCapt()
 void GuardCapt::Init()
 {
 	name_ = "NPC_guardcaptain";
-	for (std::vector<Quest*>::iterator it = Scene_System::accessing().QM.allQuests.begin(); it != Scene_System::accessing().QM.allQuests.end(); ++it)
-	{
-		Quest* q = (Quest*)*it;
-
-		if (q->getGiver() == name_)
-		{
-			allQuests.push_back(q);
-		}
-	}
 }
 
 void GuardCapt::Update(double dt)
