@@ -9,7 +9,8 @@ public:
 	FreeFieldGateBoundary();
 	virtual ~FreeFieldGateBoundary();
 
-private:
+    virtual bool CheckCollision(const Boundary &object);
+    virtual float GetOverlappingDistance()const;
 
 };
 

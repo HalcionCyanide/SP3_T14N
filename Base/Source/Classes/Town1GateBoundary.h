@@ -11,9 +11,6 @@ public:
 
     virtual bool CheckCollision(const Boundary &object);
     virtual float GetOverlappingDistance()const;
-
-protected:
-
 };
 
 #endif
