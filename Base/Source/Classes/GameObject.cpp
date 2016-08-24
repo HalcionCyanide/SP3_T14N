@@ -1,6 +1,8 @@
 #include "GameObject.h"
 #include "..\\Systems\\Scene_System.h"
 #include "..\\Scenes\\GraphicsEntity.h"
+#include "FreeFieldGateBoundary.h"
+#include "Town1GateBoundary.h"
 
 GameObject::GameObject()
 	//: BaseObject()
