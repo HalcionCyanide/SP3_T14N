@@ -6,14 +6,13 @@
 #include "SceneTown2.h"
 #include "SceneTown3.h"
 #include "SceneFreeField.h"
-#include "SceneBattleScreen.h"
 
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\GameObject.h"
 
 std::string Scene_MainMenu::id_ = "Scene Main Menu";
 
-const std::string Scene_MainMenu::UI_Text[10] = { "", "Start", "Battle Test", "Exit", "New Game", "Load Game", "Return" };
+const std::string Scene_MainMenu::UI_Text[10] = { "", "Start", "Settings", "Exit", "New Game", "Load Game", "Return" };
 
 Scene_MainMenu::Scene_MainMenu()
 	: SceneEntity()
@@ -117,10 +116,6 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
 							else if (((*it2)->UI_Text == UI_Text[2]))
 							{
 								// Settings
-								Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-								std::map<std::string, Enemy*>::iterator it2 = Scene_System::accessing().EnemyData.begin();
-								Scene_System::accessing().BSys->SetEnemy(*it2->second);
-								Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
 							}
 							else if (((*it2)->UI_Text == UI_Text[3]))
 							{

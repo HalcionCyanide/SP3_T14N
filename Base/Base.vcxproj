@@ -14,10 +14,14 @@
     <ClCompile Include="Source\Classes\BaseObject.cpp" />
     <ClCompile Include="Source\Classes\BattleScreenObject.cpp" />
     <ClCompile Include="Source\Classes\CameraBS.cpp" />
+    <ClCompile Include="Source\Classes\FreeFieldGateBoundary.cpp" />
     <ClCompile Include="Source\Classes\GlobalPlayer.cpp" />
     <ClCompile Include="Source\Classes\MusicEntity2D.cpp" />
     <ClCompile Include="Source\Classes\MusicEntity3D.cpp" />
     <ClCompile Include="Source\Classes\Projection.cpp" />
+    <ClCompile Include="Source\Classes\Town1GateBoundary.cpp" />
+    <ClCompile Include="Source\Classes\Town2GateBoundary.cpp" />
+    <ClCompile Include="Source\Classes\Town3GateBoundary.cpp" />
     <ClCompile Include="Source\Classes\UI_Layer.cpp" />
     <ClCompile Include="Source\Conditions\captureCondition.cpp" />
     <ClCompile Include="Source\Conditions\gotoCondition.cpp" />
@@ -80,6 +84,7 @@
     <ClInclude Include="Source\Classes\Commands.h" />
     <ClInclude Include="Source\Classes\Enemy.h" />
     <ClInclude Include="Source\Classes\EnemyProjectile.h" />
+    <ClInclude Include="Source\Classes\FreeFieldGateBoundary.h" />
     <ClInclude Include="Source\Classes\GameMap.h" />
     <ClInclude Include="Source\Classes\GameObject.h" />
     <ClInclude Include="Source\Classes\GenericEntity.h" />
@@ -95,6 +100,9 @@
     <ClInclude Include="Source\Classes\Scene.h" />
     <ClInclude Include="Source\Classes\SceneEntity.h" />
     <ClInclude Include="Source\Classes\singletontemplate.h" />
+    <ClInclude Include="Source\Classes\Town1GateBoundary.h" />
+    <ClInclude Include="Source\Classes\Town2GateBoundary.h" />
+    <ClInclude Include="Source\Classes\Town3GateBoundary.h" />
     <ClInclude Include="Source\Classes\UI_Element.h" />
     <ClInclude Include="Source\Classes\UI_Layer.h" />
     <ClInclude Include="Source\Conditions\captureCondition.h" />

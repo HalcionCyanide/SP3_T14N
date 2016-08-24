@@ -76,11 +76,11 @@ void BattleSystem::Update(double dt)
 	if (FleeSucceeded)
 	{
 		FleeSucceeded = false;
-		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
 		Scene_System::accessing().SwitchToPreviousScene();
-		Scene_MainMenu* S = dynamic_cast<Scene_MainMenu*>(&Scene_System::accessing().getCurrScene());
+		/*Scene_MainMenu* S = dynamic_cast<Scene_MainMenu*>(&Scene_System::accessing().getCurrScene());
 		S->camera.Reset();
-		S->camera.CameraIsLocked = true;
+		S->camera.CameraIsLocked = true;*/
 
 		BattleState = BS_PlayerTurn;
 		if (EnemyLayer)

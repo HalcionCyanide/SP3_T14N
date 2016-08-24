@@ -23,6 +23,14 @@ public:
     Camera3 camera;
 
 private:
+	// Private Variables
+	int CurrentEncounterRateBoost = 0;
+	const float EncounterRatio = 0.1f;
+	Vector3 PreviousPosition;
+	float EncounterTimer = 0;
+	float EncounterTimeCheck = 1.;
+	int MaxEncounterRate = 1000;
+
     // Shadow GPass
     void RenderPassGPass();
     void RenderPassMain();
