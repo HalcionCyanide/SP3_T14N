@@ -11,10 +11,15 @@ struct GenericNPC : public GameObject
 	virtual ~GenericNPC(){};
 	
 	virtual void Update(double dt) = 0;
+	virtual void setTarget(const Vector3& i){ target = i; };
+	virtual Vector3 getTarget(){ return target; };
 
 	bool interacting;
 	std::string flavourText;
 	std::vector<Quest*> myQuests;
+
+private:
+	Vector3 target;
 };
 
 #endif

@@ -26,15 +26,26 @@ void GuardCapt::Init()
 
 void GuardCapt::Update(double dt)
 {
-	//UI STUFF?!
-	//ANYTHING HERE?!
-
-	for (std::vector<Quest*>::iterator it = myQuests.begin(); it != myQuests.end(); ++it)
+	static float currentAngle = 0.f;
+	float desiredAngle = Math::RadianToDegree(atan2(getTarget().x - GetPosition().x, getTarget().z - GetPosition().z));
+	if ((getTarget() - GetPosition()).LengthSquared() < 900)
 	{
-		Quest* q = (Quest*)*it;
-		if (q->getActive())
+		float Speed = 50.f;
+
+		if (currentAngle + Speed * dt < desiredAngle + Math::EPSILON)
 		{
-			q->Update(dt);
+			currentAngle += Speed * (float)dt;
+		}
+		if (currentAngle - Speed * dt > desiredAngle - Math::EPSILON)
+		{
+			currentAngle -= Speed * (float)dt;
+		}
+
+		SetRotationAngle(currentAngle);
+
+		if (Scene_System::accessing().cSS_InputManager->GetKeyValue('Q'))
+		{
+			interacting = true;
 		}
 	}
 }

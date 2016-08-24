@@ -21,6 +21,8 @@ Scene_2::~Scene_2()
 
 }
 
+Vector3 CenterPosition;
+
 void Scene_2::Init()
 {
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
@@ -74,6 +76,12 @@ void Scene_2::Init()
 
 	Scene_System::accessing().allNPCs.at(0)->Init("NPC_guardcaptain", 1, Vector3(0, 0, 0), Vector3(10, 10, 10), Vector3(0,0,0),0.f,Vector3(0,1,0));
 	Scene_System::accessing().allNPCs.at(0)->SetPosition(Vector3(Scene_System::accessing().allNPCs.at(0)->GetPosition().x, TerrainYScale * ReadHeightMap(m_heightMap, (Scene_System::accessing().allNPCs.at(0)->GetPosition().x / TerrainXScale), (Scene_System::accessing().allNPCs.at(0)->GetPosition().z / TerrainXScale)) + Scene_System::accessing().allNPCs.at(0)->GetDimensions().y * 0.5f, Scene_System::accessing().allNPCs.at(0)->GetPosition().z));
+
+	UI_Layer* NewL = new UI_Layer();
+
+	CenterPosition.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
+	NewL->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", CenterPosition, -CenterPosition, Vector3(400, 100, 1),CenterPosition, "");
+	UI_Sys.cUIS_LayerContainer.push_back(NewL);
 }
 
 void Scene_2::Update(float dt)
@@ -127,6 +135,28 @@ void Scene_2::Update(float dt)
 	camera.position = PlayerPTR->GetPosition();
 	camera.UpdateCameraVectors();
 
+	for (auto it : Scene_System::accessing().allNPCs)
+	{
+		it->setTarget(camera.position);
+		it->Update((float)dt);
+	}
+
+	for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it)
+	{
+		(*it)->Update((float) dt);
+	}
+
+	if (Scene_System::accessing().allNPCs.at(0)->interacting)
+	{
+		for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it)
+		{
+			(*it)->TargetPosition = CenterPosition;
+		}
+	}
+	else for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it)
+	{
+		(*it)->TargetPosition = -CenterPosition;
+	}
 }
 
 void Scene_2::RenderTerrain()
@@ -163,10 +193,6 @@ void Scene_2::RenderShadowCasters()
 	}
 	for (auto it : Scene_System::accessing().allNPCs)
 	{
-		if ((camera.position - it->GetPosition()).LengthSquared() < 900)
-		{
-			it->SetRotationAngle(Math::RadianToDegree(atan2(camera.position.x - it->GetPosition().x, camera.position.z - it->GetPosition().z)));
-		}
 		it->Render();
 	}
 }
@@ -299,6 +325,12 @@ void Scene_2::RenderPassMain()
 	SceneGraphics->RenderMesh("reference", false);
 
 	SceneGraphics->SetHUD(true);
+
+	for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it)
+	{
+		(*it)->Render(Vector3());
+	}
+
 	std::ostringstream ss;
 	ss.str("");
 	ss << "Scene 2 - FPS:" << framerates;
