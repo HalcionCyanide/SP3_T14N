@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "GenericNPC.h"
+#include "Vector3.h"
 
 class GuardCapt : public GenericNPC
 {
