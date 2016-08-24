@@ -5,6 +5,7 @@
 UI_Element::UI_Element(const UI_Element::UI_TYPES& UI_Type, const std::string& name, const Vector3& Position, const Vector3& SpawnPosition, const Vector3& Dimensions, const Vector3& TargetPosition, const std::string& UI_Text)
 {
 	this->UI_Type = UI_Type;
+	this->UI_Bounds = nullptr;
 	Init(name, Position, SpawnPosition, Dimensions, TargetPosition, UI_Text);
 }
 

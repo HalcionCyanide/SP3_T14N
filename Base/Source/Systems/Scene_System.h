@@ -52,7 +52,7 @@ public:
 
 	InputManager *cSS_InputManager;
 
-	BattleSystem BattleSystem;
+	BattleSystem *BSys;
 	std::map<std::string, Enemy*> EnemyData;
 
     GlobalPlayer* gPlayer;
