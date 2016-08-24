@@ -7,9 +7,6 @@
 #include "..\\Systems\\Scene_System.h"
 #include <algorithm>
 #include "..\\Misc\\LoadHmap.h"
-#include "Town1GateBoundary.h"
-#include "FreeFieldGateBoundary.h"
-#include "../Misc/LoadEnemyData.h"
 
 std::map<unsigned char, GenericEntity*> GameMap::bunchOfLegends;
 
@@ -246,25 +243,6 @@ bool GameMap::loadThoseLegends(const std::string &fileName)
 							delete go;
 						}
                         else {
-                            //if (go->getName().find("gate") != std::string::npos)
-                            //if (checkWhetherTheWordInThatString("gate", go->getName()))
-                            //{
-                            //    std::string theKeyName = go->getName();
-                            //    convertStringToUpperCaps(theKeyName);
-                            //    if (checkWhetherTheWordInThatString("TOWN1", theKeyName))
-                            //    {
-                            //        Town1GateBoundary *theTown1Transition = new Town1GateBoundary();
-                            //        go->settingNewBounds(*theTown1Transition);
-                            //    }
-                            //    else if (checkWhetherTheWordInThatString("FREEFIELD", theKeyName))
-                            //    {
-                            //        FreeFieldGateBoundary *theFreeFieldTransition = new FreeFieldGateBoundary();
-                            //        go->settingNewBounds(*theFreeFieldTransition);
-                            //    }
-                            //    else
-                            //        go->SetBounds();
-                            //}
-                            //else
                                 go->SetBounds();
                         }
 					}

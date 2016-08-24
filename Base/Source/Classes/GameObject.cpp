@@ -39,7 +39,8 @@ void GameObject::SetBounds()
     if (checkWhetherTheWordInThatString("gate", getName()))
     {
         delete Bounds;
-        std::string keyName = getName();
+        std::string keyName =  getName();
+        convertStringToUpperCaps(keyName);
         if (checkWhetherTheWordInThatString("TOWN1", keyName))
             Bounds = new Town1GateBoundary();
         else if (checkWhetherTheWordInThatString("FREEFIELD", keyName))
@@ -60,7 +61,8 @@ Boundary* GameObject::GetBoundary()const
 
 GameObject& GameObject::operator= (const GameObject &object)
 {
-	SetMesh(object.GetMesh());
+    name_ = object.name_;
+    SetMesh(object.GetMesh());
 	SetPosition(object.GetPosition());
 	SetDimensions(object.GetDimensions());
 	SetVelocity(object.GetVelocity());
