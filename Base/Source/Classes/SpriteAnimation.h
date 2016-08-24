@@ -26,7 +26,7 @@ class SpriteAnimation : public Mesh
 {
 public:
 	SpriteAnimation(const std::string &meshName = "", int row = 0, int col = 0);
-	~SpriteAnimation();
+	virtual ~SpriteAnimation();
 	void Update(double dt);
 	virtual void Render();
 	int m_row;
