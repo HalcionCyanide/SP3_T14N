@@ -78,6 +78,7 @@ void SceneTown1::Init()
 
 	CenterPosition.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 	NewL->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", CenterPosition, -CenterPosition, Vector3(400, 100, 1), -CenterPosition, "Exit");
+
 	UI_Sys.cUIS_LayerContainer.push_back(NewL);
 }
 
@@ -149,13 +150,20 @@ void SceneTown1::Update(float dt)
 		(*it)->Update((float)dt);
 	}
 
+	if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
+	{
+		Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0.f;
+		Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0.f;
+	}
+
 	for (auto it : Scene_System::accessing().allNPCs)
 	{
 		if (it->interacting)
 		{
 			for (std::vector<UI_Element*>::iterator it2 = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it2 != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it2)
 			{
-				(*it2)->TargetPosition = CenterPosition;
+				(*it2)->TargetPosition.x = CenterPosition.x * 1.6f;
+				(*it2)->TargetPosition.y = CenterPosition.y * 0.6f;
 			}
 			Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
 			camera.target = Vector3(it->GetPosition().x, camera.PlayerHeight, it->GetPosition().z);
@@ -163,11 +171,11 @@ void SceneTown1::Update(float dt)
 		}
 		else
 		{
+			Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
 			for (std::vector<UI_Element*>::iterator it2 = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it2 != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it2)
 			{
 				(*it2)->TargetPosition = -CenterPosition;
 				Scene_System::accessing().allNPCs.at(0)->interacting = false;
-				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
 			}
 		}
 
