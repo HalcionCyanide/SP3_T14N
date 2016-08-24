@@ -9,7 +9,10 @@ public:
 	Town1GateBoundary();
 	virtual ~Town1GateBoundary();
 
-private:
+    virtual bool CheckCollision(const Boundary &object);
+    virtual float GetOverlappingDistance()const;
+
+protected:
 
 };
 
