@@ -49,6 +49,4 @@ private:
 	std::vector<GameObject*> ObjectVec;
 	GameObject* Player;
     double framerates;
-
-	UI_System UI_Sys;
 };

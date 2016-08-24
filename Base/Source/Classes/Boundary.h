@@ -31,10 +31,17 @@ public:
 	Projection SetProjection(const Vector3 &axis, std::vector<Vector3> vertice);
 	Projection SetProjectionPoint(const Vector3 &axis, const Vector3 &point);
 
-protected:
+	virtual void SetOverlappingAxis(const Vector3 &axis);
+	virtual void SetOverlappingDistance(const float &distance);
 
+	Vector3 GetOverlappingAxis()const;
+	float GetOverlappingDistance()const;
+
+protected:
 	int VerticeNo;
 	std::vector<Vector3> Axis;
 	std::vector<Vector3> Vertices;
+	Vector3 OverlappingAxis;
+	float OverlappingDistance;
 };
 #endif
