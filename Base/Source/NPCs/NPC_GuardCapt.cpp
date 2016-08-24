@@ -18,8 +18,7 @@ void GuardCapt::Init()
 
 		if (q->getGiver() == name_)
 		{
-			Quest* checker = q;
-			giveable.push_back(q);
+			allQuests.push_back(q);
 		}
 	}
 }

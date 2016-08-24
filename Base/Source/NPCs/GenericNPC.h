@@ -16,7 +16,7 @@ struct GenericNPC : public GameObject
 
 	bool interacting;
 	std::string flavourText;
-	std::vector<Quest*> giveable;
+	std::vector<Quest*> allQuests;
 	std::vector<Quest*> completed;
 private:
 	Vector3 target;
