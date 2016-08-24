@@ -21,7 +21,6 @@ public:
     virtual void Exit();
 
     Camera3 camera;
-
 private:
     // Shadow GPass
     void RenderPassGPass();
@@ -44,6 +43,8 @@ private:
     double framerates;
     GenericEntity *theInteractiveMap;
     std::vector<GameObject*> objVec;
+	Vector3 CenterPosition;
+	UI_System UI_Sys;
 };
 
 #endif // _SCENE_TOWN_1_H

@@ -19,6 +19,9 @@ public:
 
 	bool DetermineCollision(const Projection &value);
 	bool DetermineCollision(const float &value);
+
+	float GetOverlappingDistance(const Projection &value)const;
+
 private:
 	float min;
 	float max;

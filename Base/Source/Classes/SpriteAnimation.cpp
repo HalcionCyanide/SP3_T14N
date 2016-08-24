@@ -72,17 +72,23 @@ void SpriteAnimation::Render() // Same as Mesh.cpp render
 		glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Position) + sizeof(Color) + sizeof(Vector3)));
 	}
 
-	int SpritePos = m_anim->endFrame - m_anim->startFrame + 1;
+	//int SpritePos = m_anim->endFrame - m_anim->startFrame + 1;
 
 	//glDrawArrays(GL_TRIANGLES, 0, 3);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 
-	if (mode == DRAW_LINES)
-		glDrawElements(GL_LINES, SpritePos, GL_UNSIGNED_INT, (void*)(m_currentFrame * SpritePos * sizeof(GLuint)));
-	else if (mode == DRAW_TRIANGLE_STRIP)
-		glDrawElements(GL_TRIANGLE_STRIP, SpritePos, GL_UNSIGNED_INT, (void*)(m_currentFrame * SpritePos * sizeof(GLuint)));
-	else
-		glDrawElements(GL_TRIANGLES, SpritePos, GL_UNSIGNED_INT, (void*)(m_currentFrame * SpritePos * sizeof(GLuint)));
+	//if (mode == DRAW_LINES)
+	//	glDrawElements(GL_LINES, SpritePos, GL_UNSIGNED_INT, (void*)(m_currentFrame * SpritePos * sizeof(GLuint)));
+	//else if (mode == DRAW_TRIANGLE_STRIP)
+	//	glDrawElements(GL_TRIANGLE_STRIP, SpritePos, GL_UNSIGNED_INT, (void*)(m_currentFrame * SpritePos * sizeof(GLuint)));
+	//else
+	//	glDrawElements(GL_TRIANGLES, SpritePos, GL_UNSIGNED_INT, (void*)(m_currentFrame * SpritePos * sizeof(GLuint)));
+    if (mode == DRAW_LINES)
+        glDrawElements(GL_LINES, 6, GL_UNSIGNED_INT, (void*)(m_currentFrame * 6 * sizeof(GLuint)));
+    else if (mode == DRAW_TRIANGLE_STRIP)
+        glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_INT, (void*)(m_currentFrame * 6 * sizeof(GLuint)));
+    else
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(m_currentFrame * 6 * sizeof(GLuint)));
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);

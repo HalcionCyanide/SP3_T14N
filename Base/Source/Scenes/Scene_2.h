@@ -9,6 +9,7 @@
 #include "..\\Misc\\Utility.h"
 #include <vector>
 #include "..\\Systems\\BillboardManager.h"
+#include "..\\Systems\\UI_System.h"
 #include "..\\Classes\\GameObject.h"
 
 class Scene_2 : public SceneEntity

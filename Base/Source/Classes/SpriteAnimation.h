@@ -6,6 +6,7 @@
 struct Animation
 {
 	Animation() {}
+    ~Animation() {}
 	void Set(int startFrame, int endFrame, int repeat, float time, bool active)
 	{
 		this->startFrame = startFrame;
@@ -13,6 +14,7 @@ struct Animation
 		this->repeatCount = repeat;
 		this->animTime = time;
 		this->animActive = active;
+        ended = false;
 	}
 	int startFrame;
 	int endFrame;
@@ -26,7 +28,7 @@ class SpriteAnimation : public Mesh
 {
 public:
 	SpriteAnimation(const std::string &meshName = "", int row = 0, int col = 0);
-	~SpriteAnimation();
+	virtual ~SpriteAnimation();
 	void Update(double dt);
 	virtual void Render();
 	int m_row;

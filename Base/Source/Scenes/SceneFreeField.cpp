@@ -5,7 +5,7 @@
 #include "SceneTown1.h"
 #include "SceneTown2.h"
 #include "SceneTown3.h"
-
+#include "SceneBattleScreen.h"
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\PlayerObject.h"
 
@@ -39,18 +39,13 @@ void SceneFreeField::Init()
 	camera.Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
 
 	// Initiallise Model Specific Meshes Here
-	Mesh* newMesh = MeshBuilder::GenerateTerrain("FreeField", "HeightMapFiles//heightmap5.raw", m_heightMap);
+	Mesh* newMesh = MeshBuilder::GenerateTerrain("FreeField", "HeightMapFiles//heightmap_FreeField.raw", m_heightMap);
 	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera.position.x / TerrainScale.x, camera.position.z / TerrainScale.z) + camera.PlayerHeight;
 	Application::cA_CurrentTerrainY = Application::cA_MinimumTerrainY;
-
-	//for (int i = 0; i < 8; i++)
-	//{
-	//    BManager.AddHMapBillboard("Tree", m_heightMap, TerrainScale, Vector3((float)i * 10.f), Vector3(10.f, 20.f, 10.f), Vector3(), camera.position);
-	//}
 
 	theInteractiveMap = new GameMap();
 	GameMap *theMap = dynamic_cast<GameMap*>(theInteractiveMap);
@@ -72,6 +67,15 @@ void SceneFreeField::Init()
 	camera.position = PlayerPTR->GetPosition();
 	camera.UpdateCameraVectors();
 	//<!> There can only be 1 Player
+
+	CurrentEncounterRateBoost = 0;
+	PreviousPosition = camera.position;
+	PreviousPosition.y = Application::cA_MinimumTerrainY;
+
+	// Codes to swap to bs
+	/*std::map<std::string, Enemy*>::iterator it2 = Scene_System::accessing().EnemyData.begin();
+	Scene_System::accessing().BSys->SetEnemy(*it2->second);
+	Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);*/
 }
 
 void SceneFreeField::Update(float dt)
@@ -91,6 +95,29 @@ void SceneFreeField::Update(float dt)
 		}
 	}
 	Vector3 Center(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 2, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight / 2, 0);
+
+	if ((camera.position - PreviousPosition).LengthSquared() > 25.f) // 5 Units
+	{
+		if (CurrentEncounterRateBoost < MaxEncounterRate)
+			CurrentEncounterRateBoost += 10;
+		PreviousPosition = camera.position;
+		PreviousPosition.y = Application::cA_MinimumTerrainY;
+	}
+	if (EncounterTimer < EncounterTimeCheck)
+	{
+		EncounterTimer += (float)dt;
+	}
+	else if ((camera.position - PreviousPosition).LengthSquared() > 4.f) // 2 Units
+	{
+		EncounterTimer = 0;
+		if (Math::RandIntMinMax(0, MaxEncounterRate - CurrentEncounterRateBoost) < MaxEncounterRate * EncounterRatio)
+		{
+			CurrentEncounterRateBoost = 0;
+			std::map<std::string, Enemy*>::iterator it2 = Scene_System::accessing().EnemyData.begin();
+			Scene_System::accessing().BSys->SetEnemy(*it2->second);
+			Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
+		}
+	}
 
 	framerates = 1 / dt;
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('1'))
@@ -276,6 +303,7 @@ void SceneFreeField::RenderPassMain()
 		Position lightPosition_cameraspace = viewStack->Top() * SceneGraphics->lights[0].position;
 		glUniform3fv(SceneGraphics->m_parameters[SceneGraphics->U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
 	}
+	SceneGraphics->SetHUD(false);
 
 	Mtx44 perspective;
 	perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
@@ -321,12 +349,12 @@ void SceneFreeField::RenderPassMain()
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 125);
 	//<!> Removing soon
-	SceneGraphics->SetHUD(false);
 
 	ss.str("9, 0 - Toggle Mouse Modes");
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
 
+	SceneGraphics->SetHUD(false);
 }
 
 void SceneFreeField::Render()

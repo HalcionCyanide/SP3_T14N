@@ -18,7 +18,6 @@ SceneTown2::SceneTown2()
 	setName(id_);
 	theInteractiveMap = nullptr;
 	Player = nullptr;
-	playerbox = nullptr;
 }
 
 SceneTown2::~SceneTown2()
@@ -68,10 +67,6 @@ void SceneTown2::Init()
 	camera.position = PlayerPTR->GetPosition();
 	camera.UpdateCameraVectors();
 	//<!> There can only be 1 Player
-
-	playerbox = Player;
-	it = SceneGraphics->meshList.find("cube");
-	playerbox->SetMesh(it->second);
 }
 
 void SceneTown2::Update(float dt)
@@ -132,10 +127,6 @@ void SceneTown2::Update(float dt)
 	camera.position = PlayerPTR->GetPosition();
 	camera.UpdateCameraVectors();
 
-	playerbox->SetPosition(Vector3(PlayerPTR->GetPosition().x, PlayerPTR->GetPosition().y - 5, PlayerPTR->GetPosition().z));
-	//playerbox->SetPosition(PlayerPTR->GetPosition());
-
-	playerbox->GetBoundary()->ResetValues();
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('R'))
 	{
 		PlayerPTR->SetPosition(camera.defaultPosition);
@@ -178,7 +169,6 @@ void SceneTown2::RenderShadowCasters()
 		if (the3DObject && (camera.position - camera.target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
 			the3DObject->Render();
 	}
-	playerbox->Render();
 	//<!> will remove soon <!>
 }
 
@@ -290,6 +280,7 @@ void SceneTown2::RenderPassMain()
 		Position lightPosition_cameraspace = viewStack->Top() * SceneGraphics->lights[0].position;
 		glUniform3fv(SceneGraphics->m_parameters[SceneGraphics->U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
 	}
+	SceneGraphics->SetHUD(false);
 
 	Mtx44 perspective;
 	perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
@@ -335,12 +326,12 @@ void SceneTown2::RenderPassMain()
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 125);
 	//<!> Removing soon
-	SceneGraphics->SetHUD(false);
 
 	ss.str("9, 0 - Toggle Mouse Modes");
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
-
+	
+	SceneGraphics->SetHUD(false);
 }
 
 void SceneTown2::Render()

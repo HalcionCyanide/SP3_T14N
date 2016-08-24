@@ -246,6 +246,7 @@ void Application::Run()
 		{
 			Update();
 			Scene_System::accessing().getCurrScene().Render();
+			//MusicSystem::accessing().playBackgroundMusic("footstep");
         }
 		//Swap buffers
 		glfwSwapBuffers(m_window);
@@ -284,11 +285,11 @@ void Application::Update()
 
 void Application::Exit()
 {
-	_CrtDumpMemoryLeaks();
 	//Close OpenGL window and terminate GLFW
 	glfwDestroyWindow(m_window);
 	//Finalize and clean up GLFW
 	glfwTerminate();
+	_CrtDumpMemoryLeaks();
 }
 
 bool Application::loadGlobalStuff()

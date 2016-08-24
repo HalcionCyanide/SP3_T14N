@@ -17,11 +17,6 @@ PlayerObject::PlayerObject()
 	m_bJumping = false;
 	if (!Bounds)
 		Bounds = new Boundary();
-	//if (Bounds)
-	//{
-	//	delete Bounds;
-	//	Bounds = nullptr;
-	//}
 }
 
 PlayerObject::~PlayerObject()
@@ -47,23 +42,15 @@ void PlayerObject::Update(double dt)
 	{
 		if (theBoundaries)
 		{
-			Vector3 Xprediction;
-			Xprediction.Set(BaseObject::GetPosition().x + MovementValues.x, 0, BaseObject::GetPosition().z);
-			Vector3 Zprediction;
-			Zprediction.Set(BaseObject::GetPosition().x, 0, BaseObject::GetPosition().z + MovementValues.z);
-			//CheckBoundary here
 			for (std::vector<GameObject*>::iterator it = theBoundaries->begin(); it != theBoundaries->end(); ++it)
 			{
-				//Bounds->ResetValues();
-				CheckCollision(*(*it)->GetBoundary(), Xprediction);
-				if (MovementValues.IsEqual(0, MovementValues.x) == false && CheckCollision(*(*it)->GetBoundary(), Zprediction))
+				if (CheckCollision(*(*it)->GetBoundary(), BaseObject::GetPosition()))
 				{
-					CheckCollision(*(*it)->GetBoundary(), Xprediction);
-					MovementValues.x = 0;
+					CheckCollision(*(*it)->GetBoundary(), BaseObject::GetPosition());
+					SetPosition(this->GetPosition() - ((*it)->GetBoundary()->GetOverlappingDistance() * (*it)->GetBoundary()->GetOverlappingAxis()));
+					break;
 				}
-				//Bounds->ResetValues();
-				if (MovementValues.IsEqual(0, MovementValues.z) == false && CheckCollision(*(*it)->GetBoundary(), Zprediction))
-					MovementValues.z = 0;
+
 				if (MovementValues.IsZero())
 					break;
 			}
