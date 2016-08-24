@@ -80,7 +80,7 @@ void Scene_2::Init()
 	UI_Layer* NewL = new UI_Layer();
 
 	CenterPosition.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
-	NewL->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", CenterPosition, -CenterPosition, Vector3(400, 100, 1),CenterPosition, "");
+	NewL->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", CenterPosition, -CenterPosition, Vector3(400, 100, 1),-CenterPosition, "Exit");
 	UI_Sys.cUIS_LayerContainer.push_back(NewL);
 }
 
@@ -146,16 +146,40 @@ void Scene_2::Update(float dt)
 		(*it)->Update((float) dt);
 	}
 
-	if (Scene_System::accessing().allNPCs.at(0)->interacting)
+	for (auto it : Scene_System::accessing().allNPCs)
 	{
-		for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it)
+		if (it->interacting)
 		{
-			(*it)->TargetPosition = CenterPosition;
+			for (std::vector<UI_Element*>::iterator it2 = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it2 != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it2)
+			{
+				(*it2)->TargetPosition = CenterPosition;
+			}
+			Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+			camera.target = Vector3(it->GetPosition().x, camera.PlayerHeight, it->GetPosition().z);
+			camera.CurrentCameraRotation = Vector3(0,0,0);
 		}
-	}
-	else for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it)
-	{
-		(*it)->TargetPosition = -CenterPosition;
+		else
+		{
+			for (std::vector<UI_Element*>::iterator it2 = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it2 != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it2)
+			{
+				(*it2)->TargetPosition = -CenterPosition;
+				Scene_System::accessing().allNPCs.at(0)->interacting = false;
+				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+			}
+		}
+
+		for (std::vector<UI_Element*>::iterator it3 = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it3 != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it3)
+		{
+			bool ClickSucceeded = false;
+			(*it3)->BoundsActive = true;
+			(*it3)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+			if (ClickSucceeded)
+			{
+				(*it3)->TargetPosition = -CenterPosition;
+				Scene_System::accessing().allNPCs.at(0)->interacting = false;
+				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+			}
+		}
 	}
 }
 
@@ -329,6 +353,11 @@ void Scene_2::RenderPassMain()
 	for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it)
 	{
 		(*it)->Render(Vector3());
+	}
+
+	if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
+	{
+		SceneGraphics->RenderMeshIn2D("TFB_Gem", false, 100, 100, Scene_System::accessing().cSS_InputManager->GetMousePosition().x, Scene_System::accessing().cSS_InputManager->GetMousePosition().y);
 	}
 
 	std::ostringstream ss;
