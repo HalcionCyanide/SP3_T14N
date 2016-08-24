@@ -70,6 +70,7 @@ void SceneFreeField::Init()
 
 	CurrentEncounterRateBoost = 0;
 	PreviousPosition = camera.position;
+	PreviousPosition.y = Application::cA_MinimumTerrainY;
 
 	// Codes to swap to bs
 	/*std::map<std::string, Enemy*>::iterator it2 = Scene_System::accessing().EnemyData.begin();
@@ -100,6 +101,7 @@ void SceneFreeField::Update(float dt)
 		if (CurrentEncounterRateBoost < MaxEncounterRate)
 			CurrentEncounterRateBoost += 10;
 		PreviousPosition = camera.position;
+		PreviousPosition.y = Application::cA_MinimumTerrainY;
 	}
 	if (EncounterTimer < EncounterTimeCheck)
 	{
