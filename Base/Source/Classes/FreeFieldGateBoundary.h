@@ -10,6 +10,7 @@ public:
 	virtual ~FreeFieldGateBoundary();
 
     virtual bool CheckCollision(const Boundary &object);
+    virtual bool CheckCollision(const Vector3 &point);
     virtual float GetOverlappingDistance()const;
 };
 

@@ -46,6 +46,7 @@ void PlayerObject::Update(double dt)
 			{
 				if (CheckCollision(*(*it)->GetBoundary(), BaseObject::GetPosition()))
 				{
+                    //Checking a 2nd Time?
 					CheckCollision(*(*it)->GetBoundary(), BaseObject::GetPosition());
 					SetPosition(this->GetPosition() - ((*it)->GetBoundary()->GetOverlappingDistance() * (*it)->GetBoundary()->GetOverlappingAxis()));
 					break;
