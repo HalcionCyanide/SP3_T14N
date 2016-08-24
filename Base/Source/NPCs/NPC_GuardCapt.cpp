@@ -42,5 +42,10 @@ void GuardCapt::Update(double dt)
 		}
 
 		SetRotationAngle(currentAngle);
+
+		if (Scene_System::accessing().cSS_InputManager->GetKeyValue('Q'))
+		{
+			interacting = true;
+		}
 	}
 }
