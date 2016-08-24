@@ -197,3 +197,10 @@ Mesh &getMeshRef(const std::string &meshName)
     }
     return (*thePtr);
 }
+
+bool checkWhetherTheWordInThatString(const std::string &theWord, const std::string &theStr)
+{
+    if (theStr.find(theWord) != std::string::npos)
+        return true;
+    return false;
+}

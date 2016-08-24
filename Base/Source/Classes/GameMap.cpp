@@ -7,6 +7,9 @@
 #include "..\\Systems\\Scene_System.h"
 #include <algorithm>
 #include "..\\Misc\\LoadHmap.h"
+#include "Town1GateBoundary.h"
+#include "FreeFieldGateBoundary.h"
+#include "../Misc/LoadEnemyData.h"
 
 std::map<unsigned char, GenericEntity*> GameMap::bunchOfLegends;
 
@@ -242,8 +245,28 @@ bool GameMap::loadThoseLegends(const std::string &fileName)
 							theObject = new Billboard(go->GetPosition(), go->GetDimensions(), Vector3(0, 0, 0), Vector3(0, 0, 0), go->GetMeshName());
 							delete go;
 						}
-						else
-							go->SetBounds();
+                        else {
+                            //if (go->getName().find("gate") != std::string::npos)
+                            if (checkWhetherTheWordInThatString("gate", go->getName()))
+                            {
+                                std::string theKeyName = go->getName();
+                                convertStringToUpperCaps(theKeyName);
+                                if (checkWhetherTheWordInThatString("TOWN1", theKeyName))
+                                {
+                                    Town1GateBoundary *theTown1Transition = new Town1GateBoundary();
+                                    go->settingNewBounds(*theTown1Transition);
+                                }
+                                else if (checkWhetherTheWordInThatString("FREEFIELD", theKeyName))
+                                {
+                                    FreeFieldGateBoundary *theFreeFieldTransition = new FreeFieldGateBoundary();
+                                    go->settingNewBounds(*theFreeFieldTransition);
+                                }
+                                else
+                                    go->SetBounds();
+                            }
+                            else
+                                go->SetBounds();
+                        }
 					}
 				}
 				bunchOfLegends.insert(std::pair<unsigned char, GenericEntity*>(symbol, theObject));
