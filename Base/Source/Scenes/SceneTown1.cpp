@@ -275,6 +275,8 @@ void SceneTown1::RenderPassMain()
 		glUniform3fv(SceneGraphics->m_parameters[SceneGraphics->U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
 	}
 
+	SceneGraphics->SetHUD(false);
+
 	Mtx44 perspective;
 	perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
 	//perspective.SetToOrtho(-80, 80, -60, 60, -1000, 1000);
@@ -319,11 +321,11 @@ void SceneTown1::RenderPassMain()
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 125);
 	//<!> Removing soon
-	SceneGraphics->SetHUD(false);
 
 	ss.str("9, 0 - Toggle Mouse Modes");
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
+	SceneGraphics->SetHUD(false);
 
 }
 

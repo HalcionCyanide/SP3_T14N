@@ -126,6 +126,7 @@ void SceneBattleScreen::RenderPassMain()
 		Position lightPosition_cameraspace = viewStack->Top() * SceneGraphics->lights[0].position;
 		glUniform3fv(SceneGraphics->m_parameters[SceneGraphics->U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
 	}
+	SceneGraphics->SetHUD(false);
 
 	Mtx44 perspective;
 	perspective.SetToOrtho(0, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth, 0, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, -100, 100);
@@ -143,9 +144,8 @@ void SceneBattleScreen::RenderPassMain()
 
 	//SceneGraphics->RenderMesh("reference", false);
 
-	Scene_System::accessing().BSys->Render();
-
 	SceneGraphics->SetHUD(true);
+	Scene_System::accessing().BSys->Render();
 
 	if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
 	{
@@ -178,6 +178,7 @@ void SceneBattleScreen::RenderPassMain()
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 100);
 
+	SceneGraphics->SetHUD(false);
 }
 
 void SceneBattleScreen::Render()

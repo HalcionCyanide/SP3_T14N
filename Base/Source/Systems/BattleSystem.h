@@ -48,6 +48,8 @@ public:
 
 private:
 	// Private Variables
+	bool FleeSucceeded = false;
+	UI_Layer* EnemyLayer;
 	static const std::string UI_Text[10];
 	Enemy* CurrentEnemy; //<- To Store Attack Patterns and Stats
 	EnemyProjectile* CurrentProjectile;

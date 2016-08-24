@@ -45,18 +45,6 @@ void Scene_MainMenu::Init()
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	newMesh = MeshBuilder::GenerateQuad("TFB_Logo", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//TFB_Logo.tga");
-	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-
-	newMesh = MeshBuilder::GenerateQuad("TFB_Gem", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//TFB_GEM.tga");
-	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-
-	newMesh = MeshBuilder::GenerateQuad("TFB_Button", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//TFB_Button.tga");
-	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera.position.x / TerrainScale.x, camera.position.z / TerrainScale.z) + camera.PlayerHeight;
 	Application::cA_CurrentTerrainY = Application::cA_MinimumTerrainY;
 
@@ -94,95 +82,6 @@ void Scene_MainMenu::InitSceneUIElems()
 
 void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cState)
 {
-	//for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_ElementContainer.begin(); it != UI_Sys.cUIS_ElementContainer.end(); ++it)
-	//{
-	//	if ((*it)->Active)
-	//	{
-	//		bool ClickSucceeded = false;
-	//		if (CurrentMenuState == S_FIRSTLEVEL)
-	//		{
-	//			(*it)->BoundsActive = true;
-	//			if (((*it)->UI_Text == UI_Text[1] || (*it)->UI_Text == UI_Text[2] || (*it)->UI_Text == UI_Text[3]))
-	//			{
-	//				(*it)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
-	//				if (ClickSucceeded)
-	//				{
-	//					if (((*it)->UI_Text == UI_Text[1]))
-	//					{
-	//						// Start
-	//						CurrentMenuState = S_SECONDLEVEL;
-	//						for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_ElementContainer.begin(); it != UI_Sys.cUIS_ElementContainer.end(); ++it)
-	//						{
-	//							if (((*it)->UI_Text == UI_Text[1] || (*it)->UI_Text == UI_Text[2] || (*it)->UI_Text == UI_Text[3]))
-	//							{
-	//								(*it)->SwapOriginalWithTarget();
-	//							}
-	//							else if (((*it)->UI_Text == UI_Text[4] || (*it)->UI_Text == UI_Text[5] || (*it)->UI_Text == UI_Text[6]))
-	//							{
-	//								(*it)->SwapOriginalWithTarget();
-	//							}
-	//						}
-	//					}
-	//					else if (((*it)->UI_Text == UI_Text[2]))
-	//					{
-	//						// Settings
-	//						Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-	//						std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.begin();
-	//						Scene_System::accessing().BSys->SetEnemy(*it->second);
-	//						Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
-	//					}
-	//					else if (((*it)->UI_Text == UI_Text[3]))
-	//					{
-	//						// Exit
-	//						Application::ExitGame = true;
-	//					}
-	//				}
-	//			}
-	//			else if ((*it)->Active)
-	//				(*it)->Update((float)dt);
-	//		}
-	//		else if (CurrentMenuState == S_SECONDLEVEL)
-	//		{
-	//			if (((*it)->UI_Text == UI_Text[4] || (*it)->UI_Text == UI_Text[5] || (*it)->UI_Text == UI_Text[6]))
-	//			{
-	//				(*it)->BoundsActive = true;
-	//				(*it)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
-	//				if (ClickSucceeded)
-	//				{
-	//					if (((*it)->UI_Text == UI_Text[4]))
-	//					{
-	//						// Start
-	//						Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-	//						Scene_System::accessing().SwitchScene(SceneTown1::id_);
-	//						//Scene_System::accessing().SwitchScene(SceneTown1::id_);
-	//					}
-	//					else if (((*it)->UI_Text == UI_Text[5]))
-	//					{
-	//						// Load
-	//					}
-	//					else if (((*it)->UI_Text == UI_Text[6]))
-	//					{
-	//						// Return
-	//						CurrentMenuState = S_FIRSTLEVEL;
-	//						for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_ElementContainer.begin(); it != UI_Sys.cUIS_ElementContainer.end(); ++it)
-	//						{
-	//							if (((*it)->UI_Text == UI_Text[4] || (*it)->UI_Text == UI_Text[5] || (*it)->UI_Text == UI_Text[6]))
-	//							{
-	//								(*it)->SwapOriginalWithTarget();
-	//							}
-	//							else if (((*it)->UI_Text == UI_Text[1] || (*it)->UI_Text == UI_Text[2] || (*it)->UI_Text == UI_Text[3]))
-	//							{
-	//								(*it)->SwapOriginalWithTarget();
-	//							}
-	//						}
-	//					}
-	//				}
-	//			}
-	//			else if ((*it)->Active)
-	//				(*it)->Update((float)dt);
-	//		}
-	//	}
-	//}
 	bool ClickSucceeded = false;
 	for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(); it != UI_Sys.cUIS_LayerContainer.end(); ++it)
 	{
@@ -472,6 +371,7 @@ void Scene_MainMenu::RenderPassMain()
 		Position lightPosition_cameraspace = viewStack->Top() * SceneGraphics->lights[0].position;
 		glUniform3fv(SceneGraphics->m_parameters[SceneGraphics->U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
 	}
+	SceneGraphics->SetHUD(false);
 
 	Mtx44 perspective;
 	perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
@@ -532,12 +432,11 @@ void Scene_MainMenu::RenderPassMain()
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 125);
 	//<!> Removing soon
-	SceneGraphics->SetHUD(false);
-
 	ss.str("9, 0 - Toggle Mouse Modes");
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
 
+	SceneGraphics->SetHUD(false);
 }
 
 void Scene_MainMenu::Render()

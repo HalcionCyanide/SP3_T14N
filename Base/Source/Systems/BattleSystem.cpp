@@ -1,11 +1,13 @@
 #include "BattleSystem.h"
 #include "Scene_System.h"
+#include "..//Scenes//Scene_MainMenu.h"
 #include <string>
 
 BattleSystem::BattleSystem()
 {
     CurrentEnemy = nullptr;
 	//Init();
+	FleeSucceeded = false;
 }
 
 BattleSystem::~BattleSystem()
@@ -70,6 +72,26 @@ void BattleSystem::Update(double dt)
 	case BS_Fail:
 		// U Fail
 		break;
+	}
+	if (FleeSucceeded)
+	{
+		FleeSucceeded = false;
+		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+		Scene_System::accessing().SwitchToPreviousScene();
+		Scene_MainMenu* S = dynamic_cast<Scene_MainMenu*>(&Scene_System::accessing().getCurrScene());
+		S->camera.Reset();
+		S->camera.CameraIsLocked = true;
+
+		BattleState = BS_PlayerTurn;
+		if (EnemyLayer)
+		{
+			for (std::vector<UI_Element*>::iterator it = EnemyLayer->cUI_Layer.begin(); it != EnemyLayer->cUI_Layer.end(); ++it)
+			{
+				(*it)->Exit();
+				delete *it;
+			}
+			EnemyLayer->cUI_Layer.clear();
+		}
 	}
 }
 
@@ -142,9 +164,9 @@ BattleScreenObject* BattleSystem::GetInactiveBSO()
 void BattleSystem::SetEnemy(Enemy& Enemy)
 {
 	CurrentEnemy = &Enemy;
-	UI_Layer* NewL = new UI_Layer();
-	NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, CurrentEnemy->MeshName, Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(400, 400, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.6f, 0), UI_Text[0]);
-	UI_Sys.cUIS_LayerContainer.push_back(NewL);
+	EnemyLayer = new UI_Layer();
+	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, CurrentEnemy->MeshName, Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(400, 400, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.6f, 0), UI_Text[0]);
+	UI_Sys.cUIS_LayerContainer.push_back(EnemyLayer);
 }
 
 // Private Function Calls
@@ -164,10 +186,31 @@ void BattleSystem::UpdatePlayerTurn(float dt)
 				(*it2)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
 				if (ClickSucceeded)
 				{
-					BattleState = BS_PlayerEvasionStage;
 					IFrameTimer = 0;
 					isInvincible = false;
-					if (UI_Sys.cUIS_LayerContainer.size() > 0)
+
+					if ((*it2)->UI_Text == UI_Text[1])
+					{
+						//Check
+						BattleState = BS_PlayerEvasionStage;
+					}
+					else if ((*it2)->UI_Text == UI_Text[2])
+					{
+						//Inventory
+						BattleState = BS_PlayerEvasionStage;
+					}
+					else if ((*it2)->UI_Text == UI_Text[3])
+					{
+						//Seal
+						BattleState = BS_PlayerEvasionStage;
+					}
+					else if ((*it2)->UI_Text == UI_Text[4])
+					{
+						//Flee
+						FleeSucceeded = true;
+					}
+
+					if (!FleeSucceeded && UI_Sys.cUIS_LayerContainer.size() > 0)
 						for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(), end = UI_Sys.cUIS_LayerContainer.end(); it != end; ++it) {
 							UI_Layer *Layer = (*it);
 							for (std::vector<UI_Element*>::iterator it2 = Layer->cUI_Layer.begin(), end2 = Layer->cUI_Layer.end(); it2 != end2; ++it2)
@@ -221,15 +264,15 @@ void BattleSystem::UpdatePESPhase(float dt)
 	}
 	if (CurrentEnemy->CurrentAttackCount == CurrentProjectile->AttacksPerWave && ActiveCount == 0)
 	{
-		CurrentEnemy->CurrentAttackCount = 0;
-		CurrentEnemy->CurrentEnemyWave++;
-		BattleState = BS_PlayerTurn;
 		if (UI_Sys.cUIS_LayerContainer.size() > 0)
 			for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(), end = UI_Sys.cUIS_LayerContainer.end(); it != end; ++it) {
 				UI_Layer *Layer = (*it);
 				for (std::vector<UI_Element*>::iterator it2 = Layer->cUI_Layer.begin(), end2 = Layer->cUI_Layer.end(); it2 != end2; ++it2)
 				{
 					(*it2)->SwapOriginalWithTarget();
+					CurrentEnemy->CurrentAttackCount = 0;
+					CurrentEnemy->CurrentEnemyWave++;
+					BattleState = BS_PlayerTurn;
 				}
 			}
 	}
@@ -523,7 +566,7 @@ void BattleSystem::Attack_Bullet(EnemyProjectile& CurrentProjectile)
 	{
 		Vector3 DVec = (PlayerObj->GetPosition() - SpawnPos).Normalize() * CurrentProjectile.ScalarAcceleration; 
 		BattleScreenObject* BSO = GetInactiveBSO();
-		BSO->SetParameters(CurrentProjectile.StoredMesh, 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), DVec, 0, Vector3(0, 0, 1));
+		BSO->SetParameters(CurrentProjectile.StoredMesh, 5, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), DVec, 0, Vector3(0, 0, 1));
 		BSO->Type = BattleScreenObject::BS_Bullet;
 		BSO->Active = true;
 		BSO->SetMass(3.f);
