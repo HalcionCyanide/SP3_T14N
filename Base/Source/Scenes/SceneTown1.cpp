@@ -69,7 +69,7 @@ void SceneTown1::Init()
 	camera.UpdateCameraVectors();
 	//<!> There can only be 1 Player
 
-	Scene_System::accessing().allNPCs.at(0)->Init("NPC_guardcaptain", 1, Vector3(10, 0, 0), Vector3(10, 10, 10), Vector3(0, 0, 0), 0.f, Vector3(0, 1, 0));
+	Scene_System::accessing().allNPCs.at(0)->Init("NPC_guardcaptain", 1, Vector3(0, 0, 47.5f), Vector3(10, 10, 10), Vector3(0, 0, 0), 0.f, Vector3(0, 1, 0));
 	Scene_System::accessing().allNPCs.at(0)->SetPosition(Vector3(Scene_System::accessing().allNPCs.at(0)->GetPosition().x, TerrainScale.y * ReadHeightMap(m_heightMap, (Scene_System::accessing().allNPCs.at(0)->GetPosition().x / TerrainScale.x), (Scene_System::accessing().allNPCs.at(0)->GetPosition().z / TerrainScale.x)) + Scene_System::accessing().allNPCs.at(0)->GetDimensions().y * 0.5f, Scene_System::accessing().allNPCs.at(0)->GetPosition().z));
 	Scene_System::accessing().allNPCs.at(0)->SetBounds();
 	objVec.push_back(Scene_System::accessing().allNPCs.at(0));
