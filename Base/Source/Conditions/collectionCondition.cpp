@@ -30,10 +30,10 @@ void collectionCondition::Update(double dt)
 
 	/*
 	counter = capturedMonsters.size(); //eventually a vector for captured monsters. <?>*/
-	if(!satisfied)
+	if(!complete)
 	{
 		if(theRequirement <= counter)
-			satisfied = true;
+			complete = true;
 	}
 	else
 	{

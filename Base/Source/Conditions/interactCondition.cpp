@@ -25,11 +25,11 @@ void interactCondition::Update(double dt)
 	//stuff to increase the number, please remember to increase the counter as you go along.
 	/*<!>
 	//some pseudocode*/
-	if (!satisfied)
+	if (!complete)
 	{
 		//if (theRequirement.value_->getInteracting())
 		{
-			satisfied = true;
+			complete = true;
 		}
 	}
 	else

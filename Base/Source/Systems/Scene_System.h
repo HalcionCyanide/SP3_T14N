@@ -21,7 +21,7 @@ GraphicsEntity resides here.
 #include "..\\Systems\\BattleSystem.h"
 #include "..\\Classes\\GlobalPlayer.h"
 #include "questManager.h"
-#include "..\\NPCs\\genericNPC.h"
+#include "NPC_Manager.h"
 
 class GlobalPlayer;
 class InputManager;
@@ -58,8 +58,7 @@ public:
     GlobalPlayer* gPlayer;
 
 	questManager QM;
-
-	std::vector<GenericNPC*> allNPCs;
+	NPCManager NM;
 private:
 	std::stack<SceneEntity* > SceneHistory;
 

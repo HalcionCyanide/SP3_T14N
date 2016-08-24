@@ -20,21 +20,18 @@ public:
 	bool getActive();
 	void setActive(bool);
 
-	std::string getGiver();
-	void setGiver(std::string);
-
-	std::vector<genericCondition*> getConds();
+	genericCondition* getConds();
 	void setCondition(std::string, std::string);
 
 	friend std::ostream& operator<<(std::ostream&, const Quest&);
 
 	virtual void Update(double dt);
-	bool satisfied;
+	
 private:
 	int id;
-	std::vector<genericCondition*> conditions;
+	genericCondition* conditions;
 	std::string questDesc;
-	std::string giver;
+	bool complete;
 	bool active;
 };
 
