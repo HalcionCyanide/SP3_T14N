@@ -5,6 +5,7 @@ NPC::NPC()
 	:interacting(false)
 	, flavourText("")
 	, target(Vector3(0,0,0))
+	, currentAngle(0.f)
 {
 }
 
@@ -44,7 +45,6 @@ void NPC::setTarget(const Vector3& i)
 
 void NPC::Update(double dt)
 {
-	static float currentAngle = 0.f;
 	float desiredAngle = Math::RadianToDegree(atan2(target.x - GetPosition().x, target.z - GetPosition().z));
 	if ((target - GetPosition()).LengthSquared() < 900)
 	{

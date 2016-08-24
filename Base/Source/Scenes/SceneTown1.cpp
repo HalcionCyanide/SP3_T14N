@@ -74,18 +74,21 @@ void SceneTown1::Init()
 	CenterPosition.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 	NewL->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", CenterPosition, -CenterPosition, Vector3(400, 100, 1), -CenterPosition, "Exit");
 
-	Scene_System::accessing().NM.allNPCs.at(0)->Init(Scene_System::accessing().NM.allNPCs.at(0)->getName(), 1, Vector3(0, 0, 47.5f), Vector3(10, 10, 10), Vector3(0, 0, 0), 0.f, Vector3(0, 1, 0));
+	int temp = 1;
+	for (auto it : Scene_System::accessing().NM.allNPCs)
+	{
+		it->Init(it->getName(), 1, Vector3(temp * 5.f, 0, temp * 5.f), Vector3(10, 10, 10), Vector3(0, 0, 0), 0.f, Vector3(0, 1, 0));
 
-	Scene_System::accessing().NM.allNPCs.at(0)->SetPosition(
-		Vector3(
-		Scene_System::accessing().NM.allNPCs.at(0)->GetPosition().x, 
-		TerrainScale.y * ReadHeightMap(m_heightMap, (Scene_System::accessing().NM.allNPCs.at(0)->GetPosition().x / TerrainScale.x), (Scene_System::accessing().NM.allNPCs.at(0)->GetPosition().z / TerrainScale.x)) + Scene_System::accessing().NM.allNPCs.at(0)->GetDimensions().y * 0.5f, 
-		Scene_System::accessing().NM.allNPCs.at(0)->GetPosition().z
-		));
+		it->SetPosition(
+			Vector3(it->GetPosition().x,
+			TerrainScale.y * ReadHeightMap(m_heightMap, (it->GetPosition().x / TerrainScale.x), (it->GetPosition().z / TerrainScale.x)) + it->GetDimensions().y * 0.5f, it->GetPosition().z
+			));
 
-	Scene_System::accessing().NM.allNPCs.at(0)->SetBounds();
-
-	objVec.push_back(Scene_System::accessing().NM.allNPCs.at(0));
+		it->SetBounds();
+		objVec.push_back(it);
+		temp++;
+	}
+	
 
 	UI_Sys.cUIS_LayerContainer.push_back(NewL);
 }
@@ -158,40 +161,44 @@ void SceneTown1::Update(float dt)
 		Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0.f;
 	}
 
-	Scene_System::accessing().Scene_System::accessing().NM.allNPCs.at(0)->setTarget(camera.position);
-	Scene_System::accessing().Scene_System::accessing().NM.allNPCs.at(0)->Update((float)dt);
 
-	if (Scene_System::accessing().Scene_System::accessing().NM.allNPCs.at(0)->getInteracting())
+	for (auto it : Scene_System::accessing().NM.allNPCs)
 	{
-		for (std::vector<UI_Element*>::iterator it2 = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it2 != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it2)
-		{
-			(*it2)->TargetPosition.x = CenterPosition.x * 1.6f;
-			(*it2)->TargetPosition.y = CenterPosition.y * 0.6f;
-		}
-		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
-		camera.target = Vector3(Scene_System::accessing().Scene_System::accessing().NM.allNPCs.at(0)->GetPosition().x, camera.PlayerHeight, Scene_System::accessing().Scene_System::accessing().NM.allNPCs.at(0)->GetPosition().z);
-		camera.CurrentCameraRotation = Vector3(0, 0, 0);
-	}
-	else
-	{
-		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-		for (std::vector<UI_Element*>::iterator it2 = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it2 != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it2)
-		{
-			(*it2)->TargetPosition = -CenterPosition;
-			Scene_System::accessing().Scene_System::accessing().NM.allNPCs.at(0)->setInteracting(false);
-		}
-	}
+		it->setTarget(camera.position);
+		it->Update((float)dt);
 
-	for (std::vector<UI_Element*>::iterator it3 = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it3 != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it3)
-	{
-		bool ClickSucceeded = false;
-		(*it3)->BoundsActive = true;
-		(*it3)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
-		if (ClickSucceeded)
+		if (it->getInteracting())
 		{
-			(*it3)->TargetPosition = -CenterPosition;
-			Scene_System::accessing().Scene_System::accessing().NM.allNPCs.at(0)->setInteracting(false);
+			for (std::vector<UI_Element*>::iterator it2 = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it2 != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it2)
+			{
+				(*it2)->TargetPosition.x = CenterPosition.x * 1.6f;
+				(*it2)->TargetPosition.y = CenterPosition.y * 0.6f;
+			}
+			Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+			camera.target = Vector3(it->GetPosition().x, camera.PlayerHeight,it->GetPosition().z);
+			camera.CurrentCameraRotation = Vector3(0, 0, 0);
+		}
+		else
+		{
 			Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+			for (std::vector<UI_Element*>::iterator it2 = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it2 != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it2)
+			{
+				(*it2)->TargetPosition = -CenterPosition;
+				it->setInteracting(false);
+			}
+		}
+
+		for (std::vector<UI_Element*>::iterator it3 = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it3 != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it3)
+		{
+			bool ClickSucceeded = false;
+			(*it3)->BoundsActive = true;
+			(*it3)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+			if (ClickSucceeded)
+			{
+				(*it3)->TargetPosition = -CenterPosition;
+				it->setInteracting(false);
+				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+			}
 		}
 	}
 

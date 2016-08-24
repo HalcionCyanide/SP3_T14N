@@ -17,6 +17,7 @@ public:
 
 	virtual void Update(double dt);
 private:
+	float currentAngle;
 	bool interacting;
 	std::string flavourText;
 	Vector3 target; //AKA player's position.
