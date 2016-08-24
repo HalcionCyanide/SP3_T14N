@@ -8,6 +8,7 @@
 
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\PlayerObject.h"
+#include "..\\Systems\\UI_System.h"
 
 std::string SceneTown1::id_ = "Scene Town 1";
 
@@ -67,6 +68,17 @@ void SceneTown1::Init()
 	camera.position = PlayerPTR->GetPosition();
 	camera.UpdateCameraVectors();
 	//<!> There can only be 1 Player
+
+	Scene_System::accessing().allNPCs.at(0)->Init("NPC_guardcaptain", 1, Vector3(0, 0, 47.5f), Vector3(10, 10, 10), Vector3(0, 0, 0), 0.f, Vector3(0, 1, 0));
+	Scene_System::accessing().allNPCs.at(0)->SetPosition(Vector3(Scene_System::accessing().allNPCs.at(0)->GetPosition().x, TerrainScale.y * ReadHeightMap(m_heightMap, (Scene_System::accessing().allNPCs.at(0)->GetPosition().x / TerrainScale.x), (Scene_System::accessing().allNPCs.at(0)->GetPosition().z / TerrainScale.x)) + Scene_System::accessing().allNPCs.at(0)->GetDimensions().y * 0.5f, Scene_System::accessing().allNPCs.at(0)->GetPosition().z));
+	Scene_System::accessing().allNPCs.at(0)->SetBounds();
+	objVec.push_back(Scene_System::accessing().allNPCs.at(0));
+
+	UI_Layer* NewL = new UI_Layer();
+
+	CenterPosition.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
+	NewL->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", CenterPosition, -CenterPosition, Vector3(400, 100, 1), -CenterPosition, "Exit");
+	UI_Sys.cUIS_LayerContainer.push_back(NewL);
 }
 
 void SceneTown1::Update(float dt)
@@ -125,6 +137,53 @@ void SceneTown1::Update(float dt)
 	camera.Update(dt);
 	camera.position = PlayerPTR->GetPosition();
 	camera.UpdateCameraVectors();
+
+	for (auto it : Scene_System::accessing().allNPCs)
+	{
+		it->setTarget(camera.position);
+		it->Update((float)dt);
+	}
+
+	for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it)
+	{
+		(*it)->Update((float)dt);
+	}
+
+	for (auto it : Scene_System::accessing().allNPCs)
+	{
+		if (it->interacting)
+		{
+			for (std::vector<UI_Element*>::iterator it2 = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it2 != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it2)
+			{
+				(*it2)->TargetPosition = CenterPosition;
+			}
+			Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+			camera.target = Vector3(it->GetPosition().x, camera.PlayerHeight, it->GetPosition().z);
+			camera.CurrentCameraRotation = Vector3(0, 0, 0);
+		}
+		else
+		{
+			for (std::vector<UI_Element*>::iterator it2 = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it2 != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it2)
+			{
+				(*it2)->TargetPosition = -CenterPosition;
+				Scene_System::accessing().allNPCs.at(0)->interacting = false;
+				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+			}
+		}
+
+		for (std::vector<UI_Element*>::iterator it3 = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it3 != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it3)
+		{
+			bool ClickSucceeded = false;
+			(*it3)->BoundsActive = true;
+			(*it3)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+			if (ClickSucceeded)
+			{
+				(*it3)->TargetPosition = -CenterPosition;
+				Scene_System::accessing().allNPCs.at(0)->interacting = false;
+				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+			}
+		}
+	}
 }
 
 void SceneTown1::RenderTerrain()
@@ -164,6 +223,11 @@ void SceneTown1::RenderShadowCasters()
 			the3DObject->Render();
 	}
 	//<!> will remove soon <!>
+
+	for (auto it : Scene_System::accessing().allNPCs)
+	{
+		it->Render();
+	}
 }
 
 void SceneTown1::RenderSkybox()
@@ -300,6 +364,17 @@ void SceneTown1::RenderPassMain()
 	SceneGraphics->RenderMesh("reference", false);
 
 	SceneGraphics->SetHUD(true);
+
+	for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it)
+	{
+		(*it)->Render(Vector3());
+	}
+
+	if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
+	{
+		SceneGraphics->RenderMeshIn2D("TFB_Gem", false, 100, 100, Scene_System::accessing().cSS_InputManager->GetMousePosition().x, Scene_System::accessing().cSS_InputManager->GetMousePosition().y);
+	}
+
 	std::ostringstream ss;
 	ss.str("");
 	ss << "Scene 1 - FPS:" << framerates;
@@ -347,11 +422,11 @@ void SceneTown1::Exit()
 		delete theInteractiveMap;
 	for (auto it : objVec)
 	{
-		if (it)
-		{
+		GenericNPC *theNPC = dynamic_cast<GenericNPC*>(it);
+		if (!theNPC)
 			delete it;
-		}
 	}
+	objVec.clear();
 	if (Player)
 		delete Player;
 }

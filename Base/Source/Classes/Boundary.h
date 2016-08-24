@@ -23,10 +23,10 @@ public:
 	std::vector<Vector3> GetAxis()const;
 	std::vector<Vector3> GetVertices()const;
 
-	bool CheckCollision(const Boundary &object);
-	bool CheckCollision(const Vector3 &point);
+	virtual bool CheckCollision(const Boundary &object);
+	virtual bool CheckCollision(const Vector3 &point);
 
-	void ResetValues();
+	virtual void ResetValues();
 	
 	Projection SetProjection(const Vector3 &axis, std::vector<Vector3> vertice);
 	Projection SetProjectionPoint(const Vector3 &axis, const Vector3 &point);
@@ -35,7 +35,7 @@ public:
 	virtual void SetOverlappingDistance(const float &distance);
 
 	Vector3 GetOverlappingAxis()const;
-	float GetOverlappingDistance()const;
+    virtual float GetOverlappingDistance()const;
 
 protected:
 	int VerticeNo;
