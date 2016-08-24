@@ -46,3 +46,12 @@ bool Projection::DetermineCollision(const float &value)
 {
 	return (value < this->min && value < this->max);
 }
+
+float Projection::GetOverlappingDistance(const Projection &value)const
+{
+	if (this->min < value.max && this->max > value.max)
+		return value.max - this->min;
+	else if (this->max > value.min && this->min < value.min)
+		return this->max - value.min;
+	return 0.f;
+}

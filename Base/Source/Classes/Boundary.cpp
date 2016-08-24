@@ -40,8 +40,8 @@ void Boundary::SetAxis()
 		Vector3 point1 = Vertices[i];
 		Vector3 point2 = Vertices[i + 1 == VerticeNo ? 0 : i + 1];
 		Vector3 edge = point1 - point2;
-		Vector3 N = Vector3(-edge.z, 0, edge.x);
-		//N.Normalize();
+		Vector3 N = Vector3(edge.z, 0, -edge.x);
+		N.Normalize();
 		Axis.push_back(N);
 	}
 }
@@ -52,9 +52,9 @@ void Boundary::SetVertices()
 	Mtx44 Rotation;
 	Rotation.SetToRotation(this->GetRotationAngle(), 0, 1, 0);
 	Vertices.push_back(this->GetPosition() + (Rotation * Vector3(this->GetDimensions().x, 0, this->GetDimensions().z) * 0.5f));
-	Vertices.push_back(this->GetPosition() + (Rotation * Vector3(this->GetDimensions().x, 0, -this->GetDimensions().z) * 0.5f));
-	Vertices.push_back(this->GetPosition() + (Rotation * Vector3(-this->GetDimensions().x, 0, -this->GetDimensions().z) * 0.5f));
 	Vertices.push_back(this->GetPosition() + (Rotation * Vector3(-this->GetDimensions().x, 0, this->GetDimensions().z) * 0.5f));
+	Vertices.push_back(this->GetPosition() + (Rotation * Vector3(-this->GetDimensions().x, 0, -this->GetDimensions().z) * 0.5f));
+	Vertices.push_back(this->GetPosition() + (Rotation * Vector3(this->GetDimensions().x, 0, -this->GetDimensions().z) * 0.5f));
 	Rotation.SetToZero();
 }
 
@@ -94,13 +94,28 @@ bool Boundary::CheckCollision(const Boundary &object)
 
 bool Boundary::CheckCollision(const Vector3 &point)
 {
+	SetOverlappingDistance(0.f);
+	SetOverlappingAxis(Vector3(0, 0, 0));
+	float overlap = 9999.f;
+	Vector3 overlappedAxis;
 	for (int i = 0; i < VerticeNo; i++)
 	{
 		Projection point1 = SetProjection(this->Axis[i], this->Vertices);
 		Projection point2 = SetProjectionPoint(this->Axis[i], point);
 		if (!point1.DetermineCollision(point2))
 			return false;
+		else
+		{
+			float value = point1.GetOverlappingDistance(point2);
+			if (overlap > value)
+			{
+				overlap = value;
+				overlappedAxis = this->Axis[i];
+			}
+		}
 	}
+	SetOverlappingDistance(overlap);
+	SetOverlappingAxis(overlappedAxis);
 	return true;
 }
 
@@ -132,4 +147,24 @@ Projection Boundary::SetProjectionPoint(const Vector3 &axis, const Vector3 &poin
 	min = max = (axis.x * point.x + axis.z * point.z);
 	Projection proj(min, max);
 	return proj;
+}
+
+void Boundary::SetOverlappingAxis(const Vector3 &axis)
+{
+	this->OverlappingAxis = axis;
+}
+
+void Boundary::SetOverlappingDistance(const float &distance)
+{
+	this->OverlappingDistance = distance;
+}
+
+Vector3 Boundary::GetOverlappingAxis()const
+{
+	return this->OverlappingAxis;
+}
+
+float Boundary::GetOverlappingDistance()const
+{
+	return this->OverlappingDistance;
 }
