@@ -30,7 +30,7 @@ void GuardCapt::Update(double dt)
 	float desiredAngle = Math::RadianToDegree(atan2(getTarget().x - GetPosition().x, getTarget().z - GetPosition().z));
 	if ((getTarget() - GetPosition()).LengthSquared() < 900)
 	{
-		float Speed = 50.f;
+		float Speed = 100.f;
 
 		if (currentAngle + Speed * dt < desiredAngle + Math::EPSILON)
 		{
