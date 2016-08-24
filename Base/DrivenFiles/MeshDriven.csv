@@ -29,5 +29,3 @@ NPC_priest,3dObject,OBJ//priest.obj,,,,Image//priest.tga,,,
 NPC_noblelady,3dObject,OBJ//princess.obj,,,,Image//princess.tga,,,
 Fire,quad,,1,1,1,Image//ExplosionParticle.tga,,,
 CrossMarker,quad,,1,1,1,Image//CrossMarker.tga,,,
-spidermonster,sprite,,,,,Image//spidermonster.tga,,2,2
-knightmonster,sprite,,,,,Image//knightmonster.tga,,1,2
