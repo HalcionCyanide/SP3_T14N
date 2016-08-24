@@ -40,8 +40,9 @@ void SceneBattleScreen::Init()
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	camera.Init(Vector3(0, 0, 1), Vector3(0, 0, 0), Vector3(0, 1, 0));
-	Scene_System::accessing().BattleSystem.Init();
-	Scene_System::accessing().BattleSystem.BManager.Init();
+	Scene_System::accessing().BSys = new BattleSystem();
+	Scene_System::accessing().BSys->Init();
+	Scene_System::accessing().BSys->BManager.Init();
 }
 
 void SceneBattleScreen::Update(float dt)
@@ -63,11 +64,11 @@ void SceneBattleScreen::Update(float dt)
 		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
 	}
 
-	Scene_System::accessing().BattleSystem.BManager.UpdateContainer(dt, camera.position);
+	Scene_System::accessing().BSys->BManager.UpdateContainer(dt, camera.position);
 
 	camera.Update(dt);
-	Scene_System::accessing().BattleSystem.Update((float)dt);
-	Scene_System::accessing().BattleSystem.UI_Sys.Update((float)dt);
+	Scene_System::accessing().BSys->Update((float)dt);
+	Scene_System::accessing().BSys->UI_Sys.Update((float)dt);
 }
 
 void SceneBattleScreen::RenderPassGPass()
@@ -142,7 +143,7 @@ void SceneBattleScreen::RenderPassMain()
 
 	//SceneGraphics->RenderMesh("reference", false);
 
-	Scene_System::accessing().BattleSystem.Render();
+	Scene_System::accessing().BSys->Render();
 
 	SceneGraphics->SetHUD(true);
 
@@ -151,7 +152,7 @@ void SceneBattleScreen::RenderPassMain()
 		modelStack->PushMatrix();
 		modelStack->Translate(Scene_System::accessing().cSS_InputManager->GetMousePosition().x, Scene_System::accessing().cSS_InputManager->GetMousePosition().y, 0);
 		modelStack->Rotate(0, 0, 1, 0);
-		modelStack->Scale(Scene_System::accessing().BattleSystem.PlayerObj->GetDimensions().x * 0.5f, Scene_System::accessing().BattleSystem.PlayerObj->GetDimensions().y * 0.5f, 1);
+		modelStack->Scale(Scene_System::accessing().BSys->PlayerObj->GetDimensions().x * 0.75f, Scene_System::accessing().BSys->PlayerObj->GetDimensions().y * 0.75f, 1);
 		SceneGraphics->RenderMesh("TFB_Gem", false);
 		modelStack->PopMatrix();
 	}
@@ -168,7 +169,7 @@ void SceneBattleScreen::RenderPassMain()
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
 
 	ss.str("");
-	ss << "Player Vel:" << Scene_System::accessing().BattleSystem.PlayerObj->GetVelocity();
+	ss << "Player Vel:" << Scene_System::accessing().BSys->PlayerObj->GetVelocity();
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
 
@@ -195,6 +196,6 @@ void SceneBattleScreen::Exit()
 {
 	if (theInteractiveMap)
 		delete theInteractiveMap;
-	Scene_System::accessing().BattleSystem.Exit();
-	Scene_System::accessing().BattleSystem.BManager.Exit();
+	Scene_System::accessing().BSys->Exit();
+	Scene_System::accessing().BSys->BManager.Exit();
 }

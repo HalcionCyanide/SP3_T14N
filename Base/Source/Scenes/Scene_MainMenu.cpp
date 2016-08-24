@@ -128,7 +128,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
 	//						// Settings
 	//						Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
 	//						std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.begin();
-	//						Scene_System::accessing().BattleSystem.SetEnemy(*it->second);
+	//						Scene_System::accessing().BSys->SetEnemy(*it->second);
 	//						Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
 	//					}
 	//					else if (((*it)->UI_Text == UI_Text[3]))
@@ -220,7 +220,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
 								// Settings
 								Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
 								std::map<std::string, Enemy*>::iterator it2 = Scene_System::accessing().EnemyData.begin();
-								Scene_System::accessing().BattleSystem.SetEnemy(*it2->second);
+								Scene_System::accessing().BSys->SetEnemy(*it2->second);
 								Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
 							}
 							else if (((*it2)->UI_Text == UI_Text[3]))

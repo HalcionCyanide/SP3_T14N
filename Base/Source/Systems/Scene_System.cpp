@@ -15,6 +15,7 @@ void Scene_System::Init()
 	GuardCapt* Guard_captain = new GuardCapt();
 	Guard_captain->Init();
 	allNPCs.push_back(Guard_captain);
+	BSys = nullptr;
 }
 
 void Scene_System::Update(double dt)
@@ -129,4 +130,6 @@ void Scene_System::clearEverything()
 		delete it;
 	}
 	allNPCs.clear();
+	if (BSys)
+		delete BSys;
 }

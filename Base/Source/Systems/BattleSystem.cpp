@@ -23,7 +23,7 @@ void BattleSystem::Init()
 	// Note Init Player and Enemy Here
 	CenterPosition.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 	PlayerScale = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.03f;
-	PlayerObj = new BattleScreenObject("ayylmao2", 3, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), Vector3(0, 0, 0), 0, Vector3(0, 0, 1));
+	PlayerObj = new BattleScreenObject("TFB_Gem3", 3, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), Vector3(0, 0, 0), 0, Vector3(0, 0, 1));
 
 	// Background If Needed
 	BaseExterior = new BattleScreenObject("GBox", 0.f, CenterPosition + Vector3(0, CenterPosition.y * 0.1f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.85f, 1), Vector3(), 0, Vector3(0, 0, 1));
@@ -36,8 +36,6 @@ void BattleSystem::Init()
 	InteriorBounds.SetPosition(BaseInterior->GetPosition());
 	InteriorBounds.SetDimensions(BaseInterior->GetDimensions());
 	InteriorBounds.ResetValues();
-
-	UI_Sys.Init();
 
 	UI_Layer* NewL = new UI_Layer();
 
@@ -115,7 +113,6 @@ void BattleSystem::Exit()
 		delete *it;
 	}
 	cBS_ObjectContainer.clear();
-    
 }
 
 BattleScreenObject* BattleSystem::GetInactiveBSO()
@@ -145,6 +142,9 @@ BattleScreenObject* BattleSystem::GetInactiveBSO()
 void BattleSystem::SetEnemy(Enemy& Enemy)
 {
 	CurrentEnemy = &Enemy;
+	UI_Layer* NewL = new UI_Layer();
+	NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, CurrentEnemy->MeshName, Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(400, 400, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.6f, 0), UI_Text[0]);
+	UI_Sys.cUIS_LayerContainer.push_back(NewL);
 }
 
 // Private Function Calls
@@ -165,10 +165,16 @@ void BattleSystem::UpdatePlayerTurn(float dt)
 				if (ClickSucceeded)
 				{
 					BattleState = BS_PlayerEvasionStage;
-					for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it)
-					{
-						(*it)->SwapOriginalWithTarget();
-					}
+					IFrameTimer = 0;
+					isInvincible = false;
+					if (UI_Sys.cUIS_LayerContainer.size() > 0)
+						for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(), end = UI_Sys.cUIS_LayerContainer.end(); it != end; ++it) {
+							UI_Layer *Layer = (*it);
+							for (std::vector<UI_Element*>::iterator it2 = Layer->cUI_Layer.begin(), end2 = Layer->cUI_Layer.end(); it2 != end2; ++it2)
+							{
+								(*it2)->SwapOriginalWithTarget();
+							}
+						}
 					int EnemyAttack = Math::RandIntMinMax(0, CurrentEnemy->cE_Projectiles.size() - 1);
 					CurrentProjectile = CurrentEnemy->cE_Projectiles[EnemyAttack];
 				}
@@ -218,10 +224,14 @@ void BattleSystem::UpdatePESPhase(float dt)
 		CurrentEnemy->CurrentAttackCount = 0;
 		CurrentEnemy->CurrentEnemyWave++;
 		BattleState = BS_PlayerTurn;
-		for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it)
-		{
-			(*it)->SwapOriginalWithTarget();
-		}
+		if (UI_Sys.cUIS_LayerContainer.size() > 0)
+			for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(), end = UI_Sys.cUIS_LayerContainer.end(); it != end; ++it) {
+				UI_Layer *Layer = (*it);
+				for (std::vector<UI_Element*>::iterator it2 = Layer->cUI_Layer.begin(), end2 = Layer->cUI_Layer.end(); it2 != end2; ++it2)
+				{
+					(*it2)->SwapOriginalWithTarget();
+				}
+			}
 	}
 	UpdatePlayer(dt);
 	UpdatePhysics(dt);
@@ -523,7 +533,7 @@ void BattleSystem::Attack_Bullet(EnemyProjectile& CurrentProjectile)
 
 void BattleSystem::Attack_Trap(EnemyProjectile& CurrentProjectile)
 {
-	Vector3 SpawnPos = PlayerObj->GetPosition();
+	Vector3 SpawnPos = PlayerObj->GetPosition() + Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0);
 	float RAngle = Math::RandFloatMinMax(-360.f, 360.f);
 	BattleScreenObject* BSO = GetInactiveBSO();
 	BSO->SetParameters("CrossMarker", 3, SpawnPos + Vector3(0, 0, -1), Vector3(PlayerScale, PlayerScale, 1), 0, RAngle, Vector3(0, 0, 1));
