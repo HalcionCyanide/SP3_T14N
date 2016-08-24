@@ -11,5 +11,4 @@ public:
 	virtual void readFile(const std::string);
 
 	std::vector<Quest*> allQuests;
-	std::vector<Quest*> completedQuests;
 };

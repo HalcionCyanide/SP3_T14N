@@ -30,7 +30,7 @@
     <ClCompile Include="Source\Mains\Application.cpp" />
     <ClCompile Include="Source\Classes\Billboard.cpp" />
     <ClCompile Include="Source\Misc\LoadEnemyData.cpp" />
-    <ClCompile Include="Source\NPCs\NPC_GuardCapt.cpp" />
+    <ClCompile Include="Source\NPCs\NPC.cpp" />
     <ClCompile Include="Source\Systems\BattleSystem.cpp" />
     <ClCompile Include="Source\Systems\BillboardManager.cpp" />
     <ClCompile Include="Source\Classes\Boundary.cpp" />
@@ -63,6 +63,7 @@
     <ClCompile Include="Source\Misc\MeshBuilder.cpp" />
     <ClCompile Include="Source\Scenes\Scene_2.cpp" />
     <ClCompile Include="Source\Scenes\Scene_MainMenu.cpp" />
+    <ClCompile Include="Source\Systems\NPC_Manager.cpp" />
     <ClCompile Include="Source\Systems\questManager.cpp" />
     <ClCompile Include="Source\Systems\Scene_System.cpp" />
     <ClCompile Include="Source\shader.cpp" />
@@ -125,8 +126,7 @@
     <ClInclude Include="Source\Misc\shader.hpp" />
     <ClInclude Include="Source\Misc\SimpleCommand.h" />
     <ClInclude Include="Source\Misc\Utility.h" />
-    <ClInclude Include="Source\NPCs\GenericNPC.h" />
-    <ClInclude Include="Source\NPCs\NPC_GuardCapt.h" />
+    <ClInclude Include="Source\NPCs\NPC.h" />
     <ClInclude Include="Source\Scenes\GraphicsEntity.h" />
     <ClInclude Include="Source\Scenes\SceneBattleScreen.h" />
     <ClInclude Include="Source\Scenes\SceneFreeField.h" />
@@ -140,6 +140,7 @@
     <ClInclude Include="Source\Systems\GenericSystem.h" />
     <ClInclude Include="Source\Systems\InputManager.h" />
     <ClInclude Include="Source\Systems\MusicSystem.h" />
+    <ClInclude Include="Source\Systems\NPC_Manager.h" />
     <ClInclude Include="Source\Systems\questManager.h" />
     <ClInclude Include="Source\Systems\Scene_System.h" />
     <ClInclude Include="Source\Systems\UI_System.h" />

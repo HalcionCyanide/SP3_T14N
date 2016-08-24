@@ -52,11 +52,11 @@ void gotoCondition::setValue(std::string i)
 void gotoCondition::Update(double dt)
 {
 	//stuff to increase the number, please remember to increase the counter as you go along.
-	if (!satisfied)
+	if (!complete)
 	{
 		//if ((Player.pos - (*theRequirement.value_)).LengthSquared() < dist)
 		{
-			satisfied = true;
+			complete = true;
 		}
 	}
 	else

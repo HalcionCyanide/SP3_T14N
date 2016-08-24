@@ -27,13 +27,13 @@ struct Data
 
 struct genericCondition
 {
-	genericCondition(){ satisfied = false; };
+	genericCondition(){ complete = false; };
 	virtual ~genericCondition(){};
 
 	virtual void setValue(std::string) = 0;
 	virtual void Update(double dt) = 0;
 
-	bool satisfied;
+	bool complete;
 };
 
 #endif

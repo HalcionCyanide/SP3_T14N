@@ -18,10 +18,10 @@ void captureCondition::Update(double dt)
 {
 	//stuff to increase the number, please remember to increase the counter as you go along.
 
-	if(!satisfied)
+	if(!complete)
 	{
 		//if ((theRequirement.value_->captured))
-		satisfied = true;
+		complete = true;
 	}
 	else
 	{
