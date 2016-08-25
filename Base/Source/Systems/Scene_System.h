@@ -60,7 +60,10 @@ public:
 
 	questManager QM;
 	NPCManager NM;
+    UI_System *theLoadingEffect;
+
 private:
+    void doingLoadingEffect();
 	std::stack<SceneEntity* > SceneHistory;
     std::map<std::string, SceneEntity*> theSceneList;
     SceneEntity *graphics_scene;
