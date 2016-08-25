@@ -12,8 +12,11 @@ Defines the global player
 #define _GLOBAL_PLAYER_H
 
 #include "PlayerObject.h"
+#include "Camera3.h"
+
 
 class PlayerObject;
+class Camera3;
 
 class GlobalPlayer : public GenericEntity
 {
@@ -44,8 +47,10 @@ public:
 	void SetMaxHealth(const int&);
 	void SetIsInteracting(const bool&);
 
-    bool loadPlayerSave(const std::string &fileName);
-    bool rewritePlayerSave(const std::string &fileName);
+    bool LoadPlayerSave(const std::string &fileName);
+    bool RewritePlayerSave(const std::string &fileName);
+
+    void SetCurrCam(Camera3 &theCam);
 
 private:
 	int Spell_Power;
@@ -53,6 +58,8 @@ private:
 	int MaxHealth;
 	bool IsInteracting;
 
+	Camera3 *CurrCamera;
+    std::string currSceneID;
 	// Quest Container
 	// Inventory Container
 	// Money

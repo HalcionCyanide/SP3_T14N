@@ -152,6 +152,8 @@ void Application::Init()
 	SceneGraphics->Init();
 	Scene_System::accessing().setGraphics_Scene(*SceneGraphics);
 
+    //Scene_System::accessing().doingLoadingEffect();
+
 	Scene_MainMenu *MainMenuScene = new Scene_MainMenu();
 	MainMenuScene->Init();
 	Scene_System::accessing().AddScene(*MainMenuScene);
