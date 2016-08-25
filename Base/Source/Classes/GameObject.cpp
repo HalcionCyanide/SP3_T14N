@@ -2,6 +2,7 @@
 #include "..\\Systems\\Scene_System.h"
 #include "..\\Scenes\\GraphicsEntity.h"
 #include "../Misc/LoadEnemyData.h"
+#include "GateBoundary.h"
 
 GameObject::GameObject()
 	//: BaseObject()
@@ -34,6 +35,18 @@ void GameObject::SetBounds()
 {
 	if (Bounds == nullptr)
 		Bounds = new Boundary();
+   // if (checkWhetherTheWordInThatString("gate", getName()))
+   // {
+   //     delete Bounds;
+   //     std::string keyName =  getName();
+   //     convertStringToUpperCaps(keyName);
+   //     if (checkWhetherTheWordInThatString("TOWN1", keyName))
+   //         Bounds = new GateBoundary(SceneTown1::id_);
+   //     else if (checkWhetherTheWordInThatString("FREEFIELD", keyName))
+			//Bounds = new GateBoundary(SceneFreeField::id_);
+   //     else
+   //         Bounds = new Boundary();
+   // }
 	Bounds->SetPosition(this->GetPosition());
 	Bounds->SetDimensions(this->GetDimensions());
 	Bounds->SetRotationAngle(this->GetRotationAngle());
