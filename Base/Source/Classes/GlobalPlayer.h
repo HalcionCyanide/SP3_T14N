@@ -44,6 +44,9 @@ public:
 	void SetMaxHealth(const int&);
 	void SetIsInteracting(const bool&);
 
+    bool loadPlayerSave(const std::string &fileName);
+    bool rewritePlayerSave(const std::string &fileName);
+
 private:
 	int Spell_Power;
 	int CurrentHealth;

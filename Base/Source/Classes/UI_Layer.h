@@ -16,9 +16,13 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
+	Vector3 LayerOriginalPosition;
+
 	Vector3 LayerCenterPosition;
 
 	Vector3 LayerTargetPosition;
+
+	void SwapOriginalWithTarget();
 
 	void UI_Layer::AddUIElement(const UI_Element::UI_TYPES& UI_Type, const std::string& name, const Vector3& Position, const Vector3& SpawnPosition, const Vector3& Dimension, const Vector3& TargetPosition, const std::string& UI_Text = "");
 

@@ -57,8 +57,7 @@ private:
 	double m_dAccumulatedTime_ThreadTwo;
 
     //<!> testing writing to files
-    bool loadGlobalStuff();
-    void convertStringToUpper(std::string &thestring);
+    bool loadThoseKeyCommandsStuff();
     //<!> testing writing to files
 };
 

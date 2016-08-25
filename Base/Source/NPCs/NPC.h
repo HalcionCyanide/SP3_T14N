@@ -15,8 +15,12 @@ public:
 	virtual void setTarget(const Vector3&);
 	virtual Vector3 getTarget();
 
+	virtual void SetDetectionRadiusSquared(const float&);
+	virtual float GetDetectionRadiusSquared();
+
 	virtual void Update(double dt);
 private:
+	float DetectionRadiusSquared;
 	float currentAngle;
 	bool interacting;
 	std::string flavourText;
