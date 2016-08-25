@@ -16,6 +16,7 @@ Defines the global player
 
 
 class PlayerObject;
+class Camera3;
 
 class GlobalPlayer : public GenericEntity
 {
@@ -57,7 +58,7 @@ private:
 	int MaxHealth;
 	bool IsInteracting;
 
-    Camera3 *CurrCamera;
+	Camera3 *CurrCamera;
     std::string currSceneID;
 	// Quest Container
 	// Inventory Container
