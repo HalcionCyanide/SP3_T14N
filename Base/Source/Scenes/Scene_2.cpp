@@ -120,9 +120,8 @@ void Scene_2::Update(float dt)
 	PlayerPTR->Update(dt);
 	PlayerPTR->SetRotationAngle(camera.CurrentCameraRotation.y);
 
-	camera.Update(dt);
 	camera.position = PlayerPTR->GetPosition();
-	camera.UpdateCameraVectors();
+	camera.Update(dt);
 }
 
 void Scene_2::RenderTerrain()

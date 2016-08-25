@@ -46,10 +46,10 @@ void NPC::setTarget(const Vector3& i)
 
 void NPC::Update(double dt)
 {
-	float desiredAngle = Math::RadianToDegree(atan2(target.x - GetPosition().x, target.z - GetPosition().z));
+	float desiredAngle = (float)(((int)Math::RadianToDegree(atan2(target.x - GetPosition().x, target.z - GetPosition().z))) % 360);
 	if ((target - GetPosition()).LengthSquared() < DetectionRadiusSquared)
 	{
-		float Speed = 50.f;
+		float Speed = 100.f;
 
 		if (currentAngle + Speed * dt < desiredAngle + Math::EPSILON)
 		{

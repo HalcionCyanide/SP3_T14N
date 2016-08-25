@@ -67,7 +67,6 @@ void SceneTown1::Init()
 	PlayerPTR->SetPosition(Vector3(Player->GetPosition().x, camera.PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPosition().x / TerrainScale.x), (Player->GetPosition().z / TerrainScale.z)), Player->GetPosition().z));
 	PlayerPTR->setPlayerBoundaries(objVec);
 	camera.position = PlayerPTR->GetPosition();
-	camera.UpdateCameraVectors();
 	//<!> There can only be 1 Player
 
 	int temp = 1;
@@ -206,9 +205,8 @@ void SceneTown1::Update(float dt)
 	PlayerPTR->Update(dt);
 	PlayerPTR->SetRotationAngle(camera.CurrentCameraRotation.y);
 
-	camera.Update(dt);
 	camera.position = PlayerPTR->GetPosition();
-	camera.UpdateCameraVectors();
+	camera.Update(dt);
 
 	ChatLayer->Update((float)dt);
 
@@ -218,6 +216,7 @@ void SceneTown1::Update(float dt)
 
 		// Update and rotate the NPC in accordance to the player[camera]'s position.
 		CurrentNPC->setTarget(camera.position);
+					
 		CurrentNPC->Update((float)dt);
 		float DistanceCheck = (camera.position - CurrentNPC->GetPosition()).LengthSquared();
 		if (DistanceCheck < CurrentNPC->GetDetectionRadiusSquared() && Scene_System::accessing().cSS_InputManager->GetKeyValue('Q') && !CurrentNPC->getInteracting())
@@ -233,6 +232,7 @@ void SceneTown1::Update(float dt)
 		{
 			// Enable the mouse.
 			Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+			camera.CameraIsLocked = true;
 			
 			// Set the player's target to face the NPC
 			camera.target = Vector3(CurrentNPC->GetPosition().x, camera.PlayerHeight, CurrentNPC->GetPosition().z);
@@ -243,14 +243,15 @@ void SceneTown1::Update(float dt)
 			{
 				case(0) : // Exit
 				{
+					camera.CameraIsLocked = false;
 					ChatLayer->SwapOriginalWithTarget();
 					CurrentNPC->setInteracting(false);
+					Scene_System::accessing().cSS_InputManager->SetMousePosition(CenterPosition);
 					Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
 				}
 				case(1) : // Q1
 				{
-					CurrentNPC->setInteracting(false);
-					Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+					// Set Stuffs
 				}
 			}
 			break;

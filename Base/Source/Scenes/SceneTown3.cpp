@@ -64,7 +64,6 @@ void SceneTown3::Init()
 	PlayerPTR->SetPosition(Vector3(Player->GetPosition().x, camera.PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPosition().x / TerrainScale.x), (Player->GetPosition().z / TerrainScale.z)), Player->GetPosition().z));
 	PlayerPTR->setPlayerBoundaries(objVec);
 	camera.position = PlayerPTR->GetPosition();
-	camera.UpdateCameraVectors();
 	//<!> There can only be 1 Player
 }
 
@@ -121,9 +120,8 @@ void SceneTown3::Update(float dt)
 	PlayerPTR->Update(dt);
 	PlayerPTR->SetRotationAngle(camera.CurrentCameraRotation.y);
 
-	camera.Update(dt);
 	camera.position = PlayerPTR->GetPosition();
-	camera.UpdateCameraVectors();
+	camera.Update(dt);
 }
 
 void SceneTown3::RenderTerrain()
