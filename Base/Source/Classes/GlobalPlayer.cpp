@@ -23,11 +23,12 @@ GlobalPlayer::~GlobalPlayer()
 // Main
 void GlobalPlayer::Init(const int& Spell_Power, const int& CurrentHealth, const int& MaxHealth, const bool& IsInteracting)
 {
+    CurrCamera = nullptr;
 	this->Spell_Power = Spell_Power;
 	this->CurrentHealth = CurrentHealth;
 	this->MaxHealth = MaxHealth;
 	this->IsInteracting = IsInteracting;
-    loadPlayerSave("DrivenFiles//PlayerSave1.csv");
+    LoadPlayerSave("DrivenFiles//PlayerSave1.csv");
 }
 
 void GlobalPlayer::Update(float dt)
@@ -38,7 +39,7 @@ void GlobalPlayer::Update(float dt)
 void GlobalPlayer::Exit()
 {
 	// SAVE STATS
-    rewritePlayerSave("DrivenFiles//PlayerSave1.csv");
+    RewritePlayerSave("DrivenFiles//PlayerSave1.csv");
 	// CLEAN UP
 
 }
@@ -85,7 +86,7 @@ void GlobalPlayer::SetIsInteracting(const bool& IsInteracting)
 	this->IsInteracting = IsInteracting;
 }
 
-bool GlobalPlayer::loadPlayerSave(const std::string &fileName)
+bool GlobalPlayer::LoadPlayerSave(const std::string &fileName)
 {
     std::ifstream file(fileName.c_str());
     if (file.is_open())
@@ -118,7 +119,7 @@ bool GlobalPlayer::loadPlayerSave(const std::string &fileName)
     return false;
 }
 
-bool GlobalPlayer::rewritePlayerSave(const std::string &fileName)
+bool GlobalPlayer::RewritePlayerSave(const std::string &fileName)
 {
     std::ifstream file(fileName.c_str());
     if (file.is_open())
@@ -159,4 +160,9 @@ bool GlobalPlayer::rewritePlayerSave(const std::string &fileName)
         return true;
     }
     return false;
+}
+
+void GlobalPlayer::SetCurrCam(Camera3 &theCam)
+{
+    CurrCamera = &theCam;
 }
