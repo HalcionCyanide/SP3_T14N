@@ -444,7 +444,7 @@
       <Filter>Header Files\Quests</Filter>
     </ClInclude>
     <ClInclude Include="Source\Classes\GateBoundary.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
