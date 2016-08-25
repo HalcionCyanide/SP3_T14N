@@ -4,6 +4,8 @@
 #include "Town1GateBoundary.h"
 #include "FreeFieldGateBoundary.h"
 #include "../Misc/LoadEnemyData.h"
+#include "BoundaryGate.h"
+#include "../Misc/LoadEnemyData.h"
 
 GameObject::GameObject()
 	//: BaseObject()
@@ -36,17 +38,22 @@ void GameObject::SetBounds()
 {
 	if (Bounds == nullptr)
 		Bounds = new Boundary();
-    if (checkWhetherTheWordInThatString("gate", getName()))
+    //if (checkWhetherTheWordInThatString("gate", getName()))
+    //{
+    //    delete Bounds;
+    //    std::string keyName =  getName();
+    //    convertStringToUpperCaps(keyName);
+    //    if (checkWhetherTheWordInThatString("TOWN1", keyName))
+    //        Bounds = new Town1GateBoundary();
+    //    else if (checkWhetherTheWordInThatString("FREEFIELD", keyName))
+    //        Bounds = new FreeFieldGateBoundary();
+    //    else
+    //        Bounds = new Boundary();
+    //}
+    if (checkWhetherTheWordInThatString("gate", name_))
     {
         delete Bounds;
-        std::string keyName =  getName();
-        convertStringToUpperCaps(keyName);
-        if (checkWhetherTheWordInThatString("TOWN1", keyName))
-            Bounds = new Town1GateBoundary();
-        else if (checkWhetherTheWordInThatString("FREEFIELD", keyName))
-            Bounds = new FreeFieldGateBoundary();
-        else
-            Bounds = new Boundary();
+        Bounds = new BoundaryGate();
     }
 	Bounds->SetPosition(this->GetPosition());
 	Bounds->SetDimensions(this->GetDimensions());

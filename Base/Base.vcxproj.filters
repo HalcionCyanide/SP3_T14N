@@ -171,9 +171,6 @@
     <ClCompile Include="Source\Systems\UI_System.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Misc\Utility.cpp">
-      <Filter>Source Files\Misc</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Systems\MusicSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
@@ -239,6 +236,12 @@
     </ClCompile>
     <ClCompile Include="Source\Systems\NPC_Manager.cpp">
       <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Misc\Utility.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Classes\BoundaryGate.cpp">
+      <Filter>Source Files\Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -451,6 +454,9 @@
     </ClInclude>
     <ClInclude Include="Source\Systems\NPC_Manager.h">
       <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Classes\BoundaryGate.h">
+      <Filter>Header Files\Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
