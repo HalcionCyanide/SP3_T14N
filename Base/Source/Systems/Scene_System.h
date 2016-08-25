@@ -22,6 +22,7 @@ GraphicsEntity resides here.
 #include "..\\Classes\\GlobalPlayer.h"
 #include "questManager.h"
 #include "NPC_Manager.h"
+#include "UI_System.h"
 
 class GlobalPlayer;
 class InputManager;
