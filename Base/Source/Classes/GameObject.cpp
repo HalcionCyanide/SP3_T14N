@@ -5,8 +5,6 @@
 //#include "FreeFieldGateBoundary.h"
 #include "../Misc/LoadEnemyData.h"
 #include "GateBoundary.h"
-#include "../Scenes/SceneTown1.h"
-#include "../Scenes/SceneFreeField.h"
 
 GameObject::GameObject()
 	//: BaseObject()
@@ -39,17 +37,11 @@ void GameObject::SetBounds()
 {
 	if (Bounds == nullptr)
 		Bounds = new Boundary();
-    if (checkWhetherTheWordInThatString("gate", getName()))
+    if (checkWhetherTheWordInThatString("Scene", getName()))
     {
         delete Bounds;
-        std::string keyName =  getName();
-        convertStringToUpperCaps(keyName);
-        if (checkWhetherTheWordInThatString("TOWN1", keyName))
-            Bounds = new GateBoundary(SceneTown1::id_);
-        else if (checkWhetherTheWordInThatString("FREEFIELD", keyName))
-			Bounds = new GateBoundary(SceneFreeField::id_);
-        else
-            Bounds = new Boundary();
+		Bounds = new GateBoundary();
+		Bounds->setName(getName());
     }
 	Bounds->SetPosition(this->GetPosition());
 	Bounds->SetDimensions(this->GetDimensions());

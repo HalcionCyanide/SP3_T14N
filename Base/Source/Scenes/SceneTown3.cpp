@@ -9,7 +9,7 @@
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\PlayerObject.h"
 
-std::string SceneTown3::id_ = "Scene Town 3";
+std::string SceneTown3::id_ = "3_Scene";
 
 SceneTown3::SceneTown3()
 	: SceneEntity()

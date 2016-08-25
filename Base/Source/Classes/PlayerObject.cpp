@@ -57,19 +57,19 @@ void PlayerObject::Update(double dt)
 	}
 	//if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
 	//	cameraObject->DecomposeMouseInertia(dt);
-    if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]))
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]) && !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]))
 	{
 		Walk((float)dt);
 	}
-    if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]))
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]) && !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]))
 	{
 		Walk(-(float)dt);
 	}
-    if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]))
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]) && !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]))
 	{
 		Strafe(-(float)dt);
 	}
-    if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]))
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]) && !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]))
 	{
 		Strafe((float)dt);
 	}
@@ -134,25 +134,25 @@ void PlayerObject::DecomposePlayerInertia(float dt)
 		SetVelocity(Vector3(0, GetVelocity().y, GetVelocity().z));
 	if (abs(GetVelocity().z) > 0 && abs(GetVelocity().z) <= NegligibleVelocity)
 		SetVelocity(Vector3(GetVelocity().x, GetVelocity().y, 0));
-    if (!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND])){
+	if (!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]) || (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]) && Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]))){
 		if (GetVelocity().x <= 0){
 			SetVelocity(Vector3(GetVelocity().x + MaxWalkSpeed * RateOfDecomposition * (float)dt, GetVelocity().y, GetVelocity().z));
 			P_BackwardMovement(dt);
 		}
 	}
-    if (!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND])){
+	if (!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]) || (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]) && Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]))){
 		if (GetVelocity().x >= 0){
 			SetVelocity(Vector3(GetVelocity().x - MaxWalkSpeed * RateOfDecomposition * (float)dt, GetVelocity().y, GetVelocity().z));
 			P_ForwardMovement(dt);
 		}
 	}
-    if (!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND])){
+	if (!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]) || (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]) && Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]))){
 		if (GetVelocity().z <= 0){
 			SetVelocity(Vector3(GetVelocity().x, GetVelocity().y, GetVelocity().z + MaxWalkSpeed * RateOfDecomposition * (float)dt));
 			P_LeftMovement(dt);
 		}
 	}
-    if (!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND])){
+	if (!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]) || (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]) && Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]))){
 		if (GetVelocity().z >= 0){
 			SetVelocity(Vector3(GetVelocity().x, GetVelocity().y, GetVelocity().z - MaxWalkSpeed * RateOfDecomposition * (float)dt));;
 			P_RightMovement(dt);

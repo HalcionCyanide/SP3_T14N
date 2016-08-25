@@ -9,7 +9,7 @@
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\PlayerObject.h"
 
-std::string SceneTown2::id_ = "Scene Town 2";
+std::string SceneTown2::id_ = "2_Scene";
 
 SceneTown2::SceneTown2()
 	: SceneEntity()
@@ -60,8 +60,6 @@ void SceneTown2::Init()
 	Player->SetMesh(it->second);
 
 	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
-	//PlayerPTR->cameraObject = &camera;
-	PlayerPTR->SetVelocity(Vector3(10.f, 0.f, 0.f));
 	PlayerPTR->SetPosition(Vector3(Player->GetPosition().x, camera.PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPosition().x / TerrainScale.x), (Player->GetPosition().z / TerrainScale.z)), Player->GetPosition().z));
 	PlayerPTR->setPlayerBoundaries(objVec);
 	camera.position = PlayerPTR->GetPosition();

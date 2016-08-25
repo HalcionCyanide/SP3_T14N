@@ -10,7 +10,7 @@
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\GameObject.h"
 
-std::string Scene_MainMenu::id_ = "Scene Main Menu";
+std::string Scene_MainMenu::id_ = "M_Scene";
 
 const std::string Scene_MainMenu::UI_Text[10] = { "", "Start", "Settings", "Exit", "New Game", "Load Game", "Return" };
 

@@ -9,7 +9,7 @@
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\PlayerObject.h"
 
-std::string SceneFreeField::id_ = "Scene Free Field";
+std::string SceneFreeField::id_ = "F1_Scene";
 
 SceneFreeField::SceneFreeField()
 	: SceneEntity()

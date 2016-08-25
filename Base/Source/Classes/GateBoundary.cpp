@@ -5,22 +5,8 @@ GateBoundary::GateBoundary()
 {
 }
 
-GateBoundary::GateBoundary(const std::string &ID) :IDValue(ID)
-{
-}
-
 GateBoundary::~GateBoundary()
 {
-}
-
-void GateBoundary::SetIDValue(const std::string&ID)
-{
-	this->IDValue = ID;
-}
-
-std::string GateBoundary::GetIDValue()const
-{
-	return this->IDValue;
 }
 
 float GateBoundary::GetOverlappingDistance()const
@@ -52,7 +38,7 @@ bool GateBoundary::CheckCollision(const Vector3 &point)
 	}
 	SetOverlappingDistance(overlap);
 	SetOverlappingAxis(overlappedAxis);
-	TransitScene(IDValue);
+	TransitScene(name_);
 	return true;
 }
 
