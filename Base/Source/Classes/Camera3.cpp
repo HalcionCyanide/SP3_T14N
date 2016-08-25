@@ -175,7 +175,7 @@ void Camera3::Update(float dt)
 
 void Camera3::DecomposePlayerInertia(float dt)
 {
-	float NegligibleVelocity = 0.3f;
+	float NegligibleVelocity = 0.5f;
 	float RateOfDecomposition = 2.f;
 	if (abs(CameraVelocity.x) > 0 && abs(CameraVelocity.x) <= NegligibleVelocity)
 	{

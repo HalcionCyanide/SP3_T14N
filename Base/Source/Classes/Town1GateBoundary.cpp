@@ -26,14 +26,14 @@ bool Town1GateBoundary::CheckCollision(const Boundary &object)
         if (!point1.DetermineCollision(point2))
             return false;
     }
-    Scene_System::accessing().SwitchScene(SceneTown1::id_);
+    //Scene_System::accessing().SwitchScene(SceneTown1::id_);
     return true;
 }
 
 float Town1GateBoundary::GetOverlappingDistance() const
 {
     //Don't know will this work.
-    return this->OverlappingDistance * 1.5f;
+    return this->OverlappingDistance * 100.f;
 }
 
 bool Town1GateBoundary::CheckCollision(const Vector3 &point)

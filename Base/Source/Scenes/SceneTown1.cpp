@@ -146,9 +146,8 @@ void SceneTown1::Update(float dt)
 	PlayerPTR->Update(dt);
 	PlayerPTR->SetRotationAngle(camera.CurrentCameraRotation.y);
 
-	camera.Update(dt);
 	camera.position = PlayerPTR->GetPosition();
-	camera.UpdateCameraVectors();
+	camera.Update(dt);
 
 	for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it)
 	{
@@ -201,46 +200,6 @@ void SceneTown1::Update(float dt)
 			}
 		}
 	}
-
-	/*for (auto it : Scene_System::accessing().Scene_System::accessing().NM.allNPCs)
-	{
-		it->setTarget(camera.position);
-		it->Update((float)dt);
-
-		if (it->getInteracting())
-		{
-			for (std::vector<UI_Element*>::iterator it2 = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it2 != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it2)
-			{
-				(*it2)->TargetPosition.x = CenterPosition.x * 1.6f;
-				(*it2)->TargetPosition.y = CenterPosition.y * 0.6f;
-			}
-			Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
-			camera.target = Vector3(it->GetPosition().x, camera.PlayerHeight, it->GetPosition().z);
-			camera.CurrentCameraRotation = Vector3(0, 0, 0);
-		}
-		else
-		{
-			Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-			for (std::vector<UI_Element*>::iterator it2 = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it2 != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it2)
-			{
-				(*it2)->TargetPosition = -CenterPosition;
-				Scene_System::accessing().Scene_System::accessing().NM.allNPCs.at(0)->setInteracting(false);
-			}
-		}
-
-		for (std::vector<UI_Element*>::iterator it3 = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it3 != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it3)
-		{
-			bool ClickSucceeded = false;
-			(*it3)->BoundsActive = true;
-			(*it3)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
-			if (ClickSucceeded)
-			{
-				(*it3)->TargetPosition = -CenterPosition;
-				Scene_System::accessing().Scene_System::accessing().NM.allNPCs.at(0)->setInteracting(false);
-				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-			}
-		}
-	}*/
 }
 
 void SceneTown1::RenderTerrain()
@@ -440,7 +399,7 @@ void SceneTown1::RenderPassMain()
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 25);
 
 	ss.str("");
-	ss << "CVel:" << camera.CameraVelocity;
+	ss << "CVel:" << Player->GetVelocity();
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
 

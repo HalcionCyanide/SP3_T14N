@@ -33,7 +33,7 @@ bool FreeFieldGateBoundary::CheckCollision(const Boundary &object)
 float FreeFieldGateBoundary::GetOverlappingDistance() const
 {
     //Don't know will this work.
-    return this->OverlappingDistance * 1.5f;
+    return this->OverlappingDistance * 100.f;
 }
 
 bool FreeFieldGateBoundary::CheckCollision(const Vector3 &point)
