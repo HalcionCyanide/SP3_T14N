@@ -8,10 +8,14 @@ ratingCondition::ratingCondition()
 }
 
 ratingCondition::ratingCondition(int i)
-	: theRequirement(0)
+	: theRequirement(i)
 	, counter(0)
 {
-	theRequirement = i;
+}
+
+void ratingCondition::setValue(std::string i)
+{
+	theRequirement = std::stoi(i);
 }
 
 ratingCondition::~ratingCondition()
