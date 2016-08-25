@@ -1,6 +1,4 @@
 #include "questManager.h"
-#include <algorithm>
-#include <cctype>
 
 questManager::questManager()
 {
@@ -23,8 +21,6 @@ struct to_upper
 void questManager::readFile(const std::string fileName)
 {
 	std::string temp = "";
-	std::string tempName = "";
-	std::string tempValue = "";
 	Quest *tempQuest = nullptr;
 
 	std::ifstream file(fileName.c_str());
@@ -32,7 +28,6 @@ void questManager::readFile(const std::string fileName)
 	{
 		std::vector<std::string> theKeys;
 		std::vector<std::string> theValues;
-		unsigned tempID = 0;
 		while (std::getline(file,temp))
 		{
 			if (temp == "" || temp == "\n" || temp == "\r")
@@ -65,27 +60,17 @@ void questManager::readFile(const std::string fileName)
 				pos = it - theKeys.begin();
 				tempQuest->setName(theValues[pos]);
 
-				it = std::find(theKeys.begin(), theKeys.end(), "CONDITIONNAME");
-				pos = it - theKeys.begin();
-				tempName = theValues[pos];
-
-				it = std::find(theKeys.begin(), theKeys.end(), "VALUE");
-				pos = it - theKeys.begin();
-				tempValue = theValues[pos];
-				tempQuest->setCondition(tempName, tempValue);
-				tempName.clear();
-				tempValue.clear();
-
-				it = std::find(theKeys.begin(), theKeys.end(), "DESCRIPTION");
-				pos = it - theKeys.begin();
-				tempQuest->setDesc(theValues[pos]);
-
-				tempQuest->setID(tempID);
-
 				allQuests.push_back(tempQuest);
 				theValues.clear();
-				tempID++;
 			}
         }
+	}
+}
+
+void questManager::Update(double dt)
+{
+	for (auto it : allQuests)
+	{
+		it->Update(dt);
 	}
 }

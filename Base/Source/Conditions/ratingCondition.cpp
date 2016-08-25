@@ -1,26 +1,25 @@
 #include "ratingCondition.h"
+#include "..\\Systems\\Scene_System.h"
 
 ratingCondition::ratingCondition()
 	: theRequirement(0)
 	, counter(0)
 {
-	//target = nullptr;
 }
 
 ratingCondition::ratingCondition(int i)
-	: theRequirement(0)
+	: theRequirement(i)
 	, counter(0)
-{
-	theRequirement = i;
-}
-
-ratingCondition::~ratingCondition()
 {
 }
 
 void ratingCondition::setValue(std::string i)
 {
-	theRequirement = stoi(i);
+	theRequirement = std::stoi(i);
+}
+
+ratingCondition::~ratingCondition()
+{
 }
 
 void ratingCondition::Update(double dt)
@@ -30,7 +29,7 @@ void ratingCondition::Update(double dt)
 	//some pseudocode*/
 	if(!complete)
 	{
-		/*counter = player.rating;*/
+		counter = Scene_System::accessing().gPlayer->GetSpellPower();
 		if (theRequirement <= counter)
 		{
 			complete = true;

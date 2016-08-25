@@ -27,11 +27,9 @@ void collectionCondition::setValue(std::string i)
 void collectionCondition::Update(double dt)
 {
 	//stuff to increase the number, please remember to increase the counter as you go along.
-
-	/*
-	counter = capturedMonsters.size(); //eventually a vector for captured monsters. <?>*/
 	if(!complete)
 	{
+		/*counter = capturedMonsters.size(); //eventually a vector for captured monsters. <?>*/
 		if(theRequirement <= counter)
 			complete = true;
 	}

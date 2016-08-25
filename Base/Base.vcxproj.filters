@@ -55,6 +55,12 @@
     <Filter Include="Source Files\NPCs">
       <UniqueIdentifier>{e95cd003-cd0c-4ace-a2c1-1ec4a4f0bf35}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Quests">
+      <UniqueIdentifier>{a468e6d2-7938-475f-a16c-38bf5bd36323}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Quests">
+      <UniqueIdentifier>{1ecb6cc2-f790-4a5d-a911-79b2e1af7119}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\shader.cpp">
@@ -131,9 +137,6 @@
     </ClCompile>
     <ClCompile Include="Source\Classes\PlayerObject.cpp">
       <Filter>Source Files\Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Conditions\Quest.cpp">
-      <Filter>Source Files\Conditions</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scenes\Scene_2.cpp">
       <Filter>Source Files\Scenes</Filter>
@@ -240,6 +243,12 @@
     <ClCompile Include="Source\Systems\NPC_Manager.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Quests\Quest.cpp">
+      <Filter>Source Files\Quests</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Quests\QuestStage.cpp">
+      <Filter>Source Files\Quests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Classes\Billboard.h">
@@ -300,9 +309,6 @@
       <Filter>Header Files\Conditions</Filter>
     </ClInclude>
     <ClInclude Include="Source\Conditions\genericCondition.h">
-      <Filter>Header Files\Conditions</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Conditions\Quest.h">
       <Filter>Header Files\Conditions</Filter>
     </ClInclude>
     <ClInclude Include="Source\Mains\Application.h">
@@ -425,9 +431,6 @@
     <ClInclude Include="Source\Conditions\interactCondition.h">
       <Filter>Header Files\Conditions</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Classes\EnemyProjectile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Classes\UI_Layer.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
@@ -451,6 +454,15 @@
     </ClInclude>
     <ClInclude Include="Source\Systems\NPC_Manager.h">
       <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Quests\Quest.h">
+      <Filter>Header Files\Quests</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Classes\EnemyProjectile.h">
+      <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Quests\QuestStage.h">
+      <Filter>Header Files\Quests</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

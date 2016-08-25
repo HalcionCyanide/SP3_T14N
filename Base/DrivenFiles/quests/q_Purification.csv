@@ -1,0 +1,4 @@
+stage,ConditionName,Value,Description
+1,interact,NPC_priest,Bring the Rosary to the Church Priest.
+2,interact,NPC_guardcaptain,Speak to the Guard Captain.
+3,goto,10;10;10;,Return to the graveyard.
