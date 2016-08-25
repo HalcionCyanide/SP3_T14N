@@ -1,4 +1,4 @@
-Name,CharacterSymbol //ONLY 1 character is allowed!,MeshID,ScaleX,ScaleY,ScaleZ,RotationX,RotationY,RotationZ,Active,BillBoard  //This has to be at the last column because Billboard is not a GameObject. OBJ SCALE RATIO MUST NOT CHANGE
+Name,CharacterSymbol //ONLY 1 character is allowed!,MeshID,ScaleX,ScaleY,ScaleZ,RotationX,RotationY,RotationZ,Active,BillBoard  //This has to be at the last coloumn because Billboard is not a GameObject. OBJ SCALE RATIO MUST NOT CHANGE
 TheWhiteCube,C,cube,10,5,10,,,,1,0
 TheSmallHouse,H,small_house,18.75,52.5,52.5,,,,1,0
 TheSmallHouse2,h,small_house2,21,52.5,52.5,,,,1,0
@@ -9,12 +9,7 @@ guard,g,NPC_guardcaptain,10.50221566,10,10,,,,1,0
 villagechief,V,NPC_villagechief,10,10,10,,,,1,0
 villager,v,NPC_villager,10,10,10,,,,1,0
 stranger,s,NPC_mStranger,10,10,10,,,,1,0
-carpenter,c,NPC_carpenter,10,10,10,,,,1,0
+carpenter,c,NPC_carpenter,10,10,3.33333333,,,,1,0
 mapguy,m,NPC_mapguy,10,10,10,,,,1,0
 priest,p,NPC_priest,10,10,10,,,,1,0
 princess,P,NPC_noblelady,14.13427562,10,10,,,,1,0
-1_Scene,1,cube,10,10,10,,,,1,0
-2_Scene,2,cube,10,10,10,,,,1,0
-3_Scene,3,cube,10,10,10,,,,1,0
-F1_Scene,f,cube,20,20,20,,,,1,0
-F2_Scene,F,cube,20,20,20,,,,1,0

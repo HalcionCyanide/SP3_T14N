@@ -1,6 +1,6 @@
-stage,ConditionName,Value,Description
-1,interact,NPC_guardcaptain,Speak to the Guard Captain.
-2,interact,NPC_noblelady,Capture 15 Monsters!
-3,interact,NPC_guardcaptain,Speak to the Guard Captain.
-4,interact,NPC_fakeflower,Get a Fresh Flower.
-5,interact,NPC_noblelady,Give the Fresh Flower to the Noble Lady.
+stage,ConditionName,Value,Description,qOrigin
+1,interact,NPC_guardcaptain,Speak to the Guard Captain.,NONE
+2,interact,NPC_noblelady,Speak to the Noble Lady,NPC_guardcaptain
+3,interact,NPC_guardcaptain,Speak to the Guard Captain.,NPC_noblelady
+4,interact,NPC_fakeflower,Get a Fresh Flower.,NPC_guardcaptain
+5,interact,NPC_noblelady,Give the Fresh Flower to the Noble Lady.,NPC_fakeflower

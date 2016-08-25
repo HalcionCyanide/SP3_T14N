@@ -31,7 +31,7 @@ QuestStage* Quest::getCurrentStage()
 
 void Quest::setCurrStage(int i)
 {
-	if (i > 0 && i <= qStages.size())
+	if (i > 0 && i <= (int)qStages.size())
 	{
 		theStageAT = qStages.at(i - 1);
 	}

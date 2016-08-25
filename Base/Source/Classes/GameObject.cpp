@@ -1,8 +1,6 @@
 #include "GameObject.h"
 #include "..\\Systems\\Scene_System.h"
 #include "..\\Scenes\\GraphicsEntity.h"
-//#include "Town1GateBoundary.h"
-//#include "FreeFieldGateBoundary.h"
 #include "../Misc/LoadEnemyData.h"
 #include "GateBoundary.h"
 
@@ -43,6 +41,7 @@ void GameObject::SetBounds()
 		Bounds = new GateBoundary();
 		Bounds->setName(getName());
     }
+
 	Bounds->SetPosition(this->GetPosition());
 	Bounds->SetDimensions(this->GetDimensions());
 	Bounds->SetRotationAngle(this->GetRotationAngle());
