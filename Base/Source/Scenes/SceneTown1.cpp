@@ -224,6 +224,7 @@ void SceneTown1::Update(float dt)
 			CurrentNPC->setInteracting(true);
 			NPC_Name->UI_Text = CurrentNPC->getName();
 			NPC_TextBox->UI_Text = CurrentNPC->getFText();
+			NPC_TextBox->WrapText();
 			ChatLayer->SwapOriginalWithTarget();
 			break;
 		}

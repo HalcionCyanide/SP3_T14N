@@ -44,6 +44,41 @@ void UI_Element::SwapOriginalWithTarget()
 	std::swap(OriginalPosition, TargetPosition);
 }
 
+void UI_Element::WrapText()
+{
+	UI_Text_Container.clear();
+	float SingleSpace = 0.75f * Dimensions.y * 0.3f;
+	float RequiredSpace = UI_Text.size() * SingleSpace;
+	int MaxCharactersPerLine = (int)(Dimensions.x / SingleSpace);
+	std::stringstream Tmp, MainString;
+	int CPos = 0;
+	int CCheck = 0;
+	if (MaxCharactersPerLine < UI_Text.size())
+		while (CPos < UI_Text.size())
+		{
+			Tmp << UI_Text[CPos];
+			++CPos;
+			if (CPos == UI_Text.size() || UI_Text[CPos] == ' ')
+			{
+				MainString << Tmp.str();
+				Tmp.str("");
+			}
+			if (CPos == UI_Text.size() || CPos >= MaxCharactersPerLine + MaxCharactersPerLine * CCheck)
+			{
+				CCheck++;
+				UI_Text_Container.push_back(MainString.str());
+				MainString.str("");
+				if (Tmp)
+				{
+					MainString << Tmp.str();
+				}
+				Tmp.str("");
+				TextWrappingEnabled = true;
+			}
+		}
+	else TextWrappingEnabled = false;
+}
+
 void UI_Element::Update(float dt)
 {
 	float Check = (TargetPosition - Position).LengthSquared();
@@ -92,7 +127,13 @@ void UI_Element::Render(const Vector3& LayerPos)
 	{
 		GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 		SceneGraphics->RenderMeshIn2D(*StoredMesh, false, Dimensions.x, Dimensions.y, Position.x + LayerPos.x, Position.y + LayerPos.y);
-		SceneGraphics->RenderTextOnScreen(UI_Text, Color(1, 1, 1), Dimensions.y * 0.3f, Position.x + LayerPos.x - (UI_Text.size() * 0.5f * 0.75f * Dimensions.y * 0.3f), Position.y + LayerPos.y - (0.5f * Dimensions.y * 0.3f));
+		if (!TextWrappingEnabled)
+			SceneGraphics->RenderTextOnScreen(UI_Text, Color(1, 1, 1), Dimensions.y * 0.3f, Position.x + LayerPos.x - (UI_Text.size() * 0.5f * 0.75f * Dimensions.y * 0.3f), Position.y + LayerPos.y - (0.5f * Dimensions.y * 0.3f));
+		else if (TextWrappingEnabled)
+			for (unsigned int i = 0; i < UI_Text_Container.size(); ++i)
+			{
+				SceneGraphics->RenderTextOnScreen(UI_Text_Container[i], Color(1, 1, 1), Dimensions.y * 0.25f, Position.x + LayerPos.y - Dimensions.x * 0.5 + (Dimensions.y * 0.25f), Position.y + LayerPos.y + (0.5f * Dimensions.y * 0.25f) - (i * Dimensions.y * 0.25f));
+			}
 	}
 }
 

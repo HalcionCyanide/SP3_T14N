@@ -34,6 +34,11 @@ public:
 	bool AtTarget = false;
 	bool BoundsActive = true;
 
+	std::vector<std::string> UI_Text_Container;
+
+	void WrapText();
+	bool TextWrappingEnabled = false;
+
 	Boundary2D* UI_Bounds;
 
 	void SwapOriginalWithTarget();
