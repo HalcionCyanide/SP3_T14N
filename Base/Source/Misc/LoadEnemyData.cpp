@@ -204,3 +204,10 @@ bool checkWhetherTheWordInThatString(const std::string &theWord, const std::stri
         return true;
     return false;
 }
+
+void convertStringToUpperCaps(std::string &theString)
+{
+    for (std::string::iterator it = theString.begin(), end = theString.end(); it != end; ++it) {
+        (*it) = toupper(*it);
+    }
+}
