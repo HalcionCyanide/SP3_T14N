@@ -1,14 +1,21 @@
 #include "interactCondition.h"
+#include "..\\Systems\\Scene_System.h"
 
 interactCondition::interactCondition()
-	//: theRequirement(nullptr)
+	: theRequirement(nullptr)
 {
-	//target = nullptr;
 }
 
-interactCondition::interactCondition(std::string)
-	//: theRequirement(nullptr)
+interactCondition::interactCondition(std::string i)
+	: theRequirement(nullptr)
 {
+	for (auto it : Scene_System::accessing().NM.allNPCs)
+	{
+		if (it->getName() == i)
+		{
+			theRequirement = it;
+		}
+	}
 }
 
 interactCondition::~interactCondition()
@@ -27,7 +34,7 @@ void interactCondition::Update(double dt)
 	//some pseudocode*/
 	if (!complete)
 	{
-		//if (theRequirement.value_->getInteracting())
+		if (theRequirement.value_->getInteracting())
 		{
 			complete = true;
 		}
