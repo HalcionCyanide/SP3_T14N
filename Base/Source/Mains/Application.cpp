@@ -16,6 +16,7 @@
 #include "..\\Scenes\\SceneTown1.h"
 #include "..\\Scenes\\SceneTown2.h"
 #include "..\\Scenes\\SceneTown3.h"
+#include "../Misc/LoadEnemyData.h"
 //<!> Removing soon due to testing
 #include "../Systems/MusicSystem.h"
 //<!> Removing soon due to testing
@@ -183,17 +184,6 @@ void Application::Init()
     //Apparently, GlobalDriven.csv must not stay open when writing to this data. 
     //fstream doesn't work when writing to it but works whent reading to it
     //it appears that the file cannot be open twice at the same time.
-    //1st Method:
-    //std::fstream writeData("Image//GlobalDriven.csv");
-    //assert(writeData.is_open());
-    //std::string theCancer = "Allahu Akbar";
-    //std::string data = "";
-    //while (getline(writeData, data))
-    //{ 
-    //    if (data.find("Forward_Button:") != std::string::npos)
-    //        writeData << "Forward_Button:W" << std::endl;
-    //}
-    //writeData.close();
     //2nd Method: This works but way too troublesome since we are opening and closing the same file twice! A programmer should be as lazy as possible
     //std::vector<std::string> all_the_lines;
     //std::ifstream readFile("Image//GlobalDriven.csv");
@@ -228,7 +218,7 @@ void Application::Init()
 #ifdef _DEBUG
     assert(loadThoseKeyCommandsStuff());
 #else
-    loadGlobalStuff();
+    loadThoseKeyCommandsStuff();
 #endif
 }
 

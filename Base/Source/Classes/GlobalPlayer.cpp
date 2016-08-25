@@ -1,6 +1,7 @@
 #include "GlobalPlayer.h"
 #include <fstream>
 #include <sstream>
+#include "../Misc/LoadEnemyData.h"
 
 // Constructor
 GlobalPlayer::GlobalPlayer()
@@ -89,7 +90,26 @@ bool GlobalPlayer::loadPlayerSave(const std::string &fileName)
     std::ifstream file(fileName.c_str());
     if (file.is_open())
     {
-
+        std::string data = "";
+        while (getline(file, data))
+        {
+            size_t posOfComman = data.find_first_of(',');
+            std::string key = data.substr(0, posOfComman);
+            std::string value = data.substr(posOfComman + 1);
+            convertStringToUpperCaps(key);
+            if (checkWhetherTheWordInThatString("SPELLPOWER", key))
+            {
+                SetSpellPower(stoi(value));
+            }
+            else if (checkWhetherTheWordInThatString("CURRENTHEALTH", key))
+            {
+                SetCurrentHealth(stoi(value));
+            }
+            else if (checkWhetherTheWordInThatString("MAXHEALTH", key))
+            {
+                SetMaxHealth(stoi(value));
+            }
+        }
         return true;
     }
     return false;
@@ -101,7 +121,14 @@ bool GlobalPlayer::rewritePlayerSave(const std::string &fileName)
     if (file.is_open())
     {
         std::vector<std::string> allThoseLines;
+        std::string data = "";
+        while (getline(file, data))
+            allThoseLines.push_back(data);
+        file.close();
 
+        std::ofstream writeFile(fileName.c_str());
+
+        writeFile.close();
         return true;
     }
     return false;

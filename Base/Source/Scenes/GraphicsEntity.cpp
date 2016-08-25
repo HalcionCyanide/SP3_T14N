@@ -5,15 +5,9 @@
 #include <fstream>
 #include <sstream>
 #include "..\\Systems\\Scene_System.h"
+#include "../Misc/LoadEnemyData.h"
 
 std::string GraphicsEntity::id_ = "Graphics";
-
-void convertStringToUpperCaps(std::string &theString)
-{
-	for (std::string::iterator it = theString.begin(), end = theString.end(); it != end; ++it) {
-		(*it) = toupper(*it);
-	}
-}
 
 GraphicsEntity::GraphicsEntity()
 	: SceneEntity()
