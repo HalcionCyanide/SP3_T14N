@@ -93,6 +93,8 @@ bool GlobalPlayer::loadPlayerSave(const std::string &fileName)
         std::string data = "";
         while (getline(file, data))
         {
+            if (data == "")
+                continue;
             size_t posOfComman = data.find_first_of(',');
             std::string key = data.substr(0, posOfComman);
             std::string value = data.substr(posOfComman + 1);
@@ -110,6 +112,7 @@ bool GlobalPlayer::loadPlayerSave(const std::string &fileName)
                 SetMaxHealth(stoi(value));
             }
         }
+        file.close();
         return true;
     }
     return false;
@@ -127,7 +130,31 @@ bool GlobalPlayer::rewritePlayerSave(const std::string &fileName)
         file.close();
 
         std::ofstream writeFile(fileName.c_str());
-
+        for (std::vector<std::string>::iterator it = allThoseLines.begin(), end = allThoseLines.end(); it != end; ++it)
+        {
+            std::string thatSpecificLine = (*it);
+            size_t posOfComman = thatSpecificLine.find_first_of(',');
+            std::string key = (*it).substr(0, posOfComman + 1);
+            convertStringToUpperCaps(thatSpecificLine);
+            std::ostringstream ss;
+            if (checkWhetherTheWordInThatString("SPELLPOWER", thatSpecificLine))
+            {
+                ss << key << Spell_Power;
+                writeFile << ss.str() << std::endl;
+            }
+            else if (checkWhetherTheWordInThatString("CURRENTHEALTH", thatSpecificLine))
+            {
+                ss << key << CurrentHealth;
+                writeFile << ss.str() << std::endl;
+            }
+            else if (checkWhetherTheWordInThatString("MAXHEALTH", thatSpecificLine))
+            {
+                ss << key << MaxHealth;
+                writeFile << ss.str() << std::endl;
+            }
+            else
+                writeFile << (*it) << std::endl;
+        }
         writeFile.close();
         return true;
     }
