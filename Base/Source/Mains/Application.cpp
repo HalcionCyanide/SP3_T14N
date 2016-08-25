@@ -222,6 +222,7 @@ void Application::Init()
 #else
     loadThoseKeyCommandsStuff();
 #endif
+    Scene_System::accessing().gPlayer->LoadPlayerSave("DrivenFiles//PlayerSave1.csv");
 }
 
 void Application::Run()
