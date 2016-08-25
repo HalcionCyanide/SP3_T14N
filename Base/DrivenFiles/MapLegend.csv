@@ -9,9 +9,7 @@ guard,g,NPC_guardcaptain,10.50221566,10,10,,,,1,0
 villagechief,V,NPC_villagechief,10,10,10,,,,1,0
 villager,v,NPC_villager,10,10,10,,,,1,0
 stranger,s,NPC_mStranger,10,10,10,,,,1,0
-carpenter,c,NPC_carpenter,10,10,10,,,,1,0
+carpenter,c,NPC_carpenter,10,10,3.33333333,,,,1,0
 mapguy,m,NPC_mapguy,10,10,10,,,,1,0
 priest,p,NPC_priest,10,10,10,,,,1,0
 princess,P,NPC_noblelady,14.13427562,10,10,,,,1,0
-town1gate,1,cube,10,10,10,,,,1,0
-freefieldgate,8,cube,20,20,20,,,,1,0
