@@ -24,6 +24,7 @@ GlobalPlayer::~GlobalPlayer()
 void GlobalPlayer::Init(const int& Spell_Power, const int& CurrentHealth, const int& MaxHealth, const bool& IsInteracting)
 {
     CurrCamera = nullptr;
+    currSceneID = "1_Scene";
 	this->Spell_Power = Spell_Power;
 	this->CurrentHealth = CurrentHealth;
 	this->MaxHealth = MaxHealth;
@@ -112,6 +113,10 @@ bool GlobalPlayer::LoadPlayerSave(const std::string &fileName)
             {
                 SetMaxHealth(stoi(value));
             }
+            else if (checkWhetherTheWordInThatString("SCENENAME", key))
+            {
+                Scene_System::accessing().SwitchScene(value);
+            }
         }
         file.close();
         return true;
@@ -151,6 +156,11 @@ bool GlobalPlayer::RewritePlayerSave(const std::string &fileName)
             else if (checkWhetherTheWordInThatString("MAXHEALTH", thatSpecificLine))
             {
                 ss << key << MaxHealth;
+                writeFile << ss.str() << std::endl;
+            }
+            else if (checkWhetherTheWordInThatString("SCENENAME", key))
+            {
+                ss << key << currSceneID;
                 writeFile << ss.str() << std::endl;
             }
             else

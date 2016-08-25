@@ -58,7 +58,7 @@ private:
 	bool IsInteracting;
 
     Camera3 *CurrCamera;
-
+    std::string currSceneID;
 	// Quest Container
 	// Inventory Container
 	// Money

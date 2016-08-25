@@ -238,7 +238,7 @@
       <Filter>Source Files\Quests</Filter>
     </ClCompile>
     <ClCompile Include="Source\Classes\GateBoundary.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
