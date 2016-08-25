@@ -109,27 +109,6 @@ void Camera3::Update(float dt)
 	}
 	if (!CameraVelocity.IsZero())
 	{
-	/*	if (Application::Sound_Footstep == NULL)
-=======
-		/*	if (Application::Sound_Footstep == NULL)
->>>>>>> ab5a85f05485912636525a3765b25538f6987043:Base/Source/Classes/Camera3.cpp
-		{
-		Application::Sound_Footstep = Application::theSoundEngine->play2D(SoundName[5].c_str(), false, true);
-		Application::Sound_Footstep->setPlaybackSpeed(CameraCurrentWalkSpeed / 14);
-		Application::Sound_Footstep->setVolume(static_cast<irrklang::ik_f32>(0.5f * 20 / CameraCurrentWalkSpeed));
-		}
-		if (Application::Sound_Footstep->getIsPaused() == true)
-		{
-		Application::Sound_Footstep->setIsPaused(false);
-		}
-		else if (Application::Sound_Footstep->isFinished() == true)
-		{
-<<<<<<< HEAD:Base/Source/Camera3.cpp
-			Application::Sound_Footstep = NULL;
-=======
-		Application::Sound_Footstep = NULL;
->>>>>>> ab5a85f05485912636525a3765b25538f6987043:Base/Source/Classes/Camera3.cpp
-		}*/
 		DecomposePlayerInertia(dt);
 	}
 	if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
@@ -175,7 +154,7 @@ void Camera3::Update(float dt)
 
 void Camera3::DecomposePlayerInertia(float dt)
 {
-	float NegligibleVelocity = 0.3f;
+	float NegligibleVelocity = 0.5f;
 	float RateOfDecomposition = 2.f;
 	if (abs(CameraVelocity.x) > 0 && abs(CameraVelocity.x) <= NegligibleVelocity)
 	{
@@ -217,7 +196,7 @@ void Camera3::DecomposeMouseInertia(float dt)
 	float MaxRotSpeed = C_Rot_Accel;// *1.5f;
 	Yaw_Velocity += C_Rot_Accel * dt * Scene_System::accessing().cSS_InputManager->cIM_CameraYaw;
 	Yaw_Velocity = Math::Clamp(Yaw_Velocity, -MaxRotSpeed, MaxRotSpeed);
-	if (Yaw_Velocity) {
+	if (!CameraIsLocked && Yaw_Velocity) {
 		Yaw(dt);
 		// Remove the residual velocity after some time
 		Yaw_Velocity -= Yaw_Velocity * dt;
@@ -225,7 +204,7 @@ void Camera3::DecomposeMouseInertia(float dt)
 
 	Pitch_Velocity += C_Rot_Accel * dt * Scene_System::accessing().cSS_InputManager->cIM_CameraPitch;
 	Pitch_Velocity = Math::Clamp(Pitch_Velocity, -MaxRotSpeed, MaxRotSpeed);
-	if (Pitch_Velocity){
+	if (!CameraIsLocked && Pitch_Velocity){
 		Pitch(dt);
 		// Remove the residual velocity after some time
 		Pitch_Velocity -= Pitch_Velocity * dt;
@@ -236,9 +215,9 @@ void Camera3::CameraTiltMotion(double dt, bool Moving)
 {
 	//Values halved for testing
 	float CamTiltSpeed = CameraCurrentWalkSpeed / 13.f;
-	float TiltAmount = CameraCurrentWalkSpeed / 60.f;
-	float BobSpeed = CamTiltSpeed / (64.f / CameraCurrentWalkSpeed) + (CameraCurrentWalkSpeed / 640.f);;
-	float BobAmount = (CameraCurrentWalkSpeed / 600.f) + (CameraCurrentWalkSpeed * CameraCurrentWalkSpeed / 10000.f);
+	float TiltAmount = CameraCurrentWalkSpeed / 70.f;
+	float BobSpeed = CamTiltSpeed / 10;
+	float BobAmount = (CameraCurrentWalkSpeed / 700.f);
 	if (Moving && cos(Math::DegreeToRadian(abs(CurrentCameraRotation.x))) > 0.3f)
 	{
 		if (!TiltDir && CurrentCameraRotation.z >= TiltAmount){ TiltDir = true; }

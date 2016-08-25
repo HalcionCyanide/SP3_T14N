@@ -1,0 +1,8 @@
+stage,ConditionName,Value,Description
+1,goto,20;0;10;,Find a Map piece.
+2,goto,25;0;40;,Find a Map piece.
+3,goto,30;0;20;,Find a Map piece.
+4,goto,20;0;0;,Find a Map piece.
+5,interact,NPC_mapguy,Speak to the Royal Cartographer
+6,goto,60;0;15,Go to the location mentioned.
+7,capture,MOB_pandora,Capture the Pandora's Box.

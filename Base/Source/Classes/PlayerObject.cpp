@@ -35,7 +35,6 @@ void PlayerObject::Update(double dt)
 	else if (MaxWalkSpeed > BaseWalkSpeed)
 	{
 		MaxWalkSpeed -= BaseWalkSpeed * (float)dt;
-		//Math::Clamp(CurrentWalkSpeed, 0.f, MaxWalkSpeed);
 	}
 	
 	if (MovementValues.IsZero() == false)
@@ -46,12 +45,9 @@ void PlayerObject::Update(double dt)
 			{
 				if (CheckCollision(*(*it)->GetBoundary(), BaseObject::GetPosition()))
 				{
-                    //Checking a 2nd Time?
-					CheckCollision(*(*it)->GetBoundary(), BaseObject::GetPosition());
 					SetPosition(this->GetPosition() - ((*it)->GetBoundary()->GetOverlappingDistance() * (*it)->GetBoundary()->GetOverlappingAxis()));
-					break;
-				}
 
+				}
 				if (MovementValues.IsZero())
 					break;
 			}
@@ -87,7 +83,7 @@ void PlayerObject::Update(double dt)
 		Pos.y = Application::cA_CurrentTerrainY;
 		SetPosition(Pos);
 	}
-	if (!vel_.IsZero())
+	if (!GetVelocity().IsZero())
 	{
 		DecomposePlayerInertia((float)dt);
 	}
@@ -103,11 +99,6 @@ void PlayerObject::SetJump(const float &speed, const float &max_speed, const flo
 	JUMPACCEL = accel;
 }
 
-void PlayerObject::setVel(const Vector3 &theSpeed)
-{
-	vel_ = theSpeed;
-}
-
 void PlayerObject::setAccel(const Vector3 &theacceleration)
 {
 	accel_ = theacceleration;
@@ -115,8 +106,8 @@ void PlayerObject::setAccel(const Vector3 &theacceleration)
 
 void PlayerObject::walkDirection(const float &degree, const float &byHowMuch)
 {
-	MovementValues.x = (float)(sin(Math::DegreeToRadian(GetRotationAngle() + degree)) * vel_.x * (float)(m_ElapsedTime)* byHowMuch);
-	MovementValues.z = (float)(cos(Math::DegreeToRadian(GetRotationAngle() + degree)) * vel_.x * (float)(m_ElapsedTime)* byHowMuch);
+	MovementValues.x = (float)(sin(Math::DegreeToRadian(GetRotationAngle() + degree)) * GetVelocity().x * (float)(m_ElapsedTime)* byHowMuch);
+	MovementValues.z = (float)(cos(Math::DegreeToRadian(GetRotationAngle() + degree)) * GetVelocity().x * (float)(m_ElapsedTime)* byHowMuch);
 }
 
 void PlayerObject::setPlayerBoundaries(std::vector<GameObject*> &Playerboundary)
@@ -136,34 +127,34 @@ bool PlayerObject::CheckCollision(Boundary &object, Boundary &Prediction)
 
 void PlayerObject::DecomposePlayerInertia(float dt)
 {
-	float NegligibleVelocity = 0.3f;
+	float NegligibleVelocity = 0.5f;
 	float RateOfDecomposition = 2.f;
 
-	if (abs(vel_.x) > 0 && abs(vel_.x) <= NegligibleVelocity)
-		vel_.x = 0;
-	if (abs(vel_.z) > 0 && abs(vel_.z) <= NegligibleVelocity)
-		vel_.z = 0;
+	if (abs(GetVelocity().x) > 0 && abs(GetVelocity().x) <= NegligibleVelocity)
+		SetVelocity(Vector3(0, GetVelocity().y, GetVelocity().z));
+	if (abs(GetVelocity().z) > 0 && abs(GetVelocity().z) <= NegligibleVelocity)
+		SetVelocity(Vector3(GetVelocity().x, GetVelocity().y, 0));
     if (!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND])){
-		if (vel_.x <= 0){
-			vel_.x += MaxWalkSpeed * RateOfDecomposition * (float)dt;
+		if (GetVelocity().x <= 0){
+			SetVelocity(Vector3(GetVelocity().x + MaxWalkSpeed * RateOfDecomposition * (float)dt, GetVelocity().y, GetVelocity().z));
 			P_BackwardMovement(dt);
 		}
 	}
     if (!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND])){
-		if (vel_.x >= 0){
-			vel_.x -= MaxWalkSpeed * RateOfDecomposition * (float)dt;
+		if (GetVelocity().x >= 0){
+			SetVelocity(Vector3(GetVelocity().x - MaxWalkSpeed * RateOfDecomposition * (float)dt, GetVelocity().y, GetVelocity().z));
 			P_ForwardMovement(dt);
 		}
 	}
     if (!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND])){
-		if (vel_.z <= 0){
-			vel_.z += MaxWalkSpeed * RateOfDecomposition * (float)dt;
+		if (GetVelocity().z <= 0){
+			SetVelocity(Vector3(GetVelocity().x, GetVelocity().y, GetVelocity().z + MaxWalkSpeed * RateOfDecomposition * (float)dt));
 			P_LeftMovement(dt);
 		}
 	}
     if (!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND])){
-		if (vel_.z >= 0){
-			vel_.z -= MaxWalkSpeed * RateOfDecomposition * (float)dt;
+		if (GetVelocity().z >= 0){
+			SetVelocity(Vector3(GetVelocity().x, GetVelocity().y, GetVelocity().z - MaxWalkSpeed * RateOfDecomposition * (float)dt));;
 			P_RightMovement(dt);
 		}
 	}
@@ -224,29 +215,33 @@ void PlayerObject::UpdateJump(const float dt)
 void PlayerObject::P_ForwardMovement(const float dt)
 {
 	//Velocity = Acceleration x Time
-	vel_.x += MaxWalkSpeed * (float)dt;
-	if (vel_.x > MaxWalkSpeed) { vel_.x = MaxWalkSpeed; }
-	MovementValues.x += (float)(sin(Math::DegreeToRadian(GetRotationAngle())) * (float)dt * vel_.x);
-	MovementValues.z += (float)(cos(Math::DegreeToRadian(GetRotationAngle())) * (float)dt * vel_.x);
+	SetVelocity(Vector3(GetVelocity().x + MaxWalkSpeed * (float)dt, GetVelocity().y, GetVelocity().z));
+	if (GetVelocity().x > MaxWalkSpeed)
+		SetVelocity(Vector3(MaxWalkSpeed, GetVelocity().y, GetVelocity().z));
+	MovementValues.x += (float)(sin(Math::DegreeToRadian(GetRotationAngle())) * (float)dt * GetVelocity().x);
+	MovementValues.z += (float)(cos(Math::DegreeToRadian(GetRotationAngle())) * (float)dt * GetVelocity().x);
 }
 void PlayerObject::P_BackwardMovement(const float dt)
 {
-	vel_.x -= MaxWalkSpeed * (float)dt;
-	if (vel_.x < -MaxWalkSpeed) { vel_.x = -MaxWalkSpeed; }
-	MovementValues.x -= (float)(sin(Math::DegreeToRadian(GetRotationAngle() + 180)) * (float)dt * vel_.x);
-	MovementValues.z -= (float)(cos(Math::DegreeToRadian(GetRotationAngle() + 180)) * (float)dt * vel_.x);
+	SetVelocity(Vector3(GetVelocity().x - MaxWalkSpeed * (float)dt, GetVelocity().y, GetVelocity().z));
+	if (GetVelocity().x < -MaxWalkSpeed)
+		SetVelocity(Vector3(-MaxWalkSpeed, GetVelocity().y, GetVelocity().z));
+	MovementValues.x -= (float)(sin(Math::DegreeToRadian(GetRotationAngle() + 180)) * (float)dt * GetVelocity().x);
+	MovementValues.z -= (float)(cos(Math::DegreeToRadian(GetRotationAngle() + 180)) * (float)dt * GetVelocity().x);
 }
 void PlayerObject::P_LeftMovement(const float dt)
 {
-	vel_.z -= MaxWalkSpeed * (float)dt;
-	if (vel_.z < -MaxWalkSpeed) { vel_.z = -MaxWalkSpeed; }
-	MovementValues.x -= (float)(sin(Math::DegreeToRadian(GetRotationAngle() + 90)) * (float)dt * vel_.z);
-	MovementValues.z -= (float)(cos(Math::DegreeToRadian(GetRotationAngle() + 90)) * (float)dt * vel_.z);
+	SetVelocity(Vector3(GetVelocity().x, GetVelocity().y, GetVelocity().z - MaxWalkSpeed * (float)dt));
+	if (GetVelocity().z < -MaxWalkSpeed) 
+		SetVelocity(Vector3(GetVelocity().x, GetVelocity().y, -MaxWalkSpeed));
+	MovementValues.x -= (float)(sin(Math::DegreeToRadian(GetRotationAngle() + 90)) * (float)dt * GetVelocity().z);
+	MovementValues.z -= (float)(cos(Math::DegreeToRadian(GetRotationAngle() + 90)) * (float)dt * GetVelocity().z);
 }
 void PlayerObject::P_RightMovement(const float dt)
 {
-	vel_.z += MaxWalkSpeed * (float)dt;
-	if (vel_.z > MaxWalkSpeed) { vel_.z = MaxWalkSpeed; }
-	MovementValues.x += (float)(sin(Math::DegreeToRadian(GetRotationAngle() + 270)) * (float)dt * vel_.z);
-	MovementValues.z += (float)(cos(Math::DegreeToRadian(GetRotationAngle() + 270)) * (float)dt * vel_.z);
+	SetVelocity(Vector3(GetVelocity().x, GetVelocity().y, GetVelocity().z + MaxWalkSpeed * (float)dt));
+	if (GetVelocity().z > MaxWalkSpeed)
+		SetVelocity(Vector3(GetVelocity().x, GetVelocity().y, MaxWalkSpeed));
+	MovementValues.x += (float)(sin(Math::DegreeToRadian(GetRotationAngle() + 270)) * (float)dt * GetVelocity().z);
+	MovementValues.z += (float)(cos(Math::DegreeToRadian(GetRotationAngle() + 270)) * (float)dt * GetVelocity().z);
 }

@@ -16,14 +16,11 @@ public:
     virtual void Update(double dt);
 
     virtual void SetJump(const float &speed, const float &max_speed, const float &accel);
-    virtual void setVel(const Vector3 &theSpeed);
     virtual void setAccel(const Vector3 &theacceleration);
 
     virtual void setPlayerBoundaries(std::vector<GameObject*> &Playerboundary);
 	virtual bool CheckCollision(Boundary &object, const Vector3 &Prediction);
 	virtual bool CheckCollision(Boundary &object, Boundary &Prediction);
-
-	Vector3 vel_;
 
 private:
 	void DecomposePlayerInertia(float dt);

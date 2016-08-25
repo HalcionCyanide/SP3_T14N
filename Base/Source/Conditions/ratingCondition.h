@@ -9,9 +9,8 @@ public:
 	ratingCondition(int);
 	virtual ~ratingCondition();
 
-	virtual void setValue(std::string);
 	virtual void Update(double dt);
-
+	virtual void setValue(std::string);
 private:
 	int counter;
 	Data<int> theRequirement;

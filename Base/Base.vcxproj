@@ -13,16 +13,11 @@
   <ItemGroup>
     <ClCompile Include="Source\Classes\BaseObject.cpp" />
     <ClCompile Include="Source\Classes\BattleScreenObject.cpp" />
-    <ClCompile Include="Source\Classes\BoundaryGate.cpp" />
     <ClCompile Include="Source\Classes\CameraBS.cpp" />
-    <ClCompile Include="Source\Classes\FreeFieldGateBoundary.cpp" />
     <ClCompile Include="Source\Classes\GlobalPlayer.cpp" />
     <ClCompile Include="Source\Classes\MusicEntity2D.cpp" />
     <ClCompile Include="Source\Classes\MusicEntity3D.cpp" />
     <ClCompile Include="Source\Classes\Projection.cpp" />
-    <ClCompile Include="Source\Classes\Town1GateBoundary.cpp" />
-    <ClCompile Include="Source\Classes\Town2GateBoundary.cpp" />
-    <ClCompile Include="Source\Classes\Town3GateBoundary.cpp" />
     <ClCompile Include="Source\Classes\UI_Layer.cpp" />
     <ClCompile Include="Source\Conditions\captureCondition.cpp" />
     <ClCompile Include="Source\Conditions\gotoCondition.cpp" />
@@ -32,6 +27,8 @@
     <ClCompile Include="Source\Classes\Billboard.cpp" />
     <ClCompile Include="Source\Misc\LoadEnemyData.cpp" />
     <ClCompile Include="Source\NPCs\NPC.cpp" />
+    <ClCompile Include="Source\Quests\Quest.cpp" />
+    <ClCompile Include="Source\Quests\QuestStage.cpp" />
     <ClCompile Include="Source\Systems\BattleSystem.cpp" />
     <ClCompile Include="Source\Systems\BillboardManager.cpp" />
     <ClCompile Include="Source\Classes\Boundary.cpp" />
@@ -53,7 +50,6 @@
     <ClCompile Include="Source\Classes\GameMap.cpp" />
     <ClCompile Include="Source\Systems\MusicSystem.cpp" />
     <ClCompile Include="Source\Classes\PlayerObject.cpp" />
-    <ClCompile Include="Source\Conditions\Quest.cpp" />
     <ClCompile Include="Source\Scenes\SceneBattleScreen.cpp" />
     <ClCompile Include="Source\Scenes\SceneFreeField.cpp" />
     <ClCompile Include="Source\Scenes\SceneTown1.cpp" />
@@ -79,7 +75,6 @@
     <ClInclude Include="Source\Classes\Billboard.h" />
     <ClInclude Include="Source\Classes\Boundary.h" />
     <ClInclude Include="Source\Classes\Boundary2D.h" />
-    <ClInclude Include="Source\Classes\BoundaryGate.h" />
     <ClInclude Include="Source\Classes\Camera.h" />
     <ClInclude Include="Source\Classes\Camera3.h" />
     <ClInclude Include="Source\Classes\CameraBS.h" />
@@ -87,7 +82,6 @@
     <ClInclude Include="Source\Classes\Commands.h" />
     <ClInclude Include="Source\Classes\Enemy.h" />
     <ClInclude Include="Source\Classes\EnemyProjectile.h" />
-    <ClInclude Include="Source\Classes\FreeFieldGateBoundary.h" />
     <ClInclude Include="Source\Classes\GameMap.h" />
     <ClInclude Include="Source\Classes\GameObject.h" />
     <ClInclude Include="Source\Classes\GenericEntity.h" />
@@ -103,9 +97,6 @@
     <ClInclude Include="Source\Classes\Scene.h" />
     <ClInclude Include="Source\Classes\SceneEntity.h" />
     <ClInclude Include="Source\Classes\singletontemplate.h" />
-    <ClInclude Include="Source\Classes\Town1GateBoundary.h" />
-    <ClInclude Include="Source\Classes\Town2GateBoundary.h" />
-    <ClInclude Include="Source\Classes\Town3GateBoundary.h" />
     <ClInclude Include="Source\Classes\UI_Element.h" />
     <ClInclude Include="Source\Classes\UI_Layer.h" />
     <ClInclude Include="Source\Conditions\captureCondition.h" />
@@ -113,7 +104,6 @@
     <ClInclude Include="Source\Conditions\genericCondition.h" />
     <ClInclude Include="Source\Conditions\gotoCondition.h" />
     <ClInclude Include="Source\Conditions\interactCondition.h" />
-    <ClInclude Include="Source\Conditions\Quest.h" />
     <ClInclude Include="Source\Conditions\ratingCondition.h" />
     <ClInclude Include="Source\Mains\Application.h" />
     <ClInclude Include="Source\Misc\BoundsBuilder.h" />
@@ -129,6 +119,8 @@
     <ClInclude Include="Source\Misc\SimpleCommand.h" />
     <ClInclude Include="Source\Misc\Utility.h" />
     <ClInclude Include="Source\NPCs\NPC.h" />
+    <ClInclude Include="Source\Quests\Quest.h" />
+    <ClInclude Include="Source\Quests\QuestStage.h" />
     <ClInclude Include="Source\Scenes\GraphicsEntity.h" />
     <ClInclude Include="Source\Scenes\SceneBattleScreen.h" />
     <ClInclude Include="Source\Scenes\SceneFreeField.h" />

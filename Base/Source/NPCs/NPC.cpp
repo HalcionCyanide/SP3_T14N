@@ -6,6 +6,7 @@ NPC::NPC()
 	, flavourText("")
 	, target(Vector3(0,0,0))
 	, currentAngle(0.f)
+	, DetectionRadiusSquared(300)
 {
 }
 
@@ -45,10 +46,10 @@ void NPC::setTarget(const Vector3& i)
 
 void NPC::Update(double dt)
 {
-	float desiredAngle = Math::RadianToDegree(atan2(target.x - GetPosition().x, target.z - GetPosition().z));
-	if ((target - GetPosition()).LengthSquared() < 900)
+	float desiredAngle = (float)(((int)Math::RadianToDegree(atan2(target.x - GetPosition().x, target.z - GetPosition().z))) % 360);
+	if ((target - GetPosition()).LengthSquared() < DetectionRadiusSquared)
 	{
-		float Speed = 50.f;
+		float Speed = 100.f;
 
 		if (currentAngle + Speed * dt < desiredAngle + Math::EPSILON)
 		{
@@ -61,9 +62,14 @@ void NPC::Update(double dt)
 
 		SetRotationAngle(currentAngle);
 	}
+}
 
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('Q') && !interacting)
-	{
-		interacting = true;
-	}
+void NPC::SetDetectionRadiusSquared(const float& DRS)
+{
+	DetectionRadiusSquared = DRS;
+}
+
+float NPC::GetDetectionRadiusSquared()
+{
+	return DetectionRadiusSquared;
 }

@@ -1,6 +1,7 @@
 #ifndef interact_CONDITION_H_
 #define interact_CONDITION_H_
 #include "genericCondition.h"
+#include "..\\NPCs\\NPC.h"
 
 class interactCondition : public genericCondition
 {
@@ -12,7 +13,7 @@ public:
 	virtual void setValue(std::string);
 	virtual void Update(double dt);
 private:
-	//Data<NPC*> theRequirement;
+	Data<NPC*> theRequirement;
 };
 
 #endif

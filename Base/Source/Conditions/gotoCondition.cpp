@@ -1,4 +1,5 @@
 #include "gotoCondition.h"
+#include "..\\Systems\\Scene_System.h"
 #include <sstream>
 
 gotoCondition::gotoCondition()
@@ -54,7 +55,7 @@ void gotoCondition::Update(double dt)
 	//stuff to increase the number, please remember to increase the counter as you go along.
 	if (!complete)
 	{
-		//if ((Player.pos - (*theRequirement.value_)).LengthSquared() < dist)
+		if ((Scene_System::accessing().gPlayer->PlayerObj->GetPosition() - (theRequirement.value_)).Length() < dist)
 		{
 			complete = true;
 		}

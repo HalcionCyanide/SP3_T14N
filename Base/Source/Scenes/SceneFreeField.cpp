@@ -65,7 +65,6 @@ void SceneFreeField::Init()
 	PlayerPTR->SetPosition(Vector3(Player->GetPosition().x, camera.PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPosition().x / TerrainScale.x), (Player->GetPosition().z / TerrainScale.z)), Player->GetPosition().z));
 	PlayerPTR->setPlayerBoundaries(objVec);
 	camera.position = PlayerPTR->GetPosition();
-	camera.UpdateCameraVectors();
 	//<!> There can only be 1 Player
 
 	CurrentEncounterRateBoost = 0;
@@ -153,9 +152,8 @@ void SceneFreeField::Update(float dt)
 	PlayerPTR->Update(dt);
 	PlayerPTR->SetRotationAngle(camera.CurrentCameraRotation.y);
 
-	camera.Update(dt);
 	camera.position = PlayerPTR->GetPosition();
-	camera.UpdateCameraVectors();
+	camera.Update(dt);
 }
 
 void SceneFreeField::RenderTerrain()

@@ -120,9 +120,8 @@ void Scene_2::Update(float dt)
 	PlayerPTR->Update(dt);
 	PlayerPTR->SetRotationAngle(camera.CurrentCameraRotation.y);
 
-	camera.Update(dt);
 	camera.position = PlayerPTR->GetPosition();
-	camera.UpdateCameraVectors();
+	camera.Update(dt);
 }
 
 void Scene_2::RenderTerrain()
@@ -302,7 +301,7 @@ void Scene_2::RenderPassMain()
 
 	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
 	ss.str("");
-	ss << "Player Speed:" << PlayerPTR->vel_;
+	ss << "Player Speed:" << PlayerPTR->GetVelocity();
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
 	SceneGraphics->SetHUD(false);

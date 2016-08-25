@@ -45,7 +45,6 @@ public:
 
 	bool CameraIsLocked = false;
 	void DecomposeMouseInertia(float dt);
-	void UpdateCameraVectors();
 private:
 
 	Vector3 view;
@@ -56,6 +55,7 @@ private:
 	float CameraMaxWalkSpeed = 32.0f;
 
 	void UpdateCameraAngles(double dt);
+	void UpdateCameraVectors();
 	void UpdateCameraPosition();
 	Vector3 MinimumCameraRotation;
 	Vector3 MaximumCameraRotation;
@@ -73,7 +73,6 @@ private:
 	float Pitch_Velocity = 0.f;
 	float InertiaTimeLimit = 0;
 	void DecomposePlayerInertia(float dt);
-
 
 	// For camera animations
 	bool TiltDir = false;
