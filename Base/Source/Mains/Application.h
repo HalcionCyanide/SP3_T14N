@@ -58,7 +58,6 @@ private:
 
     //<!> testing writing to files
     bool loadGlobalStuff();
-    void convertStringToUpper(std::string &thestring);
     //<!> testing writing to files
 };
 

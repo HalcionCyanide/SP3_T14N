@@ -308,12 +308,12 @@ bool Application::loadGlobalStuff()
                 continue;
             std::istringstream ss(data);
             std::string dataFromToken = "";
-            std::string KeyAndToken[2];
+            std::string KeyAndToken[2] = { "" };
             unsigned num = 0;
-            while (getline(ss, KeyAndToken[num], ':'))
+            while (getline(ss, KeyAndToken[num], ','))
             {
                 if (num == 0)
-                    convertStringToUpper(KeyAndToken[num]);
+                    convertStringToUpperCaps(KeyAndToken[num]);
                 ++num;
             }
             if (KeyAndToken[0] == "FORWARD_BUTTON")
@@ -341,12 +341,4 @@ bool Application::loadGlobalStuff()
         return true;
     }
     return false;
-}
-
-void Application::convertStringToUpper(std::string &theString)
-{
-    for (std::string::iterator it = theString.begin(), end = theString.end(); it != end; ++it)
-    {
-        (*it) = toupper(*it);
-    }
 }
