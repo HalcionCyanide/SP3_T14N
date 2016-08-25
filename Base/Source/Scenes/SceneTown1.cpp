@@ -464,7 +464,7 @@ void SceneTown1::RenderPassMain()
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
 
 	ss.str("");
-	ss << "Layer Position:" << ChatLayer->LayerCenterPosition;
+	ss << "Yaw:" << 0;// camera.Yaw_Velocity;
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
 	//<!> Removing soon

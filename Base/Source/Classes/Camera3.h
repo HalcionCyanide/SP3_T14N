@@ -45,8 +45,8 @@ public:
 
 	bool CameraIsLocked = false;
 	void DecomposeMouseInertia(float dt);
-private:
 
+private:
 	Vector3 view;
 
 	float RelativeMouseSensitivity = 1;

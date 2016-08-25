@@ -41,8 +41,6 @@ protected:
 	float BaseWalkSpeed = 16.0f;
 	float MaxWalkSpeed = 32.0f;
 
-	bool CameraIsLocked = false;
-
     Vector3 accel_, MovementValues;
     float JumpVel;
 	float GRAVITY;

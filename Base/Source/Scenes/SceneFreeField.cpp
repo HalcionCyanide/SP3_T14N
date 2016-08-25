@@ -112,8 +112,20 @@ void SceneFreeField::Update(float dt)
 		if (Math::RandIntMinMax(0, MaxEncounterRate - CurrentEncounterRateBoost) < MaxEncounterRate * EncounterRatio)
 		{
 			CurrentEncounterRateBoost = 0;
-			std::map<std::string, Enemy*>::iterator it2 = Scene_System::accessing().EnemyData.begin();
-			Scene_System::accessing().BSys->SetEnemy(*it2->second);
+			/*int i = 0;
+			for (std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.begin(); it != Scene_System::accessing().EnemyData.end(); ++it)
+			{
+				int size = Scene_System::accessing().EnemyData.size();
+				int choice = Math::RandIntMinMax(0, Scene_System::accessing().EnemyData.size());
+				if (i == choice)
+				{
+					Scene_System::accessing().BSys->SetEnemy(*it->second);
+					break;
+				}
+				i++;
+			}*/
+			std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.begin();
+			Scene_System::accessing().BSys->SetEnemy(*it->second);
 			Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
 		}
 	}

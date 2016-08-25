@@ -15,7 +15,7 @@ BattleSystem::~BattleSystem()
 	Exit();
 }
 
-const std::string BattleSystem::UI_Text[10] = { "", "Check", "Inventory", "Seal", "Flee" };
+const std::string BattleSystem::UI_Text[10] = { "", "Check", "Seal", "Flee" };
 
 // Public Function Calls
 void BattleSystem::Init()
@@ -42,11 +42,11 @@ void BattleSystem::Init()
 
 	UI_Layer* NewL = new UI_Layer();
 
-	NewL->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.4f, -CenterPosition.y * 0.5f, 0), Vector3(CenterPosition.x * 0.4f, -CenterPosition.y * 0.5f, 0), Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.4f, CenterPosition.y * 0.2f, 0), UI_Text[1]);
-	NewL->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.8f, -CenterPosition.y * 0.5f, 0), Vector3(CenterPosition.x * 0.8f, -CenterPosition.y * 0.5f, 0), Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.8f, CenterPosition.y * 0.2f, 0), UI_Text[2]);
-	NewL->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 1.2f, -CenterPosition.y * 0.5f, 0), Vector3(CenterPosition.x * 1.2f, -CenterPosition.y * 0.5f, 0), Vector3(400, 100, 1), Vector3(CenterPosition.x * 1.2f, CenterPosition.y * 0.2f, 0), UI_Text[3]);
-	NewL->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 1.6f, -CenterPosition.y * 0.5f, 0), Vector3(CenterPosition.x * 1.6f, -CenterPosition.y * 0.5f, 0), Vector3(400, 100, 1), Vector3(CenterPosition.x * 1.6f, CenterPosition.y * 0.2f, 0), UI_Text[4]);
-
+	NewL->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, -CenterPosition.y * 0.5f, 0), Vector3(CenterPosition.x * 0.5f, -CenterPosition.y * 0.5f, 0), Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.2f, 0), UI_Text[1]);
+	SealButton = new UI_Element(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 1.f, CenterPosition.y * 0.2f, 0), Vector3(CenterPosition.x * 1.f, CenterPosition.y * 0.2f, 0), Vector3(400, 100, 1), Vector3(CenterPosition.x * 1.0f, -CenterPosition.y * 0.5f, 0), UI_Text[2]);
+	NewL->cUI_Layer.push_back(SealButton);
+	NewL->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 1.5f, -CenterPosition.y * 0.5f, 0), Vector3(CenterPosition.x * 1.5f, -CenterPosition.y * 0.5f, 0), Vector3(400, 100, 1), Vector3(CenterPosition.x * 1.5f, CenterPosition.y * 0.2f, 0), UI_Text[3]);
+	
 	UI_Sys.cUIS_LayerContainer.push_back(NewL);
 }
 
@@ -57,9 +57,6 @@ void BattleSystem::Update(double dt)
 	{
 	case BS_PlayerTurn:
 		UpdatePlayerTurn((float)dt);
-		break;
-	case BS_Inventory:
-		UpdateInventoryScreen((float)dt);
 		break;
 	case BS_PlayerEvasionStage:
 		UpdatePESPhase((float)dt);
@@ -76,13 +73,10 @@ void BattleSystem::Update(double dt)
 	}
 	if (FleeSucceeded)
 	{
+		PlayerObj->SetPosition(CenterPosition);
 		FleeSucceeded = false;
-		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
 		Scene_System::accessing().SwitchToPreviousScene();
-		/*Scene_MainMenu* S = dynamic_cast<Scene_MainMenu*>(&Scene_System::accessing().getCurrScene());
-		S->camera.Reset();
-		S->camera.CameraIsLocked = true;*/
-
+		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
 		BattleState = BS_PlayerTurn;
 		if (EnemyLayer)
 		{
@@ -100,9 +94,9 @@ void BattleSystem::Render()
 {
 	BManager.Render();
 	UI_Sys.Render();
-
-	//BaseExterior->Render();
-	BaseInterior->Render();
+	SealButton->Render(0);
+	if (BattleState != BS_Seal)
+		BaseInterior->Render();
 	PlayerObj->Render(); // <- Don't bother checking if player is true because if player is not true, something is wrong, thus a crash should be efficient in telling one that. c:
 	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 	{
@@ -162,9 +156,9 @@ BattleScreenObject* BattleSystem::GetInactiveBSO()
 	return cBS_ObjectContainer.back();
 }
 
-void BattleSystem::SetEnemy(Enemy& Enemy)
+void BattleSystem::SetEnemy(Enemy& E)
 {
-	CurrentEnemy = &Enemy;
+	CurrentEnemy = new Enemy(E);
 	EnemyLayer = new UI_Layer();
 	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, CurrentEnemy->MeshName, Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(400, 400, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.6f, 0), UI_Text[0]);
 	UI_Sys.cUIS_LayerContainer.push_back(EnemyLayer);
@@ -185,38 +179,49 @@ void BattleSystem::UpdatePlayerTurn(float dt)
 				bool ClickSucceeded = false;
 				(*it2)->BoundsActive = true;
 				(*it2)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
-				if (ClickSucceeded)
+				if ((*it2)->BoundsActive && ClickSucceeded)
 				{
 					IFrameTimer = 0;
 					isInvincible = false;
+					(*it2)->BoundsActive = false;
+					bool SwapRequired = false;
 
 					if ((*it2)->UI_Text == UI_Text[1])
 					{
 						//Check
-						BattleState = BS_PlayerEvasionStage;
+						if (CurrentEnemy->CurrentEnemyWave < CurrentEnemy->MaxEnemyWave)
+						{
+							BattleState = BS_PlayerEvasionStage;
+							SwapRequired = true;
+						}
 					}
 					else if ((*it2)->UI_Text == UI_Text[2])
 					{
-						//Inventory
-						BattleState = BS_PlayerEvasionStage;
+						//Seal
+						if (CurrentEnemy->CurrentEnemyWave == CurrentEnemy->MaxEnemyWave)
+						{
+							BattleState = BS_Seal;
+							//SealButton->SwapOriginalWithTarget();
+						}
 					}
 					else if ((*it2)->UI_Text == UI_Text[3])
 					{
-						//Seal
-						BattleState = BS_PlayerEvasionStage;
-					}
-					else if ((*it2)->UI_Text == UI_Text[4])
-					{
 						//Flee
-						FleeSucceeded = true;
+						if (CurrentEnemy->CurrentEnemyWave < CurrentEnemy->MaxEnemyWave)
+						{
+							FleeToggled = true;
+							BattleState = BS_Flee;
+							SwapRequired = true;
+						}
 					}
 
-					if (!FleeSucceeded && UI_Sys.cUIS_LayerContainer.size() > 0)
+					if (SwapRequired && !FleeSucceeded && UI_Sys.cUIS_LayerContainer.size() > 0)
 						for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(), end = UI_Sys.cUIS_LayerContainer.end(); it != end; ++it) {
 							UI_Layer *Layer = (*it);
 							for (std::vector<UI_Element*>::iterator it2 = Layer->cUI_Layer.begin(), end2 = Layer->cUI_Layer.end(); it2 != end2; ++it2)
 							{
-								(*it2)->SwapOriginalWithTarget();
+								if (*it2 != SealButton)
+									(*it2)->SwapOriginalWithTarget();
 							}
 						}
 					int EnemyAttack = Math::RandIntMinMax(0, CurrentEnemy->cE_Projectiles.size() - 1);
@@ -229,13 +234,97 @@ void BattleSystem::UpdatePlayerTurn(float dt)
 	}
 }
 
-void BattleSystem::UpdateInventoryScreen(float dt)
-{
-	// Text Buttons of Usable Items
-}
-
 void BattleSystem::UpdatePESPhase(float dt)
 {
+	int ActiveCount = 0;
+	FleeToggled = false;
+	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
+	{
+		if ((*it)->Active)
+		{
+			if (ExteriorBounds.CheckCollision((*it)->GetPosition()))
+			{
+				(*it)->Update(dt);
+				++ActiveCount;
+			}
+			else (*it)->Active = false;
+		}
+	}
+	CurrentEnemy->CurrentTime += dt;
+
+	if (CurrentEnemy->CurrentEnemyWave < CurrentEnemy->MaxEnemyWave)
+	{
+		if (CurrentEnemy->CurrentAttackCount < CurrentProjectile->AttacksPerWave)
+		{
+			if (CurrentEnemy->CurrentTime > CurrentProjectile->AttackSpeed)
+			{
+				CurrentEnemy->CurrentTime = 0;
+				CurrentEnemy->CurrentAttackCount++;
+				BatchCreateAttacks(*CurrentProjectile);
+			}
+		}
+	}
+	if (CurrentEnemy->CurrentAttackCount == CurrentProjectile->AttacksPerWave && ActiveCount == 0)
+	{
+		if (UI_Sys.cUIS_LayerContainer.size() > 0)
+		{
+			for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(), end = UI_Sys.cUIS_LayerContainer.end(); it != end; ++it) {
+				UI_Layer *Layer = (*it);
+				for (std::vector<UI_Element*>::iterator it2 = Layer->cUI_Layer.begin(), end2 = Layer->cUI_Layer.end(); it2 != end2; ++it2)
+				{
+					if (*it2 != SealButton)
+						(*it2)->SwapOriginalWithTarget();
+				}
+			}
+			BattleState = BS_PlayerTurn;
+			CurrentEnemy->CurrentAttackCount = 0;
+			CurrentEnemy->CurrentEnemyWave++;
+		}
+	}
+	if (CurrentEnemy->CurrentEnemyWave == CurrentEnemy->MaxEnemyWave && ActiveCount <= 0)
+	{
+		for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(), end = UI_Sys.cUIS_LayerContainer.end(); it != end; ++it)
+		{
+			UI_Layer *Layer = (*it);
+			for (std::vector<UI_Element*>::iterator it2 = Layer->cUI_Layer.begin(), end2 = Layer->cUI_Layer.end(); it2 != end2; ++it2)
+			{
+				if (*it2 != SealButton)
+					(*it2)->SwapOriginalWithTarget();
+			}
+		}
+		SealButton->SwapOriginalWithTarget();
+	}
+	UpdatePlayer(dt);
+	UpdatePhysics(dt);
+}
+
+void BattleSystem::UpdateSealPhase(float dt)
+{
+	// Monster Lerp to Center, GB derender, Seal Appears, Monster Shrink and go into seal, blah blah
+	// Do Generic Monster Animation
+	EnemyLayer->cUI_Layer[0]->TargetPosition = CenterPosition;
+	PlayerObj->SetPosition(CenterPosition);
+	if ((EnemyLayer->cUI_Layer[0]->Position - EnemyLayer->cUI_Layer[0]->TargetPosition).LengthSquared() < 1.f)
+	{
+		EnemyLayer->cUI_Layer[0]->AtTarget = true;
+	}
+	if (EnemyLayer->cUI_Layer[0]->AtTarget)
+	{
+		if (EnemyLayer->cUI_Layer[0]->Dimensions.LengthSquared() > 100.f)
+			EnemyLayer->cUI_Layer[0]->Dimensions -= EnemyLayer->cUI_Layer[0]->Dimensions * dt;
+		else{
+			// Monster Anim Complete
+			if (Scene_System::accessing().gPlayer->GetSpellPower() < CurrentEnemy->SpellPower)
+				Scene_System::accessing().gPlayer->SetSpellPower(CurrentEnemy->SpellPower);
+			FleeSucceeded = true;
+		}
+	}
+}
+
+void BattleSystem::UpdateFleePhase(float dt)
+{
+	// Survive 1 turn of PES at double damage
+	// Escape Screen
 	int ActiveCount = 0;
 	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 	{
@@ -266,30 +355,23 @@ void BattleSystem::UpdatePESPhase(float dt)
 	if (CurrentEnemy->CurrentAttackCount == CurrentProjectile->AttacksPerWave && ActiveCount == 0)
 	{
 		if (UI_Sys.cUIS_LayerContainer.size() > 0)
+		{
 			for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(), end = UI_Sys.cUIS_LayerContainer.end(); it != end; ++it) {
 				UI_Layer *Layer = (*it);
 				for (std::vector<UI_Element*>::iterator it2 = Layer->cUI_Layer.begin(), end2 = Layer->cUI_Layer.end(); it2 != end2; ++it2)
 				{
-					(*it2)->SwapOriginalWithTarget();
-					CurrentEnemy->CurrentAttackCount = 0;
-					CurrentEnemy->CurrentEnemyWave++;
+					if (*it2 != SealButton)
+						(*it2)->SwapOriginalWithTarget();
 					BattleState = BS_PlayerTurn;
 				}
 			}
+			CurrentEnemy->CurrentAttackCount = 0;
+			if (FleeToggled)
+				FleeSucceeded = true;
+		}
 	}
 	UpdatePlayer(dt);
 	UpdatePhysics(dt);
-}
-
-void BattleSystem::UpdateSealPhase(float dt)
-{
-	// Monster Lerp to Center, GB derender, Seal Appears, Monster Shrink and go into seal, blah blah
-}
-
-void BattleSystem::UpdateFleePhase(float dt)
-{
-	// Survive 1 turn of PES at double damage
-	// Escape Screen
 }
 
 // Player Calls
@@ -387,6 +469,7 @@ void BattleSystem::UpdateControls(float dt)
 		}
 		else 
 		{
+			PlayerObj->SetPosition(PlayerObj->GetPosition() - PlayerObj->GetVelocity() * 2 * dt);
 			PlayerObj->SetVelocity(Vector3(-PlayerObj->GetVelocity().x * 0.5f, PlayerObj->GetVelocity().y, 0.f));
 			PlayerObj->SetAcceleration(Vector3(-PlayerObj->GetAcceleration().x * 0.5f, PlayerObj->GetAcceleration().y, 0.f));
 		}
@@ -400,6 +483,7 @@ void BattleSystem::UpdateControls(float dt)
 		}
 		else
 		{
+			PlayerObj->SetPosition(PlayerObj->GetPosition() - PlayerObj->GetVelocity() * 2 * dt);
 			PlayerObj->SetVelocity(Vector3(PlayerObj->GetVelocity().x, -PlayerObj->GetVelocity().y * 0.5f, 0.f));
 			PlayerObj->SetAcceleration(Vector3(PlayerObj->GetAcceleration().x, -PlayerObj->GetAcceleration().y * 0.5f, 0.f));
 		}
@@ -422,6 +506,7 @@ void BattleSystem::UpdatePhysics(float dt)
 					{
 						isInvincible = true;
 						IFrameTimer = 2;
+						FleeToggled = false;
 					}
 				}
 		}

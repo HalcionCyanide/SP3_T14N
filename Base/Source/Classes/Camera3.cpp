@@ -97,6 +97,11 @@ void Camera3::Update(float dt)
 	Application::cA_CurrentTerrainY += CameraBobVal;
 	MovementValues.SetZero();
 
+	if (CameraIsLocked)
+	{
+		Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0;
+		Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0;
+	}
 	if (Application::IsKeyPressed(VK_SHIFT) &&
 		!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]))
 	{
@@ -134,7 +139,6 @@ void Camera3::Update(float dt)
 	{
 		Jump(dt);
 	}
-
 	if (m_bJumping == false)
 	{
 		position.y = Application::cA_CurrentTerrainY;
@@ -144,6 +148,7 @@ void Camera3::Update(float dt)
 	UpdateCameraAngles(dt);
 	UpdateJump(dt);
 	UpdateCameraPosition();
+
 	UpdateCameraVectors();
 
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('R'))
@@ -359,20 +364,26 @@ Pitch. You can add in a deadzone here.
 ********************************************************************************/
 void Camera3::Pitch(const float dt)
 {
-	if (Scene_System::accessing().cSS_InputManager->cIM_CameraPitch > 0.0)
-		LookUp(dt);
-	else if (Scene_System::accessing().cSS_InputManager->cIM_CameraPitch < 0.0)
-		LookDown(dt);
+	if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode && !CameraIsLocked)
+	{
+		if (Scene_System::accessing().cSS_InputManager->cIM_CameraPitch > 0.0)
+			LookUp(dt);
+		else if (Scene_System::accessing().cSS_InputManager->cIM_CameraPitch < 0.0)
+			LookDown(dt);
+	}
 }
 /********************************************************************************
 Yaw. You can add in a deadzone here.
 ********************************************************************************/
 void Camera3::Yaw(const float dt)
 {
-	if (Scene_System::accessing().cSS_InputManager->cIM_CameraYaw > 0.0)
-		TurnRight(dt);
-	else if (Scene_System::accessing().cSS_InputManager->cIM_CameraYaw < 0.0)
-		TurnLeft(dt);
+	if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode && !CameraIsLocked)
+	{
+		if (Scene_System::accessing().cSS_InputManager->cIM_CameraYaw > 0.0)
+			TurnRight(dt);
+		else if (Scene_System::accessing().cSS_InputManager->cIM_CameraYaw < 0.0)
+			TurnLeft(dt);
+	}
 }
 /********************************************************************************
 Walk forward or backward. You can add in a deadzone here.
@@ -389,6 +400,7 @@ Strafe left or right. You can add in a deadzone here.
 ********************************************************************************/
 void Camera3::Strafe(const float dt)
 {
+
 	if (dt > 0)
 		C_RightMovement(dt);
 	else if (dt < 0)

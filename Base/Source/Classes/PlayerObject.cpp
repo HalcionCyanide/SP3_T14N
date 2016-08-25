@@ -55,41 +55,40 @@ void PlayerObject::Update(double dt)
 		SetPosition(GetPosition() + MovementValues);
 		MovementValues.SetZero();
 	}
-	//if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
-	//	cameraObject->DecomposeMouseInertia(dt);
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]) && !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]))
+	if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
 	{
-		Walk((float)dt);
+		if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]) && !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]))
+		{
+			Walk((float)dt);
+		}
+		if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]) && !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]))
+		{
+			Walk(-(float)dt);
+		}
+		if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]) && !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]))
+		{
+			Strafe(-(float)dt);
+		}
+		if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]) && !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]))
+		{
+			Strafe((float)dt);
+		}
+		if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::JUMP_COMMAND]))
+		{
+			Jump((float)dt);
+		}
+		if (m_bJumping == false)
+		{
+			Vector3 Pos = GetPosition();
+			Pos.y = Application::cA_CurrentTerrainY;
+			SetPosition(Pos);
+		}
+		if (!GetVelocity().IsZero())
+		{
+			DecomposePlayerInertia((float)dt);
+		}
+		UpdateJump((float)dt);
 	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]) && !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]))
-	{
-		Walk(-(float)dt);
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]) && !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]))
-	{
-		Strafe(-(float)dt);
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]) && !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]))
-	{
-		Strafe((float)dt);
-	}
-    if (!CameraIsLocked &&Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::JUMP_COMMAND]))
-	{
-		Jump((float)dt);
-	}
-	if (m_bJumping == false)
-	{
-		Vector3 Pos = GetPosition();
-		Pos.y = Application::cA_CurrentTerrainY;
-		SetPosition(Pos);
-	}
-	if (!GetVelocity().IsZero())
-	{
-		DecomposePlayerInertia((float)dt);
-	}
-
-	UpdateJump((float)dt);
-
 }
 
 void PlayerObject::SetJump(const float &speed, const float &max_speed, const float &accel)

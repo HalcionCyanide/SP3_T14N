@@ -18,7 +18,6 @@ public:
 	{
 		BS_Null,
 		BS_PlayerTurn,
-		BS_Inventory,
 		BS_PlayerEvasionStage,
 		BS_Seal,
 		BS_Flee,
@@ -48,10 +47,13 @@ public:
 
 private:
 	// Private Variables
+	Enemy* CurrentEnemy; //<- To Store Attack Patterns and Stats
 	bool FleeSucceeded = false;
+	bool FleeToggled = false;
+	bool SealToggled = false;
+	UI_Element* SealButton;
 	UI_Layer* EnemyLayer;
 	static const std::string UI_Text[10];
-	Enemy* CurrentEnemy; //<- To Store Attack Patterns and Stats
 	EnemyProjectile* CurrentProjectile;
 	Boundary2D InteriorBounds, ExteriorBounds;
 
@@ -68,7 +70,6 @@ private:
 	// Private Function Calls
 	// State Calls
 	void UpdatePlayerTurn(float dt);
-	void UpdateInventoryScreen(float dt);
 	void UpdatePESPhase(float dt);
 	void UpdateSealPhase(float dt);
 	void UpdateFleePhase(float dt);

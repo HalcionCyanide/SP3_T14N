@@ -164,17 +164,17 @@ void SceneBattleScreen::RenderPassMain()
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 25);
 
 	ss.str("");
-	ss << "Player HP:" << Scene_System::accessing().gPlayer->GetCurrentHealth();
+	//ss << "Player HP:" << Scene_System::accessing().gPlayer->GetCurrentHealth();
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
 
 	ss.str("");
-	ss << "Player Vel:" << Scene_System::accessing().BSys->PlayerObj->GetVelocity();
+	//ss << "FleeS" << Scene_System::accessing().BSys->FleeSucceeded;
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
 
 	ss.str("");
-	ss << "Mouse Position:" << Scene_System::accessing().cSS_InputManager->GetMousePosition();
+	//ss << "FleeT" << Scene_System::accessing().BSys->FleeToggled;
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 100);
 
