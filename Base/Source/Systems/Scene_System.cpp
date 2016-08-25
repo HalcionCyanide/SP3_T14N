@@ -21,6 +21,9 @@ void Scene_System::Init()
 	}
 	NM.LoadFile("DrivenFiles//NPC_FILES.csv");
 	BSys = nullptr;
+
+    theLoadingEffect = nullptr;
+    doingLoadingEffect();
 }
 
 void Scene_System::Update(double dt)
@@ -138,4 +141,11 @@ void Scene_System::clearEverything()
 
 	if (BSys)
 		delete BSys;
+    if (theLoadingEffect)
+        delete theLoadingEffect;
+}
+
+void Scene_System::doingLoadingEffect()
+{
+    theLoadingEffect = new UI_System();
 }

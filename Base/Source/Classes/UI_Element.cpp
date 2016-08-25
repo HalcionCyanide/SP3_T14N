@@ -53,8 +53,8 @@ void UI_Element::WrapText()
 	std::stringstream Tmp, MainString;
 	int CPos = 0;
 	int CCheck = 0;
-	if (MaxCharactersPerLine < UI_Text.size())
-		while (CPos < UI_Text.size())
+	if (MaxCharactersPerLine < (int)UI_Text.size())
+		while (CPos < (int)UI_Text.size())
 		{
 			Tmp << UI_Text[CPos];
 			++CPos;
@@ -132,7 +132,7 @@ void UI_Element::Render(const Vector3& LayerPos)
 		else if (TextWrappingEnabled)
 			for (unsigned int i = 0; i < UI_Text_Container.size(); ++i)
 			{
-				SceneGraphics->RenderTextOnScreen(UI_Text_Container[i], Color(1, 1, 1), Dimensions.y * 0.25f, Position.x + LayerPos.y - Dimensions.x * 0.5 + (Dimensions.y * 0.25f), Position.y + LayerPos.y + (0.5f * Dimensions.y * 0.25f) - (i * Dimensions.y * 0.25f));
+				SceneGraphics->RenderTextOnScreen(UI_Text_Container[i], Color(1, 1, 1), Dimensions.y * 0.25f, Position.x + LayerPos.y - Dimensions.x * 0.5f + (Dimensions.y * 0.25f), Position.y + LayerPos.y + (0.5f * Dimensions.y * 0.25f) - (i * Dimensions.y * 0.25f));
 			}
 	}
 }
