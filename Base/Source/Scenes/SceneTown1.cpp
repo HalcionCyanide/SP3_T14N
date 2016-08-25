@@ -502,4 +502,15 @@ void SceneTown1::Exit()
 	objVec.clear();
 	if (Player)
 		delete Player;
+    if (ChatLayer)
+        delete ChatLayer;
+    //if (UI_Sys)
+    //    delete UI_Sys;
+    //if (NPC_TextBox)
+    //    delete NPC_TextBox;
+    //if (NPC_Name)
+    //    delete NPC_Name;
+    //for (auto it : NPC_QuestButtons)
+    //    delete it;
+    //NPC_QuestButtons.clear();
 }
