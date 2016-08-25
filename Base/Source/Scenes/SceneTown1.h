@@ -35,6 +35,15 @@ private:
     void RenderTerrain();
     void RenderSkybox();
 
+	// CHAT UI STUFFS <!>
+	void InitChatUI();
+	int HandleChatUIInput(float dt);
+	UI_Layer* ChatLayer;
+	UI_Element* NPC_Name;
+	UI_Element* NPC_TextBox;
+	std::vector<UI_Element*> NPC_QuestButtons;
+	// CHAT UI END
+
     const float SkyboxSize = 1000;
 
     BillboardManager BManager;
@@ -44,7 +53,7 @@ private:
     GenericEntity *theInteractiveMap;
     std::vector<GameObject*> objVec;
 	Vector3 CenterPosition;
-	UI_System UI_Sys;
+	UI_System* UI_Sys;
 };
 
 #endif // _SCENE_TOWN_1_H

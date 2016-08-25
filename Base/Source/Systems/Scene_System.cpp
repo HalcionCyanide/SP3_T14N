@@ -11,6 +11,14 @@ void Scene_System::Init()
 	gPlayer = new GlobalPlayer(1, 420, 1337, false);
 
 	QM.readFile("DrivenFiles//questData.csv");
+
+	std::string path = "DrivenFiles//quests//q_";
+	std::string fileFormat = ".csv";
+	for (auto it : QM.allQuests)
+	{
+		std::string temp = path + it->getName() + fileFormat;
+		it->LoadFile(temp);
+	}
 	NM.LoadFile("DrivenFiles//NPC_FILES.csv");
 	BSys = nullptr;
 }

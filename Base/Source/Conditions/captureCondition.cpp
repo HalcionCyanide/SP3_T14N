@@ -1,11 +1,11 @@
 #include "captureCondition.h"
 
 captureCondition::captureCondition()
-	//: theRequirement(nullptr)
+	: theRequirement(nullptr)
 {
 }
 
-//captureCondition::captureCondition(Monster* i)
+//captureCondition::captureCondition(std::string i)
 //	: theRequirement(i)
 //{
 //}
@@ -20,7 +20,7 @@ void captureCondition::Update(double dt)
 
 	if(!complete)
 	{
-		//if ((theRequirement.value_->captured))
+		//if (theRequirement.value_-> win ? )
 		complete = true;
 	}
 	else

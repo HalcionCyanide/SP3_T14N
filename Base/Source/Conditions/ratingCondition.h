@@ -9,7 +9,6 @@ public:
 	ratingCondition(int);
 	virtual ~ratingCondition();
 
-	virtual void setValue(std::string);
 	virtual void Update(double dt);
 
 private:

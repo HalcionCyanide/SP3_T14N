@@ -38,6 +38,7 @@ void SceneTown1::Init()
 	projectionStack->LoadMatrix(perspective);
 
 	camera.Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
+	CenterPosition.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
 	// Initiallise Model Specific Meshes Here
 	Mesh* newMesh = MeshBuilder::GenerateTerrain("Town 1", "HeightMapFiles//heightmap_Town1.raw", m_heightMap);
@@ -69,15 +70,10 @@ void SceneTown1::Init()
 	camera.UpdateCameraVectors();
 	//<!> There can only be 1 Player
 
-	UI_Layer* NewL = new UI_Layer();
-
-	CenterPosition.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
-	NewL->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", CenterPosition, -CenterPosition, Vector3(400, 100, 1), -CenterPosition, "Exit");
-
 	int temp = 1;
 	for (auto it : Scene_System::accessing().NM.allNPCs)
 	{
-		it->Init(it->getName(), 1, Vector3(temp * 5.f, 0, temp * 5.f), Vector3(10, 10, 10), Vector3(0, 0, 0), 0.f, Vector3(0, 1, 0));
+		it->Init(it->getName(), 1, Vector3(temp * 20.f, 0, temp * 20.f), Vector3(10, 10, 10), Vector3(0, 0, 0), 0.f, Vector3(0, 1, 0));
 
 		it->SetPosition(
 			Vector3(it->GetPosition().x,
@@ -88,9 +84,73 @@ void SceneTown1::Init()
 		objVec.push_back(it);
 		temp++;
 	}
-	
 
-	UI_Sys.cUIS_LayerContainer.push_back(NewL);
+	UI_Sys = new UI_System();
+	UI_Sys->Init();
+	InitChatUI();
+}
+
+void SceneTown1::InitChatUI()
+{
+	ChatLayer = new UI_Layer();
+	// Name
+	Vector3 DefaultPos(CenterPosition.x  * 0.25f, CenterPosition.y * 0.7f, 0);
+	NPC_Name = new UI_Element(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Sek Heng");
+	ChatLayer->cUI_Layer.push_back(NPC_Name);
+
+	// Text Box
+	DefaultPos.Set(CenterPosition.x, CenterPosition.y * 0.3f, 0);
+	NPC_TextBox = new UI_Element(UI_Element::UI_BUTTON_B_TO_SCRN, "UI_ChatBox", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.95f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 7, 1), DefaultPos, "Text Wrapping Test Text Wrapping Test Text Wrapping Test");
+	ChatLayer->cUI_Layer.push_back(NPC_TextBox);
+
+	// Quest Buttons
+	DefaultPos.Set(CenterPosition.x * 1.75f, CenterPosition.y * 0.7f, 0);
+	NPC_QuestButtons.push_back(new UI_Element(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Exit"));
+	ChatLayer->cUI_Layer.push_back(NPC_QuestButtons.back());
+
+	DefaultPos.Set(CenterPosition.x * 1.75f, CenterPosition.y * 1.3f, 0);
+	NPC_QuestButtons.push_back(new UI_Element(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q1"));
+	ChatLayer->cUI_Layer.push_back(NPC_QuestButtons.back());
+
+	DefaultPos.Set(CenterPosition.x * 1.75f, CenterPosition.y * 1.1f, 0);
+	NPC_QuestButtons.push_back(new UI_Element(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q2"));
+	ChatLayer->cUI_Layer.push_back(NPC_QuestButtons.back());
+
+	DefaultPos.Set(CenterPosition.x * 1.75f, CenterPosition.y * 0.9f, 0);
+	NPC_QuestButtons.push_back(new UI_Element(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q3"));
+	ChatLayer->cUI_Layer.push_back(NPC_QuestButtons.back());
+
+	// Chat Layer Settings
+	ChatLayer->LayerCenterPosition.y = -Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight;
+	ChatLayer->LayerOriginalPosition = 0;
+	ChatLayer->LayerTargetPosition.y = -Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight;
+
+	UI_Sys->cUIS_LayerContainer.push_back(ChatLayer);
+}
+
+int SceneTown1::HandleChatUIInput(float dt)
+{
+	for (std::vector<UI_Element*>::iterator it = NPC_QuestButtons.begin(); it != NPC_QuestButtons.end(); ++it)
+	{
+		if ((*it)->Active)
+		{
+			(*it)->BoundsActive = true;
+			bool ClickDetection = false;
+			if ((*it)->BoundsActive)
+			{
+				(*it)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickDetection);
+				if (ClickDetection)
+				{
+					(*it)->BoundsActive = false;
+					if ((*it)->UI_Text == "Exit")
+					{
+						return 0;
+					}
+				}
+			}
+		}
+	}
+	return -1;
 }
 
 void SceneTown1::Update(float dt)
@@ -146,58 +206,54 @@ void SceneTown1::Update(float dt)
 	PlayerPTR->Update(dt);
 	PlayerPTR->SetRotationAngle(camera.CurrentCameraRotation.y);
 
-	camera.position = PlayerPTR->GetPosition();
 	camera.Update(dt);
+	camera.position = PlayerPTR->GetPosition();
+	camera.UpdateCameraVectors();
 
-	for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it)
+	ChatLayer->Update((float)dt);
+
+	for (std::vector<NPC*>::iterator it = Scene_System::accessing().NM.allNPCs.begin(); it != Scene_System::accessing().NM.allNPCs.end(); ++it)
 	{
-		(*it)->Update((float)dt);
-	}
+		NPC* CurrentNPC = *it;
 
-	if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
-	{
-		Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0.f;
-		Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0.f;
-	}
-
-
-	for (auto it : Scene_System::accessing().NM.allNPCs)
-	{
-		it->setTarget(camera.position);
-		it->Update((float)dt);
-
-		if (it->getInteracting())
+		// Update and rotate the NPC in accordance to the player[camera]'s position.
+		CurrentNPC->setTarget(camera.position);
+		CurrentNPC->Update((float)dt);
+		float DistanceCheck = (camera.position - CurrentNPC->GetPosition()).LengthSquared();
+		if (DistanceCheck < CurrentNPC->GetDetectionRadiusSquared() && Scene_System::accessing().cSS_InputManager->GetKeyValue('Q') && !CurrentNPC->getInteracting())
 		{
-			for (std::vector<UI_Element*>::iterator it2 = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it2 != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it2)
-			{
-				(*it2)->TargetPosition.x = CenterPosition.x * 1.6f;
-				(*it2)->TargetPosition.y = CenterPosition.y * 0.6f;
-			}
+			CurrentNPC->setInteracting(true);
+			NPC_Name->UI_Text = CurrentNPC->getName();
+			NPC_TextBox->UI_Text = CurrentNPC->getFText();
+			ChatLayer->SwapOriginalWithTarget();
+			break;
+		}
+		// The NPC has interacted with the player successfully.
+		if (CurrentNPC->getInteracting())
+		{
+			// Enable the mouse.
 			Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
-			camera.target = Vector3(it->GetPosition().x, camera.PlayerHeight,it->GetPosition().z);
-			camera.CurrentCameraRotation = Vector3(0, 0, 0);
-		}
-		else
-		{
-			Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-			for (std::vector<UI_Element*>::iterator it2 = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it2 != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it2)
-			{
-				(*it2)->TargetPosition = -CenterPosition;
-				it->setInteracting(false);
-			}
-		}
 
-		for (std::vector<UI_Element*>::iterator it3 = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it3 != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it3)
-		{
-			bool ClickSucceeded = false;
-			(*it3)->BoundsActive = true;
-			(*it3)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
-			if (ClickSucceeded)
+			// Set the player's target to face the NPC
+			camera.target = Vector3(CurrentNPC->GetPosition().x, camera.PlayerHeight, CurrentNPC->GetPosition().z);
+			camera.CurrentCameraRotation.x = 0;
+
+			// Interacting with NPC: Check UI Key Press
+			switch (HandleChatUIInput((float)dt))
 			{
-				(*it3)->TargetPosition = -CenterPosition;
-				it->setInteracting(false);
+			case(0) : // Exit
+			{
+				ChatLayer->SwapOriginalWithTarget();
+				CurrentNPC->setInteracting(false);
 				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
 			}
+			case(1) : // Q1
+			{
+				CurrentNPC->setInteracting(false);
+				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+			}
+			}
+			break;
 		}
 	}
 }
@@ -242,7 +298,7 @@ void SceneTown1::RenderShadowCasters()
 
 	/*for (auto it : Scene_System::accessing().Scene_System::accessing().NM.getContainer())
 	{
-		it->Render();
+	it->Render();
 	}*/
 	Scene_System::accessing().NM.allNPCs.at(0)->Render();
 }
@@ -382,10 +438,12 @@ void SceneTown1::RenderPassMain()
 
 	SceneGraphics->SetHUD(true);
 
-	for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it)
+	/*for (std::vector<UI_Element*>::iterator it = UI_Sys->cUIS_LayerContainer[0]->cUI_Layer.begin(); it != UI_Sys->cUIS_LayerContainer[0]->cUI_Layer.end(); ++it)
 	{
-		(*it)->Render(Vector3());
-	}
+	(*it)->Render(Vector3());
+	}*/
+
+	ChatLayer->Render();
 
 	if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
 	{
@@ -399,12 +457,12 @@ void SceneTown1::RenderPassMain()
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 25);
 
 	ss.str("");
-	ss << "CVel:" << Player->GetVelocity();
+	ss << "CVel:" << camera.CameraVelocity;
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
 
 	ss.str("");
-	ss << "Mouse Position:" << Scene_System::accessing().cSS_InputManager->GetMousePosition();
+	ss << "Layer Position:" << ChatLayer->LayerCenterPosition;
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
 	//<!> Removing soon
@@ -414,11 +472,7 @@ void SceneTown1::RenderPassMain()
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 125);
 	//<!> Removing soon
 
-	ss.str("9, 0 - Toggle Mouse Modes");
-	ss.precision(3);
-	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
 	SceneGraphics->SetHUD(false);
-
 }
 
 void SceneTown1::Render()

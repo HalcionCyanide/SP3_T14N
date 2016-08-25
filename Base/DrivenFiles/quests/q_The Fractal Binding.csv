@@ -1,0 +1,14 @@
+stage,ConditionName,Value,Description
+1,collection,1,Capture a monster.
+2,interact,NPC_guardcaptain,Report to the Guard Captain.
+3,capture,BOSS_Reaper,Capture the Reaper.
+4,interact,NPC_T1door,Leave the City.
+5,interact,NPC_villagechief,Find the village chief.
+6,interact,NPC_villager,Find the villagers.
+7,goto,10;10;10;,Search the graveyard.
+8,goto,0;0;0;,Cleanse the graveyard.
+9,capture,BOSS_Manticore,Capture the Manticore.
+10,interact,NPC_mStranger,Talk to the Mysterious Stranger.
+11,interact,NPC_guardcaptain,Return to the Castle for instructions.
+12,interact,NPC_mStranger,Reach the Cursed Woods.
+13,capture,BOSS_Balrog,Capture the Balrog.

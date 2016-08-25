@@ -1,0 +1,15 @@
+stage,ConditionName,Value,Description
+1,interact,NPC_rocks,Mine the rocks.
+2,interact,NPC_wood,Chop the wood.
+3,interact,NPC_carpenter,Bring them back to the carpenter.
+4,interact,NPC_rocks,Mine the rocks.
+5,interact,NPC_wood,Chop the wood.
+6,interact,NPC_carpenter,Bring them back to the carpenter.
+7,goto,20;20;20;,Rebuild the Homes.
+8,interact,NPC_rocks,Mine the rocks.
+9,interact,NPC_wood,Chop the wood.
+10,interact,NPC_carpenter,Bring them back to the carpenter.
+11,interact,NPC_rocks,Mine the rocks.
+12,interact,NPC_wood,Chop the wood.
+13,interact,NPC_carpenter,Bring them back to the carpenter.
+14,goto,30;20;30;,Rebuild the Gate.

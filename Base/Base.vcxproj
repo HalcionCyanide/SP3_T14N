@@ -31,6 +31,8 @@
     <ClCompile Include="Source\Classes\Billboard.cpp" />
     <ClCompile Include="Source\Misc\LoadEnemyData.cpp" />
     <ClCompile Include="Source\NPCs\NPC.cpp" />
+    <ClCompile Include="Source\Quests\Quest.cpp" />
+    <ClCompile Include="Source\Quests\QuestStage.cpp" />
     <ClCompile Include="Source\Systems\BattleSystem.cpp" />
     <ClCompile Include="Source\Systems\BillboardManager.cpp" />
     <ClCompile Include="Source\Classes\Boundary.cpp" />
@@ -52,7 +54,6 @@
     <ClCompile Include="Source\Classes\GameMap.cpp" />
     <ClCompile Include="Source\Systems\MusicSystem.cpp" />
     <ClCompile Include="Source\Classes\PlayerObject.cpp" />
-    <ClCompile Include="Source\Conditions\Quest.cpp" />
     <ClCompile Include="Source\Scenes\SceneBattleScreen.cpp" />
     <ClCompile Include="Source\Scenes\SceneFreeField.cpp" />
     <ClCompile Include="Source\Scenes\SceneTown1.cpp" />
@@ -111,7 +112,6 @@
     <ClInclude Include="Source\Conditions\genericCondition.h" />
     <ClInclude Include="Source\Conditions\gotoCondition.h" />
     <ClInclude Include="Source\Conditions\interactCondition.h" />
-    <ClInclude Include="Source\Conditions\Quest.h" />
     <ClInclude Include="Source\Conditions\ratingCondition.h" />
     <ClInclude Include="Source\Mains\Application.h" />
     <ClInclude Include="Source\Misc\BoundsBuilder.h" />
@@ -127,6 +127,8 @@
     <ClInclude Include="Source\Misc\SimpleCommand.h" />
     <ClInclude Include="Source\Misc\Utility.h" />
     <ClInclude Include="Source\NPCs\NPC.h" />
+    <ClInclude Include="Source\Quests\Quest.h" />
+    <ClInclude Include="Source\Quests\QuestStage.h" />
     <ClInclude Include="Source\Scenes\GraphicsEntity.h" />
     <ClInclude Include="Source\Scenes\SceneBattleScreen.h" />
     <ClInclude Include="Source\Scenes\SceneFreeField.h" />

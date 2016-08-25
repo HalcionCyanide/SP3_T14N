@@ -5,6 +5,7 @@
 #include <sstream>
 #include <set>
 #include "../Scenes/GraphicsEntity.h"
+#include "../Misc/LoadEnemyData.h"
 
 void MusicSystem::Init()
 {

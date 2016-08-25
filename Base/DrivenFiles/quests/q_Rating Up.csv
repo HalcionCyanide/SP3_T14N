@@ -1,0 +1,5 @@
+stage,ConditionName,Value,Description
+1,rating,20,Achieve a rating of 20 or higher.
+2,rating,40,Achieve a rating of 40 or higher.
+3,rating,60,Achieve a rating of 60 or higher.
+4,rating,80,Achieve a rating of 80 or higher.

@@ -61,7 +61,6 @@ public:
 	NPCManager NM;
 private:
 	std::stack<SceneEntity* > SceneHistory;
-
     std::map<std::string, SceneEntity*> theSceneList;
     SceneEntity *graphics_scene;
 };
