@@ -23,7 +23,7 @@ void Scene_System::Init()
 	BSys = nullptr;
 
     theLoadingEffect = nullptr;
-    doingLoadingEffect();
+    delayingLoadingTime = 0;
 }
 
 void Scene_System::Update(double dt)
@@ -148,4 +148,21 @@ void Scene_System::clearEverything()
 void Scene_System::doingLoadingEffect()
 {
     theLoadingEffect = new UI_System();
+    UI_Layer *theLayer = new UI_Layer();
+    theLayer->AddUIElement(UI_Element::UI_UNASSIGNED, "SmallWhiteSquare", Vector3(400, 300, 0), Vector3(400, 300, 0), Vector3(5, 5, 5), Vector3(400, 300, 0));
+    theLoadingEffect->cUIS_LayerContainer.push_back(theLayer);
+}
+
+void Scene_System::UpdateLoadingStuff(double dt)
+{
+    bool noLongerNeedToUpdate = true;
+    for (std::vector<UI_Layer*>::iterator it = theLoadingEffect->cUIS_LayerContainer.begin(), end = theLoadingEffect->cUIS_LayerContainer.end(); it != end; ++it)
+    {
+        UI_Layer *theLayer = (*it);
+        for (std::vector<UI_Element*>::iterator it2 = theLayer->cUI_Layer.begin(), end2 = theLayer->cUI_Layer.end(); it2 != end2; ++it2)
+        {
+            UI_Element *theElement = (*it2);
+            //theElement->
+        }
+    }
 }

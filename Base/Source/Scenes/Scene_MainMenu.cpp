@@ -398,6 +398,7 @@ void Scene_MainMenu::RenderPassMain()
 	//<!> will remove soon <!>
 
 	SceneGraphics->SetHUD(true);
+    Scene_System::accessing().theLoadingEffect->Render();
 
 	UI_Sys.Render();
 

@@ -62,11 +62,15 @@ public:
 	NPCManager NM;
     UI_System *theLoadingEffect;
 
-private:
+    void SetLoadingTime(const double &dt);
+    void UpdateLoadingStuff(double dt);
     void doingLoadingEffect();
+
+private:
 	std::stack<SceneEntity* > SceneHistory;
     std::map<std::string, SceneEntity*> theSceneList;
     SceneEntity *graphics_scene;
+    double delayingLoadingTime;
 };
 
 #endif
