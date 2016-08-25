@@ -226,7 +226,7 @@ void Application::Init()
     //writeFile.close(); 
     //<!> testing writing to files. So removing soon
 #ifdef _DEBUG
-    assert(loadGlobalStuff());
+    assert(loadThoseKeyCommandsStuff());
 #else
     loadGlobalStuff();
 #endif
@@ -292,7 +292,7 @@ void Application::Exit()
 	_CrtDumpMemoryLeaks();
 }
 
-bool Application::loadGlobalStuff()
+bool Application::loadThoseKeyCommandsStuff()
 {
     std::ifstream file("DrivenFiles//GlobalDriven.csv");
 #ifdef _DEBUG

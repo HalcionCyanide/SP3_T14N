@@ -57,7 +57,7 @@ private:
 	double m_dAccumulatedTime_ThreadTwo;
 
     //<!> testing writing to files
-    bool loadGlobalStuff();
+    bool loadThoseKeyCommandsStuff();
     //<!> testing writing to files
 };
 

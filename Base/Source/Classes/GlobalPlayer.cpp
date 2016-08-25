@@ -1,4 +1,6 @@
 #include "GlobalPlayer.h"
+#include <fstream>
+#include <sstream>
 
 // Constructor
 GlobalPlayer::GlobalPlayer()
@@ -24,6 +26,7 @@ void GlobalPlayer::Init(const int& Spell_Power, const int& CurrentHealth, const 
 	this->CurrentHealth = CurrentHealth;
 	this->MaxHealth = MaxHealth;
 	this->IsInteracting = IsInteracting;
+    loadPlayerSave("DrivenFiles//PlayerSave1.csv");
 }
 
 void GlobalPlayer::Update(float dt)
@@ -34,7 +37,7 @@ void GlobalPlayer::Update(float dt)
 void GlobalPlayer::Exit()
 {
 	// SAVE STATS
-
+    rewritePlayerSave("DrivenFiles//PlayerSave1.csv");
 	// CLEAN UP
 
 }
@@ -79,4 +82,27 @@ void GlobalPlayer::SetMaxHealth(const int& MaxHealth)
 void GlobalPlayer::SetIsInteracting(const bool& IsInteracting)
 {
 	this->IsInteracting = IsInteracting;
+}
+
+bool GlobalPlayer::loadPlayerSave(const std::string &fileName)
+{
+    std::ifstream file(fileName.c_str());
+    if (file.is_open())
+    {
+
+        return true;
+    }
+    return false;
+}
+
+bool GlobalPlayer::rewritePlayerSave(const std::string &fileName)
+{
+    std::ifstream file(fileName.c_str());
+    if (file.is_open())
+    {
+        std::vector<std::string> allThoseLines;
+
+        return true;
+    }
+    return false;
 }
