@@ -101,6 +101,9 @@ void Scene_System::setGraphics_Scene(SceneEntity &sceneObject)
 
 void Scene_System::clearEverything()
 {
+    if (gPlayer)
+        delete gPlayer;
+    gPlayer = nullptr;
     for (auto it : theSceneList)
     {
         it.second->Exit();
@@ -123,9 +126,6 @@ void Scene_System::clearEverything()
         delete it.second;
     }
     EnemyData.clear();
-    if (gPlayer)
-        delete gPlayer;
-    gPlayer = nullptr;
 
     for (auto it : QM.allQuests)
     {
