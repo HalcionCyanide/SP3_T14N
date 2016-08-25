@@ -225,18 +225,6 @@
     <ClCompile Include="Source\Systems\questManager.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Classes\Town1GateBoundary.cpp">
-      <Filter>Source Files\Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Classes\Town2GateBoundary.cpp">
-      <Filter>Source Files\Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Classes\Town3GateBoundary.cpp">
-      <Filter>Source Files\Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Classes\FreeFieldGateBoundary.cpp">
-      <Filter>Source Files\Classes</Filter>
-    </ClCompile>
     <ClCompile Include="Source\NPCs\NPC.cpp">
       <Filter>Source Files\NPCs</Filter>
     </ClCompile>
@@ -248,6 +236,9 @@
     </ClCompile>
     <ClCompile Include="Source\Quests\QuestStage.cpp">
       <Filter>Source Files\Quests</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Classes\GateBoundary.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -437,18 +428,6 @@
     <ClInclude Include="Source\Systems\questManager.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Classes\Town1GateBoundary.h">
-      <Filter>Header Files\Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Classes\Town2GateBoundary.h">
-      <Filter>Header Files\Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Classes\Town3GateBoundary.h">
-      <Filter>Header Files\Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Classes\FreeFieldGateBoundary.h">
-      <Filter>Header Files\Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Source\NPCs\NPC.h">
       <Filter>Header Files\NPCs</Filter>
     </ClInclude>
@@ -463,6 +442,9 @@
     </ClInclude>
     <ClInclude Include="Source\Quests\QuestStage.h">
       <Filter>Header Files\Quests</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Classes\GateBoundary.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

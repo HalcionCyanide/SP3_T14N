@@ -1,9 +1,12 @@
 #include "GameObject.h"
 #include "..\\Systems\\Scene_System.h"
 #include "..\\Scenes\\GraphicsEntity.h"
-#include "Town1GateBoundary.h"
-#include "FreeFieldGateBoundary.h"
+//#include "Town1GateBoundary.h"
+//#include "FreeFieldGateBoundary.h"
 #include "../Misc/LoadEnemyData.h"
+#include "GateBoundary.h"
+#include "../Scenes/SceneTown1.h"
+#include "../Scenes/SceneFreeField.h"
 
 GameObject::GameObject()
 	//: BaseObject()
@@ -42,9 +45,9 @@ void GameObject::SetBounds()
         std::string keyName =  getName();
         convertStringToUpperCaps(keyName);
         if (checkWhetherTheWordInThatString("TOWN1", keyName))
-            Bounds = new Town1GateBoundary();
+            Bounds = new GateBoundary(SceneTown1::id_);
         else if (checkWhetherTheWordInThatString("FREEFIELD", keyName))
-            Bounds = new FreeFieldGateBoundary();
+			Bounds = new GateBoundary(SceneFreeField::id_);
         else
             Bounds = new Boundary();
     }
