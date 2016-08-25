@@ -10,7 +10,7 @@
 #include "..\\Classes\\PlayerObject.h"
 #include "..\\Systems\\UI_System.h"
 
-std::string SceneTown1::id_ = "Scene Town 1";
+std::string SceneTown1::id_ = "1_Scene";
 
 SceneTown1::SceneTown1()
 	: SceneEntity()

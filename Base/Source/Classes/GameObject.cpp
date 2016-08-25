@@ -35,18 +35,13 @@ void GameObject::SetBounds()
 {
 	if (Bounds == nullptr)
 		Bounds = new Boundary();
-   // if (checkWhetherTheWordInThatString("gate", getName()))
-   // {
-   //     delete Bounds;
-   //     std::string keyName =  getName();
-   //     convertStringToUpperCaps(keyName);
-   //     if (checkWhetherTheWordInThatString("TOWN1", keyName))
-   //         Bounds = new GateBoundary(SceneTown1::id_);
-   //     else if (checkWhetherTheWordInThatString("FREEFIELD", keyName))
-			//Bounds = new GateBoundary(SceneFreeField::id_);
-   //     else
-   //         Bounds = new Boundary();
-   // }
+    if (checkWhetherTheWordInThatString("Scene", getName()))
+    {
+        delete Bounds;
+		Bounds = new GateBoundary();
+		Bounds->setName(getName());
+    }
+
 	Bounds->SetPosition(this->GetPosition());
 	Bounds->SetDimensions(this->GetDimensions());
 	Bounds->SetRotationAngle(this->GetRotationAngle());
