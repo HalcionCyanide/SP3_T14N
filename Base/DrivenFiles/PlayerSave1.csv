@@ -2,3 +2,15 @@ SpellPower,1
 CurrentHealth,420
 MaxHealth,1337
 SceneName,1_Scene
+CameraPositionX,0
+CameraPositionY,5
+CameraPositionZ,-5
+CameraTargetX,0
+CameraTargetY,5
+CameraTargetZ,0
+PlayerName,Player
+PlayerMass,1
+PlayerPosX,10
+PlayerPosY,50
+PlayerPosZ,12
+PlayerYRotation,180

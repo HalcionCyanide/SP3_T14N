@@ -122,6 +122,50 @@ bool GlobalPlayer::LoadPlayerSave(const std::string &fileName)
             {
                 Scene_System::accessing().SwitchScene(value);
             }
+            else if (checkWhetherTheWordInThatString("CAMERAPOSITIONX", key))
+            {
+                CurrCamera->defaultPosition.x = CurrCamera->position.x = stof(value);
+            }
+            else if (checkWhetherTheWordInThatString("CAMERAPOSITIONY", key))
+            {
+                CurrCamera->defaultPosition.y = CurrCamera->position.y = stof(value);
+            }
+            else if (checkWhetherTheWordInThatString("CAMERAPOSITIONZ", key))
+            {
+                CurrCamera->defaultPosition.z = CurrCamera->position.z = stof(value);
+            }
+            else if (checkWhetherTheWordInThatString("CAMERATARGETX", key))
+            {
+                CurrCamera->defaultTarget.x = CurrCamera->target.x = stof(value);
+            }
+            else if (checkWhetherTheWordInThatString("CAMERATARGETY", key))
+            {
+                CurrCamera->defaultTarget.y = CurrCamera->target.y = stof(value);
+            }
+            else if (checkWhetherTheWordInThatString("CAMERATARGETZ", key))
+            {
+                CurrCamera->defaultTarget.z = CurrCamera->target.z = stof(value);
+            }
+            else if (checkWhetherTheWordInThatString("PLAYERMASS", key))
+            {
+                PlayerObj->SetMass(stof(value));
+            }
+            else if (checkWhetherTheWordInThatString("PLAYERPOSX", key))
+            {
+                PlayerObj->SetPosition(Vector3(stof(value), PlayerObj->GetPosition().y, PlayerObj->GetPosition().z));
+            }
+            else if (checkWhetherTheWordInThatString("PLAYERPOSY", key))
+            {
+                PlayerObj->SetPosition(Vector3(PlayerObj->GetPosition().x,stof(value) , PlayerObj->GetPosition().z));
+            }
+            else if (checkWhetherTheWordInThatString("PLAYERPOSZ", key))
+            {
+                PlayerObj->SetPosition(Vector3(PlayerObj->GetPosition().x, PlayerObj->GetPosition().y, stof(value)));
+            }
+            else if (checkWhetherTheWordInThatString("PLAYERYROTATION", key))
+            {
+                PlayerObj->SetRotationAngle(stof(value));
+            }
         }
         file.close();
         Scene_System::accessing().getCurrScene().onNotify("PLAYER_INFO");
