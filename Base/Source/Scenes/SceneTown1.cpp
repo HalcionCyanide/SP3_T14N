@@ -556,6 +556,7 @@ bool SceneTown1::onNotify(const std::string &theEvent)
     else if (checkWhetherTheWordInThatString("TRANSITIONING", theEvent))
     {
         PlayerObject *PlayerPTR = Scene_System::accessing().gPlayer->PlayerObj = dynamic_cast<PlayerObject*>(Player);
+        PlayerPTR->SetVelocity(Vector3(0, 0, 0));
         Scene_System::accessing().gPlayer->CurrCamera = camera;
         for (std::vector<GameObject*>::iterator it = objVec.begin(), end = objVec.end(); it != end; ++it)
         {

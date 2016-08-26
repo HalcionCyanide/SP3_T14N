@@ -147,7 +147,8 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
 							else if (((*it2)->UI_Text == UI_Text[5]))
 							{
 								// Load
-                                Scene_System::accessing().gPlayer->LoadPlayerSave("DrivenFiles//PlayerSave1.csv");
+                                Scene_System::accessing().gPlayer->settingTheFileToSave(1);
+                                Scene_System::accessing().gPlayer->automaticallyLoadFile();
                             }
 							else if (((*it2)->UI_Text == UI_Text[6]))
 							{

@@ -55,6 +55,9 @@ public:
 	Camera3 *CurrCamera;
     std::string currSceneID;
 
+    void settingTheFileToSave(const int&);
+    bool automaticallyLoadFile();
+
 private:
 	int Spell_Power;
 	int CurrentHealth;

@@ -287,3 +287,19 @@ void GlobalPlayer::SetCurrCam(Camera3 &theCam)
 {
     CurrCamera = &theCam;
 }
+
+void GlobalPlayer::settingTheFileToSave(const int &whatFile)
+{
+    whatSave = whatFile;
+}
+
+bool GlobalPlayer::automaticallyLoadFile()
+{
+    if (whatSave > 0)
+    {
+        std::ostringstream ss;
+        ss << "DrivenFiles//PlayerSave" << whatSave << ".csv";
+        return LoadPlayerSave(ss.str());
+    }
+    return false;
+}
