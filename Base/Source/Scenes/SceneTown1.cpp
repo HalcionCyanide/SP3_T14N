@@ -190,6 +190,18 @@ void SceneTown1::Update(float dt)
 	{
 		Scene_System::accessing().SwitchScene(Scene_2::id_);
 	}
+
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('C'))
+	{
+		Scene_System::accessing().QM.allQuests.at(0)->setCurrStage(1);
+		std::cout << Scene_System::accessing().QM.allQuests.at(0)->getCurrentStage()->getDesc() << std::endl;
+	}
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('V'))
+	{
+		Scene_System::accessing().QM.allQuests.at(0)->setCurrStage(2);
+		std::cout << Scene_System::accessing().QM.allQuests.at(0)->getCurrentStage()->getDesc() << std::endl;
+	}
+
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
 	{
 		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
