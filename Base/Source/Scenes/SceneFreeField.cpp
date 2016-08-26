@@ -400,7 +400,24 @@ bool SceneFreeField::onNotify(const std::string &theEvent)
 {
     if (checkWhetherTheWordInThatString("PLAYER_INFO", theEvent))
     {
-
+        if (Scene_System::accessing().gPlayer->CurrCamera)
+        {
+            delete camera;
+            camera = Scene_System::accessing().gPlayer->CurrCamera;
+            Scene_System::accessing().gPlayer->CurrCamera = nullptr;
+        }
+        if (Scene_System::accessing().gPlayer->PlayerObj)
+        {
+            delete Player;
+            Player = Scene_System::accessing().gPlayer->PlayerObj;
+            Scene_System::accessing().gPlayer->PlayerObj = nullptr;
+        }
+        return true;
+    }
+    else if (checkWhetherTheWordInThatString("TRANSITIONING", theEvent))
+    {
+        Scene_System::accessing().gPlayer->PlayerObj = dynamic_cast<PlayerObject*>(Player);
+        Scene_System::accessing().gPlayer->CurrCamera = camera;
         return true;
     }
     return false;

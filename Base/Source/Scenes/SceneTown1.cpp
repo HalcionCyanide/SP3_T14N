@@ -527,14 +527,20 @@ bool SceneTown1::onNotify(const std::string &theEvent)
         {
             delete camera;
             camera = Scene_System::accessing().gPlayer->CurrCamera;
-            Scene_System::accessing().gPlayer->CurrCamera = nullptr;
+            //Scene_System::accessing().gPlayer->CurrCamera = nullptr;
         }
         if (Scene_System::accessing().gPlayer->PlayerObj)
         {
             delete Player;
             Player = Scene_System::accessing().gPlayer->PlayerObj;
-            Scene_System::accessing().gPlayer->PlayerObj = nullptr;
+            //Scene_System::accessing().gPlayer->PlayerObj = nullptr;
         }
+        return true;
+    }
+    else if (checkWhetherTheWordInThatString("TRANSITIONING", theEvent))
+    {
+        Scene_System::accessing().gPlayer->PlayerObj = dynamic_cast<PlayerObject*>(Player);
+        Scene_System::accessing().gPlayer->CurrCamera = camera;
         return true;
     }
     return false;

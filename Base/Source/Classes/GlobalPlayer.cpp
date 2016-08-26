@@ -94,6 +94,9 @@ bool GlobalPlayer::LoadPlayerSave(const std::string &fileName)
     if (file.is_open())
     {
         std::string data = "";
+        CurrCamera = new Camera3();
+        CurrCamera->Init(Vector3(0, 0, 0), Vector3(0, 0, 10), Vector3(0, 1, 0));
+        PlayerObj = new PlayerObject();
         while (getline(file, data))
         {
             if (data == "")

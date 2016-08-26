@@ -45,4 +45,5 @@ void GateBoundary::TransitScene(const std::string &ID)
 {
 	Scene_System::accessing().SwitchScene(ID);
     Scene_System::accessing().gPlayer->currSceneID = ID;
+    Scene_System::accessing().getCurrScene().onNotify("TRANSITIONING");
 }
