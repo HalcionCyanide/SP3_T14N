@@ -45,7 +45,8 @@ void SceneTown1::Init()
 	// Initiallise Model Specific Meshes Here
 	Mesh* newMesh = MeshBuilder::GenerateTerrain("Town 1", "HeightMapFiles//heightmap_Town1.raw", m_heightMap);
 	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
-	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
+	newMesh->textureArray[1] = LoadTGA("Image//BrickWall.tga");
+	//newMesh->textureArray[1] = LoadTGA("Image//SekHeng.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera->position.x / TerrainScale.x, camera->position.z / TerrainScale.z) + camera->PlayerHeight;
