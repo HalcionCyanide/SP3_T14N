@@ -272,6 +272,14 @@ void SceneTown1::Update(float dt)
 				{
 					break;
 				}
+				case(2) : // Q2
+				{
+					break;
+				}
+				case(3) : // Q3
+				{
+					break;
+				}
 			}
 			break;
 		}
@@ -314,12 +322,6 @@ void SceneTown1::RenderShadowCasters()
 		if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
 			the3DObject->Render();
 	}
-	//<!> will remove soon <!>
-
-	/*for (auto it : Scene_System::accessing().Scene_System::accessing().NM.getContainer())
-	{
-		it->Render();
-	}*/
 	Scene_System::accessing().NM.allNPCs.at(0)->Render();
 }
 

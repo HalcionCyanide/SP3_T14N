@@ -42,7 +42,6 @@ void Scene_System::Init()
 			tempStates.clear();
 		}
 	}
-	std::cout << "HI";
 
     theLoadingEffect = nullptr;
     delayingLoadingTime = 0;
