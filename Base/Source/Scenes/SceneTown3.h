@@ -20,7 +20,7 @@ public:
     virtual void Render();
     virtual void Exit();
 
-    Camera3 camera;
+    Camera3 *camera;
 
 private:
     // Shadow GPass

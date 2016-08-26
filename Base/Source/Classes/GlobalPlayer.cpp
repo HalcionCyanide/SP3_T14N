@@ -24,6 +24,7 @@ GlobalPlayer::~GlobalPlayer()
 void GlobalPlayer::Init(const int& Spell_Power, const int& CurrentHealth, const int& MaxHealth, const bool& IsInteracting)
 {
     CurrCamera = nullptr;
+    PlayerObj = nullptr;
     currSceneID = "1_Scene";
 	this->Spell_Power = Spell_Power;
 	this->CurrentHealth = CurrentHealth;
@@ -119,6 +120,7 @@ bool GlobalPlayer::LoadPlayerSave(const std::string &fileName)
             }
         }
         file.close();
+        Scene_System::accessing().getCurrScene().onNotify("PLAYER_INFO");
         return true;
     }
     return false;

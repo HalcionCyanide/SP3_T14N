@@ -52,14 +52,15 @@ public:
 
     void SetCurrCam(Camera3 &theCam);
 
+	Camera3 *CurrCamera;
+    std::string currSceneID;
+
 private:
 	int Spell_Power;
 	int CurrentHealth;
 	int MaxHealth;
 	bool IsInteracting;
 
-	Camera3 *CurrCamera;
-    std::string currSceneID;
 	// Quest Container
 	// Inventory Container
 	// Money

@@ -38,7 +38,8 @@ void SceneTown1::Init()
 	perspective.SetToPerspective(45.0f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 0.1f, 10000.0f);
 	projectionStack->LoadMatrix(perspective);
 
-	camera.Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
+    camera = new Camera3();
+	camera->Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
 	CenterPosition.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
 	// Initiallise Model Specific Meshes Here
@@ -47,7 +48,7 @@ void SceneTown1::Init()
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera.position.x / TerrainScale.x, camera.position.z / TerrainScale.z) + camera.PlayerHeight;
+	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera->position.x / TerrainScale.x, camera->position.z / TerrainScale.z) + camera->PlayerHeight;
 	Application::cA_CurrentTerrainY = Application::cA_MinimumTerrainY;
 
 	theInteractiveMap = new GameMap();
@@ -57,7 +58,7 @@ void SceneTown1::Init()
 
 	//<!> There can only be 1 Player
 	Player = new PlayerObject();
-	Player->Init("Player", 1, camera.position - Vector3(0, camera.PlayerHeight, 0), Vector3(2, 1, 2), Vector3(), camera.CurrentCameraRotation.y, Vector3(0, 1));
+	Player->Init("Player", 1, camera->position - Vector3(0, camera->PlayerHeight, 0), Vector3(2, 1, 2), Vector3(), camera->CurrentCameraRotation.y, Vector3(0, 1));
 	std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find("cube");
 	Player->setName("PLayer 1");
 	Player->SetMesh(it->second);
@@ -65,9 +66,9 @@ void SceneTown1::Init()
 	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
 	//PlayerPTR->cameraObject = &camera;
 	PlayerPTR->SetVelocity(Vector3(10.f, 0.f, 0.f));
-	PlayerPTR->SetPosition(Vector3(Player->GetPosition().x, camera.PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPosition().x / TerrainScale.x), (Player->GetPosition().z / TerrainScale.z)), Player->GetPosition().z));
+	PlayerPTR->SetPosition(Vector3(Player->GetPosition().x, camera->PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPosition().x / TerrainScale.x), (Player->GetPosition().z / TerrainScale.z)), Player->GetPosition().z));
 	PlayerPTR->setPlayerBoundaries(objVec);
-	camera.position = PlayerPTR->GetPosition();
+	camera->position = PlayerPTR->GetPosition();
 	//<!> There can only be 1 Player
 
 	int temp = 1;
@@ -159,11 +160,11 @@ void SceneTown1::Update(float dt)
 	SceneGraphics->Update(dt);
 
 	//Update Camera's Minimum Possible & Current Y Pos
-	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera.position.x / TerrainScale.x, camera.position.z / TerrainScale.z) + camera.PlayerHeight;
+	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera->position.x / TerrainScale.x, camera->position.z / TerrainScale.z) + camera->PlayerHeight;
 
 	if (!(Application::cA_CurrentTerrainY - Application::cA_MinimumTerrainY <= Math::EPSILON && Application::cA_MinimumTerrainY - Application::cA_CurrentTerrainY <= Math::EPSILON))
 	{
-		float RateofChangeY = (Application::cA_CurrentTerrainY - Application::cA_MinimumTerrainY) * (float)dt * (camera.CameraCurrentWalkSpeed / 3);
+		float RateofChangeY = (Application::cA_CurrentTerrainY - Application::cA_MinimumTerrainY) * (float)dt * (camera->CameraCurrentWalkSpeed / 3);
 		if (Application::cA_CurrentTerrainY - RateofChangeY >= Application::cA_MinimumTerrainY || Application::cA_CurrentTerrainY - RateofChangeY <= Application::cA_MinimumTerrainY)
 		{
 			Application::cA_CurrentTerrainY -= RateofChangeY;
@@ -200,14 +201,14 @@ void SceneTown1::Update(float dt)
 		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
 	}
 
-	BManager.UpdateContainer(dt, camera.position);
+	BManager.UpdateContainer(dt, camera->position);
 
 	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
 	PlayerPTR->Update(dt);
-	PlayerPTR->SetRotationAngle(camera.CurrentCameraRotation.y);
+	PlayerPTR->SetRotationAngle(camera->CurrentCameraRotation.y);
 
-	camera.position = PlayerPTR->GetPosition();
-	camera.Update(dt);
+	camera->position = PlayerPTR->GetPosition();
+	camera->Update(dt);
 
 	ChatLayer->Update((float)dt);
 
@@ -216,10 +217,10 @@ void SceneTown1::Update(float dt)
 		NPC* CurrentNPC = *it;
 
 		// Update and rotate the NPC in accordance to the player[camera]'s position.
-		CurrentNPC->setTarget(camera.position);
+		CurrentNPC->setTarget(camera->position);
 					
 		CurrentNPC->Update((float)dt);
-		float DistanceCheck = (camera.position - CurrentNPC->GetPosition()).LengthSquared();
+		float DistanceCheck = (camera->position - CurrentNPC->GetPosition()).LengthSquared();
 		if (DistanceCheck < CurrentNPC->GetDetectionRadiusSquared() && Scene_System::accessing().cSS_InputManager->GetKeyValue('Q') && !CurrentNPC->getInteracting())
 		{
 			CurrentNPC->setInteracting(true);
@@ -234,18 +235,18 @@ void SceneTown1::Update(float dt)
 		{
 			// Enable the mouse.
 			Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
-			camera.CameraIsLocked = true;
+			camera->CameraIsLocked = true;
 			
 			// Set the player's target to face the NPC
-			camera.target = Vector3(CurrentNPC->GetPosition().x, camera.PlayerHeight, CurrentNPC->GetPosition().z);
-			camera.CurrentCameraRotation.x = 0;
+			camera->target = Vector3(CurrentNPC->GetPosition().x, camera->PlayerHeight, CurrentNPC->GetPosition().z);
+			camera->CurrentCameraRotation.x = 0;
 
 			// Interacting with NPC: Check UI Key Press
 			switch (HandleChatUIInput((float)dt))
 			{
 				case(0) : // Exit
 				{
-					camera.CameraIsLocked = false;
+					camera->CameraIsLocked = false;
 					ChatLayer->SwapOriginalWithTarget();
 					CurrentNPC->setInteracting(false);
 					Scene_System::accessing().cSS_InputManager->SetMousePosition(CenterPosition);
@@ -283,7 +284,7 @@ void SceneTown1::RenderShadowCasters()
 				TimeRatio = 1.1f - (*it)->GetCurrTime() / (*it)->GetLifeTime();
 			modelStack->PushMatrix();
 			modelStack->Translate((*it)->GetPosition().x, (*it)->GetPosition().y, (*it)->GetPosition().z);
-			modelStack->Rotate(Math::RadianToDegree(atan2(camera.position.x - (*it)->GetPosition().x, camera.position.z - (*it)->GetPosition().z)), 0, 1, 0);
+			modelStack->Rotate(Math::RadianToDegree(atan2(camera->position.x - (*it)->GetPosition().x, camera->position.z - (*it)->GetPosition().z)), 0, 1, 0);
 			modelStack->Scale(TimeRatio * (*it)->GetDimensions().x, TimeRatio *(*it)->GetDimensions().y, TimeRatio *(*it)->GetDimensions().z);
 			SceneGraphics->RenderMesh((*it)->GetMeshName(), false);
 			modelStack->PopMatrix();
@@ -294,7 +295,7 @@ void SceneTown1::RenderShadowCasters()
 	for (auto it : objVec)
 	{
 		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
-		if (the3DObject && (camera.position - camera.target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
+		if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
 			the3DObject->Render();
 	}
 	//<!> will remove soon <!>
@@ -425,9 +426,9 @@ void SceneTown1::RenderPassMain()
 	// Camera matrix
 	viewStack->LoadIdentity();
 	viewStack->LookAt(
-		camera.position.x, camera.position.y, camera.position.z,
-		camera.target.x, camera.target.y, camera.target.z,
-		camera.up.x, camera.up.y, camera.up.z
+		camera->position.x, camera->position.y, camera->position.z,
+		camera->target.x, camera->target.y, camera->target.z,
+		camera->up.x, camera->up.y, camera->up.z
 		);
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack->LoadIdentity();
@@ -460,17 +461,17 @@ void SceneTown1::RenderPassMain()
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 25);
 
 	ss.str("");
-	ss << "CVel:" << camera.CameraVelocity;
+	ss << "CVel:" << camera->CameraVelocity;
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
 
 	ss.str("");
-	ss << "Yaw:" << 0;// camera.Yaw_Velocity;
+	ss << "Yaw:" << 0;// camera->Yaw_Velocity;
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
 	//<!> Removing soon
 	ss.str("");
-	ss << "CPos:" << camera.position;
+	ss << "CPos:" << camera->position;
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 125);
 	//<!> Removing soon
@@ -503,6 +504,8 @@ void SceneTown1::Exit()
 	objVec.clear();
 	if (Player)
 		delete Player;
+    if (camera)
+        delete camera;
     if (ChatLayer)
         delete ChatLayer;
     //if (UI_Sys)
@@ -520,6 +523,18 @@ bool SceneTown1::onNotify(const std::string &theEvent)
 {
     if (checkWhetherTheWordInThatString("PLAYER_INFO", theEvent))
     {
+        if (Scene_System::accessing().gPlayer->CurrCamera)
+        {
+            delete camera;
+            camera = Scene_System::accessing().gPlayer->CurrCamera;
+            Scene_System::accessing().gPlayer->CurrCamera = nullptr;
+        }
+        if (Scene_System::accessing().gPlayer->PlayerObj)
+        {
+            delete Player;
+            Player = Scene_System::accessing().gPlayer->PlayerObj;
+            Scene_System::accessing().gPlayer->PlayerObj = nullptr;
+        }
         return true;
     }
     return false;
