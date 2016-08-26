@@ -1,16 +1,14 @@
-SpellPower,1
-CurrentHealth,420
-MaxHealth,1337
-SceneName,1_Scene
-CameraPositionX,0
-CameraPositionY,5
-CameraPositionZ,-5
-CameraTargetX,0
-CameraTargetY,5
-CameraTargetZ,0
-PlayerName,Player
+   CurrentHealth,420
+   MaxHealth,1337
+   SceneName,1_Scene
+CameraPositionX,-19.7038
+CameraPositionY,7.49953
+CameraPositionZ,-19.2082
+CameraTargetX,-20.6464
+"CameraTargetY,7.28777
+"CameraTargetZ,-19.4664
 PlayerMass,1
-PlayerPosX,10
-PlayerPosY,50
-PlayerPosZ,12
-PlayerYRotation,180
+PlayerPosX,-19.7038
+PlayerPosY,7.49953
+PlayerPosZ,-19.2082
+PlayerYRotation,1
