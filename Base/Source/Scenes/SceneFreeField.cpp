@@ -411,6 +411,7 @@ bool SceneFreeField::onNotify(const std::string &theEvent)
             Player = Scene_System::accessing().gPlayer->PlayerObj;
             PlayerObject *PlayerPTR = dynamic_cast<PlayerObject*>(Player);
             PlayerPTR->SetPosition(Vector3(Player->GetPosition().x, camera->PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPosition().x / TerrainScale.x), (Player->GetPosition().z / TerrainScale.z)), Player->GetPosition().z));
+            PlayerPTR->setPlayerBoundaries(objVec);
         }
         return true;
     }
