@@ -152,6 +152,11 @@ void Application::Init()
 	SceneGraphics->Init();
 	Scene_System::accessing().setGraphics_Scene(*SceneGraphics);
 
+#ifdef _DEBUG
+    assert(loadThoseKeyCommandsStuff());
+#else
+    loadThoseKeyCommandsStuff();
+#endif
     //Scene_System::accessing().doingLoadingEffect();
 
 	Scene_MainMenu *MainMenuScene = new Scene_MainMenu();
@@ -181,47 +186,6 @@ void Application::Init()
 	SceneBattleScreen* battlescreen = new SceneBattleScreen();
 	battlescreen->Init();
 	Scene_System::accessing().AddScene(*battlescreen);
-
-    //<!> testing writing to files.
-    //Apparently, GlobalDriven.csv must not stay open when writing to this data. 
-    //fstream doesn't work when writing to it but works whent reading to it
-    //it appears that the file cannot be open twice at the same time.
-    //2nd Method: This works but way too troublesome since we are opening and closing the same file twice! A programmer should be as lazy as possible
-    //std::vector<std::string> all_the_lines;
-    //std::ifstream readFile("Image//GlobalDriven.csv");
-    //std::string data = "";
-    //while (getline(readFile, data))
-    //    all_the_lines.push_back(data);
-    //readFile.close();
-    //std::ofstream writeFile("Image//GlobalDriven.csv");
-    //for (unsigned num = 0, MAX_LINES = all_the_lines.size(); num < MAX_LINES; ++num)
-    //{
-    //    if (all_the_lines[num].find("Forward_Button:") != std::string::npos)
-    //    {
-    //        writeFile << "Forward_Button:W" << std::endl;
-    //    }
-    //    else if (all_the_lines[num].find("Backward_Button:") != std::string::npos)
-    //    {
-    //        writeFile << "Backward_Button:S" << std::endl;
-    //    }
-    //    else if (all_the_lines[num].find("Right_Button:") != std::string::npos)
-    //    {
-    //        writeFile << "Right_Button:A" << std::endl;
-    //    }
-    //    else if (all_the_lines[num].find("Left_Button:") != std::string::npos)
-    //    {
-    //        writeFile << "Left_Button:D" << std::endl;
-    //    }
-    //    else
-    //        writeFile << all_the_lines[num] << std::endl;
-    //}
-    //writeFile.close(); 
-    //<!> testing writing to files. So removing soon
-#ifdef _DEBUG
-    assert(loadThoseKeyCommandsStuff());
-#else
-    loadThoseKeyCommandsStuff();
-#endif
 }
 
 void Application::Run()
