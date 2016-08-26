@@ -419,6 +419,7 @@ bool SceneFreeField::onNotify(const std::string &theEvent)
     {
         Scene_System::accessing().gPlayer->PlayerObj = dynamic_cast<PlayerObject*>(Player);
         Scene_System::accessing().gPlayer->CurrCamera = camera;
+        Scene_System::accessing().gPlayer->currSceneID = id_;
         return true;
     }
     return false;

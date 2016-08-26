@@ -8,6 +8,7 @@
 
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\PlayerObject.h"
+#include "../Misc/LoadEnemyData.h"
 
 std::string SceneTown3::id_ = "3_Scene";
 
@@ -351,4 +352,33 @@ void SceneTown3::Exit()
 		delete Player;
     if (camera)
         delete camera;
+}
+
+bool SceneTown3::onNotify(const std::string &theEvent)
+{
+    if (checkWhetherTheWordInThatString("PLAYER_INFO", theEvent))
+    {
+        if (Scene_System::accessing().gPlayer->CurrCamera)
+        {
+            delete camera;
+            camera = Scene_System::accessing().gPlayer->CurrCamera;
+        }
+        if (Scene_System::accessing().gPlayer->PlayerObj)
+        {
+            delete Player;
+            Player = Scene_System::accessing().gPlayer->PlayerObj;
+            PlayerObject *PlayerPTR = dynamic_cast<PlayerObject*>(Player);
+            PlayerPTR->SetPosition(Vector3(Player->GetPosition().x, camera->PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPosition().x / TerrainScale.x), (Player->GetPosition().z / TerrainScale.z)), Player->GetPosition().z));
+            PlayerPTR->setPlayerBoundaries(objVec);
+        }
+        return true;
+    }
+    else if (checkWhetherTheWordInThatString("TRANSITIONING", theEvent))
+    {
+        Scene_System::accessing().gPlayer->PlayerObj = dynamic_cast<PlayerObject*>(Player);
+        Scene_System::accessing().gPlayer->CurrCamera = camera;
+        Scene_System::accessing().gPlayer->currSceneID = id_;
+        return true;
+    }
+    return false;
 }
