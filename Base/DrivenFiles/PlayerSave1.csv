@@ -1,4 +1,5 @@
-CurrentHealth,420
+SpellPower,1
+CurrentHealth,403
 MaxHealth,1337
 SceneName,1_Scene
 CameraPositionX,-113.833
@@ -11,4 +12,14 @@ PlayerMass,1
 PlayerPosX,-113.833
 PlayerPosY,23.125
 PlayerPosZ,-77.3682
+CameraPositionX,14.5148
+CameraPositionY,7.60294
+CameraPositionZ,-147.615
+CameraTargetX,13.892
+CameraTargetY,7.18439
+CameraTargetZ,-148.276
+PlayerMass,1
+PlayerPosX,14.5704
+PlayerPosY,7.58005
+PlayerPosZ,-147.549
 PlayerYRotation,1
