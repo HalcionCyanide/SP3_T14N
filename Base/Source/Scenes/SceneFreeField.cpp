@@ -114,11 +114,11 @@ void SceneFreeField::Update(float dt)
 		if (Math::RandIntMinMax(0, MaxEncounterRate - CurrentEncounterRateBoost) < MaxEncounterRate * EncounterRatio)
 		{
 			CurrentEncounterRateBoost = 0;
-			/*int i = 0;
+		/*	int i = 0;
 			for (std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.begin(); it != Scene_System::accessing().EnemyData.end(); ++it)
 			{
-				int size = Scene_System::accessing().EnemyData.size();
-				int choice = Math::RandIntMinMax(0, Scene_System::accessing().EnemyData.size());
+				int size = Scene_System::accessing().EnemyData.size() - 1;
+				int choice = Math::RandIntMinMax(0, size);
 				if (i == choice)
 				{
 					Scene_System::accessing().BSys->SetEnemy(*it->second);
@@ -126,8 +126,12 @@ void SceneFreeField::Update(float dt)
 				}
 				i++;
 			}*/
-			std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.begin();
+			std::ostringstream ss;
+			ss << Math::RandIntMinMax(1, Scene_System::accessing().EnemyData.size());
+			std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find(ss.str());
 			Scene_System::accessing().BSys->SetEnemy(*it->second);
+			//std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.begin();
+			//Scene_System::accessing().BSys->SetEnemy(*it->second);
 			Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
 		}
 	}
