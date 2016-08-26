@@ -73,10 +73,15 @@ void BattleSystem::Update(double dt)
 	}
 	if (FleeSucceeded)
 	{
+		PlayerObj->SetVelocity(0);
 		PlayerObj->SetPosition(CenterPosition);
 		FleeSucceeded = false;
 		Scene_System::accessing().SwitchToPreviousScene();
 		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+		for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it)
+		{
+			(*it)->SwapOriginalWithTarget();
+		}
 		BattleState = BS_PlayerTurn;
 		if (EnemyLayer)
 		{
@@ -268,7 +273,8 @@ void BattleSystem::UpdatePESPhase(float dt)
 	{
 		if (UI_Sys.cUIS_LayerContainer.size() > 0)
 		{
-			for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(), end = UI_Sys.cUIS_LayerContainer.end(); it != end; ++it) {
+			for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(), end = UI_Sys.cUIS_LayerContainer.end(); it != end; ++it) 
+			{
 				UI_Layer *Layer = (*it);
 				for (std::vector<UI_Element*>::iterator it2 = Layer->cUI_Layer.begin(), end2 = Layer->cUI_Layer.end(); it2 != end2; ++it2)
 				{
@@ -360,7 +366,12 @@ void BattleSystem::UpdateFleePhase(float dt)
 				UI_Layer *Layer = (*it);
 				for (std::vector<UI_Element*>::iterator it2 = Layer->cUI_Layer.begin(), end2 = Layer->cUI_Layer.end(); it2 != end2; ++it2)
 				{
-					if (*it2 != SealButton)
+					if (FleeToggled)
+					{
+						if (*it2 == SealButton)
+							(*it2)->SwapOriginalWithTarget();
+					}
+					else if (*it2 != SealButton)
 						(*it2)->SwapOriginalWithTarget();
 					BattleState = BS_PlayerTurn;
 				}
