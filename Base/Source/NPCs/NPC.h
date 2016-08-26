@@ -1,6 +1,7 @@
 #ifndef NPC_H_
 #define NPC_H_
 #include "..\\Classes\\GameObject.h"
+#include <map>
 
 class NPC : public GameObject
 {
@@ -19,6 +20,8 @@ public:
 	virtual float GetDetectionRadiusSquared();
 
 	virtual void Update(double dt);
+
+	std::map < std::string, std::vector<int> > NPCcurrQstate;
 private:
 	float DetectionRadiusSquared;
 	float currentAngle;

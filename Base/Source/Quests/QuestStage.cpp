@@ -6,6 +6,7 @@ QuestStage::QuestStage()
 	condition = nullptr;
 	questDesc = "";
 	complete = false;
+	giver = "";
 }
 
 QuestStage::~QuestStage()
@@ -76,6 +77,16 @@ std::string QuestStage::getDesc()
 void QuestStage::setDesc(std::string i)
 {
 	questDesc = i;
+}
+
+std::string QuestStage::getGiver()
+{
+	return giver;
+}
+
+void QuestStage::setGiver(std::string i)
+{
+	giver = i;
 }
 
 void QuestStage::Update(double dt)

@@ -22,6 +22,28 @@ void Scene_System::Init()
 	NM.LoadFile("DrivenFiles//NPC_FILES.csv");
 	BSys = nullptr;
 
+	for (auto it : QM.allQuests)
+	{
+		gPlayer->playerCurrQState.insert(std::pair<std::string, int>(it->getName(), 0));
+	}
+	std::vector<int> tempStates;
+	for (auto it : NM.allNPCs) //iterate through all NPCS
+	{
+		for (auto it2 : QM.allQuests) //iterate through all Quests
+		{
+			for (auto it3 : it2->qStages) //iterate through the Individual Quests' stages.
+			{
+				if (it3->getGiver() == it->getName()) //if the Stages' giver is the NPC...
+				{
+					tempStates.push_back(it3->getStageNO());
+				}
+			}
+			it->NPCcurrQstate.insert(std::pair<std::string, std::vector<int>>(it2->getName(), tempStates));
+			tempStates.clear();
+		}
+	}
+	std::cout << "HI";
+
     theLoadingEffect = nullptr;
     delayingLoadingTime = 0;
 }

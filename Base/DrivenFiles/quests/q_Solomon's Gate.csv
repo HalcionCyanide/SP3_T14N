@@ -1,9 +1,9 @@
-stage,ConditionName,Value,Description
-1,interact,NPC_villagechief,Speak to the Village Chief.
-2,rating,70,Achieve a rating of 70 or higher.
-3,capture,BOSS_skullknight,Capture the Skull Knight.
-4,interact,NPC_villagechief,Speak to the Village Chief.
-5,interact,NPC_fakevial,Acquire a Blood Vial.
-6,interact,NPC_villagechief,Speak to the Village Chief.
-7,interact,NPC_guardcaptain,Report to the Guard Captain.
-8,interact,NPC_fakedoor,Return to the Cursed Woods.
+stage,ConditionName,Value,Description,qOrigin
+1,interact,NPC_villagechief,Speak to the Village Chief.,NPC_guardcaptain
+2,rating,70,Achieve a rating of 70 or higher.,NPC_villagechief
+3,capture,BOSS_skullknight,Capture the Skull Knight.,NPC_villagechief
+4,interact,NPC_villagechief,Speak to the Village Chief.,NONE
+5,interact,NPC_fakevial,Acquire a Blood Vial.,NPC_villagechief
+6,interact,NPC_villagechief,Speak to the Village Chief.,NONE
+7,interact,NPC_guardcaptain,Report to the Guard Captain.,NPC_villagechief
+8,interact,NPC_fakedoor,Return to the Cursed Woods.,NPC_guardcaptain

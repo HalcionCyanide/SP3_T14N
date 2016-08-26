@@ -15,16 +15,20 @@ public:
 
 	void LoadFile(std::string&);
 
-	QuestStage* getCurrentStage();
+	int getCurrentStage();
 	void setCurrStage(int);
 
 	int getID();
 	void setID(int);
 
+	bool getActive();
+	void setActive(bool);
+
 	void Update(double);
-private:
-	int qID;
 	QuestStage* theStageAT;
 	std::vector<QuestStage*> qStages;
+private:
+	bool active;
+	int qID;
 };
 

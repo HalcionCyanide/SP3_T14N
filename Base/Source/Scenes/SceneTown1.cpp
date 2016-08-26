@@ -194,13 +194,15 @@ void SceneTown1::Update(float dt)
 
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('C'))
 	{
+		Scene_System::accessing().QM.allQuests.at(0)->setActive(true);
 		Scene_System::accessing().QM.allQuests.at(0)->setCurrStage(1);
-		std::cout << Scene_System::accessing().QM.allQuests.at(0)->getCurrentStage()->getDesc() << std::endl;
+		std::cout << Scene_System::accessing().QM.allQuests.at(0)->theStageAT->getDesc() << std::endl;
 	}
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('V'))
 	{
-		Scene_System::accessing().QM.allQuests.at(0)->setCurrStage(2);
-		std::cout << Scene_System::accessing().QM.allQuests.at(0)->getCurrentStage()->getDesc() << std::endl;
+		int nextStage = Scene_System::accessing().QM.allQuests.at(0)->getCurrentStage() + 1;
+		Scene_System::accessing().QM.allQuests.at(0)->setCurrStage(nextStage);
+		std::cout << Scene_System::accessing().QM.allQuests.at(0)->theStageAT->getDesc() << std::endl;
 	}
 
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
@@ -264,10 +266,11 @@ void SceneTown1::Update(float dt)
 					CurrentNPC->setInteracting(false);
 					Scene_System::accessing().cSS_InputManager->SetMousePosition(CenterPosition);
 					Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+					break;
 				}
 				case(1) : // Q1
 				{
-					// Set Stuffs
+					break;
 				}
 			}
 			break;

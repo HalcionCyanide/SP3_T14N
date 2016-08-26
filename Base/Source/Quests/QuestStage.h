@@ -25,11 +25,15 @@ public:
 	int getStageNO();
 	virtual void setStageNO(int);
 
+	std::string getGiver();
+	virtual void setGiver(std::string);
+
 	virtual void Update(double dt);
 private:
 	int stageNO;
 	genericCondition* condition;
 	std::string questDesc;
+	std::string giver;
 	bool complete;
 };
 
