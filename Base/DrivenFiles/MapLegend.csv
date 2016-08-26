@@ -3,7 +3,7 @@ TheWhiteCube,C,cube,10,5,10,,,,1,0
 TheSmallHouse,H,small_house,18.75,52.5,52.5,,,,1,0
 TheSmallHouse2,h,small_house2,21,52.5,52.5,,,,1,0
 TheTree,T,Tree,10,20,10,,,,1,1
-TheCastle,S,castle,94.5,150,112.5,,,,1,0
+TheCastle,S,castle,177.1875,281.25,210.9375,,,,1,0
 TheTemple,t,temple,90,90,90,,,,1,0
 guard,g,NPC_guardcaptain,10.50221566,10,10,,,,1,0
 villagechief,V,NPC_villagechief,10,10,10,,,,1,0
@@ -13,11 +13,11 @@ carpenter,c,NPC_carpenter,10,10,3.33333333,,,,1,0
 mapguy,m,NPC_mapguy,10,10,10,,,,1,0
 priest,p,NPC_priest,10,10,10,,,,1,0
 princess,P,NPC_noblelady,14.13427562,10,10,,,,1,0
-1_Scene,1,cube,10,10,10,,,,1,0
-2_Scene,2,cube,10,10,10,,,,1,0
-3_Scene,3,cube,10,10,10,,,,1,0
-F1_Scene,f,cube,10,10,10,,,,1,0
-F2_Scene,F,cube,10,10,10,,,,1,0
+1_Scene,1,door,10,10,10,,,,1,0
+2_Scene,2,door,10,10,10,,,,1,0
+3_Scene,3,door,10,10,10,,,,1,0
+F1_Scene,f,door,50,40,10,,,,1,0
+F2_Scene,F,door,10,10,10,,,,1,0
 CastleWall,W,Castle_Wall,30,60,15,,,,1,0
 CastleWall2,o,Castle_Wall2,29.9,60,15,,,,1,0
 CastlePillar,w,Castle_Pillar,40,70,40,,,,1,0
