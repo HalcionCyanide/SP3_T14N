@@ -8,7 +8,6 @@ Quest::Quest()
 
 Quest::~Quest()
 {
-	delete theStageAT;
 	for (auto it : qStages)
 	{
 		delete it;

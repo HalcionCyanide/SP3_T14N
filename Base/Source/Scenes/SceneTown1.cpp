@@ -188,6 +188,18 @@ void SceneTown1::Update(float dt)
 	{
 		Scene_System::accessing().SwitchScene(Scene_2::id_);
 	}
+
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('C'))
+	{
+		Scene_System::accessing().QM.allQuests.at(0)->setCurrStage(1);
+		std::cout << Scene_System::accessing().QM.allQuests.at(0)->getCurrentStage()->getDesc() << std::endl;
+	}
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('V'))
+	{
+		Scene_System::accessing().QM.allQuests.at(0)->setCurrStage(2);
+		std::cout << Scene_System::accessing().QM.allQuests.at(0)->getCurrentStage()->getDesc() << std::endl;
+	}
+
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
 	{
 		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
@@ -236,7 +248,7 @@ void SceneTown1::Update(float dt)
 			camera.CameraIsLocked = true;
 			
 			// Set the player's target to face the NPC
-			camera.target = Vector3(CurrentNPC->GetPosition().x, camera.PlayerHeight, CurrentNPC->GetPosition().z);
+			camera.target = Vector3(CurrentNPC->GetPosition().x, Application::cA_CurrentTerrainY + (CurrentNPC->GetPosition().y - Application::cA_CurrentTerrainY) + (CurrentNPC->GetDimensions().y * 0.5f), CurrentNPC->GetPosition().z);
 			camera.CurrentCameraRotation.x = 0;
 
 			// Interacting with NPC: Check UI Key Press
