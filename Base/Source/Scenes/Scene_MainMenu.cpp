@@ -83,19 +83,19 @@ void Scene_MainMenu::InitSceneUIElems()
     NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
 
     ss.str("");
-    ss << UI_Text[8] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND];
+    ss << UI_Text[8] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND];
     NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
 
     ss.str("");
-    ss << UI_Text[9] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND];
+    ss << UI_Text[9] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND];
     NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
 
     ss.str("");
-    ss << UI_Text[10] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND];
+    ss << UI_Text[10] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND];
     NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
 
     ss.str("");
-    ss << UI_Text[11] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND];
+    ss << UI_Text[11] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::JUMP_COMMAND];
     NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
     //For Setting Stuff
 
@@ -231,6 +231,10 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                                         (*it2)->SwapOriginalWithTarget();
                                     }
                                 }
+                            }
+                            else if ((*it2)->UI_Text == UI_Text[6])
+                            {
+
                             }
                         }
                     }
