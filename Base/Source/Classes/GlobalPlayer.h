@@ -55,11 +55,10 @@ public:
 	Camera3 *CurrCamera;
     std::string currSceneID;
 
+	std::map<std::string, int> playerCurrQState;
+
     void settingTheFileToSave(const int&);
     bool automaticallyLoadFile();
-
-    std::map<std::string, int> playerCurrQState;
-
 private:
 	int Spell_Power;
 	int CurrentHealth;
