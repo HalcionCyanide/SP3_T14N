@@ -13,7 +13,7 @@
 
 std::string Scene_MainMenu::id_ = "M_Scene";
 
-const std::string Scene_MainMenu::UI_Text[15] = { "", "Start", "Settings", "Exit", "New Game", "Load Game", "Return", "Forward_Button", "Backward_Button", "Right_Button", "Jump_Button" };
+const std::string Scene_MainMenu::UI_Text[15] = { "", "Start", "Settings", "Exit", "New Game", "Load Game", "Return", "Forward_Button", "Backward_Button", "Right_Button", "Left_Button","Jump_Button" };
 
 Scene_MainMenu::Scene_MainMenu()
 	: SceneEntity()
@@ -126,6 +126,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
 							else if (((*it2)->UI_Text == UI_Text[2]))
 							{
 								// Settings
+                                CurrentMenuState = S_SETTING;
 							}
 							else if (((*it2)->UI_Text == UI_Text[3]))
 							{
@@ -181,7 +182,20 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
 					else if ((*it2)->Active)
 						(*it2)->Update((float)dt);
 				}
-			}
+                //Updating of Settings
+                else if (CurrentMenuState == S_SETTING)
+                {
+                    if ((*it2)->UI_Text == UI_Text[6] || (*it2)->UI_Text == UI_Text[7] || (*it2)->UI_Text == UI_Text[8] || (*it2)->UI_Text == UI_Text[9] || (*it2)->UI_Text == UI_Text[10] || (*it2)->UI_Text == UI_Text[11])
+                    {
+                        (*it2)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+                        if (ClickSucceeded)
+                        {
+
+                        }
+                    }
+                }
+                //Updating of Settings
+            }
 		}
 	}
 }
