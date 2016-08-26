@@ -542,14 +542,20 @@ bool SceneTown1::onNotify(const std::string &theEvent)
         {
             delete camera;
             camera = Scene_System::accessing().gPlayer->CurrCamera;
-            Scene_System::accessing().gPlayer->CurrCamera = nullptr;
         }
         if (Scene_System::accessing().gPlayer->PlayerObj)
         {
             delete Player;
             Player = Scene_System::accessing().gPlayer->PlayerObj;
-            Scene_System::accessing().gPlayer->PlayerObj = nullptr;
+            PlayerObject *PlayerPTR = dynamic_cast<PlayerObject*>(Player);
+            PlayerPTR->SetPosition(Vector3(Player->GetPosition().x, camera->PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPosition().x / TerrainScale.x), (Player->GetPosition().z / TerrainScale.z)), Player->GetPosition().z));
         }
+        return true;
+    }
+    else if (checkWhetherTheWordInThatString("TRANSITIONING", theEvent))
+    {
+        Scene_System::accessing().gPlayer->PlayerObj = dynamic_cast<PlayerObject*>(Player);
+        Scene_System::accessing().gPlayer->CurrCamera = camera;
         return true;
     }
     return false;

@@ -164,17 +164,17 @@ void SceneBattleScreen::RenderPassMain()
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 25);
 
 	ss.str("");
-	//ss << "Player HP:" << Scene_System::accessing().gPlayer->GetCurrentHealth();
+	ss << "Player HP:" << Scene_System::accessing().gPlayer->GetCurrentHealth();
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
 
 	ss.str("");
-	//ss << "FleeS" << Scene_System::accessing().BSys->FleeSucceeded;
+	ss << "EnemyMWaves" << Scene_System::accessing().BSys->CurrentEnemy->MaxEnemyWave;
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
 
 	ss.str("");
-	//ss << "FleeT" << Scene_System::accessing().BSys->FleeToggled;
+	ss << "EnemyCWaves" << Scene_System::accessing().BSys->CurrentEnemy->CurrentEnemyWave;
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 100);
 
