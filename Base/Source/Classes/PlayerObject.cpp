@@ -46,7 +46,6 @@ void PlayerObject::Update(double dt)
 				if (CheckCollision(*(*it)->GetBoundary(), BaseObject::GetPosition()))
 				{
 					SetPosition(this->GetPosition() - ((*it)->GetBoundary()->GetOverlappingDistance() * (*it)->GetBoundary()->GetOverlappingAxis()));
-
 				}
 				if (MovementValues.IsZero())
 					break;
