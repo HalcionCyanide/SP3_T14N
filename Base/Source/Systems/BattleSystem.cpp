@@ -486,7 +486,7 @@ void BattleSystem::UpdateControls(float dt)
 		}
 		else 
 		{
-			PlayerObj->SetPosition(PlayerObj->GetPosition() - PlayerObj->GetVelocity() * 2 * dt);
+			PlayerObj->SetPosition(PlayerObj->GetPosition() - PlayerObj->GetVelocity() * 3 * dt);
 			PlayerObj->SetVelocity(Vector3(-PlayerObj->GetVelocity().x * 0.5f, PlayerObj->GetVelocity().y, 0.f));
 			PlayerObj->SetAcceleration(Vector3(-PlayerObj->GetAcceleration().x * 0.5f, PlayerObj->GetAcceleration().y, 0.f));
 		}
@@ -500,7 +500,7 @@ void BattleSystem::UpdateControls(float dt)
 		}
 		else
 		{
-			PlayerObj->SetPosition(PlayerObj->GetPosition() - PlayerObj->GetVelocity() * 2 * dt);
+			PlayerObj->SetPosition(PlayerObj->GetPosition() - PlayerObj->GetVelocity() * 3 * dt);
 			PlayerObj->SetVelocity(Vector3(PlayerObj->GetVelocity().x, -PlayerObj->GetVelocity().y * 0.5f, 0.f));
 			PlayerObj->SetAcceleration(Vector3(PlayerObj->GetAcceleration().x, -PlayerObj->GetAcceleration().y * 0.5f, 0.f));
 		}
