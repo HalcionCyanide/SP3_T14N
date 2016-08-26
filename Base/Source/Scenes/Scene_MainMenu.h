@@ -32,6 +32,8 @@ private:
 	{
 		S_FIRSTLEVEL,
 		S_SECONDLEVEL,
+        S_SETTING,
+        S_TOTAL,
 	};
 
 	STATE_MAIN_MENU CurrentMenuState = S_FIRSTLEVEL;

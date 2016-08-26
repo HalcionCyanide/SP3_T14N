@@ -9,10 +9,11 @@
 
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\GameObject.h"
+#include "../Misc/SimpleCommand.h"
 
 std::string Scene_MainMenu::id_ = "M_Scene";
 
-const std::string Scene_MainMenu::UI_Text[10] = { "", "Start", "Settings", "Exit", "New Game", "Load Game", "Return" };
+const std::string Scene_MainMenu::UI_Text[15] = { "", "Start", "Settings", "Exit", "New Game", "Load Game", "Return", "Forward_Button", "Backward_Button", "Right_Button", "Jump_Button" };
 
 Scene_MainMenu::Scene_MainMenu()
 	: SceneEntity()
@@ -75,6 +76,15 @@ void Scene_MainMenu::InitSceneUIElems()
 	NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[4]);
 	NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[5]);
 	NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[6]);
+
+    //For Setting Stuff
+    std::ostringstream ss;
+    ss << UI_Text[7] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND];
+    NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
+
+    ss.str("");
+
+    //For Setting Stuff
 
 	UI_Sys.cUIS_LayerContainer.push_back(NewL);
 }
