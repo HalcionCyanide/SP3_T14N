@@ -477,11 +477,14 @@ void SceneTown1::RenderPassMain()
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
 
-	ss.str("");
-	ss << "Yaw:" << 0;// camera->Yaw_Velocity;
-	ss.precision(3);
-	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
-	//<!> Removing soon
+	if (Player)
+	{
+		ss.str("");
+		ss << "PVel:" << Player->GetVelocity();
+		ss.precision(3);
+		SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
+	}
+	
 	ss.str("");
 	ss << "CPos:" << camera->position;
 	ss.precision(3);
