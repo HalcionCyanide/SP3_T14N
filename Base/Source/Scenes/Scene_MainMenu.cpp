@@ -127,7 +127,20 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
 							{
 								// Settings
                                 CurrentMenuState = S_SETTING;
-							}
+                                //There can a potential bug with this!
+                                for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
+                                {
+                                    if (((*it2)->UI_Text == UI_Text[1] || (*it2)->UI_Text == UI_Text[2] || (*it2)->UI_Text == UI_Text[3]))
+                                    {
+                                        (*it2)->SwapOriginalWithTarget();
+                                    }
+                                    else
+                                    {
+                                        (*it2)->SwapOriginalWithTarget();
+                                    }
+                                }
+                                //There can a potential bug with this!
+                            }
 							else if (((*it2)->UI_Text == UI_Text[3]))
 							{
 								// Exit2
