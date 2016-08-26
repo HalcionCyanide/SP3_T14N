@@ -564,7 +564,7 @@ bool SceneTown1::onNotify(const std::string &theEvent)
             {
                 Vector3 theGatePos = (*it)->GetPosition();
                 Vector3 theDirectionalPosBetweenPlayerGate = (PlayerPTR->GetPosition() - theGatePos).Normalize();
-                theDirectionalPosBetweenPlayerGate *= (((*it)->GetDimensions().x + (*it)->GetDimensions().y));
+                theDirectionalPosBetweenPlayerGate *= (((*it)->GetDimensions().x + (*it)->GetDimensions().y) * 0.5f);
                 PlayerPTR->SetPosition(theGatePos + theDirectionalPosBetweenPlayerGate);
                 break;
             }
