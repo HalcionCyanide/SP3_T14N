@@ -1,6 +1,5 @@
 #include "GateBoundary.h"
 
-
 GateBoundary::GateBoundary()
 {
 }
@@ -45,4 +44,5 @@ bool GateBoundary::CheckCollision(const Vector3 &point)
 void GateBoundary::TransitScene(const std::string &ID)
 {
 	Scene_System::accessing().SwitchScene(ID);
+    Scene_System::accessing().gPlayer->currSceneID = ID;
 }

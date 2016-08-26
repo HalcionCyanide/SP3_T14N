@@ -8,6 +8,7 @@
 #include "SceneBattleScreen.h"
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\PlayerObject.h"
+#include "../Misc/LoadEnemyData.h"
 
 std::string SceneFreeField::id_ = "F1_Scene";
 
@@ -36,7 +37,8 @@ void SceneFreeField::Init()
 	perspective.SetToPerspective(45.0f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 0.1f, 10000.0f);
 	projectionStack->LoadMatrix(perspective);
 
-	camera.Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
+    camera = new Camera3();
+	camera->Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
 
 	// Initiallise Model Specific Meshes Here
 	Mesh* newMesh = MeshBuilder::GenerateTerrain("FreeField", "HeightMapFiles//heightmap_FreeField.raw", m_heightMap);
@@ -44,7 +46,7 @@ void SceneFreeField::Init()
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera.position.x / TerrainScale.x, camera.position.z / TerrainScale.z) + camera.PlayerHeight;
+	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera->position.x / TerrainScale.x, camera->position.z / TerrainScale.z) + camera->PlayerHeight;
 	Application::cA_CurrentTerrainY = Application::cA_MinimumTerrainY;
 
 	theInteractiveMap = new GameMap();
@@ -54,7 +56,7 @@ void SceneFreeField::Init()
 
 	//<!> There can only be 1 Player
 	Player = new PlayerObject();
-	Player->Init("Player", 1, camera.position - Vector3(0, camera.PlayerHeight, 0), Vector3(2, 1, 2), Vector3(), camera.CurrentCameraRotation.y, Vector3(0, 1));
+	Player->Init("Player", 1, camera->position - Vector3(0, camera->PlayerHeight, 0), Vector3(2, 1, 2), Vector3(), camera->CurrentCameraRotation.y, Vector3(0, 1));
 	std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find("cube");
 	Player->setName("PLayer 1");
 	Player->SetMesh(it->second);
@@ -62,13 +64,13 @@ void SceneFreeField::Init()
 	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
 	//PlayerPTR->cameraObject = &camera;
 	PlayerPTR->SetVelocity(Vector3(10.f, 0.f, 0.f));
-	PlayerPTR->SetPosition(Vector3(Player->GetPosition().x, camera.PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPosition().x / TerrainScale.x), (Player->GetPosition().z / TerrainScale.z)), Player->GetPosition().z));
+	PlayerPTR->SetPosition(Vector3(Player->GetPosition().x, camera->PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPosition().x / TerrainScale.x), (Player->GetPosition().z / TerrainScale.z)), Player->GetPosition().z));
 	PlayerPTR->setPlayerBoundaries(objVec);
-	camera.position = PlayerPTR->GetPosition();
+	camera->position = PlayerPTR->GetPosition();
 	//<!> There can only be 1 Player
 
 	CurrentEncounterRateBoost = 0;
-	PreviousPosition = camera.position;
+	PreviousPosition = camera->position;
 	PreviousPosition.y = Application::cA_MinimumTerrainY;
 
 	// Codes to swap to bs
@@ -83,11 +85,11 @@ void SceneFreeField::Update(float dt)
 	SceneGraphics->Update(dt);
 
 	//Update Camera's Minimum Possible & Current Y Pos
-	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera.position.x / TerrainScale.x, camera.position.z / TerrainScale.z) + camera.PlayerHeight;
+	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera->position.x / TerrainScale.x, camera->position.z / TerrainScale.z) + camera->PlayerHeight;
 
 	if (!(Application::cA_CurrentTerrainY - Application::cA_MinimumTerrainY <= Math::EPSILON && Application::cA_MinimumTerrainY - Application::cA_CurrentTerrainY <= Math::EPSILON))
 	{
-		float RateofChangeY = (Application::cA_CurrentTerrainY - Application::cA_MinimumTerrainY) * (float)dt * (camera.CameraCurrentWalkSpeed / 3);
+		float RateofChangeY = (Application::cA_CurrentTerrainY - Application::cA_MinimumTerrainY) * (float)dt * (camera->CameraCurrentWalkSpeed / 3);
 		if (Application::cA_CurrentTerrainY - RateofChangeY >= Application::cA_MinimumTerrainY || Application::cA_CurrentTerrainY - RateofChangeY <= Application::cA_MinimumTerrainY)
 		{
 			Application::cA_CurrentTerrainY -= RateofChangeY;
@@ -95,18 +97,18 @@ void SceneFreeField::Update(float dt)
 	}
 	Vector3 Center(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 2, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight / 2, 0);
 
-	if ((camera.position - PreviousPosition).LengthSquared() > 25.f) // 5 Units
+	if ((camera->position - PreviousPosition).LengthSquared() > 25.f) // 5 Units
 	{
 		if (CurrentEncounterRateBoost < MaxEncounterRate)
 			CurrentEncounterRateBoost += 10;
-		PreviousPosition = camera.position;
+		PreviousPosition = camera->position;
 		PreviousPosition.y = Application::cA_MinimumTerrainY;
 	}
 	if (EncounterTimer < EncounterTimeCheck)
 	{
 		EncounterTimer += (float)dt;
 	}
-	else if ((camera.position - PreviousPosition).LengthSquared() > 4.f) // 2 Units
+	else if ((camera->position - PreviousPosition).LengthSquared() > 4.f) // 2 Units
 	{
 		EncounterTimer = 0;
 		if (Math::RandIntMinMax(0, MaxEncounterRate - CurrentEncounterRateBoost) < MaxEncounterRate * EncounterRatio)
@@ -158,14 +160,14 @@ void SceneFreeField::Update(float dt)
 		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
 	}
 
-	BManager.UpdateContainer(dt, camera.position);
+	BManager.UpdateContainer(dt, camera->position);
 
 	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
 	PlayerPTR->Update(dt);
-	PlayerPTR->SetRotationAngle(camera.CurrentCameraRotation.y);
+	PlayerPTR->SetRotationAngle(camera->CurrentCameraRotation.y);
 
-	camera.position = PlayerPTR->GetPosition();
-	camera.Update(dt);
+	camera->position = PlayerPTR->GetPosition();
+	camera->Update(dt);
 }
 
 void SceneFreeField::RenderTerrain()
@@ -185,14 +187,14 @@ void SceneFreeField::RenderShadowCasters()
 	{
 		if ((*it)->Active)
 		{
-			if ((camera.position - camera.target).Normalize().Dot((*it)->GetPosition().Normalized()) < 1.f)
+			if ((camera->position - camera->target).Normalize().Dot((*it)->GetPosition().Normalized()) < 1.f)
 			{
 				float TimeRatio = 1;
 				if ((*it)->GetLifeTime() != -1)
 					TimeRatio = 1.1f - (*it)->GetCurrTime() / (*it)->GetLifeTime();
 				modelStack->PushMatrix();
 				modelStack->Translate((*it)->GetPosition().x, (*it)->GetPosition().y, (*it)->GetPosition().z);
-				modelStack->Rotate(Math::RadianToDegree(atan2(camera.position.x - (*it)->GetPosition().x, camera.position.z - (*it)->GetPosition().z)), 0, 1, 0);
+				modelStack->Rotate(Math::RadianToDegree(atan2(camera->position.x - (*it)->GetPosition().x, camera->position.z - (*it)->GetPosition().z)), 0, 1, 0);
 				modelStack->Scale(TimeRatio * (*it)->GetDimensions().x, TimeRatio *(*it)->GetDimensions().y, TimeRatio *(*it)->GetDimensions().z);
 				SceneGraphics->RenderMesh((*it)->GetMeshName(), false);
 				modelStack->PopMatrix();
@@ -203,7 +205,7 @@ void SceneFreeField::RenderShadowCasters()
 	for (auto it : objVec)
 	{
 		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
-		if (the3DObject && (camera.position - camera.target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
+		if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
 			the3DObject->Render();
 	}
 	//<!> will remove soon <!>
@@ -323,9 +325,9 @@ void SceneFreeField::RenderPassMain()
 	// Camera matrix
 	viewStack->LoadIdentity();
 	viewStack->LookAt(
-		camera.position.x, camera.position.y, camera.position.z,
-		camera.target.x, camera.target.y, camera.target.z,
-		camera.up.x, camera.up.y, camera.up.z
+		camera->position.x, camera->position.y, camera->position.z,
+		camera->target.x, camera->target.y, camera->target.z,
+		camera->up.x, camera->up.y, camera->up.z
 		);
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack->LoadIdentity();
@@ -345,7 +347,7 @@ void SceneFreeField::RenderPassMain()
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 25);
 
 	ss.str("");
-	ss << "CVel:" << camera.CameraVelocity;
+	ss << "CVel:" << camera->CameraVelocity;
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
 
@@ -355,7 +357,7 @@ void SceneFreeField::RenderPassMain()
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
 	//<!> Removing soon
 	ss.str("");
-	ss << "CPos:" << camera.position;
+	ss << "CPos:" << camera->position;
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 125);
 	//<!> Removing soon
@@ -390,4 +392,16 @@ void SceneFreeField::Exit()
 	}
 	if (Player)
 		delete Player;
+    if (camera)
+        delete camera;
+}
+
+bool SceneFreeField::onNotify(const std::string &theEvent)
+{
+    if (checkWhetherTheWordInThatString("PLAYER_INFO", theEvent))
+    {
+
+        return true;
+    }
+    return false;
 }
