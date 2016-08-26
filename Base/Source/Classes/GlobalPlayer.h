@@ -58,6 +58,8 @@ public:
     void settingTheFileToSave(const int&);
     bool automaticallyLoadFile();
 
+    std::map<std::string, int> playerCurrQState;
+
 private:
 	int Spell_Power;
 	int CurrentHealth;
