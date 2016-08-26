@@ -20,7 +20,6 @@ GraphicsEntity resides here.
 #include "..\\Classes\\Boundary.h"
 #include "..\\Systems\\BattleSystem.h"
 #include "..\\Classes\\GlobalPlayer.h"
-#include "questManager.h"
 #include "NPC_Manager.h"
 #include "UI_System.h"
 
@@ -58,7 +57,6 @@ public:
 
     GlobalPlayer* gPlayer;
 
-	questManager QM;
 	NPCManager NM;
     UI_System *theLoadingEffect;
 

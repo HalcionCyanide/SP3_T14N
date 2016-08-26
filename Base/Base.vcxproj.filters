@@ -43,12 +43,6 @@
     <Filter Include="Source Files\Misc">
       <UniqueIdentifier>{f062b6cd-9d33-4947-9281-367ca5dfe141}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Conditions">
-      <UniqueIdentifier>{a51b633e-6bbe-4b0e-9cea-ece4e7ad70ff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Conditions">
-      <UniqueIdentifier>{47f81c5e-7d8a-4528-b657-8867fa45b334}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\NPCs">
       <UniqueIdentifier>{2e73fa48-2fbc-4d71-a4c9-986a7928e33a}</UniqueIdentifier>
     </Filter>
@@ -92,9 +86,6 @@
     </ClCompile>
     <ClCompile Include="Source\Classes\CItem.cpp">
       <Filter>Source Files\Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Conditions\collectionCondition.cpp">
-      <Filter>Source Files\Conditions</Filter>
     </ClCompile>
     <ClCompile Include="Source\Classes\Commands.cpp">
       <Filter>Source Files\Classes</Filter>
@@ -198,9 +189,6 @@
     <ClCompile Include="Source\Classes\MusicEntity3D.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Conditions\ratingCondition.cpp">
-      <Filter>Source Files\Conditions</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Classes\BattleScreenObject.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
@@ -210,20 +198,8 @@
     <ClCompile Include="Source\Classes\GlobalPlayer.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Conditions\captureCondition.cpp">
-      <Filter>Source Files\Conditions</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Conditions\gotoCondition.cpp">
-      <Filter>Source Files\Conditions</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Conditions\interactCondition.cpp">
-      <Filter>Source Files\Conditions</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Classes\UI_Layer.cpp">
       <Filter>Source Files\Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Systems\questManager.cpp">
-      <Filter>Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="Source\NPCs\NPC.cpp">
       <Filter>Source Files\NPCs</Filter>
@@ -232,9 +208,6 @@
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="Source\Quests\Quest.cpp">
-      <Filter>Source Files\Quests</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Quests\QuestStage.cpp">
       <Filter>Source Files\Quests</Filter>
     </ClCompile>
     <ClCompile Include="Source\Classes\GateBoundary.cpp">
@@ -295,12 +268,6 @@
     </ClInclude>
     <ClInclude Include="Source\Classes\singletontemplate.h">
       <Filter>Header Files\Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Conditions\collectionCondition.h">
-      <Filter>Header Files\Conditions</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Conditions\genericCondition.h">
-      <Filter>Header Files\Conditions</Filter>
     </ClInclude>
     <ClInclude Include="Source\Mains\Application.h">
       <Filter>Header Files\Mains</Filter>
@@ -398,9 +365,6 @@
     <ClInclude Include="Source\Classes\MusicEntity3D.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Conditions\ratingCondition.h">
-      <Filter>Header Files\Conditions</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Classes\Enemy.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
@@ -413,20 +377,8 @@
     <ClInclude Include="Source\Classes\GlobalPlayer.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Conditions\captureCondition.h">
-      <Filter>Header Files\Conditions</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Conditions\gotoCondition.h">
-      <Filter>Header Files\Conditions</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Conditions\interactCondition.h">
-      <Filter>Header Files\Conditions</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Classes\UI_Layer.h">
       <Filter>Header Files\Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Systems\questManager.h">
-      <Filter>Header Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="Source\NPCs\NPC.h">
       <Filter>Header Files\NPCs</Filter>
@@ -439,9 +391,6 @@
     </ClInclude>
     <ClInclude Include="Source\Classes\EnemyProjectile.h">
       <Filter>Header Files\Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Quests\QuestStage.h">
-      <Filter>Header Files\Quests</Filter>
     </ClInclude>
     <ClInclude Include="Source\Classes\GateBoundary.h">
       <Filter>Header Files\Classes</Filter>
@@ -459,9 +408,6 @@
     </None>
     <None Include="Shader\Shadow.vertexshader">
       <Filter>Shader</Filter>
-    </None>
-    <None Include="Source\Conditions\questData.csv">
-      <Filter>Source Files\Conditions</Filter>
     </None>
   </ItemGroup>
 </Project>

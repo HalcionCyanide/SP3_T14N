@@ -10,15 +10,6 @@ void Scene_System::Init()
 	cSS_InputManager = new InputManager();
 	gPlayer = new GlobalPlayer(1, 420, 1337, false);
 
-	QM.readFile("DrivenFiles//questData.csv");
-
-	std::string path = "DrivenFiles//quests//q_";
-	std::string fileFormat = ".csv";
-	for (auto it : QM.allQuests)
-	{
-		std::string temp = path + it->getName() + fileFormat;
-		it->LoadFile(temp);
-	}
 	NM.LoadFile("DrivenFiles//NPC_FILES.csv");
 	BSys = nullptr;
 
@@ -126,12 +117,6 @@ void Scene_System::clearEverything()
         delete it.second;
     }
     EnemyData.clear();
-
-    for (auto it : QM.allQuests)
-    {
-        delete it;
-    }
-    QM.allQuests.clear();
 
 	for (auto it : NM.allNPCs)
 	{
