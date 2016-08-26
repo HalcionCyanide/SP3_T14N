@@ -1,6 +1,6 @@
 stage,ConditionName,Value,Description,qOrigin
 1,collection,10,Capture 10 Monsters!,NPC_guardcaptain
-2,collection,15,Capture 15 Monsters!,NPC_guardcaptain
-3,collection,20,Capture 20 Monsters!,NPC_guardcaptain
-4,collection,25,Capture 25 Monsters!,NPC_guardcaptain
-5,collection,30,Capture 30 Monsters!,NPC_guardcaptain
+2,collection,15,Capture 15 Monsters!,NONE
+3,collection,20,Capture 20 Monsters!,NONE
+4,collection,25,Capture 25 Monsters!,NONE
+5,collection,30,Capture 30 Monsters!,NONE

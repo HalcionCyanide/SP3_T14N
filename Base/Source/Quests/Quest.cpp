@@ -1,9 +1,9 @@
 #include "Quest.h"
 
 Quest::Quest()
+	:qID(0)
 {
 	theStageAT = nullptr;
-	qID = 0;
 }
 
 Quest::~Quest()
@@ -23,16 +23,35 @@ struct to_upper
 	}
 };
 
-QuestStage* Quest::getCurrentStage()
+int Quest::getCurrentStage()
 {
-	return theStageAT;
+	int i = 0;
+	if (active)
+	{
+		for (auto it : qStages)
+		{
+			i++;
+			if (it == theStageAT)
+			{
+				break;
+			}
+		}
+	}
+	return i;
 }
 
 void Quest::setCurrStage(int i)
 {
-	if (i > 0 && i <= (int)qStages.size())
+	if (active)
 	{
-		theStageAT = qStages.at(i - 1);
+		if (i > 0 && i <= (int)qStages.size())
+		{
+			theStageAT = qStages.at(i - 1);
+		}
+		else
+		{
+			active = false;
+		}
 	}
 }
 
@@ -44,6 +63,16 @@ int Quest::getID()
 void Quest::setID(int i)
 {
 	qID = i;
+}
+
+void Quest::setActive(bool i)
+{
+	active = i;
+}
+
+bool Quest::getActive()
+{
+	return active;
 }
 
 void Quest::LoadFile(std::string& fileName)
@@ -98,6 +127,10 @@ void Quest::LoadFile(std::string& fileName)
 				it = std::find(theKeys.begin(), theKeys.end(), "DESCRIPTION");
 				pos = it - theKeys.begin();
 				tempQS->setDesc(theValues[pos]);
+
+				it = std::find(theKeys.begin(), theKeys.end(), "QORIGIN");
+				pos = it - theKeys.begin();
+				tempQS->setGiver(theValues[pos]);
 
 				qStages.push_back(tempQS);
 				theValues.clear();

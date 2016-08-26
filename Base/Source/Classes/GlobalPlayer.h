@@ -13,7 +13,7 @@ Defines the global player
 
 #include "PlayerObject.h"
 #include "Camera3.h"
-
+#include <map>
 
 class PlayerObject;
 class Camera3;
@@ -55,6 +55,7 @@ public:
 	Camera3 *CurrCamera;
     std::string currSceneID;
 
+	std::map < std::string, int >  playerCurrQState;
 private:
 	int Spell_Power;
 	int CurrentHealth;
