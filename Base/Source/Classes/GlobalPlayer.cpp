@@ -30,8 +30,7 @@ void GlobalPlayer::Init(const int& Spell_Power, const int& CurrentHealth, const 
 	this->CurrentHealth = CurrentHealth;
 	this->MaxHealth = MaxHealth;
 	this->IsInteracting = IsInteracting;
-    //LoadPlayerSave("DrivenFiles//PlayerSave1.csv");
-	// Set Stuffs
+    whatSave = 0;
 }
 
 void GlobalPlayer::Update(float dt)
@@ -287,4 +286,20 @@ bool GlobalPlayer::RewritePlayerSave(const std::string &fileName)
 void GlobalPlayer::SetCurrCam(Camera3 &theCam)
 {
     CurrCamera = &theCam;
+}
+
+void GlobalPlayer::settingTheFileToSave(const int &whatFile)
+{
+    whatSave = whatFile;
+}
+
+bool GlobalPlayer::automaticallyLoadFile()
+{
+    if (whatSave > 0)
+    {
+        std::ostringstream ss;
+        ss << "DrivenFiles//PlayerSave" << whatSave << ".csv";
+        return LoadPlayerSave(ss.str());
+    }
+    return false;
 }

@@ -13,7 +13,7 @@ Defines the global player
 
 #include "PlayerObject.h"
 #include "Camera3.h"
-#include <map>
+
 
 class PlayerObject;
 class Camera3;
@@ -55,12 +55,16 @@ public:
 	Camera3 *CurrCamera;
     std::string currSceneID;
 
-	std::map < std::string, int >  playerCurrQState;
+    void settingTheFileToSave(const int&);
+    bool automaticallyLoadFile();
+
 private:
 	int Spell_Power;
 	int CurrentHealth;
 	int MaxHealth;
 	bool IsInteracting;
+
+    int whatSave;
 
 	// Quest Container
 	// Inventory Container
