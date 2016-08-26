@@ -8,6 +8,7 @@
 #include "SceneBattleScreen.h"
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\PlayerObject.h"
+#include "../Misc/LoadEnemyData.h"
 
 std::string SceneFreeField::id_ = "F1_Scene";
 
@@ -390,4 +391,13 @@ void SceneFreeField::Exit()
 	}
 	if (Player)
 		delete Player;
+}
+
+bool SceneFreeField::onNotify(const std::string &theEvent)
+{
+    if (checkWhetherTheWordInThatString("PLAYER_INFO", theEvent))
+    {
+        return true;
+    }
+    return false;
 }

@@ -9,6 +9,7 @@
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\PlayerObject.h"
 #include "..\\Systems\\UI_System.h"
+#include "../Misc/LoadEnemyData.h"
 
 std::string SceneTown1::id_ = "1_Scene";
 
@@ -513,4 +514,13 @@ void SceneTown1::Exit()
     //for (auto it : NPC_QuestButtons)
     //    delete it;
     //NPC_QuestButtons.clear();
+}
+
+bool SceneTown1::onNotify(const std::string &theEvent)
+{
+    if (checkWhetherTheWordInThatString("PLAYER_INFO", theEvent))
+    {
+        return true;
+    }
+    return false;
 }
