@@ -138,16 +138,17 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
 							if (((*it2)->UI_Text == UI_Text[4]))
 							{
 								// Start
-								Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-								Scene_System::accessing().SwitchScene(SceneTown1::id_);
+								//Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+								//Scene_System::accessing().SwitchScene(SceneTown1::id_);
 								//Scene_System::accessing().Swit2chScene(SceneTown1::id_);
                                 //<!> the most hardcoding method ever!
-                                Scene_System::accessing().gPlayer->LoadPlayerSave("DrivenFiles//PlayerSave1.csv");
+                                Scene_System::accessing().gPlayer->LoadPlayerSave("DrivenFiles//NewPlayerSave.csv");
                             }
 							else if (((*it2)->UI_Text == UI_Text[5]))
 							{
 								// Load
-							}
+                                Scene_System::accessing().gPlayer->LoadPlayerSave("DrivenFiles//PlayerSave1.csv");
+                            }
 							else if (((*it2)->UI_Text == UI_Text[6]))
 							{
 								// Return

@@ -61,6 +61,8 @@ private:
 	int MaxHealth;
 	bool IsInteracting;
 
+    int whatSave;
+
 	// Quest Container
 	// Inventory Container
 	// Money

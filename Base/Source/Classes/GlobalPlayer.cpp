@@ -30,7 +30,7 @@ void GlobalPlayer::Init(const int& Spell_Power, const int& CurrentHealth, const 
 	this->CurrentHealth = CurrentHealth;
 	this->MaxHealth = MaxHealth;
 	this->IsInteracting = IsInteracting;
-    //LoadPlayerSave("DrivenFiles//PlayerSave1.csv");
+    whatSave = 0;
 }
 
 void GlobalPlayer::Update(float dt)
