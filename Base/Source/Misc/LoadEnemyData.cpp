@@ -66,9 +66,10 @@ bool LoadEnemyData(const char *file_path, std::map<std::string, Enemy*> &EMap)
 			pos = it - CSV_Keys.begin();
 			Temp->MaxEnemyWave = stoi(CSV_Values[pos]);
 
-			int num = 1;
+			int num = 0;
 			while (CSV_Values.size() - 1 > pos)
 			{
+				num++;
 				std::ostringstream ss;
 				EnemyProjectile* TempP = new EnemyProjectile();
 				ss << "P" << num << "MESHNAME";
@@ -145,7 +146,6 @@ bool LoadEnemyData(const char *file_path, std::map<std::string, Enemy*> &EMap)
 						}
 					}
 				}
-				num++;
 			}
 			CSV_Values.clear();
 		}

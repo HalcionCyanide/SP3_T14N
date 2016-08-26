@@ -19,8 +19,9 @@ public:
     virtual void Update(float dt);
     virtual void Render();
     virtual void Exit();
+    virtual bool onNotify(const std::string &theEvent);
 
-    Camera3 camera;
+    Camera3 *camera;
 
 private:
     // Shadow GPass

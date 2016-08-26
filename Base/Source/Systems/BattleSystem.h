@@ -41,13 +41,13 @@ public:
 
 	//void SetPlayer();
 	void SetEnemy(Enemy&);
+	Enemy* CurrentEnemy; //<- To Store Attack Patterns and Stats
 
 	BillboardManager BManager;
 	UI_System UI_Sys;
 
 private:
 	// Private Variables
-	Enemy* CurrentEnemy; //<- To Store Attack Patterns and Stats
 	bool FleeSucceeded = false;
 	bool FleeToggled = false;
 	bool SealToggled = false;
@@ -62,7 +62,7 @@ private:
 	Vector3 CenterPosition;
 	BattleScreenObject* BaseExterior;
 	BattleScreenObject* BaseInterior;
-	bool MouseModeSelected = true;
+	bool MouseModeSelected = false;// true;
 	bool isInvincible = false;
 	float IFrameTimer = 0;
 	const float FrictionDecrementMultiplier = 0.8f;
