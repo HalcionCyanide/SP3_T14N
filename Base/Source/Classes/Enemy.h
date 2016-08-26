@@ -20,6 +20,34 @@ struct Enemy : public GenericEntity
 		cE_Projectiles.clear();
 	};
 
+	Enemy(Enemy& E)
+	{
+		//EnemyMesh = E.EnemyMesh;
+		//MeshName = E.MeshName;
+		//SpellPower = E.SpellPower;
+		//MaxEnemyWave = E.MaxEnemyWave;
+		//CurrentAttackCount = 0;
+		//CurrentEnemyWave = 0;
+		//CurrentTime = 0;
+		*this = E;
+	}
+	Enemy &operator=(Enemy &rhs)
+	{
+		EnemyMesh = rhs.EnemyMesh;
+		MeshName = rhs.MeshName;
+		SpellPower = rhs.SpellPower;
+		MaxEnemyWave = rhs.MaxEnemyWave;
+		CurrentAttackCount = 0;
+		CurrentEnemyWave = 0;
+		CurrentTime = 0;
+		for (std::vector<EnemyProjectile*>::iterator it = rhs.cE_Projectiles.begin(), end = rhs.cE_Projectiles.end(); it != end; ++it)
+		{
+			EnemyProjectile *zeProjectile = new EnemyProjectile(**it);
+			cE_Projectiles.push_back(zeProjectile);
+		}
+		return *this;
+	}
+
 	Mesh* EnemyMesh;
 	std::string MeshName;
 

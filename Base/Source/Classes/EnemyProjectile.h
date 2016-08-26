@@ -6,6 +6,7 @@
 
 struct EnemyProjectile : public GenericEntity
 {
+
 	Mesh* StoredMesh;
 
 	std::string AttackType;
@@ -14,6 +15,29 @@ struct EnemyProjectile : public GenericEntity
 	int AttacksPerWave;
 	int BatchCreateCount;
 	int DamagePerAttack;
+
+	EnemyProjectile &operator=(EnemyProjectile &rhs)
+	{
+		StoredMesh = rhs.StoredMesh;
+		AttackType = rhs.AttackType;
+		ScalarAcceleration = rhs.ScalarAcceleration;
+		AttackSpeed = rhs.AttackSpeed;
+		AttacksPerWave = rhs.AttacksPerWave;
+		BatchCreateCount = rhs.BatchCreateCount;
+		DamagePerAttack = rhs.DamagePerAttack;
+		return *this;
+	}
+	EnemyProjectile(EnemyProjectile &rhs)
+	{
+		*this = rhs;
+	}
+	EnemyProjectile()
+	{
+		StoredMesh = nullptr;
+		ScalarAcceleration = AttackSpeed = 0;
+		AttacksPerWave = BatchCreateCount = DamagePerAttack = 0;
+	}
+	virtual ~EnemyProjectile() {};
 };
 
 #endif // _ENEMY_PROJECTILE_H
