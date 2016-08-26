@@ -119,6 +119,11 @@ void BattleSystem::Exit()
 		delete PlayerObj;
 		PlayerObj = nullptr;
 	}
+	/*if (CurrentEnemy)
+	{
+		delete CurrentEnemy;
+		CurrentEnemy = nullptr;
+	}*/
 	if (BaseExterior != nullptr)
 	{
 		delete BaseExterior;
@@ -284,7 +289,7 @@ void BattleSystem::UpdatePESPhase(float dt)
 			}
 			BattleState = BS_PlayerTurn;
 			CurrentEnemy->CurrentAttackCount = 0;
-			CurrentEnemy->CurrentEnemyWave++;
+			++CurrentEnemy->CurrentEnemyWave;
 		}
 	}
 	if (CurrentEnemy->CurrentEnemyWave == CurrentEnemy->MaxEnemyWave && ActiveCount <= 0)
@@ -310,13 +315,14 @@ void BattleSystem::UpdateSealPhase(float dt)
 	// Do Generic Monster Animation
 	EnemyLayer->cUI_Layer[0]->TargetPosition = CenterPosition;
 	PlayerObj->SetPosition(CenterPosition);
+	PlayerObj->SetVelocity(0);
 	if ((EnemyLayer->cUI_Layer[0]->Position - EnemyLayer->cUI_Layer[0]->TargetPosition).LengthSquared() < 1.f)
 	{
 		EnemyLayer->cUI_Layer[0]->AtTarget = true;
 	}
 	if (EnemyLayer->cUI_Layer[0]->AtTarget)
 	{
-		if (EnemyLayer->cUI_Layer[0]->Dimensions.LengthSquared() > 100.f)
+		if (EnemyLayer->cUI_Layer[0]->Dimensions.LengthSquared() > 300.f)
 			EnemyLayer->cUI_Layer[0]->Dimensions -= EnemyLayer->cUI_Layer[0]->Dimensions * dt;
 		else{
 			// Monster Anim Complete
@@ -551,7 +557,7 @@ bool BattleSystem::CollisionCheck(const BattleScreenObject& BSO1, const BattleSc
 		case BattleScreenObject::BS_Trap:
 		{
 			// Simple Circle BC.
-			float CombinedRadiusSquared = (BSO1.GetDimensions().x * 0.4f + BSO2.GetDimensions().x * 0.4f) * (BSO1.GetDimensions().x * 0.4f + BSO2.GetDimensions().x * 0.4f);
+			float CombinedRadiusSquared = (BSO1.GetDimensions().x * 0.3f + BSO2.GetDimensions().x * 0.3f) * (BSO1.GetDimensions().x * 0.3f + BSO2.GetDimensions().x * 0.3f);
 			float DistSquared = ((BSO1.GetPosition() + BSO1.GetVelocity() * dt) - (BSO2.GetPosition() + BSO2.GetVelocity() * dt)).LengthSquared();
 			Vector3 RelativeVelocity = BSO2.GetVelocity() - BSO1.GetVelocity();
 			Vector3 RelativeDisplacement = BSO1.GetPosition() - BSO2.GetPosition();
@@ -663,9 +669,10 @@ void BattleSystem::Attack_Bullet(EnemyProjectile& CurrentProjectile)
 	{
 		Vector3 DVec = (PlayerObj->GetPosition() - SpawnPos).Normalize() * CurrentProjectile.ScalarAcceleration; 
 		BattleScreenObject* BSO = GetInactiveBSO();
-		BSO->SetParameters(CurrentProjectile.StoredMesh, 5, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), DVec, 0, Vector3(0, 0, 1));
+		BSO->SetParameters(CurrentProjectile.StoredMesh, 5, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), 0, 0, Vector3(0, 0, 1));
 		BSO->Type = BattleScreenObject::BS_Bullet;
 		BSO->Active = true;
+		BSO->SetAcceleration(DVec);
 		BSO->SetMass(3.f);
 	}
 	else Attack_Bullet(CurrentProjectile);
@@ -680,6 +687,7 @@ void BattleSystem::Attack_Trap(EnemyProjectile& CurrentProjectile)
 	BSO->Type = BattleScreenObject::BS_Null;
 	BSO->Active = true;
 	BSO->LifeTime = 1;
+	BSO->SetAcceleration(0);
 
 	BSO = GetInactiveBSO();
 	BSO->SetParameters(CurrentProjectile.StoredMesh, 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), Vector3(CurrentProjectile.ScalarAcceleration, CurrentProjectile.ScalarAcceleration), RAngle, Vector3(0, 0, 1));

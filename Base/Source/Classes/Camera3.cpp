@@ -97,11 +97,6 @@ void Camera3::Update(float dt)
 	Application::cA_CurrentTerrainY += CameraBobVal;
 	MovementValues.SetZero();
 
-	if (CameraIsLocked)
-	{
-		Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0;
-		Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0;
-	}
 	if (Application::IsKeyPressed(VK_SHIFT) &&
 		!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND])
 		&& !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND])
