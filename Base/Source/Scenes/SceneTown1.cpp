@@ -477,11 +477,14 @@ void SceneTown1::RenderPassMain()
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
 
-	ss.str("");
-	ss << "Yaw:" << 0;// camera->Yaw_Velocity;
-	ss.precision(3);
-	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
-	//<!> Removing soon
+	if (Player)
+	{
+		ss.str("");
+		ss << "PVel:" << Player->GetVelocity();
+		ss.precision(3);
+		SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
+	}
+	
 	ss.str("");
 	ss << "CPos:" << camera->position;
 	ss.precision(3);
@@ -546,13 +549,26 @@ bool SceneTown1::onNotify(const std::string &theEvent)
             Player = Scene_System::accessing().gPlayer->PlayerObj;
             PlayerObject *PlayerPTR = dynamic_cast<PlayerObject*>(Player);
             PlayerPTR->SetPosition(Vector3(Player->GetPosition().x, camera->PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPosition().x / TerrainScale.x), (Player->GetPosition().z / TerrainScale.z)), Player->GetPosition().z));
+            PlayerPTR->setPlayerBoundaries(objVec);
         }
         return true;
     }
     else if (checkWhetherTheWordInThatString("TRANSITIONING", theEvent))
     {
-        Scene_System::accessing().gPlayer->PlayerObj = dynamic_cast<PlayerObject*>(Player);
+        PlayerObject *PlayerPTR = Scene_System::accessing().gPlayer->PlayerObj = dynamic_cast<PlayerObject*>(Player);
         Scene_System::accessing().gPlayer->CurrCamera = camera;
+        for (std::vector<GameObject*>::iterator it = objVec.begin(), end = objVec.end(); it != end; ++it)
+        {
+            if (checkWhetherTheWordInThatString(Scene_System::accessing().gPlayer->currSceneID, (*it)->getName()))
+            {
+                Vector3 theGatePos = (*it)->GetPosition();
+                Vector3 theDirectionalPosBetweenPlayerGate = (PlayerPTR->GetPosition() - theGatePos).Normalize();
+                theDirectionalPosBetweenPlayerGate *= (((*it)->GetDimensions().x + (*it)->GetDimensions().y));
+                PlayerPTR->SetPosition(theGatePos + theDirectionalPosBetweenPlayerGate);
+                break;
+            }
+        }
+        Scene_System::accessing().gPlayer->currSceneID = id_;
         return true;
     }
     return false;

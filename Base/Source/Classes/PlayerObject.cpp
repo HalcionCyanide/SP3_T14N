@@ -28,7 +28,10 @@ void PlayerObject::Update(double dt)
 	m_ElapsedTime = (float)dt;
 
 	if (Application::IsKeyPressed(VK_SHIFT) &&
-        !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]))
+        !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND])
+		&& !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND])
+		&& !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND])
+		)
 	{
 		MaxWalkSpeed = BaseWalkSpeed * 2;
 	}
@@ -46,7 +49,6 @@ void PlayerObject::Update(double dt)
 				if (CheckCollision(*(*it)->GetBoundary(), BaseObject::GetPosition()))
 				{
 					SetPosition(this->GetPosition() - ((*it)->GetBoundary()->GetOverlappingDistance() * (*it)->GetBoundary()->GetOverlappingAxis()));
-
 				}
 				if (MovementValues.IsZero())
 					break;

@@ -213,60 +213,66 @@ bool GlobalPlayer::RewritePlayerSave(const std::string &fileName)
                 ss << key << currSceneID;
                 writeFile << ss.str() << std::endl;
             }
-            else if (checkWhetherTheWordInThatString("CAMERAPOSITIONX", thatSpecificLine))
+            if (CurrCamera)
             {
-                ss << key << CurrCamera->position.x;
-                writeFile << ss.str() << std::endl;
+                if (checkWhetherTheWordInThatString("CAMERAPOSITIONX", thatSpecificLine))
+                {
+                    ss << key << CurrCamera->position.x;
+                    writeFile << ss.str() << std::endl;
+                }
+                else if (checkWhetherTheWordInThatString("CAMERAPOSITIONY", thatSpecificLine))
+                {
+                    ss << key << CurrCamera->position.y;
+                    writeFile << ss.str() << std::endl;
+                }
+                else if (checkWhetherTheWordInThatString("CAMERAPOSITIONZ", thatSpecificLine))
+                {
+                    ss << key << CurrCamera->position.z;
+                    writeFile << ss.str() << std::endl;
+                }
+                else if (checkWhetherTheWordInThatString("CAMERATARGETX", thatSpecificLine))
+                {
+                    ss << key << CurrCamera->target.x;
+                    writeFile << ss.str() << std::endl;
+                }
+                else if (checkWhetherTheWordInThatString("CAMERATARGETY", thatSpecificLine))
+                {
+                    ss << key << CurrCamera->target.y;
+                    writeFile << ss.str() << std::endl;
+                }
+                else if (checkWhetherTheWordInThatString("CAMERATARGETZ", thatSpecificLine))
+                {
+                    ss << key << CurrCamera->target.z;
+                    writeFile << ss.str() << std::endl;
+                }
             }
-            else if (checkWhetherTheWordInThatString("CAMERAPOSITIONY", thatSpecificLine))
+            if (PlayerObj)
             {
-                ss << key << CurrCamera->position.y;
-                writeFile << ss.str() << std::endl;
-            }
-            else if (checkWhetherTheWordInThatString("CAMERAPOSITIONZ", thatSpecificLine))
-            {
-                ss << key << CurrCamera->position.z;
-                writeFile << ss.str() << std::endl;
-            }
-            else if (checkWhetherTheWordInThatString("CAMERATARGETX", thatSpecificLine))
-            {
-                ss << key << CurrCamera->target.x;
-                writeFile << ss.str() << std::endl;
-            }
-            else if (checkWhetherTheWordInThatString("CAMERATARGETY", thatSpecificLine))
-            {
-                ss << key << CurrCamera->target.y;
-                writeFile << ss.str() << std::endl;
-            }
-            else if (checkWhetherTheWordInThatString("CAMERATARGETZ", thatSpecificLine))
-            {
-                ss << key << CurrCamera->target.z;
-                writeFile << ss.str() << std::endl;
-            }
-            else if (checkWhetherTheWordInThatString("PLAYERMASS", thatSpecificLine))
-            {
-                ss << key << PlayerObj->GetMass();
-                writeFile << ss.str() << std::endl;
-            }
-            else if (checkWhetherTheWordInThatString("PLAYERPOSX", thatSpecificLine))
-            {
-                ss << key << PlayerObj->GetPosition().x;
-                writeFile << ss.str() << std::endl;
-            }
-            else if (checkWhetherTheWordInThatString("PLAYERPOSY", thatSpecificLine))
-            {
-                ss << key << PlayerObj->GetPosition().y;
-                writeFile << ss.str() << std::endl;
-            }
-            else if (checkWhetherTheWordInThatString("PLAYERPOSZ", thatSpecificLine))
-            {
-                ss << key << PlayerObj->GetPosition().z;
-                writeFile << ss.str() << std::endl;
-            }
-            else if (checkWhetherTheWordInThatString("PLAYERYROTATION", thatSpecificLine))
-            {
-                ss << key << PlayerObj->GetMass();
-                writeFile << ss.str() << std::endl;
+                if (checkWhetherTheWordInThatString("PLAYERMASS", thatSpecificLine))
+                {
+                    ss << key << PlayerObj->GetMass();
+                    writeFile << ss.str() << std::endl;
+                }
+                else if (checkWhetherTheWordInThatString("PLAYERPOSX", thatSpecificLine))
+                {
+                    ss << key << PlayerObj->GetPosition().x;
+                    writeFile << ss.str() << std::endl;
+                }
+                else if (checkWhetherTheWordInThatString("PLAYERPOSY", thatSpecificLine))
+                {
+                    ss << key << PlayerObj->GetPosition().y;
+                    writeFile << ss.str() << std::endl;
+                }
+                else if (checkWhetherTheWordInThatString("PLAYERPOSZ", thatSpecificLine))
+                {
+                    ss << key << PlayerObj->GetPosition().z;
+                    writeFile << ss.str() << std::endl;
+                }
+                else if (checkWhetherTheWordInThatString("PLAYERYROTATION", thatSpecificLine))
+                {
+                    ss << key << PlayerObj->GetMass();
+                    writeFile << ss.str() << std::endl;
+                }
             }
             else
                 writeFile << (*it) << std::endl;

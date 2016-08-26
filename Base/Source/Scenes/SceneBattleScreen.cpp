@@ -179,7 +179,6 @@ void SceneBattleScreen::RenderPassMain()
 		ss << "EnemyCWaves" << Scene_System::accessing().BSys->CurrentEnemy->CurrentEnemyWave;
 		ss.precision(3);
 		SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 100);
-
 	}
 	
 	SceneGraphics->SetHUD(false);
