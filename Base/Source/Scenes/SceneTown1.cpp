@@ -557,6 +557,14 @@ bool SceneTown1::onNotify(const std::string &theEvent)
     {
         Scene_System::accessing().gPlayer->PlayerObj = dynamic_cast<PlayerObject*>(Player);
         Scene_System::accessing().gPlayer->CurrCamera = camera;
+        for (std::vector<GameObject*>::iterator it = objVec.begin(), end = objVec.end(); it != end; ++it)
+        {
+            if (checkWhetherTheWordInThatString(Scene_System::accessing().gPlayer->currSceneID, (*it)->getName()))
+            {
+
+                break;
+            }
+        }
         Scene_System::accessing().gPlayer->currSceneID = id_;
         return true;
     }
