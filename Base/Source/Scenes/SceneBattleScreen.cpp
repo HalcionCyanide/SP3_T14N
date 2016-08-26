@@ -168,7 +168,7 @@ void SceneBattleScreen::RenderPassMain()
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
 
-	ss.str("");
+	/*ss.str("");
 	ss << "EnemyMWaves" << Scene_System::accessing().BSys->CurrentEnemy->MaxEnemyWave;
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
@@ -176,7 +176,7 @@ void SceneBattleScreen::RenderPassMain()
 	ss.str("");
 	ss << "EnemyCWaves" << Scene_System::accessing().BSys->CurrentEnemy->CurrentEnemyWave;
 	ss.precision(3);
-	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 100);
+	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 100);*/
 
 	SceneGraphics->SetHUD(false);
 }
