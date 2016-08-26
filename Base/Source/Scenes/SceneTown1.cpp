@@ -250,13 +250,8 @@ void SceneTown1::Update(float dt)
 			camera->CameraIsLocked = true;
 			
 			// Set the player's target to face the NPC
-<<<<<<< HEAD
-			camera.target = Vector3(CurrentNPC->GetPosition().x, Application::cA_CurrentTerrainY + (CurrentNPC->GetPosition().y - Application::cA_CurrentTerrainY) + (CurrentNPC->GetDimensions().y * 0.5f), CurrentNPC->GetPosition().z);
-			camera.CurrentCameraRotation.x = 0;
-=======
 			camera->target = Vector3(CurrentNPC->GetPosition().x, camera->PlayerHeight, CurrentNPC->GetPosition().z);
 			camera->CurrentCameraRotation.x = 0;
->>>>>>> a6f9063235e95399257f5fa1b14db7936e68ae6d
 
 			// Interacting with NPC: Check UI Key Press
 			switch (HandleChatUIInput((float)dt))
