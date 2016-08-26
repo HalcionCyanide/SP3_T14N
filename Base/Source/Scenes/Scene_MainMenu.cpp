@@ -83,7 +83,20 @@ void Scene_MainMenu::InitSceneUIElems()
     NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
 
     ss.str("");
+    ss << UI_Text[8] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND];
+    NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
 
+    ss.str("");
+    ss << UI_Text[9] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND];
+    NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
+
+    ss.str("");
+    ss << UI_Text[10] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND];
+    NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
+
+    ss.str("");
+    ss << UI_Text[11] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND];
+    NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
     //For Setting Stuff
 
 	UI_Sys.cUIS_LayerContainer.push_back(NewL);
@@ -91,41 +104,41 @@ void Scene_MainMenu::InitSceneUIElems()
 
 void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cState)
 {
-	bool ClickSucceeded = false;
-	for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(); it != UI_Sys.cUIS_LayerContainer.end(); ++it)
-	{
-		for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
-		{
-			if ((*it2)->Active)
-			{
-				bool ClickSucceeded = false;
-				if (CurrentMenuState == S_FIRSTLEVEL)
-				{
-					(*it2)->BoundsActive = true;
-					if (((*it2)->UI_Text == UI_Text[1] || (*it2)->UI_Text == UI_Text[2] || (*it2)->UI_Text == UI_Text[3]))
-					{
-						(*it2)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
-						if (ClickSucceeded)
-						{
-							if (((*it2)->UI_Text == UI_Text[1]))
-							{
-								// Start
-								CurrentMenuState = S_SECONDLEVEL;
-								for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
-								{
-									if (((*it2)->UI_Text == UI_Text[1] || (*it2)->UI_Text == UI_Text[2] || (*it2)->UI_Text == UI_Text[3]))
-									{
-										(*it2)->SwapOriginalWithTarget();
-									}
-									else if (((*it2)->UI_Text == UI_Text[4] || (*it2)->UI_Text == UI_Text[5] || (*it2)->UI_Text == UI_Text[6]))
-									{
-										(*it2)->SwapOriginalWithTarget();
-									}
-								}
-							}
-							else if (((*it2)->UI_Text == UI_Text[2]))
-							{
-								// Settings
+    bool ClickSucceeded = false;
+    for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(); it != UI_Sys.cUIS_LayerContainer.end(); ++it)
+    {
+        for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
+        {
+            if ((*it2)->Active)
+            {
+                bool ClickSucceeded = false;
+                if (CurrentMenuState == S_FIRSTLEVEL)
+                {
+                    (*it2)->BoundsActive = true;
+                    if (((*it2)->UI_Text == UI_Text[1] || (*it2)->UI_Text == UI_Text[2] || (*it2)->UI_Text == UI_Text[3]))
+                    {
+                        (*it2)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+                        if (ClickSucceeded)
+                        {
+                            if (((*it2)->UI_Text == UI_Text[1]))
+                            {
+                                // Start
+                                CurrentMenuState = S_SECONDLEVEL;
+                                for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
+                                {
+                                    if (((*it2)->UI_Text == UI_Text[1] || (*it2)->UI_Text == UI_Text[2] || (*it2)->UI_Text == UI_Text[3]))
+                                    {
+                                        (*it2)->SwapOriginalWithTarget();
+                                    }
+                                    else if (((*it2)->UI_Text == UI_Text[4] || (*it2)->UI_Text == UI_Text[5] || (*it2)->UI_Text == UI_Text[6]))
+                                    {
+                                        (*it2)->SwapOriginalWithTarget();
+                                    }
+                                }
+                            }
+                            else if (((*it2)->UI_Text == UI_Text[2]))
+                            {
+                                // Settings
                                 CurrentMenuState = S_SETTING;
                                 //There can a potential bug with this!
                                 for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
@@ -134,67 +147,67 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                                     {
                                         (*it2)->SwapOriginalWithTarget();
                                     }
-                                    else
+                                    else if ((*it2)->UI_Text == UI_Text[6] || (*it2)->UI_Text == UI_Text[7] || (*it2)->UI_Text == UI_Text[8] || (*it2)->UI_Text == UI_Text[9] || (*it2)->UI_Text == UI_Text[10] || (*it2)->UI_Text == UI_Text[11])
                                     {
                                         (*it2)->SwapOriginalWithTarget();
                                     }
                                 }
                                 //There can a potential bug with this!
                             }
-							else if (((*it2)->UI_Text == UI_Text[3]))
-							{
-								// Exit2
-								Application::ExitGame = true;
-							}
-						}
-					}
-					else if ((*it2)->Active)
-						(*it2)->Update((float)dt);
-				}
-				else if (CurrentMenuState == S_SECONDLEVEL)
-				{
-					if (((*it2)->UI_Text == UI_Text[4] || (*it2)->UI_Text == UI_Text[5] || (*it2)->UI_Text == UI_Text[6]))
-					{
-						(*it2)->BoundsActive = true;
-						(*it2)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
-						if (ClickSucceeded)
-						{
-							if (((*it2)->UI_Text == UI_Text[4]))
-							{
-								// Start
-								//Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-								//Scene_System::accessing().SwitchScene(SceneTown1::id_);
-								//Scene_System::accessing().Swit2chScene(SceneTown1::id_);
+                            else if (((*it2)->UI_Text == UI_Text[3]))
+                            {
+                                // Exit2
+                                Application::ExitGame = true;
+                            }
+                        }
+                    }
+                    else if ((*it2)->Active)
+                        (*it2)->Update((float)dt);
+                }
+                else if (CurrentMenuState == S_SECONDLEVEL)
+                {
+                    if (((*it2)->UI_Text == UI_Text[4] || (*it2)->UI_Text == UI_Text[5] || (*it2)->UI_Text == UI_Text[6]))
+                    {
+                        (*it2)->BoundsActive = true;
+                        (*it2)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+                        if (ClickSucceeded)
+                        {
+                            if (((*it2)->UI_Text == UI_Text[4]))
+                            {
+                                // Start
+                                //Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+                                //Scene_System::accessing().SwitchScene(SceneTown1::id_);
+                                //Scene_System::accessing().Swit2chScene(SceneTown1::id_);
                                 //<!> the most hardcoding method ever!
                                 Scene_System::accessing().gPlayer->LoadPlayerSave("DrivenFiles//NewPlayerSave.csv");
                             }
-							else if (((*it2)->UI_Text == UI_Text[5]))
-							{
-								// Load
+                            else if (((*it2)->UI_Text == UI_Text[5]))
+                            {
+                                // Load
                                 Scene_System::accessing().gPlayer->settingTheFileToSave(1);
                                 Scene_System::accessing().gPlayer->automaticallyLoadFile();
                             }
-							else if (((*it2)->UI_Text == UI_Text[6]))
-							{
-								// Return
-								CurrentMenuState = S_FIRSTLEVEL;
-								for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
-								{
-									if (((*it2)->UI_Text == UI_Text[4] || (*it2)->UI_Text == UI_Text[5] || (*it2)->UI_Text == UI_Text[6]))
-									{
-										(*it2)->SwapOriginalWithTarget();
-									}
-									else if (((*it2)->UI_Text == UI_Text[1] || (*it2)->UI_Text == UI_Text[2] || (*it2)->UI_Text == UI_Text[3]))
-									{
-										(*it2)->SwapOriginalWithTarget();
-									}
-								}
-							}
-						}
-					}
-					else if ((*it2)->Active)
-						(*it2)->Update((float)dt);
-				}
+                            else if (((*it2)->UI_Text == UI_Text[6]))
+                            {
+                                // Return
+                                CurrentMenuState = S_FIRSTLEVEL;
+                                for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
+                                {
+                                    if (((*it2)->UI_Text == UI_Text[4] || (*it2)->UI_Text == UI_Text[5] || (*it2)->UI_Text == UI_Text[6]))
+                                    {
+                                        (*it2)->SwapOriginalWithTarget();
+                                    }
+                                    else if (((*it2)->UI_Text == UI_Text[1] || (*it2)->UI_Text == UI_Text[2] || (*it2)->UI_Text == UI_Text[3]))
+                                    {
+                                        (*it2)->SwapOriginalWithTarget();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else if ((*it2)->Active)
+                        (*it2)->Update((float)dt);
+                }
                 //Updating of Settings
                 else if (CurrentMenuState == S_SETTING)
                 {
@@ -203,14 +216,29 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                         (*it2)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
                         if (ClickSucceeded)
                         {
-
+                            if ((*it2)->UI_Text == UI_Text[6])
+                            {
+                                // Return
+                                CurrentMenuState = S_FIRSTLEVEL;
+                                for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
+                                {
+                                    if ((*it2)->UI_Text == UI_Text[6] || (*it2)->UI_Text == UI_Text[7] || (*it2)->UI_Text == UI_Text[8] || (*it2)->UI_Text == UI_Text[9] || (*it2)->UI_Text == UI_Text[10] || (*it2)->UI_Text == UI_Text[11])
+                                    {
+                                        (*it2)->SwapOriginalWithTarget();
+                                    }
+                                    else if (((*it2)->UI_Text == UI_Text[1] || (*it2)->UI_Text == UI_Text[2] || (*it2)->UI_Text == UI_Text[3]))
+                                    {
+                                        (*it2)->SwapOriginalWithTarget();
+                                    }
+                                }
+                            }
                         }
                     }
+                    //Updating of Settings
                 }
-                //Updating of Settings
             }
-		}
-	}
+        }
+    }
 }
 
 void Scene_MainMenu::Update(float dt)
