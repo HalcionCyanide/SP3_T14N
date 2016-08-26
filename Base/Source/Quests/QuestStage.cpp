@@ -12,6 +12,7 @@ QuestStage::~QuestStage()
 {
 	if (condition)
 		delete condition;
+	condition = nullptr;
 }
 
 bool QuestStage::getComplete()
