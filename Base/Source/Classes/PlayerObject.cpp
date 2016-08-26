@@ -85,7 +85,7 @@ void PlayerObject::Update(double dt)
 		}
 		if (!GetVelocity().IsZero())
 		{
-			DecomposePlayerInertia((float)dt);
+			DecomposePlayerInertia((float)dt);	
 		}
 		UpdateJump((float)dt);
 	}
