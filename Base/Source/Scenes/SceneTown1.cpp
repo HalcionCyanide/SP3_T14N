@@ -148,6 +148,18 @@ int SceneTown1::HandleChatUIInput(float dt)
 					{
 						return 0;
 					}
+					/*else if ()
+					{
+						return 1;
+					}
+					else if ()
+					{
+						return 2;
+					}
+					else if ()
+					{
+						return 3;
+					}*/
 				}
 			}
 		}
@@ -255,6 +267,30 @@ void SceneTown1::Update(float dt)
 			// Set the player's target to face the NPC
 			camera->target = Vector3(CurrentNPC->GetPosition().x, Application::cA_CurrentTerrainY + (CurrentNPC->GetPosition().y - Application::cA_CurrentTerrainY) + (CurrentNPC->GetDimensions().y * 0.5f), CurrentNPC->GetPosition().z);
 			camera->CurrentCameraRotation.x = 0;
+
+			/*for (auto it : CurrentNPC->NPCcurrQstate) // go thru the NPC's states
+			{
+				for (auto it2 : Scene_System::accessing().gPlayer->playerCurrQState) // go thru the player's states
+				{
+					if (it.first == it2.first) // compare the same quests
+					{
+						for (auto it3 : it.second) // go thru the NPC's int vector of stages for that particular quest
+						{
+							if ((it3 - it2.second) == 1) // if the player's stage is just before the NPC's
+							{
+								//we should set the NPC's button text to THAT particular quest's name.
+								for (auto it4 : Scene_System::accessing().QM.allQuests)
+								{
+									if (it4->getName() == it.first)
+									{
+										//now how do i push back EXACTLY 3 buttons, no more no less?
+									}
+								}
+							}
+						}
+					}
+				}
+			}*/
 
 			// Interacting with NPC: Check UI Key Press
 			switch (HandleChatUIInput((float)dt))
