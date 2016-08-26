@@ -103,7 +103,10 @@ void Camera3::Update(float dt)
 		Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0;
 	}
 	if (Application::IsKeyPressed(VK_SHIFT) &&
-		!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]))
+		!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND])
+		&& !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND])
+		&& !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND])
+		)
 	{
 		CameraMaxWalkSpeed = CameraBaseWalkSpeed * 2;
 	}
@@ -112,6 +115,7 @@ void Camera3::Update(float dt)
 		CameraMaxWalkSpeed -= CameraBaseWalkSpeed * (float)dt;
 		Math::Clamp(CameraCurrentWalkSpeed, 0.f, CameraMaxWalkSpeed);
 	}
+
 	if (!CameraVelocity.IsZero())
 	{
 		DecomposePlayerInertia(dt);
