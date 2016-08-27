@@ -25,7 +25,7 @@ void GlobalPlayer::Init(const int& Spell_Power, const int& CurrentHealth, const 
 {
     CurrCamera = nullptr;
     PlayerObj = nullptr;
-    currSceneID = "1_Scene";
+    currSceneID = "";
 	this->Spell_Power = Spell_Power;
 	this->CurrentHealth = CurrentHealth;
 	this->MaxHealth = MaxHealth;
@@ -208,7 +208,7 @@ bool GlobalPlayer::RewritePlayerSave(const std::string &fileName)
                 ss << key << MaxHealth;
                 writeFile << ss.str() << std::endl;
             }
-            else if (checkWhetherTheWordInThatString("SCENENAME", thatSpecificLine))
+            else if (checkWhetherTheWordInThatString("SCENENAME", thatSpecificLine) && currSceneID != "")
             {
                 ss << key << currSceneID;
                 writeFile << ss.str() << std::endl;
