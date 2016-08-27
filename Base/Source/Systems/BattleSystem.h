@@ -75,8 +75,9 @@ private:
 	void RenderIntroScreen();
 	// Intro Variables
 	bool AnimationPaused = false;						// Value for whether they are paused.
+	bool AnimationResumed = false;
 	float AnimationPauseTimer = 0.f;					// Timer to check how long they have been stopped.
-	float AnimationPauseTime = 2.f;						// How long the boxes stay at the screen's center before moving
+	float AnimationPauseTime = 5.f;						// How long the boxes stay at the screen's center before moving
 	bool HasPlayerAndEnemyInfoInit = false;				// Is the Player and Enemy's data inited yet?
 	bool IsInfoBoxOut = false;							// Have the boxes gone out of screen?
 	UI_Layer* PlayerInfoBox;

@@ -68,7 +68,6 @@ void SceneBattleScreen::Update(float dt)
 
 	camera.Update(dt);
 	Scene_System::accessing().BSys->Update((float)dt);
-	Scene_System::accessing().BSys->cUI_System.Update((float)dt);
 }
 
 void SceneBattleScreen::RenderPassGPass()
