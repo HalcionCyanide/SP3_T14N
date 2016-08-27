@@ -36,7 +36,7 @@ void BattleSystem::QuickInit()
 	// Intro
 	AnimationPaused = false;
 	AnimationPauseTimer = 0.f;
-	AnimationPauseTime = 2.f;
+	AnimationPauseTime = 4.f;
 	HasPlayerAndEnemyInfoInit = false;
 	IsInfoBoxOut = false;
 	BattleState = BS_IntroScreen;
