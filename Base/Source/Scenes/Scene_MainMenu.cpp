@@ -238,6 +238,8 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                         }
                     }
                     //Updating of Settings
+                    else if ((*it2)->Active)
+                        (*it2)->Update((float)dt);
                 }
             }
         }
