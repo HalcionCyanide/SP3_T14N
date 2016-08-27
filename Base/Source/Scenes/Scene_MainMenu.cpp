@@ -11,6 +11,7 @@
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\GameObject.h"
 #include "../Misc/SimpleCommand.h"
+#include "../Misc/LoadEnemyData.h"
 
 std::string Scene_MainMenu::id_ = "M_Scene";
 
@@ -81,23 +82,23 @@ void Scene_MainMenu::InitSceneUIElems()
     //For Setting Stuff
     std::ostringstream ss;
     ss << UI_Text[7] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND];
-    NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
+    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
 
     ss.str("");
     ss << UI_Text[8] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND];
-    NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
+    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
 
     ss.str("");
     ss << UI_Text[9] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND];
-    NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
+    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
 
     ss.str("");
     ss << UI_Text[10] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND];
-    NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
+    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
 
     ss.str("");
     ss << UI_Text[11] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::JUMP_COMMAND];
-    NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
+    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(0, CenterPosition.y * 3.f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
     //For Setting Stuff
 
 	UI_Sys.cUIS_LayerContainer.push_back(NewL);
@@ -145,7 +146,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                                 for (std::vector<UI_Element*>::iterator it3 = (*it)->cUI_Layer.begin(); it3 != (*it)->cUI_Layer.end(); ++it3)
                                 {
                                     if (((*it3)->UI_Text == UI_Text[1] || (*it3)->UI_Text == UI_Text[2] || (*it3)->UI_Text == UI_Text[3]) ||    // Main Menu 
-                                        (*it3)->UI_Text == UI_Text[6] || (*it3)->UI_Text == UI_Text[7] || (*it3)->UI_Text == UI_Text[8] || (*it3)->UI_Text == UI_Text[9] || (*it3)->UI_Text == UI_Text[10] || (*it3)->UI_Text == UI_Text[11])   //Setting Stuff
+                                        (*it3)->UI_Text == UI_Text[6] || checkWhetherTheWordInThatString(UI_Text[7], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[8], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[9], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[10], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[11], (*it3)->UI_Text))   //Setting Stuff
                                     {
                                         (*it3)->SwapOriginalWithTarget();
                                     }
@@ -237,7 +238,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                                     }
                                 }
                             }
-                            else if ((*it2)->UI_Text == UI_Text[6])
+                            else if ((*it2)->UI_Text == UI_Text[7])
                             {
 
                             }
