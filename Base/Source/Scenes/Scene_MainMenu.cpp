@@ -102,7 +102,7 @@ void Scene_MainMenu::InitSceneUIElems()
     NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
     whatKeyToChange = "";
 
-    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(800, 800, 1), Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[12]);
+    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 200, 1), Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[12]);
     //For Setting Stuff
 
 	UI_Sys.cUIS_LayerContainer.push_back(NewL);
@@ -269,7 +269,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                     {
                         (*it2)->Update((float)dt);
                     }
-                    for (unsigned char theChar = 0; theChar <= UCHAR_MAX; ++theChar)
+                    for (unsigned char theChar = 0; theChar < UCHAR_MAX; ++theChar)
                     {
                         if (Application::IsKeyPressed(theChar) && !Application::IsKeyPressed(VK_LBUTTON))
                         {
