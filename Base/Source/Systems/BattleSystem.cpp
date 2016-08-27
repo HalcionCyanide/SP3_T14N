@@ -27,6 +27,7 @@ void BattleSystem::Init()
 	PlayerInfoBox = nullptr;
 	EnemyInfoBox = nullptr;
 	EnemyLayer = nullptr;
+	BattleBox = nullptr;
 }
 
 void BattleSystem::QuickInit()
@@ -107,7 +108,10 @@ void BattleSystem::RenderIntroScreen()
 	PlayerInfoBox->Render();
 	EnemyInfoBox->Render();
 	if (AnimationPaused)
+	{
 		EnemyLayer->Render();
+		BattleBox->Render();
+	}
 	if (AnimationResumed)
 		RenderBattleScreen();
 }
@@ -115,9 +119,11 @@ void BattleSystem::RenderIntroScreen()
 void BattleSystem::RenderBattleScreen()
 {
 	if (PlayerObj)
-		PlayerObj->Render(); 
+		PlayerObj->Render();
 	if (EnemyLayer)
 		EnemyLayer->Render();
+	if (BattleBox)
+		BattleBox->Render();
 }
 
 void BattleSystem::Exit()
@@ -170,8 +176,20 @@ void BattleSystem::SetEnemy(Enemy& E)
 {
 	CurrentEnemy = new Enemy(E);
 	EnemyLayer = new UI_Layer();
-	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, CurrentEnemy->MeshName, Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(400, 400, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.6f, 0));
+	BattleBox = new UI_Layer();
+
+	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, CurrentEnemy->MeshName, Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(PlayerScale * 5, PlayerScale * 5, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.7f, 0));
+	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.35f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.35f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.35f, 0), CurrentEnemy->MeshName);
+	// Spell Power
+	std::stringstream ss;
+	ss << "Spell Power: " << Scene_System::accessing().gPlayer->GetSpellPower();
+	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.2f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.2f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.2f, 0), ss.str());
 	cUI_System.cUIS_LayerContainer.push_back(EnemyLayer);
+
+	float BoxHeightUnits = 12;
+	float AspectRatio = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight;
+	BattleBox->AddUIElement(UI_Element::UI_LOGO, "GBox", Vector3(CenterPosition.x * -2.f, CenterPosition.y, 0), Vector3(CenterPosition.x * -2.f, CenterPosition.y, 0), Vector3(PlayerScale * BoxHeightUnits * AspectRatio, PlayerScale * BoxHeightUnits, 1), Vector3(CenterPosition.x * 0.95f, CenterPosition.y, 0));
+	cUI_System.cUIS_LayerContainer.push_back(BattleBox);
 	QuickInit();
 }
 
@@ -189,7 +207,10 @@ void BattleSystem::UpdateIntroScreen(float dt)
 	// Animate the boxes
 	UpdateInfoBoxAnimation(dt);
 	if (AnimationResumed)
+	{
+		BattleBox->Update(dt);
 		EnemyLayer->Update(dt);
+	}
 }
 
 void BattleSystem::UpdatePlayerInfoBox(float dt)
@@ -330,20 +351,50 @@ void BattleSystem::UpdateITimer(float dt)
 
 void BattleSystem::UpdateControls(float dt)
 {
-	float Acceleration = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f;// *dt;
+	float ForceIncrement = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f;// *dt;
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('W'))
-		PlayerObj->SetAcceleration(Vector3(PlayerObj->GetAcceleration().x, Acceleration));
-	else if (Scene_System::accessing().cSS_InputManager->GetKeyValue('S'))
-		PlayerObj->SetAcceleration(Vector3(PlayerObj->GetAcceleration().x, -Acceleration));
-	else PlayerObj->SetAcceleration(Vector3(PlayerObj->GetAcceleration().x, 0));
+	{
+		Vector3 Accel = PlayerObj->GetAcceleration();
+		Accel.y = ForceIncrement;
+		PlayerObj->SetAcceleration(Accel);
+	}
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('S'))
+	{
+		Vector3 Accel = PlayerObj->GetAcceleration();
+		Accel.y = -ForceIncrement;
+		PlayerObj->SetAcceleration(Accel);
+	}
+	if (!Scene_System::accessing().cSS_InputManager->GetKeyValue('W') && !Scene_System::accessing().cSS_InputManager->GetKeyValue('S'))
+	{
+		Vector3 Accel = PlayerObj->GetAcceleration();
+		Accel.y = 0;
+		PlayerObj->SetAcceleration(Accel);
+	}
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('A'))
-		PlayerObj->SetAcceleration(Vector3(-Acceleration, PlayerObj->GetAcceleration().y));
-	else if (Scene_System::accessing().cSS_InputManager->GetKeyValue('D'))
-		PlayerObj->SetAcceleration(Vector3(Acceleration, PlayerObj->GetAcceleration().y));
-	else PlayerObj->SetAcceleration(Vector3(0, PlayerObj->GetAcceleration().y));
+	{
+		Vector3 Accel = PlayerObj->GetAcceleration();
+		Accel.x = -ForceIncrement;
+		PlayerObj->SetAcceleration(Accel);
+	}
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('D'))
+	{
+		Vector3 Accel = PlayerObj->GetAcceleration();
+		Accel.x = ForceIncrement;
+		PlayerObj->SetAcceleration(Accel);
+	}
+	if (!Scene_System::accessing().cSS_InputManager->GetKeyValue('A') && !Scene_System::accessing().cSS_InputManager->GetKeyValue('D'))
+	{
+		Vector3 Accel = PlayerObj->GetAcceleration();
+		Accel.x = 0;
+		PlayerObj->SetAcceleration(Accel);
+	}
+	// BoundsCheck Here
+
 
 	PlayerObj->Update(dt);
-	//PlayerObj->SetVelocity(PlayerObj->GetVelocity() - PlayerObj->GetVelocity() * FrictionDecrementMultiplier);
+
+	// One Frame's worth of friction
+	PlayerObj->SetVelocity(PlayerObj->GetVelocity() - PlayerObj->GetVelocity() * FrictionDecrementMultiplier * dt);
 }
 
 // Physics Related

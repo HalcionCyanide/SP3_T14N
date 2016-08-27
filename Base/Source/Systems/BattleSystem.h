@@ -97,6 +97,7 @@ private:
 	bool CollisionResponse(const BattleScreenObject&, const BattleScreenObject&, float dt);
 	void RenderBattleScreen();
 	// Battle Variables
+	UI_Layer* BattleBox;
 	// Player Variables
 	float PlayerBaseMovementSpeed;
 	float PlayerCurrentMovementSpeed;
