@@ -2,6 +2,7 @@
 #include "..\\Systems\\Scene_System.h"
 #include "..\\Mains\\Application.h"
 #include "..\\Misc\\SimpleCommand.h"
+#include "../Systems/MusicSystem.h"
 
 PlayerObject::PlayerObject()
 	: GameObject()
@@ -56,7 +57,11 @@ void PlayerObject::Update(double dt)
 		}
 		SetPosition(GetPosition() + MovementValues);
 		MovementValues.SetZero();
+        MusicSystem::accessing().playMusic("footstep");
 	}
+    else {
+        MusicSystem::accessing().accessTheMusic("footstep")->Stop();
+    }
 	if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
 	{
 		if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]) && !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]))
