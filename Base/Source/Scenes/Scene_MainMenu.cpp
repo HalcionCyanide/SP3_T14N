@@ -16,7 +16,7 @@
 
 std::string Scene_MainMenu::id_ = "M_Scene";
 
-const std::string Scene_MainMenu::UI_Text[15] = { "", "Start", "Settings", "Exit", "New Game", "Load Game", "Return", "Forward_Button", "Backward_Button", "Right_Button", "Left_Button", "Jump_Button", "Press Any Keys to Change the command" };
+const std::string Scene_MainMenu::UI_Text[17] = { "", "Start", "Settings", "Exit", "New Game", "Load Game", "Return", "Forward_Button", "Backward_Button", "Right_Button", "Left_Button", "Jump_Button", "Press Any Keys to Change the command", "Load Save 1", "Load Save 2", "Load Save 3", "Back" };
 
 Scene_MainMenu::Scene_MainMenu()
 	: SceneEntity()
@@ -104,6 +104,13 @@ void Scene_MainMenu::InitSceneUIElems()
 
     NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 200, 1), Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[12]);
     //For Setting Stuff
+
+    //For Loading Save Stuff
+    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 200, 1), Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[13]);
+    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 200, 1), Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[14]);
+    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 200, 1), Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[15]);
+    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 200, 1), Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[16]);
+    //For Loading Save Stuff
 
 	UI_Sys.cUIS_LayerContainer.push_back(NewL);
 }
