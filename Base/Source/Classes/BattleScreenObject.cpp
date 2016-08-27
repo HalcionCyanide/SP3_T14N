@@ -63,7 +63,7 @@ void BattleScreenObject::Update(double dt)
 				SetVelocity(GetVelocity() + Acceleration * (1.f / GetMass()) * (float)dt);
 			}
 			SetPosition(GetPosition() + (StoredVelocity + GetVelocity()) * 0.5f * (float)dt);
-			SetRotationAngle(Math::RadianToDegree(atan2(-GetVelocity().x, GetVelocity().y)));
+			//SetRotationAngle(Math::RadianToDegree(atan2(-GetVelocity().x, GetVelocity().y)));
 			break;
 		}
 		}

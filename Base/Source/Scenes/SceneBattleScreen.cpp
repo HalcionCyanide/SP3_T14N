@@ -5,6 +5,7 @@
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\GameObject.h"
 #include "..\\Misc\\LoadEnemyData.h"
+#include "../Systems/MusicSystem.h"
 
 std::string SceneBattleScreen::id_ = "Scene Battle Screen";
 
@@ -51,6 +52,8 @@ void SceneBattleScreen::Update(float dt)
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	SceneGraphics->Update(dt);
 
+    MusicSystem::accessing().playBackgroundMusic("battle");
+
 	framerates = 1 / dt;
 
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
@@ -68,7 +71,6 @@ void SceneBattleScreen::Update(float dt)
 
 	camera.Update(dt);
 	Scene_System::accessing().BSys->Update((float)dt);
-	Scene_System::accessing().BSys->cUI_System.Update((float)dt);
 }
 
 void SceneBattleScreen::RenderPassGPass()
@@ -142,7 +144,7 @@ void SceneBattleScreen::RenderPassMain()
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack->LoadIdentity();
 
-	SceneGraphics->RenderMesh("reference", false);
+	//SceneGraphics->RenderMesh("reference", false);
 
 	SceneGraphics->SetHUD(true);
 	Scene_System::accessing().BSys->Render();

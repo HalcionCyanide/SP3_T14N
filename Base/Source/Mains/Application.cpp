@@ -233,6 +233,7 @@ void Application::Update()
 	if (m_dAccumulatedTime_ThreadTwo > 1 / frameTime)
 	{
 		Scene_System::accessing().cSS_InputManager->HandleUserInput();
+        MusicSystem::accessing().Update(m_dElaspedTime);
 		m_dAccumulatedTime_ThreadTwo = 0.0;
 	}
 	//<!> This is a huge problem even if you made it to be 2 threaded

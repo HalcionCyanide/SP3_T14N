@@ -8,7 +8,7 @@ void Scene_System::Init()
     //currScene = nullptr;
     graphics_scene = nullptr;
 	cSS_InputManager = new InputManager();
-	gPlayer = new GlobalPlayer(1, 420, 1337, false);
+	gPlayer = new GlobalPlayer(1, 100, 100, false);
 
 	QM.readFile("DrivenFiles//questData.csv");
 

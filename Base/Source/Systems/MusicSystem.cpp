@@ -112,7 +112,16 @@ bool MusicSystem::playBackgroundMusic(const std::string &songName)
     strMEmap::iterator it = all_the_Music.find(songName);
     if (it != all_the_Music.end())
     {
-        it->second->Play();
+        if (theOnlyBackgroundMusic && theOnlyBackgroundMusic->getName() != it->second->getName())
+        {
+            theOnlyBackgroundMusic->Stop();
+            theOnlyBackgroundMusic = nullptr;
+        }
+        if (theOnlyBackgroundMusic == nullptr)
+        {
+            theOnlyBackgroundMusic = it->second;
+            theOnlyBackgroundMusic->Play();
+        }
         return true;
     }
     return false;
@@ -163,4 +172,14 @@ void MusicSystem::setPlayerPos(Vector3 &pos)
 void MusicSystem::setTimeToUpdate(const double &dt)
 {
     TimeUpdate = dt;
+}
+
+MusicEntity2D *MusicSystem::accessTheMusic(const std::string &songName)
+{
+    strMEmap::iterator it = all_the_Music.find(songName);
+    if (it != all_the_Music.end())
+    {
+        return it->second;
+    }
+    return nullptr;
 }

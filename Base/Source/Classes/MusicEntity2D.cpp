@@ -97,6 +97,7 @@ void MusicEntity2D::Stop()
         ISound *theEffect = HistoryOfPlayTimes.front();
         if (theEffect)
         {
+            theEffect->stop();
             theEffect->drop();
             theEffect = 0;
         }

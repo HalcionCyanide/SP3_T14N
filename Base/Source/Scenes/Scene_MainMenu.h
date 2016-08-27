@@ -33,6 +33,8 @@ private:
 		S_FIRSTLEVEL,
 		S_SECONDLEVEL,
         S_SETTING,
+        S_UPDATING_KEYS,
+        S_LOADING_SAVE,
         S_TOTAL,
 	};
 
@@ -67,6 +69,9 @@ private:
 	//<!> will remove soon <!>
 	std::vector<GenericEntity*> testingRenderingStuff;
 	//<!> will remove soon <!>
+    //<?> is thr any other way to prevent hardcoding.....
+    std::string whatKeyToChange;
+    void writeToGlobalDrivenAndChangeCommand(const unsigned char &command, const std::string &theKey);
 };
 
 #endif //_SCENE_MAINMENU_H
