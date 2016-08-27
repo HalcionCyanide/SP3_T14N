@@ -179,11 +179,13 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                                 //Scene_System::accessing().SwitchScene(SceneTown1::id_);
                                 //Scene_System::accessing().Swit2chScene(SceneTown1::id_);
                                 //<!> the most hardcoding method ever!
+								Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
                                 Scene_System::accessing().gPlayer->LoadPlayerSave("DrivenFiles//NewPlayerSave.csv");
                             }
                             else if (((*it2)->UI_Text == UI_Text[5]))
                             {
                                 // Load
+								Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
                                 Scene_System::accessing().gPlayer->settingTheFileToSave(1);
                                 Scene_System::accessing().gPlayer->automaticallyLoadFile();
                             }
@@ -502,9 +504,6 @@ void Scene_MainMenu::RenderPassMain()
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 125);
 	//<!> Removing soon
-	ss.str("9, 0 - Toggle Mouse Modes");
-	ss.precision(3);
-	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
 
 	SceneGraphics->SetHUD(false);
 }
