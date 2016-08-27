@@ -102,7 +102,7 @@ void Scene_MainMenu::InitSceneUIElems()
     NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
     whatKeyToChange = "";
 
-    NewL->AddUIElement(UI_Element::UI_LOGO, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(800, 800, 1), Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[12]);
+    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(800, 800, 1), Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[12]);
     //For Setting Stuff
 
 	UI_Sys.cUIS_LayerContainer.push_back(NewL);
@@ -264,17 +264,29 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                 }
                 else if (CurrentMenuState == S_UPDATING_KEYS)
                 {
+                    if ((*it2)->Active)
+                    {
+                        (*it2)->Update((float)dt);
+                    }
                     for (unsigned char theChar = 0; theChar <= UCHAR_MAX; ++theChar)
                     {
-                        if (Application::IsKeyPressed(theChar))
+                        if (Application::IsKeyPressed(theChar) && !Application::IsKeyPressed(VK_LBUTTON))
                         {
                             CurrentMenuState = S_SETTING;
+                            theChar = toupper(theChar);
                             writeToGlobalDrivenAndChangeCommand(theChar, whatKeyToChange);
+                            Application::loadThoseKeyCommandsStuff();
                             for (std::vector<UI_Element*>::iterator it3 = (*it)->cUI_Layer.begin(); it3 != (*it)->cUI_Layer.end(); ++it3)
                             {
                                 if ((*it3)->UI_Text == UI_Text[6] || checkWhetherTheWordInThatString(UI_Text[7], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[8], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[9], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[10], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[11], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[12], (*it3)->UI_Text))   //Setting Stuff
                                 {
                                     (*it3)->SwapOriginalWithTarget();
+                                    if (checkWhetherTheWordInThatString(whatKeyToChange, (*it3)->UI_Text))
+                                    {
+                                        std::ostringstream ss2;
+                                        ss2 << whatKeyToChange << ":" << theChar;
+                                        (*it3)->UI_Text = ss2.str();
+                                    }
                                 }
                             }
                             break;
