@@ -1,2 +1,2 @@
 SoundFileName,SoundType,volume //Set it between 0.1 and 1,TimesToPlay,unlimitedtimes,loop //Only for background music,SoundID
-Sounds//Step_Grass.mp3,2D,1,1,,1,footstep
+Sounds//Step_Grass.mp3,2D,1,1,,,footstep

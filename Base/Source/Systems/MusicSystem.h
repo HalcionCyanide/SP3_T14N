@@ -26,9 +26,11 @@ public:
     virtual void setPlayerPos(Vector3 &pos);
     virtual void setTimeToUpdate(const double &dt);
 
+    MusicEntity2D *accessTheMusic(const std::string &songName);
+    MusicEntity2D *theOnlyBackgroundMusic;
+
 private:
     bool beginLoadingMusic(const std::string &fileName);
-    MusicEntity2D *theOnlyBackgroundMusic;
     size_t loopingAndFindKey(std::vector<std::string> &theKeys, const std::string &whatyouwant);
     Vector3 *playerPos;
     double TimeUpdate, m_accumulatedTime;
