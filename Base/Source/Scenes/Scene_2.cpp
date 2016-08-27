@@ -37,10 +37,6 @@ void Scene_2::Init()
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	newMesh = MeshBuilder::GenerateQuad("ParticleW", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//ParticleWhite.tga");
-	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-
 	newMesh = MeshBuilder::GenerateQuad("ayylmao", Color(1, 1, 1));
 	newMesh->textureArray[0] = LoadTGA("Image//weed.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
