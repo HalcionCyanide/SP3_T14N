@@ -39,7 +39,7 @@ private:
 
 	// CHAT UI STUFFS <!>
 	void InitChatUI();
-	int HandleChatUIInput(float dt);
+	std::string HandleChatUIInput(float dt);
 	UI_Layer* ChatLayer;
 	UI_Element* NPC_Name;
 	UI_Element* NPC_TextBox;

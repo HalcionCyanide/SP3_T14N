@@ -28,6 +28,7 @@ void BattleSystem::Init()
 	EnemyInfoBox = nullptr;
 	EnemyLayer = nullptr;
 	BattleBox = nullptr;
+	HealthBarGreen = nullptr;
 }
 
 void BattleSystem::QuickInit()
@@ -174,22 +175,39 @@ BattleScreenObject* BattleSystem::GetInactiveBSO()
 
 void BattleSystem::SetEnemy(Enemy& E)
 {
+	float BoxHeightUnits = 12;
+	float AspectRatio = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight;
+	HealthBarDefaultScale = PlayerScale * 13;
+	float HealthRatio = (float)Scene_System::accessing().gPlayer->GetCurrentHealth() / (float)Scene_System::accessing().gPlayer->GetMaxHealth();
+	float GBarWidth = HealthRatio * HealthBarDefaultScale;
+	float GBarPosition = CenterPosition.x * 0.8f - (HealthBarDefaultScale - GBarWidth) * 0.5f;
+
 	CurrentEnemy = new Enemy(E);
 	EnemyLayer = new UI_Layer();
 	BattleBox = new UI_Layer();
 
 	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, CurrentEnemy->MeshName, Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(PlayerScale * 5, PlayerScale * 5, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.7f, 0));
 	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.35f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.35f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.35f, 0), CurrentEnemy->MeshName);
+	
 	// Spell Power
 	std::stringstream ss;
 	ss << "Spell Power: " << Scene_System::accessing().gPlayer->GetSpellPower();
 	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.2f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.2f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.2f, 0), ss.str());
+	
+	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.f, 0), "Enemy Stamina");
+	EnemyStaminaBar = new UI_Element(UI_Element::UI_BUTTON_R_TO_SCRN, "UI_HP_Red", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 0.85f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 0.85f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 0.85f, 0));
+	EnemyLayer->cUI_Layer.push_back(EnemyStaminaBar);
+	
 	cUI_System.cUIS_LayerContainer.push_back(EnemyLayer);
 
-	float BoxHeightUnits = 12;
-	float AspectRatio = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight;
 	BattleBox->AddUIElement(UI_Element::UI_LOGO, "GBox", Vector3(CenterPosition.x * -2.f, CenterPosition.y, 0), Vector3(CenterPosition.x * -2.f, CenterPosition.y, 0), Vector3(PlayerScale * BoxHeightUnits * AspectRatio, PlayerScale * BoxHeightUnits, 1), Vector3(CenterPosition.x * 0.95f, CenterPosition.y, 0));
 	BattleBox->cUI_Layer[0]->UI_Bounds->ResetValues();
+
+	BattleBox->AddUIElement(UI_Element::UI_BUTTON_R_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y - PlayerScale * (1 + BoxHeightUnits* 0.5f), 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y - PlayerScale *  (1 + BoxHeightUnits * 0.5f), 0), Vector3(PlayerScale * 6, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 0.3f, CenterPosition.y - PlayerScale *  (1 + BoxHeightUnits* 0.5f), 0), "Remaining Health: ");
+	
+	HealthBarGreen = new UI_Element(UI_Element::UI_BUTTON_R_TO_SCRN, "UI_HP_Green", Vector3(CenterPosition.x * 8.f, CenterPosition.y - PlayerScale * (1 + BoxHeightUnits* 0.5f), 0), Vector3(CenterPosition.x * 8.f, CenterPosition.y - PlayerScale *  (1 + BoxHeightUnits * 0.5f), 0), Vector3(GBarWidth, PlayerScale * 1.f, 1), Vector3(GBarPosition, CenterPosition.y - PlayerScale *  (1 + BoxHeightUnits* 0.5f), 0));
+	BattleBox->cUI_Layer.push_back(HealthBarGreen);
+
 	cUI_System.cUIS_LayerContainer.push_back(BattleBox);
 	QuickInit();
 	PlayerObj->SetPosition(BattleBox->cUI_Layer[0]->TargetPosition);
@@ -289,7 +307,7 @@ void BattleSystem::UpdateInfoBoxAnimation(float dt)
 		if (Check1 < 10.f && Check2 < 10.f)
 		{
 			AnimationPaused = true;
-			int ParticleCount = Math::RandIntMinMax(20, 100);
+			int ParticleCount = Math::RandIntMinMax(50, 100);
 			for (int i = 0; i < ParticleCount; ++i)
 			{
 				cBillboardManager.AddParticle("WhiteParticle", CenterPosition + Vector3(0, Math::RandFloatMinMax(-Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.5f)), Vector3(PlayerScale* 0.5f, PlayerScale * 0.5f, 1.f), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale)), Vector3(0, 0, 1), 2);
@@ -353,7 +371,7 @@ void BattleSystem::UpdateITimer(float dt)
 
 void BattleSystem::UpdateControls(float dt)
 {
-	float ForceIncrement = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f;// *dt;
+	float ForceIncrement = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.2f;// *dt;
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('W'))
 	{
 		Vector3 Accel = PlayerObj->GetAcceleration();
@@ -390,6 +408,7 @@ void BattleSystem::UpdateControls(float dt)
 		Accel.x = 0;
 		PlayerObj->SetAcceleration(Accel);
 	}
+
 	// BoundsCheck Here
 	Vector3 FwdPos = PlayerObj->GetPosition() + PlayerObj->GetVelocity() * dt;
 	Boundary2D InteriorBounds = *BattleBox->cUI_Layer[0]->UI_Bounds;
