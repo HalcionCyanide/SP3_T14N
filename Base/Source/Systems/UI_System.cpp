@@ -12,7 +12,6 @@ UI_System::~UI_System()
 
 void UI_System::Init()
 {
-
 }
 
 void UI_System::Update(double dt)

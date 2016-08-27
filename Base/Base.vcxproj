@@ -16,6 +16,7 @@
     <ClCompile Include="Source\Classes\CameraBS.cpp" />
     <ClCompile Include="Source\Classes\GateBoundary.cpp" />
     <ClCompile Include="Source\Classes\GlobalPlayer.cpp" />
+    <ClCompile Include="Source\Classes\Item.cpp" />
     <ClCompile Include="Source\Classes\MusicEntity2D.cpp" />
     <ClCompile Include="Source\Classes\MusicEntity3D.cpp" />
     <ClCompile Include="Source\Classes\Projection.cpp" />
@@ -49,6 +50,7 @@
     <ClCompile Include="Source\Misc\LoadOBJ.cpp" />
     <ClCompile Include="Source\Misc\LoadTGA.cpp" />
     <ClCompile Include="Source\Classes\GameMap.cpp" />
+    <ClCompile Include="Source\Systems\Item_System.cpp" />
     <ClCompile Include="Source\Systems\MusicSystem.cpp" />
     <ClCompile Include="Source\Classes\PlayerObject.cpp" />
     <ClCompile Include="Source\Scenes\SceneBattleScreen.cpp" />
@@ -88,6 +90,7 @@
     <ClInclude Include="Source\Classes\GateBoundary.h" />
     <ClInclude Include="Source\Classes\GenericEntity.h" />
     <ClInclude Include="Source\Classes\GlobalPlayer.h" />
+    <ClInclude Include="Source\Classes\Item.h" />
     <ClInclude Include="Source\Classes\Light.h" />
     <ClInclude Include="Source\Classes\Material.h" />
     <ClInclude Include="Source\Classes\Mesh.h" />
@@ -135,6 +138,7 @@
     <ClInclude Include="Source\Systems\BillboardManager.h" />
     <ClInclude Include="Source\Systems\GenericSystem.h" />
     <ClInclude Include="Source\Systems\InputManager.h" />
+    <ClInclude Include="Source\Systems\Item_System.h" />
     <ClInclude Include="Source\Systems\MusicSystem.h" />
     <ClInclude Include="Source\Systems\NPC_Manager.h" />
     <ClInclude Include="Source\Systems\questManager.h" />
