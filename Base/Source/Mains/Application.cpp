@@ -198,7 +198,9 @@ void Application::Run()
 	//Main Loop
 	while (!ExitGame && !glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE))
 	{
-		if (hwnd == GetActiveWindow())
+        // Get the elapsed time
+        m_dElaspedTime = m_timer.getElapsedTime();
+        if (hwnd == GetActiveWindow())
 		{
 			Update();
 			Scene_System::accessing().getCurrScene().Render();
@@ -217,9 +219,6 @@ void Application::Run()
 
 void Application::Update()
 {
-	// Get the elapsed time
-	m_dElaspedTime = m_timer.getElapsedTime();
-
 	// Update threads
 	m_dAccumulatedTime_ThreadOne += m_dElaspedTime;
 	if (m_dAccumulatedTime_ThreadOne > 1 / frameTime)

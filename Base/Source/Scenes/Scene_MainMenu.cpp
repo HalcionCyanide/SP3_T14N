@@ -141,15 +141,12 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                                 // Settings
                                 CurrentMenuState = S_SETTING;
                                 //There can a potential bug with this!
-                                for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
+                                for (std::vector<UI_Element*>::iterator it3 = (*it)->cUI_Layer.begin(); it3 != (*it)->cUI_Layer.end(); ++it3)
                                 {
-                                    if (((*it2)->UI_Text == UI_Text[1] || (*it2)->UI_Text == UI_Text[2] || (*it2)->UI_Text == UI_Text[3]))
+                                    if (((*it3)->UI_Text == UI_Text[1] || (*it3)->UI_Text == UI_Text[2] || (*it3)->UI_Text == UI_Text[3]) ||    // Main Menu 
+                                        (*it3)->UI_Text == UI_Text[6] || (*it3)->UI_Text == UI_Text[7] || (*it3)->UI_Text == UI_Text[8] || (*it3)->UI_Text == UI_Text[9] || (*it3)->UI_Text == UI_Text[10] || (*it3)->UI_Text == UI_Text[11])   //Setting Stuff
                                     {
-                                        (*it2)->SwapOriginalWithTarget();
-                                    }
-                                    else if ((*it2)->UI_Text == UI_Text[6] || (*it2)->UI_Text == UI_Text[7] || (*it2)->UI_Text == UI_Text[8] || (*it2)->UI_Text == UI_Text[9] || (*it2)->UI_Text == UI_Text[10] || (*it2)->UI_Text == UI_Text[11])
-                                    {
-                                        (*it2)->SwapOriginalWithTarget();
+                                        (*it3)->SwapOriginalWithTarget();
                                     }
                                 }
                                 //There can a potential bug with this!
@@ -222,15 +219,15 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                             {
                                 // Return
                                 CurrentMenuState = S_FIRSTLEVEL;
-                                for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
+                                for (std::vector<UI_Element*>::iterator it3 = (*it)->cUI_Layer.begin(); it3 != (*it)->cUI_Layer.end(); ++it3)
                                 {
-                                    if ((*it2)->UI_Text == UI_Text[6] || (*it2)->UI_Text == UI_Text[7] || (*it2)->UI_Text == UI_Text[8] || (*it2)->UI_Text == UI_Text[9] || (*it2)->UI_Text == UI_Text[10] || (*it2)->UI_Text == UI_Text[11])
+                                    if ((*it3)->UI_Text == UI_Text[6] || (*it3)->UI_Text == UI_Text[7] || (*it3)->UI_Text == UI_Text[8] || (*it3)->UI_Text == UI_Text[9] || (*it3)->UI_Text == UI_Text[10] || (*it3)->UI_Text == UI_Text[11])
                                     {
-                                        (*it2)->SwapOriginalWithTarget();
+                                        (*it3)->SwapOriginalWithTarget();
                                     }
-                                    else if (((*it2)->UI_Text == UI_Text[1] || (*it2)->UI_Text == UI_Text[2] || (*it2)->UI_Text == UI_Text[3]))
+                                    else if (((*it3)->UI_Text == UI_Text[1] || (*it3)->UI_Text == UI_Text[2] || (*it3)->UI_Text == UI_Text[3]))
                                     {
-                                        (*it2)->SwapOriginalWithTarget();
+                                        (*it3)->SwapOriginalWithTarget();
                                     }
                                 }
                             }
