@@ -200,9 +200,18 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                             else if (((*it2)->UI_Text == UI_Text[5]))
                             {
                                 // Load
-								Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-                                Scene_System::accessing().gPlayer->settingTheFileToSave(1);
-                                Scene_System::accessing().gPlayer->automaticallyLoadFile();
+								//Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+        //                        Scene_System::accessing().gPlayer->settingTheFileToSave(1);
+        //                        Scene_System::accessing().gPlayer->automaticallyLoadFile();
+                                CurrentMenuState = S_LOADING_SAVE;
+                                for (std::vector<UI_Element*>::iterator it3 = (*it)->cUI_Layer.begin(); it3 != (*it)->cUI_Layer.end(); ++it3)
+                                {
+                                    if (((*it3)->UI_Text == UI_Text[4] || (*it3)->UI_Text == UI_Text[5] || (*it3)->UI_Text == UI_Text[6]) || //Second Layer Stuff
+                                        checkWhetherTheWordInThatString(UI_Text[13], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[14], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[15], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[16], (*it3)->UI_Text))   //Loading Saves Stuff
+                                    {
+                                        (*it3)->SwapOriginalWithTarget();
+                                    }
+                                }
                             }
                             else if (((*it2)->UI_Text == UI_Text[6]))
                             {
@@ -302,6 +311,44 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                     }
                 }
                 //Updating of the keys
+                //Loading of Save Stuff
+                else if (CurrentMenuState == S_LOADING_SAVE)
+                {
+                    if (checkWhetherTheWordInThatString(UI_Text[13], (*it2)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[14], (*it2)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[15], (*it2)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[16], (*it2)->UI_Text))   //Loading Saves Stuff
+                    {
+                        (*it2)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+                        if (ClickSucceeded)
+                        {
+                            if ((*it2)->UI_Text == UI_Text[16])
+                            {
+                                CurrentMenuState = S_SECONDLEVEL;
+                                for (std::vector<UI_Element*>::iterator it3 = (*it)->cUI_Layer.begin(); it3 != (*it)->cUI_Layer.end(); ++it3)
+                                {
+                                    if (((*it3)->UI_Text == UI_Text[4] || (*it3)->UI_Text == UI_Text[5] || (*it3)->UI_Text == UI_Text[6]) || //Second Layer Stuff
+                                        checkWhetherTheWordInThatString(UI_Text[13], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[14], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[15], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[16], (*it3)->UI_Text))   //Loading Saves Stuff
+                                    {
+                                        (*it3)->SwapOriginalWithTarget();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                for (unsigned num = 13, beginningNum = num - 1; num <= 15; ++num)
+                                {
+                                    if ((*it2)->UI_Text == UI_Text[num])
+                                    {
+                                        Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+                                        Scene_System::accessing().gPlayer->settingTheFileToSave(num - beginningNum);
+                                        Scene_System::accessing().gPlayer->automaticallyLoadFile();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else if ((*it2)->Active)
+                        (*it2)->Update((float)dt);
+                }
+                //Loading of Save Stuff
      }
         }
     }
