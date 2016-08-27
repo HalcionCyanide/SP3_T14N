@@ -267,7 +267,7 @@ void BattleSystem::UpdateInfoBoxAnimation(float dt)
 		{
 			AnimationPaused = true;
 			int ParticleCount = Math::RandIntMinMax(20, 100);
-			for (unsigned int i = 0; i < ParticleCount; ++i)
+			for (int i = 0; i < ParticleCount; ++i)
 			{
 				cBillboardManager.AddParticle("WhiteParticle", CenterPosition + Vector3(0, Math::RandFloatMinMax(-Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.5f)), Vector3(PlayerScale* 0.5f, PlayerScale * 0.5f, 1.f), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale)), Vector3(0, 0, 1), 2);
 			}
