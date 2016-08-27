@@ -270,7 +270,7 @@ bool GlobalPlayer::RewritePlayerSave(const std::string &fileName)
                 }
                 else if (checkWhetherTheWordInThatString("PLAYERYROTATION", thatSpecificLine))
                 {
-                    ss << key << PlayerObj->GetMass();
+                    ss << key << PlayerObj->GetRotationAngle();
                     writeFile << ss.str() << std::endl;
                 }
             }
