@@ -103,7 +103,7 @@ private:
 	UI_Layer* PlayerInventoryUI;
 	bool PlayerIsInvincible = false;
 	float PlayerIFrameTimer = 0;
-	float FrictionDecrementMultiplier = 0.8f;
+	float FrictionDecrementMultiplier = 0.2f;
 	BattleScreenObject* PlayerObj;
 	// Enemy Variables
 	Enemy* CurrentEnemy;		// To Store Attack Patterns and Stats

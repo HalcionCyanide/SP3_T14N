@@ -67,7 +67,7 @@ void BattleSystem::Update(double dt)
 		UpdateIntroScreen((float)dt);
 		break;
 	case BS_BattlePhase:
-		//UpdateBattlePhase((float)dt);
+		UpdateBattlePhase((float)dt);
 		break;
 	case BS_EndScreenSuccess:
 		break;
@@ -116,6 +116,8 @@ void BattleSystem::RenderBattleScreen()
 {
 	if (PlayerObj)
 		PlayerObj->Render(); 
+	if (EnemyLayer)
+		EnemyLayer->Render();
 }
 
 void BattleSystem::Exit()
@@ -186,6 +188,8 @@ void BattleSystem::UpdateIntroScreen(float dt)
 	}
 	// Animate the boxes
 	UpdateInfoBoxAnimation(dt);
+	if (AnimationResumed)
+		EnemyLayer->Update(dt);
 }
 
 void BattleSystem::UpdatePlayerInfoBox(float dt)
@@ -284,7 +288,7 @@ void BattleSystem::UpdateInfoBoxAnimation(float dt)
 	{
 		float Check1 = (PlayerInfoBox->LayerCenterPosition - PlayerInfoBox->LayerTargetPosition).LengthSquared();
 		float Check2 = (EnemyInfoBox->LayerCenterPosition - EnemyInfoBox->LayerTargetPosition).LengthSquared();
-		if (Check1 < 10.f && Check2 < 10.f)
+		if (Check1 < 1000.f && Check2 < 1000.f)
 		{
 			BattleState = BS_BattlePhase;
 		}
@@ -292,6 +296,13 @@ void BattleSystem::UpdateInfoBoxAnimation(float dt)
 	PlayerInfoBox->Update((float)dt);
 	EnemyInfoBox->Update((float)dt);
 }
+
+void BattleSystem::UpdateBattlePhase(float dt)
+{
+	EnemyLayer->Update(dt);
+	UpdatePlayer(dt);
+}
+
 
 // Player Calls
 void BattleSystem::UpdatePlayer(float dt)
@@ -319,7 +330,20 @@ void BattleSystem::UpdateITimer(float dt)
 
 void BattleSystem::UpdateControls(float dt)
 {
-	
+	float Acceleration = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f;// *dt;
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('W'))
+		PlayerObj->SetAcceleration(Vector3(PlayerObj->GetAcceleration().x, Acceleration));
+	else if (Scene_System::accessing().cSS_InputManager->GetKeyValue('S'))
+		PlayerObj->SetAcceleration(Vector3(PlayerObj->GetAcceleration().x, -Acceleration));
+	else PlayerObj->SetAcceleration(Vector3(PlayerObj->GetAcceleration().x, 0));
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('A'))
+		PlayerObj->SetAcceleration(Vector3(-Acceleration, PlayerObj->GetAcceleration().y));
+	else if (Scene_System::accessing().cSS_InputManager->GetKeyValue('D'))
+		PlayerObj->SetAcceleration(Vector3(Acceleration, PlayerObj->GetAcceleration().y));
+	else PlayerObj->SetAcceleration(Vector3(0, PlayerObj->GetAcceleration().y));
+
+	PlayerObj->Update(dt);
+	//PlayerObj->SetVelocity(PlayerObj->GetVelocity() - PlayerObj->GetVelocity() * FrictionDecrementMultiplier);
 }
 
 // Physics Related
