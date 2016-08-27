@@ -33,6 +33,7 @@ private:
 		S_FIRSTLEVEL,
 		S_SECONDLEVEL,
         S_SETTING,
+        S_UPDATING_KEYS,
         S_TOTAL,
 	};
 
@@ -67,6 +68,8 @@ private:
 	//<!> will remove soon <!>
 	std::vector<GenericEntity*> testingRenderingStuff;
 	//<!> will remove soon <!>
+    //<?> is thr any other way to prevent hardcoding.....
+    std::string whatKeyToChange;
 };
 
 #endif //_SCENE_MAINMENU_H
