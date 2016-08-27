@@ -34,6 +34,7 @@ private:
 		S_SECONDLEVEL,
         S_SETTING,
         S_UPDATING_KEYS,
+        S_LOADING_SAVE,
         S_TOTAL,
 	};
 
