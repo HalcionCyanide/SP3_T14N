@@ -1,5 +1,5 @@
 stage,ConditionName,Value,Description,qOrigin
-1,collection,1,Capture a monster.,NONE
+1,collection,1,Capture a monster.,NPC_guardcaptain
 2,interact,NPC_guardcaptain,Report to the Guard Captain.,NONE
 3,capture,BOSS_Reaper,Capture the Reaper.,NPC_guardcaptain
 4,interact,NPC_T1door,Leave the City.,NPC_guardcaptain
