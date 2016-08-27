@@ -262,6 +262,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
 					else if ((*it2)->Active)
 						(*it2)->Update((float)dt);
                 }
+                //Updating of the keys
                 else if (CurrentMenuState == S_UPDATING_KEYS)
                 {
                     if ((*it2)->Active)
@@ -293,7 +294,8 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                         }
                     }
                 }
-            }
+                //Updating of the keys
+     }
         }
     }
 }
