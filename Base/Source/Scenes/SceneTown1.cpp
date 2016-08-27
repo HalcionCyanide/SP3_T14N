@@ -563,17 +563,11 @@ void SceneTown1::Exit()
 		delete Player;
     if (camera)
         delete camera;
-    if (ChatLayer)
-        delete ChatLayer;
-    //if (UI_Sys)
-    //    delete UI_Sys;
-    //if (NPC_TextBox)
-    //    delete NPC_TextBox;
-    //if (NPC_Name)
-    //    delete NPC_Name;
-    //for (auto it : NPC_QuestButtons)
-    //    delete it;
-    //NPC_QuestButtons.clear();
+	if (UI_Sys)
+	{
+		UI_Sys->Exit();
+		delete UI_Sys;
+	}
 }
 
 bool SceneTown1::onNotify(const std::string &theEvent)

@@ -39,10 +39,10 @@ void SceneBattleScreen::Init()
 	newMesh->textureArray[0] = LoadTGA("Image//GBox.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	camera.Init(Vector3(0, 0, 1), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	camera.Init(Vector3(0, 0, 1), 0, Vector3(0, 1, 0));
 	Scene_System::accessing().BSys = new BattleSystem();
 	Scene_System::accessing().BSys->Init();
-	Scene_System::accessing().BSys->BManager.Init();
+	Scene_System::accessing().BSys->cBillboardManager.Init();
 }
 
 void SceneBattleScreen::Update(float dt)
@@ -64,11 +64,11 @@ void SceneBattleScreen::Update(float dt)
 		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
 	}
 
-	Scene_System::accessing().BSys->BManager.UpdateContainer(dt, camera.position);
+	Scene_System::accessing().BSys->cBillboardManager.UpdateContainer(dt, camera.position);
 
 	camera.Update(dt);
 	Scene_System::accessing().BSys->Update((float)dt);
-	Scene_System::accessing().BSys->UI_Sys.Update((float)dt);
+	Scene_System::accessing().BSys->cUI_System.Update((float)dt);
 }
 
 void SceneBattleScreen::RenderPassGPass()
@@ -129,7 +129,7 @@ void SceneBattleScreen::RenderPassMain()
 	SceneGraphics->SetHUD(false);
 
 	Mtx44 perspective;
-	perspective.SetToOrtho(0, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth, 0, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, -100, 100);
+	perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 1000.0f);
 	projectionStack->LoadMatrix(perspective);
 
 	// Camera matrix
@@ -142,7 +142,7 @@ void SceneBattleScreen::RenderPassMain()
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack->LoadIdentity();
 
-	//SceneGraphics->RenderMesh("reference", false);
+	SceneGraphics->RenderMesh("reference", false);
 
 	SceneGraphics->SetHUD(true);
 	Scene_System::accessing().BSys->Render();
@@ -152,7 +152,7 @@ void SceneBattleScreen::RenderPassMain()
 		modelStack->PushMatrix();
 		modelStack->Translate(Scene_System::accessing().cSS_InputManager->GetMousePosition().x, Scene_System::accessing().cSS_InputManager->GetMousePosition().y, 0);
 		modelStack->Rotate(0, 0, 1, 0);
-		modelStack->Scale(Scene_System::accessing().BSys->PlayerObj->GetDimensions().x * 0.75f, Scene_System::accessing().BSys->PlayerObj->GetDimensions().y * 0.75f, 1);
+		modelStack->Scale(Scene_System::accessing().BSys->PlayerScale * 0.75f, Scene_System::accessing().BSys->PlayerScale * 0.75f, 1);
 		SceneGraphics->RenderMesh("TFB_Gem", false);
 		modelStack->PopMatrix();
 	}
@@ -168,7 +168,7 @@ void SceneBattleScreen::RenderPassMain()
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
 
-	if (Scene_System::accessing().BSys->CurrentEnemy)
+	/*if (Scene_System::accessing().BSys->CurrentEnemy)
 	{
 		ss.str("");
 		ss << "EnemyMWaves" << Scene_System::accessing().BSys->CurrentEnemy->MaxEnemyWave;
@@ -179,20 +179,13 @@ void SceneBattleScreen::RenderPassMain()
 		ss << "EnemyCWaves" << Scene_System::accessing().BSys->CurrentEnemy->CurrentEnemyWave;
 		ss.precision(3);
 		SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 100);
-	}
+	}*/
 	
 	SceneGraphics->SetHUD(false);
 }
 
 void SceneBattleScreen::Render()
 {
-	//*********************************
-	//		PRE RENDER PASS
-	//*********************************
-	//RenderPassGPass();
-	//*********************************
-	//		MAIN RENDER PASS
-	//*********************************
 	RenderPassMain();
 }
 
@@ -200,6 +193,7 @@ void SceneBattleScreen::Exit()
 {
 	if (theInteractiveMap)
 		delete theInteractiveMap;
+	Scene_System::accessing().BSys->cUI_System.Exit();
+	Scene_System::accessing().BSys->cBillboardManager.Exit();
 	Scene_System::accessing().BSys->Exit();
-	Scene_System::accessing().BSys->BManager.Exit();
 }
