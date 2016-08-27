@@ -130,7 +130,7 @@ void SceneTown1::InitChatUI()
 	UI_Sys->cUIS_LayerContainer.push_back(ChatLayer);
 }
 
-int SceneTown1::HandleChatUIInput(float dt)
+std::string SceneTown1::HandleChatUIInput(float dt)
 {
 	for (std::vector<UI_Element*>::iterator it = NPC_QuestButtons.begin(); it != NPC_QuestButtons.end(); ++it)
 	{
@@ -144,27 +144,12 @@ int SceneTown1::HandleChatUIInput(float dt)
 				if (ClickDetection)
 				{
 					(*it)->BoundsActive = false;
-					if ((*it)->UI_Text == "Exit")
-					{
-						return 0;
-					}
-					/*else if ()
-					{
-						return 1;
-					}
-					else if ()
-					{
-						return 2;
-					}
-					else if ()
-					{
-						return 3;
-					}*/
+					return (*it)->UI_Text;
 				}
 			}
 		}
 	}
-	return -1;
+	return "";
 }
 
 void SceneTown1::Update(float dt)
@@ -267,59 +252,59 @@ void SceneTown1::Update(float dt)
 			// Set the player's target to face the NPC
 			camera->target = Vector3(CurrentNPC->GetPosition().x, Application::cA_CurrentTerrainY + (CurrentNPC->GetPosition().y - Application::cA_CurrentTerrainY) + (CurrentNPC->GetDimensions().y * 0.5f), CurrentNPC->GetPosition().z);
 			camera->CurrentCameraRotation.x = 0;
-
+			int buttonCount = 1;
 			for (auto it : CurrentNPC->NPCcurrQstate) // go thru the NPC's states
 			{
 				for (auto it2 : Scene_System::accessing().gPlayer->playerCurrQState) // go thru the player's states
 				{
 					if (it.first == it2.first) // compare the same quests
 					{
-						static int buttonCount = 1;
-						for (auto it3 : it.second) // go thru the NPC's int vector of stages for that particular quest
-						{	
-							
-							if ((it3 - it2.second) == 1 && buttonCount <= 3) // if the player's stage is just before the NPC's
+						for (auto it3 : Scene_System::accessing().QM.qPreReq)
+						{
+							if (buttonCount <= 3)
 							{
-								//we should set the NPC's button text to THAT particular quest's name.
-								//now how do i make just 3 buttons no more no less?
-								NPC_QuestButtons.at(buttonCount)->UI_Text = it.first;
-								buttonCount++;
-							}
-							else
-							{
-								break;
+								if (it3.first == it2.first) // if i am talking about that same quest to check prerequsites
+								{
+									if (it2.second >= it3.second) // if i have satisfied the prereq
+									{
+										for (auto it4 : Scene_System::accessing().QM.allQuests)
+										{
+											for (auto it5 : it4->qStages)
+											{
+												if (it5->getGiver() == CurrentNPC->getName())
+												{
+													NPC_QuestButtons.at(buttonCount)->UI_Text = it4->getName();
+													buttonCount++;
+												}
+												else
+												{
+													NPC_QuestButtons.at(buttonCount)->UI_Text = "";
+													buttonCount++;
+												}
+											}
+										}
+									}
+								}
+								else
+								{
+									NPC_QuestButtons.at(buttonCount)->UI_Text = "";
+									buttonCount++;
+								}
 							}
 						}
 					}
 				}
 			}
-
-			// Interacting with NPC: Check UI Key Press
-			switch (HandleChatUIInput((float)dt))
+			 //Interacting with NPC: Check UI Key Press
+			std::string temp = HandleChatUIInput((float)dt);
+			if (temp == "Exit")
 			{
-				case(0) : // Exit
-				{
-					camera->CameraIsLocked = false;
-					ChatLayer->SwapOriginalWithTarget();
-					CurrentNPC->setInteracting(false);
-					Scene_System::accessing().cSS_InputManager->SetMousePosition(CenterPosition);
-					Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-					break;
-				}
-				case(1) : // Q1
-				{
-					break;
-				}
-				case(2) : // Q2
-				{
-					break;
-				}
-				case(3) : // Q3
-				{
-					break;
-				}
+				camera->CameraIsLocked = false;
+				ChatLayer->SwapOriginalWithTarget();
+				CurrentNPC->setInteracting(false);
+				Scene_System::accessing().cSS_InputManager->SetMousePosition(CenterPosition);
+				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
 			}
-			break;
 		}
 	}
 }
@@ -360,7 +345,6 @@ void SceneTown1::RenderShadowCasters()
 		if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
 			the3DObject->Render();
 	}
-	Scene_System::accessing().NM.allNPCs.at(0)->Render();
 }
 
 void SceneTown1::RenderSkybox()
