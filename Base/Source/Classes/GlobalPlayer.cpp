@@ -213,7 +213,7 @@ bool GlobalPlayer::RewritePlayerSave(const std::string &fileName)
                 ss << key << currSceneID;
                 writeFile << ss.str() << std::endl;
             }
-            else if (checkWhetherTheWordInThatString("CAMERA", thatSpecificLine) && CurrCamera)
+            if (CurrCamera)
             {
                 if (checkWhetherTheWordInThatString("CAMERAPOSITIONX", thatSpecificLine))
                 {
@@ -246,7 +246,7 @@ bool GlobalPlayer::RewritePlayerSave(const std::string &fileName)
                     writeFile << ss.str() << std::endl;
                 }
             }
-            else if (checkWhetherTheWordInThatString("PLAYER", thatSpecificLine) && PlayerObj)
+            if (PlayerObj)
             {
                 if (checkWhetherTheWordInThatString("PLAYERMASS", thatSpecificLine))
                 {
@@ -270,7 +270,7 @@ bool GlobalPlayer::RewritePlayerSave(const std::string &fileName)
                 }
                 else if (checkWhetherTheWordInThatString("PLAYERYROTATION", thatSpecificLine))
                 {
-                    ss << key << PlayerObj->GetRotationAngle();
+                    ss << key << PlayerObj->GetMass();
                     writeFile << ss.str() << std::endl;
                 }
             }
