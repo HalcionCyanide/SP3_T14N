@@ -1,3 +1,13 @@
+/****************************************************************************/
+/*!
+\file BattleSystem.h
+\author Ryan Lim Rui An
+\par email: 150577L@mymail.nyp.edu.sg
+\brief
+Defines the battle system within the 2D battle screen
+*/
+/****************************************************************************/
+
 #ifndef _BATTLESYSTEM_H
 #define _BATTLESYSTEM_H
 
@@ -11,25 +21,25 @@
 #include "../Systems/BillboardManager.h"
 #include "..\\Systems\\UI_System.h"
 
+// Version 2, Complete Overhaul - Ryan
+
 class BattleSystem : public GenericSystem
 {
 public:
 	enum BS_State
 	{
 		BS_Null,
-		BS_PlayerTurn,
-		BS_PlayerEvasionStage,
-		BS_Seal,
-		BS_Flee,
-		BS_Fail,
+		BS_IntroScreen,
+		BS_BattlePhase,
+		BS_EndScreenSuccess,
+		BS_EndScreenFail,
 	};
 
 	BattleSystem();
 	virtual ~BattleSystem();
 
 	//Public Variables
-	BattleScreenObject* PlayerObj;
-	BS_State BattleState = BS_PlayerTurn;// = BS_Null;
+	BS_State BattleState = BS_IntroScreen;
 
 	// Public Function Calls
 	virtual void Init();
@@ -37,59 +47,75 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
-	BattleScreenObject* GetInactiveBSO();
-
-	//void SetPlayer();
 	void SetEnemy(Enemy&);
-	Enemy* CurrentEnemy; //<- To Store Attack Patterns and Stats
 
-	BillboardManager BManager;
-	UI_System UI_Sys;
+	BillboardManager cBillboardManager;
+	UI_System cUI_System;
+	float PlayerScale;
 
 private:
 	// Private Variables
-	bool FleeSucceeded = false;
-	bool FleeToggled = false;
-	bool SealToggled = false;
-	UI_Element* SealButton;
-	UI_Layer* EnemyLayer;
-	static const std::string UI_Text[10];
-	EnemyProjectile* CurrentProjectile;
-	Boundary2D InteriorBounds, ExteriorBounds;
-
 	Vector3 CursorPosition;
-	float PlayerScale;
 	Vector3 CenterPosition;
-	BattleScreenObject* BaseExterior;
-	BattleScreenObject* BaseInterior;
-	bool MouseModeSelected = false;// true;
-	bool isInvincible = false;
-	float IFrameTimer = 0;
-	const float FrictionDecrementMultiplier = 0.8f;
 
-	// Private Function Calls
+	BattleScreenObject* GetInactiveBSO();
+
+	// Private Function Calls and their variables
+	void QuickInit(); // Init call to init variables required for a battle screen restart
+	void QuickExit(); // Exit call to delete variables unrequired for a battle screen restart
+
 	// State Calls
-	void UpdatePlayerTurn(float dt);
-	void UpdatePESPhase(float dt);
-	void UpdateSealPhase(float dt);
-	void UpdateFleePhase(float dt);
-
-	// Player Calls
+	// Intro State Call
+	void UpdateIntroScreen(float dt);					// Player Box slides from bottom to top, enemy box from top to bottom, both meet at screenheight/2 and stop for a while before continuing out of the screen. 
+														// Start rendering the battle screen when the boxes fill up the screen.
+	// Intro Calls
+	void UpdatePlayerInfoBox(float dt);					// Set Player Info
+	void UpdateEnemyInfoBox(float dt);					// Set Enemy Info
+	void UpdateInfoBoxAnimation(float dt);				// Update Boxes
+	void RenderIntroScreen();
+	// Intro Variables
+	bool AnimationPaused = false;						// Value for whether they are paused.
+	float AnimationPauseTimer = 0.f;					// Timer to check how long they have been stopped.
+	float AnimationPauseTime = 2.f;						// How long the boxes stay at the screen's center before moving
+	bool HasPlayerAndEnemyInfoInit = false;				// Is the Player and Enemy's data inited yet?
+	bool IsInfoBoxOut = false;							// Have the boxes gone out of screen?
+	UI_Layer* PlayerInfoBox;
+	UI_Layer* EnemyInfoBox;
+	UI_Layer* EnemyLayer; // Enemy Image
+	// Intro End
+	
+	// Battle State Call
+	void UpdateBattlePhase(float dt);
+	// Battle Calls
 	void UpdatePlayer(float dt);
 	void UpdateITimer(float dt);
 	void UpdateControls(float dt);
-
-	// Physics Related
+	// Battle Physics Calls
 	void UpdatePhysics(float dt);
 	bool CollisionCheck(const BattleScreenObject&, const BattleScreenObject&, float dt);
 	bool CollisionResponse(const BattleScreenObject&, const BattleScreenObject&, float dt);
-
+	void RenderBattleScreen();
+	// Battle Variables
+	// Player Variables
+	float PlayerBaseMovementSpeed;
+	float PlayerCurrentMovementSpeed;
+	UI_Layer* PlayerInventoryUI;
+	bool PlayerIsInvincible = false;
+	float PlayerIFrameTimer = 0;
+	float FrictionDecrementMultiplier = 0.8f;
+	BattleScreenObject* PlayerObj;
+	// Enemy Variables
+	Enemy* CurrentEnemy;		// To Store Attack Patterns and Stats
+	float EnemyStaminaTimer;	// Default to 30s round
 	// Enemy Calls [Based on type use a specific attack call]
 	int BatchCreateAttacks(EnemyProjectile& CurrentProjectile);
-
 	// Attack Calls // Think of better names later
 	void Attack_Bullet(EnemyProjectile& CurrentProjectile);
 	void Attack_Trap(EnemyProjectile& CurrentProjectile);
+	// Battle End
+
+	void UpdateEndScreenSuccess(float dt);
+	void UpdateEndScreenFail(float dt);
 
 	// Base Object Container [The container that holds the enemy projectiles/attacks]
 	std::vector<BattleScreenObject*> cBS_ObjectContainer;

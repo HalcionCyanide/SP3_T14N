@@ -6,8 +6,6 @@
 BattleSystem::BattleSystem()
 {
     CurrentEnemy = nullptr;
-	//Init();
-	FleeSucceeded = false;
 }
 
 BattleSystem::~BattleSystem()
@@ -15,39 +13,49 @@ BattleSystem::~BattleSystem()
 	Exit();
 }
 
-const std::string BattleSystem::UI_Text[10] = { "", "Check", "Seal", "Flee" };
-
 // Public Function Calls
 void BattleSystem::Init()
 {
 	CursorPosition = Scene_System::accessing().cSS_InputManager->GetMousePosition();
-
 	// Note Init Player and Enemy Here
 	CenterPosition.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 	PlayerScale = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.03f;
 
-    PlayerObj = new BattleScreenObject("TFB_Gem3", 3, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), Vector3(0, 0, 0), 0, Vector3(0, 0, 1));
+	PlayerObj = nullptr; // new BattleScreenObject("TFB_Gem", 1, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), 0, 0, Vector3(0, 0, 1));
+	CurrentEnemy = nullptr;
+	PlayerInventoryUI = nullptr;
+	PlayerInfoBox = nullptr;
+	EnemyInfoBox = nullptr;
+	EnemyLayer = nullptr;
+}
 
-    // Background If Needed
-	BaseExterior = new BattleScreenObject("GBox", 0.f, CenterPosition + Vector3(0, CenterPosition.y * 0.1f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.85f, 1), Vector3(), 0, Vector3(0, 0, 1));
-	BaseInterior = new BattleScreenObject("GBox", 0.f, CenterPosition + Vector3(0, CenterPosition.y * 0.1f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.7f, 1), Vector3(), 0, Vector3(0, 0, 1));
+void BattleSystem::QuickInit()
+{
+	// Intro
+	AnimationPaused = false;
+	AnimationPauseTimer = 0.f;
+	AnimationPauseTime = 2.f;
+	HasPlayerAndEnemyInfoInit = false;
+	IsInfoBoxOut = false;
+	BattleState = BS_IntroScreen;
 	
-	//CurrentEnemy = new Enemy();
-	ExteriorBounds.SetPosition(BaseExterior->GetPosition());
-	ExteriorBounds.SetDimensions(BaseExterior->GetDimensions());
-	ExteriorBounds.ResetValues();
-	InteriorBounds.SetPosition(BaseInterior->GetPosition());
-	InteriorBounds.SetDimensions(BaseInterior->GetDimensions());
-	InteriorBounds.ResetValues();
+	// Player
+	PlayerBaseMovementSpeed = PlayerScale;
+	PlayerCurrentMovementSpeed = PlayerBaseMovementSpeed;
+	PlayerIsInvincible = false;
+	PlayerIFrameTimer = 0;
+	FrictionDecrementMultiplier = 0.8f;
 
-	UI_Layer* NewL = new UI_Layer();
+	// Enemy
+	EnemyStaminaTimer = 30; // 30s round
 
-	NewL->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, -CenterPosition.y * 0.5f, 0), Vector3(CenterPosition.x * 0.5f, -CenterPosition.y * 0.5f, 0), Vector3(400, 100, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.2f, 0), UI_Text[1]);
-	SealButton = new UI_Element(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 1.f, CenterPosition.y * 0.2f, 0), Vector3(CenterPosition.x * 1.f, CenterPosition.y * 0.2f, 0), Vector3(400, 100, 1), Vector3(CenterPosition.x * 1.0f, -CenterPosition.y * 0.5f, 0), UI_Text[2]);
-	NewL->cUI_Layer.push_back(SealButton);
-	NewL->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 1.5f, -CenterPosition.y * 0.5f, 0), Vector3(CenterPosition.x * 1.5f, -CenterPosition.y * 0.5f, 0), Vector3(400, 100, 1), Vector3(CenterPosition.x * 1.5f, CenterPosition.y * 0.2f, 0), UI_Text[3]);
-	
-	UI_Sys.cUIS_LayerContainer.push_back(NewL);
+	// BSOs
+	PlayerObj = new BattleScreenObject("TFB_Gem", 1, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), 0, 0, Vector3(0, 0, 1));
+
+	// UIs
+	PlayerInventoryUI = new UI_Layer();
+	PlayerInfoBox = new UI_Layer();
+	EnemyInfoBox = new UI_Layer();
 }
 
 void BattleSystem::Update(double dt)
@@ -55,54 +63,25 @@ void BattleSystem::Update(double dt)
 	// Update Calls Sorted by State
 	switch (BattleState)
 	{
-	case BS_PlayerTurn:
-		UpdatePlayerTurn((float)dt);
+	case BS_IntroScreen:
+		UpdateIntroScreen((float)dt);
 		break;
-	case BS_PlayerEvasionStage:
-		UpdatePESPhase((float)dt);
+	case BS_BattlePhase:
+		//UpdateBattlePhase((float)dt);
 		break;
-	case BS_Seal:
-		UpdateSealPhase((float)dt);
+	case BS_EndScreenSuccess:
 		break;
-	case BS_Flee:
-		UpdateFleePhase((float)dt);
+	case BS_EndScreenFail:
 		break;
-	case BS_Fail:
-		// U Fail
-		break;
-	}
-	if (FleeSucceeded)
-	{
-		PlayerObj->SetVelocity(0);
-		PlayerObj->SetPosition(CenterPosition);
-		FleeSucceeded = false;
-		Scene_System::accessing().SwitchToPreviousScene();
-		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-		for (std::vector<UI_Element*>::iterator it = UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.begin(); it != UI_Sys.cUIS_LayerContainer[0]->cUI_Layer.end(); ++it)
-		{
-			(*it)->SwapOriginalWithTarget();
-		}
-		BattleState = BS_PlayerTurn;
-		if (EnemyLayer)
-		{
-			for (std::vector<UI_Element*>::iterator it = EnemyLayer->cUI_Layer.begin(); it != EnemyLayer->cUI_Layer.end(); ++it)
-			{
-				(*it)->Exit();
-				delete *it;
-			}
-			EnemyLayer->cUI_Layer.clear();
-		}
 	}
 }
 
 void BattleSystem::Render()
 {
-	BManager.Render();
-	UI_Sys.Render();
-	SealButton->Render(0);
-	if (BattleState != BS_Seal)
-		BaseInterior->Render();
-	PlayerObj->Render(); // <- Don't bother checking if player is true because if player is not true, something is wrong, thus a crash should be efficient in telling one that. c:
+	cBillboardManager.Render();
+	cUI_System.Render();
+	if (PlayerObj)
+		PlayerObj->Render(); // <- Don't bother checking if player is true because if player is not true, something is wrong, thus a crash should be efficient in telling one that. c:
 	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 	{
 		if ((*it)->Active && (*it)->Visible)
@@ -119,21 +98,39 @@ void BattleSystem::Exit()
 		delete PlayerObj;
 		PlayerObj = nullptr;
 	}
-	/*if (CurrentEnemy)
+
+	if (PlayerInventoryUI)
+	{
+		PlayerInventoryUI->Exit();
+		delete PlayerInventoryUI;
+	}
+
+	if (PlayerInfoBox)
+	{
+		PlayerInfoBox->Exit();
+		delete PlayerInfoBox;
+	}
+
+	if (EnemyInfoBox)
+	{
+		EnemyInfoBox->Exit();
+		delete EnemyInfoBox;
+	}
+
+	/*if (EnemyLayer)
+	{
+		EnemyLayer->Exit();
+		delete EnemyLayer;
+	}*/
+
+	if (CurrentEnemy)
 	{
 		delete CurrentEnemy;
 		CurrentEnemy = nullptr;
-	}*/
-	if (BaseExterior != nullptr)
-	{
-		delete BaseExterior;
-		BaseExterior = nullptr;
 	}
-	if (BaseInterior != nullptr)
-	{
-		delete BaseInterior;
-		BaseInterior = nullptr;
-	}
+
+	PlayerInfoBox = PlayerInventoryUI = EnemyInfoBox = EnemyLayer = nullptr;
+
 	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 	{
 		(*it)->Exit();
@@ -170,225 +167,46 @@ void BattleSystem::SetEnemy(Enemy& E)
 {
 	CurrentEnemy = new Enemy(E);
 	EnemyLayer = new UI_Layer();
-	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, CurrentEnemy->MeshName, Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(400, 400, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.6f, 0), UI_Text[0]);
-	UI_Sys.cUIS_LayerContainer.push_back(EnemyLayer);
+	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, CurrentEnemy->MeshName, Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(400, 400, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.6f, 0));
+	cUI_System.cUIS_LayerContainer.push_back(EnemyLayer);
+	QuickInit();
 }
 
 // Private Function Calls
 // State Calls
-void BattleSystem::UpdatePlayerTurn(float dt)
+void BattleSystem::UpdateIntroScreen(float dt)
 {
-	// UI Pops In from bottom
-	// Mouse Toggle On if WASD mode
-	for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(); it != UI_Sys.cUIS_LayerContainer.end(); ++it)
+	if (!HasPlayerAndEnemyInfoInit)
 	{
-		for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
-		{
-			if ((*it2)->Active)
-			{
-				bool ClickSucceeded = false;
-				(*it2)->BoundsActive = true;
-				(*it2)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
-				if ((*it2)->BoundsActive && ClickSucceeded)
-				{
-					IFrameTimer = 0;
-					isInvincible = false;
-					(*it2)->BoundsActive = false;
-					bool SwapRequired = false;
-
-					if ((*it2)->UI_Text == UI_Text[1])
-					{
-						//Check
-						if (CurrentEnemy->CurrentEnemyWave < CurrentEnemy->MaxEnemyWave)
-						{
-							BattleState = BS_PlayerEvasionStage;
-							SwapRequired = true;
-						}
-					}
-					else if ((*it2)->UI_Text == UI_Text[2])
-					{
-						//Seal
-						if (CurrentEnemy->CurrentEnemyWave == CurrentEnemy->MaxEnemyWave)
-						{
-							BattleState = BS_Seal;
-							//SealButton->SwapOriginalWithTarget();
-						}
-					}
-					else if ((*it2)->UI_Text == UI_Text[3])
-					{
-						//Flee
-						if (CurrentEnemy->CurrentEnemyWave < CurrentEnemy->MaxEnemyWave)
-						{
-							FleeToggled = true;
-							BattleState = BS_Flee;
-							SwapRequired = true;
-						}
-					}
-
-					if (SwapRequired && !FleeSucceeded && UI_Sys.cUIS_LayerContainer.size() > 0)
-						for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(), end = UI_Sys.cUIS_LayerContainer.end(); it != end; ++it) {
-							UI_Layer *Layer = (*it);
-							for (std::vector<UI_Element*>::iterator it2 = Layer->cUI_Layer.begin(), end2 = Layer->cUI_Layer.end(); it2 != end2; ++it2)
-							{
-								if (*it2 != SealButton)
-									(*it2)->SwapOriginalWithTarget();
-							}
-						}
-					int EnemyAttack = Math::RandIntMinMax(0, CurrentEnemy->cE_Projectiles.size() - 1);
-					CurrentProjectile = CurrentEnemy->cE_Projectiles[EnemyAttack];
-				}
-				else if ((*it2)->Active)
-					(*it2)->Update((float)dt);
-			}
-		}
+		HasPlayerAndEnemyInfoInit = true;
+		// Set the data
+		UpdatePlayerInfoBox(dt);
+		UpdateEnemyInfoBox(dt);
 	}
+	// Animate the boxes
+	UpdateInfoBoxAnimation(dt);
 }
 
-void BattleSystem::UpdatePESPhase(float dt)
+void BattleSystem::UpdatePlayerInfoBox(float dt)
 {
-	int ActiveCount = 0;
-	FleeToggled = false;
-	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
-	{
-		if ((*it)->Active)
-		{
-			if (ExteriorBounds.CheckCollision((*it)->GetPosition()))
-			{
-				(*it)->Update(dt);
-				++ActiveCount;
-			}
-			else (*it)->Active = false;
-		}
-	}
-	CurrentEnemy->CurrentTime += dt;
-
-	if (CurrentEnemy->CurrentEnemyWave < CurrentEnemy->MaxEnemyWave)
-	{
-		if (CurrentEnemy->CurrentAttackCount < CurrentProjectile->AttacksPerWave)
-		{
-			if (CurrentEnemy->CurrentTime > CurrentProjectile->AttackSpeed)
-			{
-				CurrentEnemy->CurrentTime = 0;
-				CurrentEnemy->CurrentAttackCount++;
-				BatchCreateAttacks(*CurrentProjectile);
-			}
-		}
-	}
-	if (CurrentEnemy->CurrentAttackCount == CurrentProjectile->AttacksPerWave && ActiveCount == 0)
-	{
-		if (UI_Sys.cUIS_LayerContainer.size() > 0)
-		{
-			for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(), end = UI_Sys.cUIS_LayerContainer.end(); it != end; ++it) 
-			{
-				UI_Layer *Layer = (*it);
-				for (std::vector<UI_Element*>::iterator it2 = Layer->cUI_Layer.begin(), end2 = Layer->cUI_Layer.end(); it2 != end2; ++it2)
-				{
-					if (*it2 != SealButton)
-						(*it2)->SwapOriginalWithTarget();
-				}
-			}
-			BattleState = BS_PlayerTurn;
-			CurrentEnemy->CurrentAttackCount = 0;
-			++CurrentEnemy->CurrentEnemyWave;
-		}
-	}
-	if (CurrentEnemy->CurrentEnemyWave == CurrentEnemy->MaxEnemyWave && ActiveCount <= 0)
-	{
-		for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(), end = UI_Sys.cUIS_LayerContainer.end(); it != end; ++it)
-		{
-			UI_Layer *Layer = (*it);
-			for (std::vector<UI_Element*>::iterator it2 = Layer->cUI_Layer.begin(), end2 = Layer->cUI_Layer.end(); it2 != end2; ++it2)
-			{
-				if (*it2 != SealButton)
-					(*it2)->SwapOriginalWithTarget();
-			}
-		}
-		SealButton->SwapOriginalWithTarget();
-	}
-	UpdatePlayer(dt);
-	UpdatePhysics(dt);
+	// Set Spawn and Target
+	Vector3 Target = Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.25f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
+	PlayerInfoBox->LayerOriginalPosition = PlayerInfoBox->LayerCenterPosition = Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.25f, -2.f * Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 0);
+	PlayerInfoBox->LayerTargetPosition = Target;
+	// Layer Backing Image
+	PlayerInfoBox->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "door", Target, Target, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.25f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 1), Target);
 }
 
-void BattleSystem::UpdateSealPhase(float dt)
+void BattleSystem::UpdateEnemyInfoBox(float dt)
 {
-	// Monster Lerp to Center, GB derender, Seal Appears, Monster Shrink and go into seal, blah blah
-	// Do Generic Monster Animation
-	EnemyLayer->cUI_Layer[0]->TargetPosition = CenterPosition;
-	PlayerObj->SetPosition(CenterPosition);
-	PlayerObj->SetVelocity(0);
-	if ((EnemyLayer->cUI_Layer[0]->Position - EnemyLayer->cUI_Layer[0]->TargetPosition).LengthSquared() < 1.f)
-	{
-		EnemyLayer->cUI_Layer[0]->AtTarget = true;
-	}
-	if (EnemyLayer->cUI_Layer[0]->AtTarget)
-	{
-		if (EnemyLayer->cUI_Layer[0]->Dimensions.LengthSquared() > 300.f)
-			EnemyLayer->cUI_Layer[0]->Dimensions -= EnemyLayer->cUI_Layer[0]->Dimensions * dt;
-		else{
-			// Monster Anim Complete
-			if (Scene_System::accessing().gPlayer->GetSpellPower() < CurrentEnemy->SpellPower)
-				Scene_System::accessing().gPlayer->SetSpellPower(CurrentEnemy->SpellPower);
-			FleeSucceeded = true;
-		}
-	}
+	EnemyInfoBox->LayerOriginalPosition = PlayerInfoBox->LayerCenterPosition = Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.75f, 2.f * Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 0);
+	EnemyInfoBox->LayerTargetPosition = Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.75f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
+
 }
 
-void BattleSystem::UpdateFleePhase(float dt)
+void BattleSystem::UpdateInfoBoxAnimation(float dt)
 {
-	// Survive 1 turn of PES at double damage
-	// Escape Screen
-	int ActiveCount = 0;
-	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
-	{
-		if ((*it)->Active)
-		{
-			if (ExteriorBounds.CheckCollision((*it)->GetPosition()))
-			{
-				(*it)->Update(dt);
-				++ActiveCount;
-			}
-			else (*it)->Active = false;
-		}
-	}
-	CurrentEnemy->CurrentTime += dt;
 
-	if (CurrentEnemy->CurrentEnemyWave < CurrentEnemy->MaxEnemyWave)
-	{
-		if (CurrentEnemy->CurrentAttackCount < CurrentProjectile->AttacksPerWave)
-		{
-			if (CurrentEnemy->CurrentTime > CurrentProjectile->AttackSpeed)
-			{
-				CurrentEnemy->CurrentTime = 0;
-				CurrentEnemy->CurrentAttackCount++;
-				BatchCreateAttacks(*CurrentProjectile);
-			}
-		}
-	}
-	if (CurrentEnemy->CurrentAttackCount == CurrentProjectile->AttacksPerWave && ActiveCount == 0)
-	{
-		if (UI_Sys.cUIS_LayerContainer.size() > 0)
-		{
-			for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(), end = UI_Sys.cUIS_LayerContainer.end(); it != end; ++it) {
-				UI_Layer *Layer = (*it);
-				for (std::vector<UI_Element*>::iterator it2 = Layer->cUI_Layer.begin(), end2 = Layer->cUI_Layer.end(); it2 != end2; ++it2)
-				{
-					if (FleeToggled)
-					{
-						if (*it2 == SealButton)
-							(*it2)->SwapOriginalWithTarget();
-					}
-					else if (*it2 != SealButton)
-						(*it2)->SwapOriginalWithTarget();
-					BattleState = BS_PlayerTurn;
-				}
-			}
-			CurrentEnemy->CurrentAttackCount = 0;
-			if (FleeToggled)
-				FleeSucceeded = true;
-		}
-	}
-	UpdatePlayer(dt);
-	UpdatePhysics(dt);
 }
 
 // Player Calls
@@ -400,118 +218,30 @@ void BattleSystem::UpdatePlayer(float dt)
 
 void BattleSystem::UpdateITimer(float dt)
 {
-	if (isInvincible && IFrameTimer > Math::EPSILON)
+	if (PlayerIsInvincible && PlayerIFrameTimer > Math::EPSILON)
 	{
-		IFrameTimer -= dt;
+		PlayerIFrameTimer -= dt;
 		int RPcount = Math::RandIntMinMax(1, 2);
 		for (int i = 0; i < RPcount; ++i)
-			BManager.AddParticle("ParticleW", PlayerObj->GetPosition(), Vector3(PlayerScale * 0.75f, PlayerScale * 0.75f, 1), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0), Vector3(0, 0, 1), 2);
+			cBillboardManager.AddParticle("ParticleW", PlayerObj->GetPosition(), Vector3(PlayerScale * 0.75f, PlayerScale * 0.75f, 1), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0), Vector3(0, 0, 1), 2);
 
-		if (isInvincible && IFrameTimer < Math::EPSILON)
+		if (PlayerIsInvincible && PlayerIFrameTimer < Math::EPSILON)
 		{
-			isInvincible = false;
-			IFrameTimer = 0.f;
+			PlayerIsInvincible = false;
+			PlayerIFrameTimer = 0.f;
 		}
 	}
 }
 
 void BattleSystem::UpdateControls(float dt)
 {
-	if (InteriorBounds.CheckCollision(Scene_System::accessing().cSS_InputManager->GetMousePosition()))
-	{
-		CursorPosition = Scene_System::accessing().cSS_InputManager->GetMousePosition();
-	}
-	float ForceIncrement = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f;
-	switch (MouseModeSelected)
-	{
-	case (true) :
-	{
-		Vector3 PlayerDirection = (CursorPosition - PlayerObj->GetPosition());
-		if (!PlayerDirection.IsZero())
-			if (PlayerDirection.LengthSquared() < (Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.2f))
-				PlayerDirection.SetZero();
-			else PlayerDirection.Normalize();
-			PlayerObj->SetAcceleration(Vector3(ForceIncrement * PlayerDirection.x, ForceIncrement * PlayerDirection.y));
-			break;
-	}
-	case (false) :
-	{
-		if (Scene_System::accessing().cSS_InputManager->GetKeyValue('W'))
-		{
-			Vector3 Accel = PlayerObj->GetAcceleration();
-			Accel.y = ForceIncrement;
-			PlayerObj->SetAcceleration(Accel);
-		}
-		if (Scene_System::accessing().cSS_InputManager->GetKeyValue('S'))
-		{
-			Vector3 Accel = PlayerObj->GetAcceleration();
-			Accel.y = -ForceIncrement;
-			PlayerObj->SetAcceleration(Accel); 
-		}
-		if (!Scene_System::accessing().cSS_InputManager->GetKeyValue('W') && !Scene_System::accessing().cSS_InputManager->GetKeyValue('S'))
-		{
-			Vector3 Accel = PlayerObj->GetAcceleration();
-			Accel.y = 0;
-			PlayerObj->SetAcceleration(Accel);
-		}
-		if (Scene_System::accessing().cSS_InputManager->GetKeyValue('A'))
-		{
-			Vector3 Accel = PlayerObj->GetAcceleration();
-			Accel.x = -ForceIncrement;
-			PlayerObj->SetAcceleration(Accel);
-		}
-		if (Scene_System::accessing().cSS_InputManager->GetKeyValue('D'))
-		{
-			Vector3 Accel = PlayerObj->GetAcceleration();
-			Accel.x = ForceIncrement;
-			PlayerObj->SetAcceleration(Accel);
-		}
-		if (!Scene_System::accessing().cSS_InputManager->GetKeyValue('A') && !Scene_System::accessing().cSS_InputManager->GetKeyValue('D'))
-		{
-			Vector3 Accel = PlayerObj->GetAcceleration();
-			Accel.x = 0;
-			PlayerObj->SetAcceleration(Accel);
-		}
-		break;
-	}
-	}
-	PlayerObj->SetVelocity(PlayerObj->GetVelocity() - PlayerObj->GetVelocity()*FrictionDecrementMultiplier * dt);
-	Vector3 FwdPos = PlayerObj->GetPosition() + PlayerObj->GetVelocity() * dt;
-	if (abs(FwdPos.x - InteriorBounds.GetPosition().x) > InteriorBounds.GetDimensions().x * 0.5f - PlayerObj->GetDimensions().x * 0.5f)
-	{
-		if (abs(PlayerObj->GetVelocity().x * 0.5f) < Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.01f)
-		{
-			PlayerObj->SetVelocity(Vector3(0.f, PlayerObj->GetVelocity().y, 0.f));
-			PlayerObj->SetAcceleration(Vector3(-PlayerObj->GetAcceleration().x * 0.5f, PlayerObj->GetAcceleration().y, 0.f));
-		}
-		else 
-		{
-			PlayerObj->SetPosition(PlayerObj->GetPosition() - PlayerObj->GetVelocity() * 3 * dt);
-			PlayerObj->SetVelocity(Vector3(-PlayerObj->GetVelocity().x * 0.5f, PlayerObj->GetVelocity().y, 0.f));
-			PlayerObj->SetAcceleration(Vector3(-PlayerObj->GetAcceleration().x * 0.5f, PlayerObj->GetAcceleration().y, 0.f));
-		}
-	}		
-	if (abs(FwdPos.y - InteriorBounds.GetPosition().y) > InteriorBounds.GetDimensions().y * 0.5f - PlayerObj->GetDimensions().y * 0.5f)
-	{
-		if (abs(PlayerObj->GetVelocity().y * 0.5f) < Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.01f)
-		{
-			PlayerObj->SetVelocity(Vector3(PlayerObj->GetVelocity().x, 0.f, 0.f));
-			PlayerObj->SetAcceleration(Vector3(PlayerObj->GetAcceleration().x, -PlayerObj->GetAcceleration().y * 0.5f, 0.f));
-		}
-		else
-		{
-			PlayerObj->SetPosition(PlayerObj->GetPosition() - PlayerObj->GetVelocity() * 3 * dt);
-			PlayerObj->SetVelocity(Vector3(PlayerObj->GetVelocity().x, -PlayerObj->GetVelocity().y * 0.5f, 0.f));
-			PlayerObj->SetAcceleration(Vector3(PlayerObj->GetAcceleration().x, -PlayerObj->GetAcceleration().y * 0.5f, 0.f));
-		}
-	}
-	PlayerObj->Update(dt);
+	
 }
 
 // Physics Related
 void BattleSystem::UpdatePhysics(float dt)
 {
-	if (!isInvincible && cBS_ObjectContainer.size() > 0)
+	if (!PlayerIsInvincible && cBS_ObjectContainer.size() > 0)
 	{
 		for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 		{
@@ -521,9 +251,8 @@ void BattleSystem::UpdatePhysics(float dt)
 					// HP Decrement Should Be In CRes
 					if (CollisionResponse(*PlayerObj, **it, dt))
 					{
-						isInvincible = true;
-						IFrameTimer = 2;
-						FleeToggled = false;
+						PlayerIsInvincible = true;
+						PlayerIFrameTimer = 2;
 					}
 				}
 		}
@@ -662,20 +391,20 @@ int BattleSystem::BatchCreateAttacks(EnemyProjectile& CurrentProjectile)
 void BattleSystem::Attack_Bullet(EnemyProjectile& CurrentProjectile)
 {
 	// Spawn a bullet at the exterior of the GBox, fire it at the player.
-	float XSpawn = ExteriorBounds.GetDimensions().x * 0.5f - InteriorBounds.GetDimensions().x * 0.5f;
-	float YSpawn = ExteriorBounds.GetDimensions().x * 0.5f - InteriorBounds.GetDimensions().x * 0.5f;
-	Vector3 SpawnPos = CenterPosition + Vector3(Math::RandFloatMinMax(-CenterPosition.x - XSpawn, CenterPosition.x + XSpawn), Math::RandFloatMinMax(-CenterPosition.y - YSpawn, CenterPosition.y + YSpawn));
-	if (ExteriorBounds.CheckCollision(SpawnPos) && !InteriorBounds.CheckCollision(SpawnPos))
-	{
-		Vector3 DVec = (PlayerObj->GetPosition() - SpawnPos).Normalize() * CurrentProjectile.ScalarAcceleration; 
-		BattleScreenObject* BSO = GetInactiveBSO();
-		BSO->SetParameters(CurrentProjectile.StoredMesh, 5, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), 0, 0, Vector3(0, 0, 1));
-		BSO->Type = BattleScreenObject::BS_Bullet;
-		BSO->Active = true;
-		BSO->SetAcceleration(DVec);
-		BSO->SetMass(3.f);
-	}
-	else Attack_Bullet(CurrentProjectile);
+	//float XSpawn = ExteriorBounds.GetDimensions().x * 0.5f - InteriorBounds.GetDimensions().x * 0.5f;
+	//float YSpawn = ExteriorBounds.GetDimensions().x * 0.5f - InteriorBounds.GetDimensions().x * 0.5f;
+	//Vector3 SpawnPos = CenterPosition + Vector3(Math::RandFloatMinMax(-CenterPosition.x - XSpawn, CenterPosition.x + XSpawn), Math::RandFloatMinMax(-CenterPosition.y - YSpawn, CenterPosition.y + YSpawn));
+	//if (ExteriorBounds.CheckCollision(SpawnPos) && !InteriorBounds.CheckCollision(SpawnPos))
+	//{
+	//	Vector3 DVec = (PlayerObj->GetPosition() - SpawnPos).Normalize() * CurrentProjectile.ScalarAcceleration; 
+	//	BattleScreenObject* BSO = GetInactiveBSO();
+	//	BSO->SetParameters(CurrentProjectile.StoredMesh, 5, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), 0, 0, Vector3(0, 0, 1));
+	//	BSO->Type = BattleScreenObject::BS_Bullet;
+	//	BSO->Active = true;
+	//	BSO->SetAcceleration(DVec);
+	//	BSO->SetMass(3.f);
+	//}
+	//else Attack_Bullet(CurrentProjectile);
 }
 
 void BattleSystem::Attack_Trap(EnemyProjectile& CurrentProjectile)
