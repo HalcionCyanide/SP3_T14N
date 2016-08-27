@@ -5,6 +5,7 @@
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\GameObject.h"
 #include "..\\Misc\\LoadEnemyData.h"
+#include "../Systems/MusicSystem.h"
 
 std::string SceneBattleScreen::id_ = "Scene Battle Screen";
 
@@ -50,6 +51,8 @@ void SceneBattleScreen::Update(float dt)
 	Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	SceneGraphics->Update(dt);
+
+    MusicSystem::accessing().playBackgroundMusic("battle");
 
 	framerates = 1 / dt;
 
