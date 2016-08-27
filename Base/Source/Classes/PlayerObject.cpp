@@ -57,9 +57,10 @@ void PlayerObject::Update(double dt)
 		}
 		SetPosition(GetPosition() + MovementValues);
 		MovementValues.SetZero();
+        MusicSystem::accessing().playMusic("footstep");
 	}
     else {
-
+        MusicSystem::accessing().accessTheMusic("footstep")->Stop();
     }
 	if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
 	{

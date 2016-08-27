@@ -325,7 +325,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                                 for (std::vector<UI_Element*>::iterator it3 = (*it)->cUI_Layer.begin(); it3 != (*it)->cUI_Layer.end(); ++it3)
                                 {
                                     if (((*it3)->UI_Text == UI_Text[4] || (*it3)->UI_Text == UI_Text[5] || (*it3)->UI_Text == UI_Text[6]) || //Second Layer Stuff
-                                        checkWhetherTheWordInThatString(UI_Text[13], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[14], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[15], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[16], (*it3)->UI_Text))   //Loading Saves Stuff
+                                        checkWhetherTheWordInThatString(UI_Text[13], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[14], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[15], (*it3)->UI_Text) || UI_Text[16] == (*it3)->UI_Text)   //Loading Saves Stuff
                                     {
                                         (*it3)->SwapOriginalWithTarget();
                                     }
