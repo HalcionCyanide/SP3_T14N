@@ -70,6 +70,7 @@ private:
 	//<!> will remove soon <!>
     //<?> is thr any other way to prevent hardcoding.....
     std::string whatKeyToChange;
+    void writeToGlobalDrivenAndChangeCommand(const unsigned char &command, const std::string &theKey);
 };
 
 #endif //_SCENE_MAINMENU_H
