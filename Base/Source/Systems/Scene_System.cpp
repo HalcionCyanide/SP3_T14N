@@ -42,7 +42,6 @@ void Scene_System::Init()
 			tempStates.clear();
 		}
 	}
-
     theLoadingEffect = nullptr;
     delayingLoadingTime = 0;
 }
