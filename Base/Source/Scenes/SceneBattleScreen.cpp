@@ -141,7 +141,7 @@ void SceneBattleScreen::RenderPassMain()
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack->LoadIdentity();
 
-	SceneGraphics->RenderMesh("reference", false);
+	//SceneGraphics->RenderMesh("reference", false);
 
 	SceneGraphics->SetHUD(true);
 	Scene_System::accessing().BSys->Render();

@@ -98,6 +98,9 @@ private:
 	void RenderBattleScreen();
 	// Battle Variables
 	UI_Layer* BattleBox;
+	UI_Element* HealthBarGreen;
+	UI_Element* EnemyStaminaBar;
+	float HealthBarDefaultScale;
 	// Player Variables
 	float PlayerBaseMovementSpeed;
 	float PlayerCurrentMovementSpeed;
