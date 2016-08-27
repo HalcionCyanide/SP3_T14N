@@ -11,10 +11,12 @@
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\GameObject.h"
 #include "../Misc/SimpleCommand.h"
+#include "../Misc/LoadEnemyData.h"
+#include <climits>
 
 std::string Scene_MainMenu::id_ = "M_Scene";
 
-const std::string Scene_MainMenu::UI_Text[15] = { "", "Start", "Settings", "Exit", "New Game", "Load Game", "Return", "Forward_Button", "Backward_Button", "Right_Button", "Left_Button","Jump_Button" };
+const std::string Scene_MainMenu::UI_Text[15] = { "", "Start", "Settings", "Exit", "New Game", "Load Game", "Return", "Forward_Button", "Backward_Button", "Right_Button", "Left_Button", "Jump_Button", "Press Any Keys to Change the command" };
 
 Scene_MainMenu::Scene_MainMenu()
 	: SceneEntity()
@@ -81,23 +83,26 @@ void Scene_MainMenu::InitSceneUIElems()
     //For Setting Stuff
     std::ostringstream ss;
     ss << UI_Text[7] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND];
-    NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
+    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.8f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
 
     ss.str("");
     ss << UI_Text[8] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND];
-    NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
+    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
 
     ss.str("");
     ss << UI_Text[9] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND];
-    NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
+    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
 
     ss.str("");
     ss << UI_Text[10] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND];
-    NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
+    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
 
     ss.str("");
     ss << UI_Text[11] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::JUMP_COMMAND];
-    NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
+    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 100, 1), Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
+    whatKeyToChange = "";
+
+    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), Vector3(0, CenterPosition.y * 3.f, 0), Vector3(400, 200, 1), Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[12]);
     //For Setting Stuff
 
 	UI_Sys.cUIS_LayerContainer.push_back(NewL);
@@ -145,7 +150,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                                 for (std::vector<UI_Element*>::iterator it3 = (*it)->cUI_Layer.begin(); it3 != (*it)->cUI_Layer.end(); ++it3)
                                 {
                                     if (((*it3)->UI_Text == UI_Text[1] || (*it3)->UI_Text == UI_Text[2] || (*it3)->UI_Text == UI_Text[3]) ||    // Main Menu 
-                                        (*it3)->UI_Text == UI_Text[6] || (*it3)->UI_Text == UI_Text[7] || (*it3)->UI_Text == UI_Text[8] || (*it3)->UI_Text == UI_Text[9] || (*it3)->UI_Text == UI_Text[10] || (*it3)->UI_Text == UI_Text[11])   //Setting Stuff
+                                        (*it3)->UI_Text == UI_Text[6] || checkWhetherTheWordInThatString(UI_Text[7], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[8], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[9], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[10], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[11], (*it3)->UI_Text))   //Setting Stuff
                                     {
                                         (*it3)->SwapOriginalWithTarget();
                                     }
@@ -216,7 +221,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                 //Updating of Settings
                 else if (CurrentMenuState == S_SETTING)
                 {
-                    if ((*it2)->UI_Text == UI_Text[6] || (*it2)->UI_Text == UI_Text[7] || (*it2)->UI_Text == UI_Text[8] || (*it2)->UI_Text == UI_Text[9] || (*it2)->UI_Text == UI_Text[10] || (*it2)->UI_Text == UI_Text[11])
+                    if ((*it2)->UI_Text == UI_Text[6] || checkWhetherTheWordInThatString(UI_Text[7], (*it2)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[8], (*it2)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[9], (*it2)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[10], (*it2)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[11], (*it2)->UI_Text))   //Setting Stuff
                     {
                         (*it2)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
                         if (ClickSucceeded)
@@ -227,19 +232,29 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                                 CurrentMenuState = S_FIRSTLEVEL;
                                 for (std::vector<UI_Element*>::iterator it3 = (*it)->cUI_Layer.begin(); it3 != (*it)->cUI_Layer.end(); ++it3)
                                 {
-                                    if ((*it3)->UI_Text == UI_Text[6] || (*it3)->UI_Text == UI_Text[7] || (*it3)->UI_Text == UI_Text[8] || (*it3)->UI_Text == UI_Text[9] || (*it3)->UI_Text == UI_Text[10] || (*it3)->UI_Text == UI_Text[11])
-                                    {
-                                        (*it3)->SwapOriginalWithTarget();
-                                    }
-                                    else if (((*it3)->UI_Text == UI_Text[1] || (*it3)->UI_Text == UI_Text[2] || (*it3)->UI_Text == UI_Text[3]))
+                                    if (((*it3)->UI_Text == UI_Text[1] || (*it3)->UI_Text == UI_Text[2] || (*it3)->UI_Text == UI_Text[3]) ||    // Main Menu 
+                                        (*it3)->UI_Text == UI_Text[6] || checkWhetherTheWordInThatString(UI_Text[7], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[8], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[9], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[10], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[11], (*it3)->UI_Text))   //Setting Stuff
                                     {
                                         (*it3)->SwapOriginalWithTarget();
                                     }
                                 }
                             }
-                            else if ((*it2)->UI_Text == UI_Text[6])
-                            {
-
+                            else {
+                                for (unsigned num = 7; num <= 11; ++num)
+                                {
+                                    if (checkWhetherTheWordInThatString(UI_Text[num], (*it2)->UI_Text))
+                                    {
+                                        whatKeyToChange = UI_Text[num];
+                                        CurrentMenuState = S_UPDATING_KEYS;
+                                        for (std::vector<UI_Element*>::iterator it3 = (*it)->cUI_Layer.begin(); it3 != (*it)->cUI_Layer.end(); ++it3)
+                                        {
+                                            if ((*it3)->UI_Text == UI_Text[6] || checkWhetherTheWordInThatString(UI_Text[7], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[8], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[9], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[10], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[11], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[12], (*it3)->UI_Text))   //Setting Stuff
+                                            {
+                                                (*it3)->SwapOriginalWithTarget();
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -247,7 +262,40 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
 					else if ((*it2)->Active)
 						(*it2)->Update((float)dt);
                 }
-            }
+                //Updating of the keys
+                else if (CurrentMenuState == S_UPDATING_KEYS)
+                {
+                    if ((*it2)->Active)
+                    {
+                        (*it2)->Update((float)dt);
+                    }
+                    for (unsigned char theChar = 0; theChar < UCHAR_MAX; ++theChar)
+                    {
+                        if (Application::IsKeyPressed(theChar) && !Application::IsKeyPressed(VK_LBUTTON))
+                        {
+                            CurrentMenuState = S_SETTING;
+                            theChar = toupper(theChar);
+                            writeToGlobalDrivenAndChangeCommand(theChar, whatKeyToChange);
+                            Application::loadThoseKeyCommandsStuff();
+                            for (std::vector<UI_Element*>::iterator it3 = (*it)->cUI_Layer.begin(); it3 != (*it)->cUI_Layer.end(); ++it3)
+                            {
+                                if ((*it3)->UI_Text == UI_Text[6] || checkWhetherTheWordInThatString(UI_Text[7], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[8], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[9], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[10], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[11], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[12], (*it3)->UI_Text))   //Setting Stuff
+                                {
+                                    (*it3)->SwapOriginalWithTarget();
+                                    if (checkWhetherTheWordInThatString(whatKeyToChange, (*it3)->UI_Text))
+                                    {
+                                        std::ostringstream ss2;
+                                        ss2 << whatKeyToChange << ":" << theChar;
+                                        (*it3)->UI_Text = ss2.str();
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+                //Updating of the keys
+     }
         }
     }
 }
@@ -536,4 +584,29 @@ void Scene_MainMenu::Exit()
 			delete it;
 	}
 	//<!> will remove soon <!>
+}
+
+void Scene_MainMenu::writeToGlobalDrivenAndChangeCommand(const unsigned char &command, const std::string &theKey)
+{
+    std::ifstream file("DrivenFiles//GlobalDriven.csv");
+    if (file.is_open())
+    {
+        std::vector<std::string> allTheLines;
+        std::string data = "";
+        while (getline(file, data))
+            allTheLines.push_back(data);
+        file.close();
+
+        std::ofstream writeFile("DrivenFiles//GlobalDriven.csv");
+        for (std::vector<std::string>::iterator it = allTheLines.begin(), end = allTheLines.end(); it != end; ++it)
+        {
+            if (checkWhetherTheWordInThatString(theKey, (*it)))
+            {
+                writeFile << theKey << "," << command << std::endl;
+            }
+            else
+                writeFile << (*it) << std::endl;
+        }
+        writeFile.close();
+    }
 }

@@ -1,5 +1,5 @@
 stage,ConditionName,Value,Description,qOrigin
-1,goto,10;0;10,Put out all the cursed fires around the Crypt,NPC_guardcaptain
+1,goto,10;0;10,Put out all the cursed fires around the Crypt,None
 2,goto,15;0;5,Put out all the cursed fires around the Crypt,None
 3,goto,25;0;40,Put out all the cursed fires around the Crypt,None
 4,goto,35;0;20,Put out all the cursed fires around the Crypt,None
