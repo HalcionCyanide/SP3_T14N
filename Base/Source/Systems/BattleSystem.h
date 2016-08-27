@@ -39,7 +39,7 @@ public:
 	virtual ~BattleSystem();
 
 	//Public Variables
-	BS_State BattleState = BS_IntroScreen;
+	BS_State BattleState = BS_BattlePhase;
 
 	// Public Function Calls
 	virtual void Init();

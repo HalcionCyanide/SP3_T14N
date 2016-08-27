@@ -189,8 +189,10 @@ void BattleSystem::SetEnemy(Enemy& E)
 	float BoxHeightUnits = 12;
 	float AspectRatio = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight;
 	BattleBox->AddUIElement(UI_Element::UI_LOGO, "GBox", Vector3(CenterPosition.x * -2.f, CenterPosition.y, 0), Vector3(CenterPosition.x * -2.f, CenterPosition.y, 0), Vector3(PlayerScale * BoxHeightUnits * AspectRatio, PlayerScale * BoxHeightUnits, 1), Vector3(CenterPosition.x * 0.95f, CenterPosition.y, 0));
+	BattleBox->cUI_Layer[0]->UI_Bounds->ResetValues();
 	cUI_System.cUIS_LayerContainer.push_back(BattleBox);
 	QuickInit();
+	PlayerObj->SetPosition(BattleBox->cUI_Layer[0]->TargetPosition);
 }
 
 // Private Function Calls
@@ -389,7 +391,26 @@ void BattleSystem::UpdateControls(float dt)
 		PlayerObj->SetAcceleration(Accel);
 	}
 	// BoundsCheck Here
+	Vector3 FwdPos = PlayerObj->GetPosition() + PlayerObj->GetVelocity() * dt;
+	Boundary2D InteriorBounds = *BattleBox->cUI_Layer[0]->UI_Bounds;
+	InteriorBounds.SetPosition(BattleBox->cUI_Layer[0]->Position);
+	InteriorBounds.SetDimensions(BattleBox->cUI_Layer[0]->Dimensions);
+	InteriorBounds.ResetValues();
 
+	if ((PlayerObj->GetPosition().x + PlayerObj->GetVelocity().x * dt > InteriorBounds.GetPosition().x + InteriorBounds.GetDimensions().x * 0.5f - PlayerObj->GetDimensions().x * 0.5f && PlayerObj->GetVelocity().x > 0) ||
+		(PlayerObj->GetPosition().x + PlayerObj->GetVelocity().x * dt< InteriorBounds.GetPosition().x - InteriorBounds.GetDimensions().x * 0.5f + PlayerObj->GetDimensions().x * 0.5f && PlayerObj->GetVelocity().x < 0))
+	{
+		PlayerObj->SetPosition(PlayerObj->GetPosition() - PlayerObj->GetVelocity() * 0.5f * dt);
+		PlayerObj->SetVelocity(Vector3(-PlayerObj->GetVelocity().x * (1.f - FrictionDecrementMultiplier), PlayerObj->GetVelocity().y, 0.f));
+		PlayerObj->SetAcceleration(Vector3(0, PlayerObj->GetAcceleration().y, 0.f));
+	}
+	if ((PlayerObj->GetPosition().y + PlayerObj->GetVelocity().y * dt > InteriorBounds.GetPosition().y + InteriorBounds.GetDimensions().y * 0.5f - PlayerObj->GetDimensions().y * 0.5f && PlayerObj->GetVelocity().y > 0) ||
+		(PlayerObj->GetPosition().y + PlayerObj->GetVelocity().y * dt < InteriorBounds.GetPosition().y - InteriorBounds.GetDimensions().y * 0.5f + PlayerObj->GetDimensions().y * 0.5f && PlayerObj->GetVelocity().y < 0))
+	{
+		PlayerObj->SetPosition(PlayerObj->GetPosition() - PlayerObj->GetVelocity() * 0.5f * dt);
+		PlayerObj->SetVelocity(Vector3(PlayerObj->GetVelocity().x, -PlayerObj->GetVelocity().y * (1.f - FrictionDecrementMultiplier), 0.f));
+		PlayerObj->SetAcceleration(Vector3(PlayerObj->GetAcceleration().x, 0, 0.f));
+	}
 
 	PlayerObj->Update(dt);
 
