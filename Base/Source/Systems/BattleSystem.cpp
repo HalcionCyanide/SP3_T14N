@@ -459,13 +459,18 @@ void BattleSystem::UpdateEnemyLogic(float dt)
 	{
 		if ((*it)->Active)
 		{
-			if ((*it)->GetPosition().y - (*it)->GetDimensions().y * 0.5f < BBox->Position.y - BBox->Dimensions.y ||
-				(*it)->GetPosition().x - (*it)->GetDimensions().x * 0.5f < BBox->Position.x - BBox->Dimensions.x || 
-				(*it)->GetPosition().y + (*it)->GetDimensions().y * 0.5f < BBox->Position.y + BBox->Dimensions.x)
-			{
-				(*it)->Update(dt);
-				++ActiveBSOCount;
-			}
+			if ((*it)->Type == BattleScreenObject::BS_Bullet && 
+				(*it)->GetPosition().y - (*it)->GetDimensions().y * 0.5f > BBox->Position.y - BBox->Dimensions.y * 0.5f)
+				{
+					(*it)->Update(dt);
+					++ActiveBSOCount;
+				}
+			else if ((*it)->Type == BattleScreenObject::BS_Blast || (*it)->Type == BattleScreenObject::BS_Null &&
+				BattleBox->cUI_Layer[0]->UI_Bounds->CheckCollision((*it)->GetPosition()))
+				{
+					(*it)->Update(dt);
+					++ActiveBSOCount;
+				}
 			else
 			{
 				--ActiveBSOCount;
@@ -710,14 +715,14 @@ void BattleSystem::Attack_Bullet(EnemyProjectile& CurrentProjectile)
 	BSO->Type = BattleScreenObject::BS_Bullet;
 	BSO->Active = true;
 	BSO->TargetPoint = TargetPos;
-	BSO->AltTargetPoint = PlayerObj->GetPosition();
+	BSO->AltTargetPoint = PlayerObj->GetPosition() + 2 * Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0);
 	BSO->MoveToTarget = true;
 	BSO->SetMass(3.f);
 }
 
 void BattleSystem::Attack_Trap(EnemyProjectile& CurrentProjectile)
 {
-	Vector3 SpawnPos = PlayerObj->GetPosition() + Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0);
+	Vector3 SpawnPos = PlayerObj->GetPosition() + 2 * Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0);
 	float RAngle = Math::RandFloatMinMax(-360.f, 360.f);
 	BattleScreenObject* BSO = GetInactiveBSO();
 	BSO->SetParameters("CrossMarker", 3, SpawnPos + Vector3(0, 0, -1), Vector3(PlayerScale, PlayerScale, 1), 0, RAngle, Vector3(0, 0, 1));
