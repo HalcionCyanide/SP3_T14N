@@ -37,8 +37,9 @@ void BattleSystem::QuickInit()
 {
 	// Intro
 	AnimationPaused = false;
+	AnimationResumed = false;
 	AnimationPauseTimer = 0.f;
-	AnimationPauseTime = 4.f;
+	AnimationPauseTime = 5.f;
 	HasPlayerAndEnemyInfoInit = false;
 	IsInfoBoxOut = false;
 	BattleState = BS_IntroScreen;
@@ -48,10 +49,10 @@ void BattleSystem::QuickInit()
 	PlayerCurrentMovementSpeed = PlayerBaseMovementSpeed;
 	PlayerIsInvincible = false;
 	PlayerIFrameTimer = 0;
-	FrictionDecrementMultiplier = 0.8f;
+	FrictionDecrementMultiplier = 0.9f;
 
 	// Enemy
-	EnemyStaminaTimer = 30; // 30s round
+	EnemyStaminaTimer = 15; // 30s round
 	CurrentStaminaTimer = 0;
 
 	// BSOs
@@ -61,6 +62,8 @@ void BattleSystem::QuickInit()
 	//PlayerInventoryUI = new UI_Layer();
 	PlayerInfoBox = new UI_Layer();
 	EnemyInfoBox = new UI_Layer();
+
+	RoundOver = false;
 }
 
 void BattleSystem::Update(double dt)
@@ -79,6 +82,8 @@ void BattleSystem::Update(double dt)
 	case BS_EndScreenFail:
 		break;
 	}
+	if (RoundOver)
+		QuickExit();
 }
 
 void BattleSystem::Render()
@@ -157,6 +162,8 @@ void BattleSystem::Exit()
 		delete *it;
 	}
 	cBS_ObjectContainer.clear();
+
+	Scene_System::accessing().BSys->cUI_System.Exit();
 }
 
 void BattleSystem::QuickExit()
@@ -164,50 +171,46 @@ void BattleSystem::QuickExit()
 	if (PlayerObj)
 	{
 		delete PlayerObj;
-		PlayerObj = nullptr;
 	}
 
 	if (CurrentEnemy)
 	{
 		delete CurrentEnemy;
-		CurrentEnemy = nullptr;
 	}
 
-	if (PlayerInventoryUI)
+	/*if (PlayerInventoryUI)
 	{
 		delete PlayerInventoryUI;
-		PlayerInventoryUI = nullptr;
 	}
 	if (PlayerInfoBox)
 	{
 		delete PlayerInfoBox;
-		PlayerInfoBox = nullptr;
 	}
 	if (EnemyInfoBox)
 	{
 		delete EnemyInfoBox;
-		EnemyInfoBox = nullptr;
 	}
 	if (EnemyLayer)
 	{
 		delete EnemyLayer;
-		EnemyLayer = nullptr;
 	}
 	if (BattleBox)
 	{
 		delete BattleBox;
-		BattleBox = nullptr;
 	}
-	if (HealthBarGreen)
-	{
-		delete HealthBarGreen;
-		HealthBarGreen = nullptr;
-	}
-	if (EnemyStaminaBar)
-	{
-		delete EnemyStaminaBar;
-		EnemyStaminaBar = nullptr;
-	}
+	
+	PlayerObj = nullptr;
+	CurrentEnemy = nullptr;
+	CurrentProjectile = nullptr;
+	PlayerInventoryUI = nullptr;
+	PlayerInfoBox = nullptr;
+	EnemyInfoBox = nullptr;
+	EnemyLayer = nullptr;
+	BattleBox = nullptr;
+	HealthBarGreen = nullptr;
+	EnemyStaminaBar = nullptr;*/
+
+	Scene_System::accessing().BSys->cUI_System.Exit();
 
 	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 	{
@@ -215,6 +218,9 @@ void BattleSystem::QuickExit()
 		delete *it;
 	}
 	cBS_ObjectContainer.clear();
+
+	Scene_System::accessing().SwitchToPreviousScene();
+	Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
 }
 
 BattleScreenObject* BattleSystem::GetInactiveBSO()
@@ -390,7 +396,7 @@ void BattleSystem::UpdateInfoBoxAnimation(float dt)
 			int ParticleCount = Math::RandIntMinMax(50, 100);
 			for (int i = 0; i < ParticleCount; ++i)
 			{
-				cBillboardManager.AddParticle("Smoke", CenterPosition + Vector3(0, Math::RandFloatMinMax(-Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.5f)), Vector3(PlayerScale* 1.5f, PlayerScale * 1.5f, 1.f), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale)), Vector3(0, 0, 1), 2);
+				cBillboardManager.AddParticle("Fire", CenterPosition + Vector3(0, Math::RandFloatMinMax(-Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.5f)), Vector3(PlayerScale* 1.5f, PlayerScale * 1.5f, 1.f), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale)), Vector3(0, 0, 1), 2);
 			}
 		}
 	}
@@ -465,7 +471,7 @@ void BattleSystem::UpdateEnemyLogic(float dt)
 	}
 	else // Out of stamina
 	{
-
+		RoundOver = true;
 	}
 
 	// Bullet Update
@@ -697,13 +703,6 @@ int BattleSystem::BatchCreateAttacks(EnemyProjectile& CurrentProjectile)
 		int AttackCount = Math::RandIntMinMax(1, CurrentProjectile.BatchCreateCount);
 		for (unsigned short i = 0; i < AttackCount; ++i)
 			Attack_Bullet(CurrentProjectile);
-		return AttackCount;
-	}
-	else if (CurrentProjectile.AttackType == "Bouncer")
-	{
-		int AttackCount = Math::RandIntMinMax(1, CurrentProjectile.BatchCreateCount);
-		for (unsigned short i = 0; i < AttackCount; ++i)
-			Attack_Trap(CurrentProjectile);
 		return AttackCount;
 	}
 	else if (CurrentProjectile.AttackType == "Trap")

@@ -39,7 +39,7 @@ public:
 	virtual ~BattleSystem();
 
 	//Public Variables
-	BS_State BattleState = BS_BattlePhase;
+	BS_State BattleState = BS_IntroScreen;
 
 	// Public Function Calls
 	virtual void Init();
@@ -76,8 +76,8 @@ private:
 	// Intro Variables
 	bool AnimationPaused = false;						// Value for whether they are paused.
 	bool AnimationResumed = false;
-	float AnimationPauseTimer = 0.f;					// Timer to check how long they have been stopped.
-	float AnimationPauseTime = 5.f;						// How long the boxes stay at the screen's center before moving
+	float AnimationPauseTimer;					// Timer to check how long they have been stopped.
+	float AnimationPauseTime; 						// How long the boxes stay at the screen's center before moving
 	bool HasPlayerAndEnemyInfoInit = false;				// Is the Player and Enemy's data inited yet?
 	bool IsInfoBoxOut = false;							// Have the boxes gone out of screen?
 	UI_Layer* PlayerInfoBox;
@@ -110,8 +110,8 @@ private:
 	float PlayerCurrentMovementSpeed;
 	UI_Layer* PlayerInventoryUI;
 	bool PlayerIsInvincible = false;
-	float PlayerIFrameTimer = 0;
-	float FrictionDecrementMultiplier = 0.2f;
+	float PlayerIFrameTimer;
+	float FrictionDecrementMultiplier;
 	BattleScreenObject* PlayerObj;
 	// Enemy Variables
 	Enemy* CurrentEnemy;		// To Store Attack Patterns and Stats
@@ -128,6 +128,8 @@ private:
 
 	void UpdateEndScreenSuccess(float dt);
 	void UpdateEndScreenFail(float dt);
+
+	bool RoundOver = false;
 
 	// Base Object Container [The container that holds the enemy projectiles/attacks]
 	std::vector<BattleScreenObject*> cBS_ObjectContainer;
