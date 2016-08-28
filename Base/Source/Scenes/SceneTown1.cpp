@@ -262,42 +262,53 @@ void SceneTown1::Update(float dt)
 				{
 					if (it.first == it2.first) // compare the same quests
 					{
-						for (auto it3 : Scene_System::accessing().QM.qPreReq)
-						{
-							if (buttonCount <= 3)
+							for (auto it3 : it.second)
 							{
-								if (it3.first == it2.first) // if i am talking about that same quest to check prerequsites
+								if (buttonCount <= 3)
 								{
-									if (it2.second >= it3.second) // if i have satisfied the prereq
+									if (it3 - it2.second == 1)
 									{
 										for (auto it4 : Scene_System::accessing().QM.allQuests)
 										{
+											if (buttonCount > 3)
+											{
+												break;
+											}
 											for (auto it5 : it4->qStages)
 											{
-												if (it5->getGiver() == CurrentNPC->getName())
+												if (buttonCount > 3)
+												{
+													break;
+												}
+												else if (it5->getStageNO() == it3 && it5->getGiver() == CurrentNPC->getName())
 												{
 													NPC_QuestButtons.at(buttonCount)->UI_Text = it4->getName();
 													buttonCount++;
+													break;
 												}
 												else
 												{
 													NPC_QuestButtons.at(buttonCount)->UI_Text = "";
 													buttonCount++;
+													break;
 												}
 											}
 										}
 									}
+									else
+									{
+										break;
+									}
 								}
 								else
 								{
-									NPC_QuestButtons.at(buttonCount)->UI_Text = "";
-									buttonCount++;
+									break;
 								}
 							}
 						}
 					}
 				}
-			}
+			
 			 //Interacting with NPC: Check UI Key Press
 			std::string temp = HandleChatUIInput((float)dt);
 			if (temp == "Exit")
