@@ -76,6 +76,16 @@ void UI_Element::WrapText()
 				TextWrappingEnabled = true;
 			}
 		}
+	if (UI_Text_Container.size() > 1)
+	{
+		for (int i = 0; i < UI_Text_Container.size(); ++i)
+		{
+			if (UI_Text_Container[i].at(0) == ' ')
+			{
+				UI_Text_Container[i].erase(0, 1);
+			}
+		}
+	}
 	else TextWrappingEnabled = false;
 }
 
