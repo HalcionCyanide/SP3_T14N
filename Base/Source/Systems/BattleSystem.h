@@ -58,6 +58,7 @@ private:
 	Vector3 CursorPosition;
 	Vector3 CenterPosition;
 	int ActiveBSOCount;
+	float SpellPowerRatio, EnemySpellPowerRatio;
 
 	BattleScreenObject* GetInactiveBSO();
 
@@ -126,6 +127,9 @@ private:
 	// Attack Calls
 	void Attack_Bullet(EnemyProjectile& CurrentProjectile);
 	void Attack_Trap(EnemyProjectile& CurrentProjectile);
+	void Attack_HorizontalRay(EnemyProjectile& CurrentProjectile);
+	void Attack_VerticalRay(EnemyProjectile& CurrentProjectile);
+
 	// Battle End
 
 	// End State Calls

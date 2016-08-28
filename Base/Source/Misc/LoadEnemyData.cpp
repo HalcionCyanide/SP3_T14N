@@ -78,6 +78,7 @@ bool LoadEnemyData(const char *file_path, std::map<std::string, Enemy*> &EMap)
 			while (CSV_Values.size() - 1 > pos)
 			{
 				num++;
+				int Counter = 0;
 				std::ostringstream ss;
 				EnemyProjectile* TempP = new EnemyProjectile();
 				ss << "P" << num << "MESHNAME";
@@ -92,6 +93,7 @@ bool LoadEnemyData(const char *file_path, std::map<std::string, Enemy*> &EMap)
 					{
 						TempP->StoredMesh = iter->second;
 					}
+					++Counter; 
 
 					ss.str("");
 					ss << "P" << num << "TYPE";
@@ -102,6 +104,8 @@ bool LoadEnemyData(const char *file_path, std::map<std::string, Enemy*> &EMap)
 					{
 						TempP->AttackType = CSV_Values[pos];
 
+						++Counter;
+
 						ss.str("");
 						ss << "P" << num << "ATTACKSPEED";
 						it = std::find(CSV_Keys.begin(), CSV_Keys.end(), ss.str());
@@ -111,6 +115,8 @@ bool LoadEnemyData(const char *file_path, std::map<std::string, Enemy*> &EMap)
 						{
 							TempP->AttackSpeed = stof(CSV_Values[pos]);
 
+
+							++Counter;
 							ss.str("");
 							ss << "P" << num << "ATTACKSPERWAVE";
 							it = std::find(CSV_Keys.begin(), CSV_Keys.end(), ss.str());
@@ -119,6 +125,8 @@ bool LoadEnemyData(const char *file_path, std::map<std::string, Enemy*> &EMap)
 							if (CSV_Values[pos] != "")
 							{
 								TempP->AttacksPerWave = stoi(CSV_Values[pos]);
+
+								++Counter;
 
 								ss.str("");
 								ss << "P" << num << "DAMAGEPERATTACK";
@@ -129,6 +137,8 @@ bool LoadEnemyData(const char *file_path, std::map<std::string, Enemy*> &EMap)
 								{
 									TempP->DamagePerAttack = stoi(CSV_Values[pos]);
 
+									++Counter;
+
 									ss.str("");
 									ss << "P" << num << "SCALARACCELERATION";
 									it = std::find(CSV_Keys.begin(), CSV_Keys.end(), ss.str());
@@ -136,6 +146,9 @@ bool LoadEnemyData(const char *file_path, std::map<std::string, Enemy*> &EMap)
 									if (CSV_Values.size() > pos)
 									if (CSV_Values[pos] != "")
 									{
+
+										++Counter;
+
 										TempP->ScalarAcceleration = stof(CSV_Values[pos]);
 										ss.str("");
 										ss << "P" << num << "BATCHCREATECOUNT";
@@ -144,6 +157,9 @@ bool LoadEnemyData(const char *file_path, std::map<std::string, Enemy*> &EMap)
 										if (CSV_Values.size() > pos)
 											if (CSV_Values[pos] != "")
 											{
+
+												++Counter;
+
 												TempP->BatchCreateCount = stoi(CSV_Values[pos]);
 												Temp->cE_Projectiles.push_back(TempP);
 												EMap.insert(std::pair<std::string, Enemy*>(Temp->getName(), Temp));
@@ -154,6 +170,8 @@ bool LoadEnemyData(const char *file_path, std::map<std::string, Enemy*> &EMap)
 						}
 					}
 				}
+				if (Counter < 7)
+					delete TempP;
 			}
 			CSV_Values.clear();
 		}

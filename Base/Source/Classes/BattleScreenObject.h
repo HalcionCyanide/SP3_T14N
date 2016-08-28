@@ -21,7 +21,8 @@ public:
 		BS_Null,
 		BS_Normal,
 		BS_Bullet,
-		BS_ScatterShot,
+		BS_HRay,
+		BS_VRay,
 		BS_Blast,
 		BS_Chaser,
 	};
