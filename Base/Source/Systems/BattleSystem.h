@@ -91,6 +91,7 @@ private:
 	void UpdatePlayer(float dt);
 	void UpdateITimer(float dt);
 	void UpdateControls(float dt);
+	void UpdateEnemyLogic(float dt);
 	// Battle Physics Calls
 	void UpdatePhysics(float dt);
 	bool CollisionCheck(const BattleScreenObject&, const BattleScreenObject&, float dt);
@@ -100,6 +101,8 @@ private:
 	UI_Layer* BattleBox;
 	UI_Element* HealthBarGreen;
 	UI_Element* EnemyStaminaBar;
+	float GBarPosition;
+	float RBarPosition;
 	float HealthBarDefaultScale;
 	// Player Variables
 	float PlayerBaseMovementSpeed;
@@ -111,10 +114,12 @@ private:
 	BattleScreenObject* PlayerObj;
 	// Enemy Variables
 	Enemy* CurrentEnemy;		// To Store Attack Patterns and Stats
+	EnemyProjectile* CurrentProjectile;
 	float EnemyStaminaTimer;	// Default to 30s round
+	float CurrentStaminaTimer;
 	// Enemy Calls [Based on type use a specific attack call]
 	int BatchCreateAttacks(EnemyProjectile& CurrentProjectile);
-	// Attack Calls // Think of better names later
+	// Attack Calls
 	void Attack_Bullet(EnemyProjectile& CurrentProjectile);
 	void Attack_Trap(EnemyProjectile& CurrentProjectile);
 	// Battle End

@@ -21,9 +21,9 @@ public:
 		BS_Null,
 		BS_Normal,
 		BS_Bullet,
-		BS_Trap,
-		BS_Expander,
-		BS_Bouncer,
+		BS_ScatterShot,
+		BS_Blast,
+		BS_Chaser,
 	};
 
 	BattleScreenObject(const std::string& MeshName, const float& Mass, const Vector3& Position, const Vector3& Dimensions, const Vector3& Acceleration, const float& RotationAngle, const Vector3& RotationAxis);
@@ -39,9 +39,9 @@ public:
 	float LifeTime = -1;
 	float LifeTimer = 0;
 	bool GravityAffected = false;
+	Vector3 TargetPoint;
 
 private:
-
 	Vector3 Acceleration;
 };
 
