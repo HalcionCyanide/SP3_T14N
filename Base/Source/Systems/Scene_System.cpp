@@ -220,10 +220,10 @@ void Scene_System::UpdateLoadingStuff(double dt)
     }
     if (whatLoadingState != prevLoadingState)
         prevLoadingState = whatLoadingState;
-    if (m_accumulatedLoadingTime > 5)
-    {
-        SetLoadingTime(2);
-    }
+    //if (m_accumulatedLoadingTime > 5)
+    //{
+    //    SetLoadingTime(2);
+    //}
 }
 
 void Scene_System::SetLoadingTime(const double &dt)
