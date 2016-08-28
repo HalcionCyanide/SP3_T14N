@@ -70,7 +70,7 @@ private:
 	std::stack<SceneEntity* > SceneHistory;
     std::map<std::string, SceneEntity*> theSceneList;
     SceneEntity *graphics_scene;
-    double delayingLoadingTime;
+    double delayingLoadingTime, m_accumulatedLoadingTime;
     enum LOADING_STATE {
         BEGIN_LOADING,
         STILL_LOADING,
@@ -78,6 +78,7 @@ private:
         TOTAL_LOADING_STATES,
     };
     LOADING_STATE whatLoadingState;
+    LOADING_STATE prevLoadingState;
 };
 
 #endif
