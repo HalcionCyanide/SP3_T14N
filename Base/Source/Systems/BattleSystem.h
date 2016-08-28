@@ -57,6 +57,7 @@ private:
 	// Private Variables
 	Vector3 CursorPosition;
 	Vector3 CenterPosition;
+	int ActiveBSOCount;
 
 	BattleScreenObject* GetInactiveBSO();
 
@@ -115,7 +116,7 @@ private:
 	BattleScreenObject* PlayerObj;
 	// Enemy Variables
 	Enemy* CurrentEnemy;		// To Store Attack Patterns and Stats
-	EnemyProjectile* CurrentProjectile;
+	EnemyProjectile CurrentProjectile;
 	float EnemyStaminaTimer;	// Default to 30s round
 	float CurrentStaminaTimer;
 	// Enemy Calls

@@ -23,7 +23,6 @@ void BattleSystem::Init()
 
 	PlayerObj = nullptr; 
 	CurrentEnemy = nullptr;
-	CurrentProjectile = nullptr;
 	PlayerInventoryUI = nullptr;
 	PlayerInfoBox = nullptr;
 	EnemyInfoBox = nullptr;
@@ -57,6 +56,7 @@ void BattleSystem::QuickInit()
 
 	// BSOs
 	PlayerObj = new BattleScreenObject("PlayerHeart", 1, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), 0, 0, Vector3(0, 0, 1));
+	ActiveBSOCount = 0;
 
 	// UIs
 	//PlayerInventoryUI = new UI_Layer();
@@ -82,7 +82,7 @@ void BattleSystem::Update(double dt)
 	case BS_EndScreenFail:
 		break;
 	}
-	if (RoundOver)
+	if (ActiveBSOCount == 0 && RoundOver)
 		QuickExit();
 }
 
@@ -163,7 +163,7 @@ void BattleSystem::Exit()
 	}
 	cBS_ObjectContainer.clear();
 
-	Scene_System::accessing().BSys->cUI_System.Exit();
+	cUI_System.Exit();
 }
 
 void BattleSystem::QuickExit()
@@ -171,46 +171,14 @@ void BattleSystem::QuickExit()
 	if (PlayerObj)
 	{
 		delete PlayerObj;
+		PlayerObj = nullptr;
 	}
 
 	if (CurrentEnemy)
 	{
 		delete CurrentEnemy;
+		CurrentEnemy = nullptr;
 	}
-
-	/*if (PlayerInventoryUI)
-	{
-		delete PlayerInventoryUI;
-	}
-	if (PlayerInfoBox)
-	{
-		delete PlayerInfoBox;
-	}
-	if (EnemyInfoBox)
-	{
-		delete EnemyInfoBox;
-	}
-	if (EnemyLayer)
-	{
-		delete EnemyLayer;
-	}
-	if (BattleBox)
-	{
-		delete BattleBox;
-	}
-	
-	PlayerObj = nullptr;
-	CurrentEnemy = nullptr;
-	CurrentProjectile = nullptr;
-	PlayerInventoryUI = nullptr;
-	PlayerInfoBox = nullptr;
-	EnemyInfoBox = nullptr;
-	EnemyLayer = nullptr;
-	BattleBox = nullptr;
-	HealthBarGreen = nullptr;
-	EnemyStaminaBar = nullptr;*/
-
-	Scene_System::accessing().BSys->cUI_System.Exit();
 
 	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 	{
@@ -218,6 +186,8 @@ void BattleSystem::QuickExit()
 		delete *it;
 	}
 	cBS_ObjectContainer.clear();
+
+	cUI_System.Exit();
 
 	Scene_System::accessing().SwitchToPreviousScene();
 	Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
@@ -268,6 +238,8 @@ void BattleSystem::SetEnemy(Enemy& E)
 
 	// Set Wave Time
 	EnemyStaminaTimer *= CurrentEnemy->MaxEnemyWave;
+	int EnemyAttack = Math::RandIntMinMax(0, CurrentEnemy->cE_Projectiles.size() - 1);
+	CurrentProjectile = *CurrentEnemy->cE_Projectiles[EnemyAttack];
 
 	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, CurrentEnemy->MeshName, Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(PlayerScale * 5, PlayerScale * 5, 1), EnemyDefaultPosition);
 	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.35f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.35f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.35f, 0), CurrentEnemy->MeshName);
@@ -449,23 +421,23 @@ void BattleSystem::UpdateEnemyLogic(float dt)
 			EnemyStaminaBar->AtTarget = true;
 
 		// Use Current Attack
-		if (CurrentProjectile && CurrentEnemy->CurrentAttackCount < CurrentProjectile->AttacksPerWave)
+		if (CurrentProjectile.StoredMesh && CurrentEnemy->CurrentAttackCount < CurrentProjectile.AttacksPerWave)
 		{
 			CurrentEnemy->CurrentTime += dt;
 			// Can fire an attack
-			if (CurrentEnemy->CurrentTime > CurrentProjectile->AttackSpeed)
+			if (CurrentEnemy->CurrentTime > CurrentProjectile.AttackSpeed)
 			{
 				CurrentEnemy->CurrentTime = 0;
 				CurrentEnemy->CurrentAttackCount++;
 				AnimateEnemy();
-				BatchCreateAttacks(*CurrentProjectile);
+				BatchCreateAttacks(CurrentProjectile);
 			}
 		}
 		// Reselect an attack from the pool
 		else 
 		{
 			int EnemyAttack = Math::RandIntMinMax(0, CurrentEnemy->cE_Projectiles.size() - 1);
-			CurrentProjectile = CurrentEnemy->cE_Projectiles[EnemyAttack];
+			CurrentProjectile = *CurrentEnemy->cE_Projectiles[EnemyAttack];
 			CurrentEnemy->CurrentAttackCount = 0;
 		}
 	}
@@ -476,6 +448,7 @@ void BattleSystem::UpdateEnemyLogic(float dt)
 
 	// Bullet Update
 	UI_Element* BBox = BattleBox->cUI_Layer[0];
+	ActiveBSOCount = 0;
 	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 	{
 		if ((*it)->Active)
@@ -485,9 +458,13 @@ void BattleSystem::UpdateEnemyLogic(float dt)
 				(*it)->GetPosition().y + (*it)->GetDimensions().y * 0.5f < BBox->Position.y + BBox->Dimensions.x)
 			{
 				(*it)->Update(dt);
-				//++ActiveCount;
+				++ActiveBSOCount;
 			}
-			else (*it)->Active = false;
+			else
+			{
+				--ActiveBSOCount;
+				(*it)->Active = false;
+			}
 		}
 	}
 }
