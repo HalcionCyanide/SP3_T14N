@@ -68,7 +68,6 @@ public:
 
 private:
 	std::stack<SceneEntity* > SceneHistory;
-    std::vector<SceneEntity*> alt_SceneHistory;
     std::map<std::string, SceneEntity*> theSceneList;
     SceneEntity *graphics_scene;
     double delayingLoadingTime;
