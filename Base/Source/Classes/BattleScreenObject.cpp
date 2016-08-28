@@ -26,6 +26,24 @@ void BattleScreenObject::Update(double dt)
 	if (LifeTime != -1)
 		if (LifeTimer > LifeTime)
 			Active = false;
+	if (MoveToTarget)
+	{
+		SetAcceleration(0);
+		Vector3 DVec = TargetPoint - GetPosition();
+		SetVelocity(DVec);
+		if (DVec.LengthSquared() < 10.f)
+		{
+			if (AltTargetPoint != 0)
+			{
+				SetVelocity(0);
+ 				std::swap(TargetPoint, AltTargetPoint);
+				DVec = TargetPoint - GetPosition();
+				SetAcceleration(DVec);
+				MoveToTarget = false;
+			}
+			else MoveToTarget = false;
+		}
+	}
 	if (Active) // Still can update if invisible
 	{
 		switch (Type)

@@ -119,6 +119,7 @@ private:
 	EnemyProjectile CurrentProjectile;
 	float EnemyStaminaTimer;	// Default to 30s round
 	float CurrentStaminaTimer;
+	float EnemyReselectionInterval;
 	// Enemy Calls
 	int BatchCreateAttacks(EnemyProjectile& CurrentProjectile);
 	void AnimateEnemy();
@@ -127,8 +128,16 @@ private:
 	void Attack_Trap(EnemyProjectile& CurrentProjectile);
 	// Battle End
 
+	// End State Calls
 	void UpdateEndScreenSuccess(float dt);
 	void UpdateEndScreenFail(float dt);
+	// Init Calls
+	void InitSuccessScreen();
+	void InitFailScreen();
+	// End State Variables
+	bool PlayerWon;
+	int SpellPowerIncrement;
+	// End State End
 
 	bool RoundOver = false;
 
