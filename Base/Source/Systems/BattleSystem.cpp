@@ -123,7 +123,15 @@ void BattleSystem::RenderIntroScreen()
 void BattleSystem::RenderBattleScreen()
 {
 	if (PlayerObj)
-		PlayerObj->Render();
+	{
+		if (PlayerIsInvincible)
+		{
+			if ((int)(PlayerIFrameTimer * 10) % 3 == 0)
+				PlayerObj->Render();
+		}
+		else PlayerObj->Render();
+
+	}
 	if (EnemyLayer)
 		EnemyLayer->Render();
 	if (BattleBox)
@@ -242,10 +250,6 @@ void BattleSystem::SetEnemy(Enemy& E)
 
 	GBarPosition = CenterPosition.x * 0.75f;
 	RBarPosition = CenterPosition.x * 1.75f;
-	// Bar Calcs
-	float HealthRatio = (float)Scene_System::accessing().gPlayer->GetCurrentHealth() / (float)Scene_System::accessing().gPlayer->GetMaxHealth();
-	float GBarWidth = HealthRatio * HealthBarDefaultScale * 0.5f;
-	float cGBarPosition = GBarPosition - (HealthBarDefaultScale - GBarWidth) * 0.5f + HealthBarDefaultScale * 0.25f - GBarWidth * 0.5f;
 
 	float StaminaRatio = (float)(EnemyStaminaTimer - CurrentStaminaTimer) / EnemyStaminaTimer;
 	float RBarWidth = StaminaRatio * HealthBarDefaultScale * 0.5f;
@@ -277,6 +281,10 @@ void BattleSystem::SetEnemy(Enemy& E)
 
 	BattleBox->AddUIElement(UI_Element::UI_BUTTON_R_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 0.3f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y - PlayerScale *  (1 + BoxHeightUnits * 0.5f), 0), Vector3(PlayerScale * 6, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 0.25f, CenterPosition.y * 0.3f, 0), "Remaining Health: ");
 	
+	float HealthRatio = (float)Scene_System::accessing().gPlayer->GetCurrentHealth() / (float)Scene_System::accessing().gPlayer->GetMaxHealth();
+	float GBarWidth = HealthRatio * HealthBarDefaultScale * 0.5f;
+	float cGBarPosition = GBarPosition - (HealthBarDefaultScale - GBarWidth) * 0.5f;
+
 	HealthBarGreen = new UI_Element(UI_Element::UI_BUTTON_R_TO_SCRN, "UI_HP_Green", Vector3(CenterPosition.x * 8.f, CenterPosition.y * 0.3f, 0), Vector3(CenterPosition.x * 8.f, CenterPosition.y * 0.3f, 0), Vector3(GBarWidth, PlayerScale * 1.f, 1), Vector3(cGBarPosition, CenterPosition.y * 0.3f, 0));
 	BattleBox->cUI_Layer.push_back(HealthBarGreen);
 
@@ -381,7 +389,7 @@ void BattleSystem::UpdateInfoBoxAnimation(float dt)
 			int ParticleCount = Math::RandIntMinMax(50, 100);
 			for (int i = 0; i < ParticleCount; ++i)
 			{
-				cBillboardManager.AddParticle("Smoke", CenterPosition + Vector3(0, Math::RandFloatMinMax(-Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.5f)), Vector3(PlayerScale* 0.5f, PlayerScale * 0.5f, 1.f), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale)), Vector3(0, 0, 1), 2);
+				cBillboardManager.AddParticle("Smoke", CenterPosition + Vector3(0, Math::RandFloatMinMax(-Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.5f)), Vector3(PlayerScale* 1.5f, PlayerScale * 1.5f, 1.f), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale)), Vector3(0, 0, 1), 2);
 			}
 		}
 	}
