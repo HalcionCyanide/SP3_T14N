@@ -205,24 +205,30 @@ void Scene_System::UpdateLoadingStuff(double dt)
     m_accumulatedLoadingTime += dt;
     if (m_accumulatedLoadingTime > delayingLoadingTime)
     {
-        for (std::vector<UI_Layer*>::iterator it = theLoadingEffect->cUIS_LayerContainer.begin(), end = theLoadingEffect->cUIS_LayerContainer.end(); it != end; ++it)
-        {
-            UI_Layer *theLayer = (*it);
-            for (std::vector<UI_Element*>::iterator it2 = theLayer->cUI_Layer.begin(), end2 = theLayer->cUI_Layer.end(); it2 != end2; ++it2)
-            {
-                UI_Element *theElement = (*it2);
-                theElement->Update((float)dt);
-                if (whatLoadingState != prevLoadingState)
-                    theElement->SwapOriginalWithTarget();
-            }
-        }
-        if (whatLoadingState != prevLoadingState)
-            prevLoadingState = whatLoadingState;
+            whatLoadingState = FINISHED_LOADING;
     }
+    for (std::vector<UI_Layer*>::iterator it = theLoadingEffect->cUIS_LayerContainer.begin(), end = theLoadingEffect->cUIS_LayerContainer.end(); it != end; ++it)
+    {
+        UI_Layer *theLayer = (*it);
+        for (std::vector<UI_Element*>::iterator it2 = theLayer->cUI_Layer.begin(), end2 = theLayer->cUI_Layer.end(); it2 != end2; ++it2)
+        {
+            UI_Element *theElement = (*it2);
+            theElement->Update((float)dt);
+            if (whatLoadingState != prevLoadingState)
+                theElement->SwapOriginalWithTarget();
+        }
+    }
+    if (whatLoadingState != prevLoadingState)
+        prevLoadingState = whatLoadingState;
+    //if (m_accumulatedLoadingTime > 5)
+    //{
+    //    SetLoadingTime(2);
+    //}
 }
 
 void Scene_System::SetLoadingTime(const double &dt)
 {
     delayingLoadingTime = dt;
     m_accumulatedLoadingTime = 0;
+    whatLoadingState = BEGIN_LOADING;
 }
