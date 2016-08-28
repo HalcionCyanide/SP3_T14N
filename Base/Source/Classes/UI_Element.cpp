@@ -78,7 +78,7 @@ void UI_Element::WrapText()
 		}
 	if (UI_Text_Container.size() > 1)
 	{
-		for (int i = 0; i < UI_Text_Container.size(); ++i)
+		for (unsigned i = 0; i < UI_Text_Container.size(); ++i)
 		{
 			if (UI_Text_Container[i].at(0) == ' ')
 			{

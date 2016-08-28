@@ -16,7 +16,6 @@ public:
     virtual void onNotify(const std::string &theMessage);
   
     ISoundEngine *musicEngine;
-    std::map<std::string, MusicEntity2D*> all_the_Music;
 
     virtual bool playMusic(const std::string &songName);
 
@@ -30,6 +29,7 @@ public:
     MusicEntity2D *theOnlyBackgroundMusic;
 
 private:
+    std::map<std::string, MusicEntity2D*> all_the_Music;
     bool beginLoadingMusic(const std::string &fileName);
     size_t loopingAndFindKey(std::vector<std::string> &theKeys, const std::string &whatyouwant);
     Vector3 *playerPos;
