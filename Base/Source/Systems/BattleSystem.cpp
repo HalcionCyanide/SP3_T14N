@@ -618,7 +618,7 @@ void BattleSystem::UpdatePhysics(float dt)
 						float GBarWidth = HealthRatio * HealthBarDefaultScale * 0.5f;
 						float BarPosition = GBarPosition - (HealthBarDefaultScale - GBarWidth) * 0.5f + HealthBarDefaultScale * 0.25f;
 						HealthBarGreen->Dimensions.x = GBarWidth;
-						HealthBarGreen->Position.x = BarPosition
+                        HealthBarGreen->Position.x = BarPosition;
 					}
 				}
 		}
