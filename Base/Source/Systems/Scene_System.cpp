@@ -172,13 +172,13 @@ void Scene_System::doingLoadingEffect()
     UI_Layer *theLayer = new UI_Layer();
     Vector3 sizeofSquare(200, 200, 1);
     //theLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "SmallWhiteSquare", Vector3(400, 300, 0), Vector3(400, 300, 0), sizeofSquare, Vector3(-400, 300, 0));
-    int rowsOfSquares = (int)ceil((int)ceil(cSS_InputManager->cIM_ScreenHeight) / (int)ceil(sizeofSquare.y));
-    int colsOfSquares = (int)ceil((int)ceil(cSS_InputManager->cIM_ScreenWidth) / (int)ceil(sizeofSquare.x));
+    int rowsOfSquares = (int)ceil((int)ceil(cSS_InputManager->cIM_ScreenHeight) / (int)ceil(sizeofSquare.y)) * 2;
+    int colsOfSquares = ((int)ceil((int)ceil(cSS_InputManager->cIM_ScreenWidth) / (int)ceil(sizeofSquare.x)) * 2) + 1;
     for (int numOFRows = 0; numOFRows < rowsOfSquares; ++numOFRows)
     {
         for (int numOfCols = 0; numOfCols < colsOfSquares; ++numOfCols)
         {
-            Vector3 thePos((sizeofSquare.x / 4.f) + (numOfCols * sizeofSquare.x * 0.5f), (sizeofSquare.y / 4.f) + (numOFRows * sizeofSquare.y * 0.5f), 0);
+            Vector3 thePos((sizeofSquare.x * 0.5f) + (numOfCols * sizeofSquare.x * 0.5f), (sizeofSquare.y * 0.5f) + (numOFRows * sizeofSquare.y * 0.5f), 0);
             theLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "SmallWhiteSquare", thePos, thePos, sizeofSquare, thePos);
         }
     }
