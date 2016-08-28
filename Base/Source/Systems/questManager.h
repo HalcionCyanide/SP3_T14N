@@ -15,5 +15,4 @@ public:
 	virtual void Update(double);
 
 	std::vector<Quest*> allQuests;
-	std::map<std::string, int> qPreReq;
 };

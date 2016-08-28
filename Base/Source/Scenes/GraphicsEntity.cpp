@@ -120,10 +120,10 @@ void GraphicsEntity::Init()
 	glUseProgram(m_programID);
 
 	m_lightDepthFBO.Init(4096, 4096);
-	glUniform1i(m_parameters[U_SHADOW_SAMPLING_AMOUNT], 16);
+	glUniform1i(m_parameters[U_SHADOW_SAMPLING_AMOUNT], 32);
 
 	lights[0].type = Light::LIGHT_DIRECTIONAL;
-	lights[0].position.Set(1600, 1200, 500);
+	lights[0].position.Set(1600, 1400, 500);
 	lights[0].color.Set(1, 1, 1);
 	lights[0].power = 1;
 	lights[0].kC = 1.f;

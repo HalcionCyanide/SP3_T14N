@@ -58,6 +58,7 @@ private:
 	Vector3 CursorPosition;
 	Vector3 CenterPosition;
 	int ActiveBSOCount;
+	float SpellPowerRatio, EnemySpellPowerRatio;
 
 	BattleScreenObject* GetInactiveBSO();
 
@@ -94,11 +95,11 @@ private:
 	void UpdateITimer(float dt);
 	void UpdateControls(float dt);
 	void UpdateEnemyLogic(float dt);
+	void RenderBattleScreen();
 	// Battle Physics Calls
 	void UpdatePhysics(float dt);
 	bool CollisionCheck(const BattleScreenObject&, const BattleScreenObject&, float dt);
 	bool CollisionResponse(const BattleScreenObject&, const BattleScreenObject&, float dt);
-	void RenderBattleScreen();
 	// Battle Variables
 	UI_Layer* BattleBox;
 	UI_Element* HealthBarGreen;
@@ -119,16 +120,37 @@ private:
 	EnemyProjectile CurrentProjectile;
 	float EnemyStaminaTimer;	// Default to 30s round
 	float CurrentStaminaTimer;
+	float EnemyReselectionInterval;
 	// Enemy Calls
 	int BatchCreateAttacks(EnemyProjectile& CurrentProjectile);
 	void AnimateEnemy();
 	// Attack Calls
 	void Attack_Bullet(EnemyProjectile& CurrentProjectile);
 	void Attack_Trap(EnemyProjectile& CurrentProjectile);
+	void Attack_HorizontalRay(EnemyProjectile& CurrentProjectile);
+	void Attack_VerticalRay(EnemyProjectile& CurrentProjectile);
+
 	// Battle End
 
+	// End State Calls
 	void UpdateEndScreenSuccess(float dt);
 	void UpdateEndScreenFail(float dt);
+	void RenderEndScreenSuccess();
+	void RenderEndScreenFail();
+	bool SealAnimationOver = false;
+	bool UISwapped = false;
+	bool RemoveBattleUI = false;
+	void ShiftBattleUI();
+	// Init Calls
+	void InitSuccessScreen();
+	void InitFailScreen();
+	// End State Variables
+	UI_Layer* EndScreenSuccess;
+	UI_Layer* EndScreenFail;
+	UI_Element* ExitButton;
+	bool PlayerWon;
+	int SpellPowerIncrement;
+	// End State End
 
 	bool RoundOver = false;
 

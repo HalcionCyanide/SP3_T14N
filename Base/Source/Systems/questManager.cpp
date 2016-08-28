@@ -22,7 +22,6 @@ void questManager::readFile(const std::string fileName)
 {
 	std::string temp = "";
 	Quest *tempQuest = nullptr;
-	std::string tempReq;
 
 	std::ifstream file(fileName.c_str());
 	if (file.is_open())
@@ -63,11 +62,11 @@ void questManager::readFile(const std::string fileName)
 
 				it = std::find(theKeys.begin(), theKeys.end(), "PREREQ");
 				pos = it - theKeys.begin();
-				tempReq = theValues[pos];
+				tempQuest->preReq = theValues[pos];
 
 				it = std::find(theKeys.begin(), theKeys.end(), "PREREQVAL");
 				pos = it - theKeys.begin();
-				qPreReq.insert(std::pair<std::string, int>(tempReq, stoi(theValues[pos])));
+				tempQuest->preReqVal = stoi(theValues[pos]);
 
 				allQuests.push_back(tempQuest);
 				theValues.clear();

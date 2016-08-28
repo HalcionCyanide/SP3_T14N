@@ -1,10 +1,10 @@
 id,Name,PREREQ,PREREQVAL
-1,Monster Collector,The Fractal Binding,0
-2,Rating up,The Fractal Binding,0
+1,Monster Collector,Monster Collector,0
+2,Rating up,Rating up,0
 3,The Fractal Binding,The Fractal Binding,0
 4,Rebuilding hope,The Fractal Binding,3
 5,End of Tyranny,The Fractal Binding,13
-6,The path less traveled,The Fractal Binding,0
+6,The path less traveled,The path less traveled,0
 7,Purification,The Fractal Binding,8
 8,Solomon's Gate,The Fractal Binding,10
 9,A friend in need,The Fractal Binding,2

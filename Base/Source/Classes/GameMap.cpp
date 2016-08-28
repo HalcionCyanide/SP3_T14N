@@ -137,8 +137,8 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
 			(theBB->GetDimensions().y*0.5f) + terrainSize.y * ReadHeightMap(theHeightMap, theBB->GetPosition().x / terrainSize.x, theBB->GetPosition().z / terrainSize.z),
 			theBB->GetPosition().z
 			));
+		theBB->SetDefaultLifeTime();
 	}
-
 	return true;
 }
 
@@ -239,7 +239,9 @@ bool GameMap::loadThoseLegends(const std::string &fileName)
 						GameObject*go = dynamic_cast<GameObject*>(theObject);
 						if (theValues[num] != "0")
 						{
-							theObject = new Billboard(go->GetPosition(), go->GetDimensions(), Vector3(0, 0, 0), Vector3(0, 0, 0), go->GetMeshName());
+							Billboard* bb = new Billboard(go->GetPosition(), go->GetDimensions(), Vector3(0, 0, 0), Vector3(0, 0, 0), go->GetMeshName(), -1);
+							bb->SetDefaultLifeTime();
+							theObject = bb;
 							delete go;
 						}
                         else {

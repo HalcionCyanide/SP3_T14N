@@ -22,17 +22,12 @@ struct Enemy : public GenericEntity
 
 	Enemy(Enemy& E)
 	{
-		//EnemyMesh = E.EnemyMesh;
-		//MeshName = E.MeshName;
-		//SpellPower = E.SpellPower;
-		//MaxEnemyWave = E.MaxEnemyWave;
-		//CurrentAttackCount = 0;
-		//CurrentEnemyWave = 0;
-		//CurrentTime = 0;
 		*this = E;
 	}
 	Enemy &operator=(Enemy &rhs)
 	{
+		EnemyName = rhs.EnemyName;
+		EnemyType = rhs.EnemyType;
 		EnemyMesh = rhs.EnemyMesh;
 		MeshName = rhs.MeshName;
 		SpellPower = rhs.SpellPower;
@@ -42,14 +37,16 @@ struct Enemy : public GenericEntity
 		CurrentTime = 0;
 		for (std::vector<EnemyProjectile*>::iterator it = rhs.cE_Projectiles.begin(), end = rhs.cE_Projectiles.end(); it != end; ++it)
 		{
-			EnemyProjectile *zeProjectile = new EnemyProjectile(**it);
-			cE_Projectiles.push_back(zeProjectile);
+			EnemyProjectile *Projectile = new EnemyProjectile(**it);
+			cE_Projectiles.push_back(Projectile);
 		}
 		return *this;
 	}
 
 	Mesh* EnemyMesh;
 	std::string MeshName;
+	std::string EnemyName;
+	std::string EnemyType;
 
 	int SpellPower;
 

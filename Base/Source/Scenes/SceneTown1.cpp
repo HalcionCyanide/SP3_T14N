@@ -40,7 +40,7 @@ void SceneTown1::Init()
 	projectionStack->LoadMatrix(perspective);
 
     camera = new Camera3();
-	camera->Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
+	camera->Init(Vector3(0, 5, 0), Vector3(0, 5, 10), Vector3(0, 1, 0));
 	CenterPosition.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
 	// Initiallise Model Specific Meshes Here
@@ -262,51 +262,76 @@ void SceneTown1::Update(float dt)
 				{
 					if (it.first == it2.first) // compare the same quests
 					{
-						for (auto it3 : Scene_System::accessing().QM.qPreReq)
-						{
-							if (buttonCount <= 3)
+							for (auto it3 : it.second)
 							{
-								if (it3.first == it2.first) // if i am talking about that same quest to check prerequsites
+								if (buttonCount <= 3)
 								{
-									if (it2.second >= it3.second) // if i have satisfied the prereq
+									if (it3 - it2.second == 1)
 									{
 										for (auto it4 : Scene_System::accessing().QM.allQuests)
 										{
+											if (buttonCount > 3)
+											{
+												break;
+											}
 											for (auto it5 : it4->qStages)
 											{
-												if (it5->getGiver() == CurrentNPC->getName())
+												if (it5->getStageNO() == it3 && it5->getGiver() == CurrentNPC->getName())
 												{
 													NPC_QuestButtons.at(buttonCount)->UI_Text = it4->getName();
 													buttonCount++;
+													break;
+												}
+												if (buttonCount > 3)
+												{
+													break;
 												}
 												else
 												{
 													NPC_QuestButtons.at(buttonCount)->UI_Text = "";
 													buttonCount++;
+													break;
 												}
 											}
 										}
 									}
+									else
+									{
+										break;
+									}
 								}
 								else
 								{
-									NPC_QuestButtons.at(buttonCount)->UI_Text = "";
-									buttonCount++;
+									break;
 								}
 							}
 						}
 					}
 				}
-			}
+			
 			 //Interacting with NPC: Check UI Key Press
 			std::string temp = HandleChatUIInput((float)dt);
 			if (temp == "Exit")
 			{
 				camera->CameraIsLocked = false;
-				ChatLayer->SwapOriginalWithTarget();
+				if (ChatLayer->LayerTargetPosition.y > -1)
+					ChatLayer->SwapOriginalWithTarget();
 				CurrentNPC->setInteracting(false);
 				Scene_System::accessing().cSS_InputManager->SetMousePosition(CenterPosition);
 				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+			}
+			for (auto it : Scene_System::accessing().QM.allQuests)
+			{
+				if (temp == it->getName())
+				{
+					it->setCurrStage(it->getCurrentStage() + 1);
+					camera->CameraIsLocked = false;
+					if (ChatLayer->LayerTargetPosition.y > -1)
+						ChatLayer->SwapOriginalWithTarget();
+					CurrentNPC->setInteracting(false);
+					Scene_System::accessing().cSS_InputManager->SetMousePosition(CenterPosition);
+					Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+				}
 			}
 		}
 	}
@@ -325,6 +350,14 @@ void SceneTown1::RenderShadowCasters()
 {
 	RenderTerrain();
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
+	//<!> will remove soon <!>
+	for (auto it : objVec)
+	{
+		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
+		if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
+			the3DObject->Render();
+	}
+
 	for (std::vector<Billboard*>::iterator it = BManager.BillboardContainer.begin(); it != BManager.BillboardContainer.end(); ++it)
 	{
 		if ((*it)->Active)
@@ -336,18 +369,13 @@ void SceneTown1::RenderShadowCasters()
 			modelStack->Translate((*it)->GetPosition().x, (*it)->GetPosition().y, (*it)->GetPosition().z);
 			modelStack->Rotate(Math::RadianToDegree(atan2(camera->position.x - (*it)->GetPosition().x, camera->position.z - (*it)->GetPosition().z)), 0, 1, 0);
 			modelStack->Scale(TimeRatio * (*it)->GetDimensions().x, TimeRatio *(*it)->GetDimensions().y, TimeRatio *(*it)->GetDimensions().z);
-			SceneGraphics->RenderMesh((*it)->GetMeshName(), false);
+			if ((*it)->GetLifeTime() == -1)
+				SceneGraphics->RenderMesh((*it)->GetMeshName(), true);
+			else SceneGraphics->RenderMesh((*it)->GetMeshName(), false);
 			modelStack->PopMatrix();
 		}
 	}
 
-	//<!> will remove soon <!>
-	for (auto it : objVec)
-	{
-		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
-		if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
-			the3DObject->Render();
-	}
 }
 
 void SceneTown1::RenderSkybox()

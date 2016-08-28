@@ -246,6 +246,9 @@
     <ClCompile Include="Source\Classes\Item.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scenes\SceneLoading.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Classes\Billboard.h">
@@ -457,6 +460,9 @@
     </ClInclude>
     <ClInclude Include="Source\Classes\Item.h">
       <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\SceneLoading.h">
+      <Filter>Header Files\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
