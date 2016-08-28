@@ -23,12 +23,14 @@ void BattleSystem::Init()
 
 	PlayerObj = nullptr; 
 	CurrentEnemy = nullptr;
+	CurrentProjectile = nullptr;
 	PlayerInventoryUI = nullptr;
 	PlayerInfoBox = nullptr;
 	EnemyInfoBox = nullptr;
 	EnemyLayer = nullptr;
 	BattleBox = nullptr;
 	HealthBarGreen = nullptr;
+	EnemyStaminaBar = nullptr;
 }
 
 void BattleSystem::QuickInit()
@@ -50,12 +52,13 @@ void BattleSystem::QuickInit()
 
 	// Enemy
 	EnemyStaminaTimer = 30; // 30s round
+	CurrentStaminaTimer = 0;
 
 	// BSOs
 	PlayerObj = new BattleScreenObject("PlayerHeart", 1, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), 0, 0, Vector3(0, 0, 1));
 
 	// UIs
-	PlayerInventoryUI = new UI_Layer();
+	//PlayerInventoryUI = new UI_Layer();
 	PlayerInfoBox = new UI_Layer();
 	EnemyInfoBox = new UI_Layer();
 }
@@ -134,11 +137,68 @@ void BattleSystem::Exit()
 		delete PlayerObj;
 		PlayerObj = nullptr;
 	}
+	if (CurrentEnemy)
+	{
+		delete CurrentEnemy;
+		CurrentEnemy = nullptr;
+	}
+
+	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
+	{
+		(*it)->Exit();
+		delete *it;
+	}
+	cBS_ObjectContainer.clear();
+}
+
+void BattleSystem::QuickExit()
+{
+	if (PlayerObj)
+	{
+		delete PlayerObj;
+		PlayerObj = nullptr;
+	}
 
 	if (CurrentEnemy)
 	{
 		delete CurrentEnemy;
 		CurrentEnemy = nullptr;
+	}
+
+	if (PlayerInventoryUI)
+	{
+		delete PlayerInventoryUI;
+		PlayerInventoryUI = nullptr;
+	}
+	if (PlayerInfoBox)
+	{
+		delete PlayerInfoBox;
+		PlayerInfoBox = nullptr;
+	}
+	if (EnemyInfoBox)
+	{
+		delete EnemyInfoBox;
+		EnemyInfoBox = nullptr;
+	}
+	if (EnemyLayer)
+	{
+		delete EnemyLayer;
+		EnemyLayer = nullptr;
+	}
+	if (BattleBox)
+	{
+		delete BattleBox;
+		BattleBox = nullptr;
+	}
+	if (HealthBarGreen)
+	{
+		delete HealthBarGreen;
+		HealthBarGreen = nullptr;
+	}
+	if (EnemyStaminaBar)
+	{
+		delete EnemyStaminaBar;
+		EnemyStaminaBar = nullptr;
 	}
 
 	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
@@ -175,15 +235,28 @@ BattleScreenObject* BattleSystem::GetInactiveBSO()
 
 void BattleSystem::SetEnemy(Enemy& E)
 {
+	QuickInit();
+
 	float BoxHeightUnits = 12;
 	HealthBarDefaultScale = PlayerScale * 13;
+
+	GBarPosition = CenterPosition.x * 0.75f;
+	RBarPosition = CenterPosition.x * 1.75f;
+	// Bar Calcs
 	float HealthRatio = (float)Scene_System::accessing().gPlayer->GetCurrentHealth() / (float)Scene_System::accessing().gPlayer->GetMaxHealth();
-	float GBarWidth = HealthRatio * HealthBarDefaultScale;
-	float GBarPosition = CenterPosition.x * 0.75f - (HealthBarDefaultScale - GBarWidth) * 0.5f;
+	float GBarWidth = HealthRatio * HealthBarDefaultScale * 0.5f;
+	float cGBarPosition = GBarPosition - (HealthBarDefaultScale - GBarWidth) * 0.5f + HealthBarDefaultScale * 0.25f - GBarWidth * 0.5f;
+
+	float StaminaRatio = (float)(EnemyStaminaTimer - CurrentStaminaTimer) / EnemyStaminaTimer;
+	float RBarWidth = StaminaRatio * HealthBarDefaultScale * 0.5f;
+	float cRBarPosition = RBarPosition - (HealthBarDefaultScale - RBarWidth) * 0.5f + HealthBarDefaultScale * 0.25f;
 
 	CurrentEnemy = new Enemy(E);
 	EnemyLayer = new UI_Layer();
 	BattleBox = new UI_Layer();
+
+	// Set Wave Time
+	EnemyStaminaTimer *= CurrentEnemy->MaxEnemyWave;
 
 	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, CurrentEnemy->MeshName, Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(PlayerScale * 5, PlayerScale * 5, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.7f, 0));
 	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.35f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.35f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.35f, 0), CurrentEnemy->MeshName);
@@ -193,8 +266,8 @@ void BattleSystem::SetEnemy(Enemy& E)
 	ss << "Spell Power: " << CurrentEnemy->SpellPower;
 	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.2f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.2f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.2f, 0), ss.str());
 	
-	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.f, 0), "Enemy Stamina");
-	EnemyStaminaBar = new UI_Element(UI_Element::UI_BUTTON_R_TO_SCRN, "UI_HP_Red", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 0.85f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 0.85f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 0.85f, 0));
+	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 2.f, CenterPosition.y * 1.f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.f, 0), "Enemy Stamina");
+	EnemyStaminaBar = new UI_Element(UI_Element::UI_BUTTON_R_TO_SCRN, "UI_HP_Red", Vector3(CenterPosition.x * 2.f, CenterPosition.y * 0.85f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 0.85f, 0), Vector3(RBarWidth, PlayerScale * 1.25f, 1), Vector3(cRBarPosition, CenterPosition.y * 0.85f, 0));
 	EnemyLayer->cUI_Layer.push_back(EnemyStaminaBar);
 	
 	cUI_System.cUIS_LayerContainer.push_back(EnemyLayer);
@@ -202,13 +275,12 @@ void BattleSystem::SetEnemy(Enemy& E)
 	BattleBox->AddUIElement(UI_Element::UI_LOGO, "GBox", Vector3(CenterPosition.x * -2.f, CenterPosition.y, 0), Vector3(CenterPosition.x * -2.f, CenterPosition.y, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.65f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.6f, 1), Vector3(CenterPosition.x * 0.9f, CenterPosition.y, 0));
 	BattleBox->cUI_Layer[0]->UI_Bounds->ResetValues();
 
-	BattleBox->AddUIElement(UI_Element::UI_BUTTON_R_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y - PlayerScale * (1 + BoxHeightUnits* 0.5f), 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y - PlayerScale *  (1 + BoxHeightUnits * 0.5f), 0), Vector3(PlayerScale * 6, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 0.25f, CenterPosition.y * 0.3f, 0), "Remaining Health: ");
+	BattleBox->AddUIElement(UI_Element::UI_BUTTON_R_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 0.3f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y - PlayerScale *  (1 + BoxHeightUnits * 0.5f), 0), Vector3(PlayerScale * 6, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 0.25f, CenterPosition.y * 0.3f, 0), "Remaining Health: ");
 	
-	HealthBarGreen = new UI_Element(UI_Element::UI_BUTTON_R_TO_SCRN, "UI_HP_Green", Vector3(CenterPosition.x * 8.f, CenterPosition.y - PlayerScale * (1 + BoxHeightUnits* 0.5f), 0), Vector3(CenterPosition.x * 8.f, CenterPosition.y - PlayerScale *  (1 + BoxHeightUnits * 0.5f), 0), Vector3(GBarWidth, PlayerScale * 1.f, 1), Vector3(GBarPosition, CenterPosition.y * 0.3f, 0));
+	HealthBarGreen = new UI_Element(UI_Element::UI_BUTTON_R_TO_SCRN, "UI_HP_Green", Vector3(CenterPosition.x * 8.f, CenterPosition.y * 0.3f, 0), Vector3(CenterPosition.x * 8.f, CenterPosition.y * 0.3f, 0), Vector3(GBarWidth, PlayerScale * 1.f, 1), Vector3(cGBarPosition, CenterPosition.y * 0.3f, 0));
 	BattleBox->cUI_Layer.push_back(HealthBarGreen);
 
 	cUI_System.cUIS_LayerContainer.push_back(BattleBox);
-	QuickInit();
 	PlayerObj->SetPosition(BattleBox->cUI_Layer[0]->TargetPosition);
 }
 
@@ -291,7 +363,7 @@ void BattleSystem::UpdateEnemyInfoBox(float dt)
 
 	// Wave Count
 	ss.str("");
-	ss << "Survive: " << CurrentEnemy->MaxEnemyWave * EnemyStaminaTimer << "s";
+	ss << "Survive: " << EnemyStaminaTimer << "s";
 	EnemyInfoBox->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "UI_ChatBox", Target - Vector3(0, Target.y * 0.6f), Target - Vector3(0, Target.y * 0.6f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.4f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.05f * AspectRatio, 1), Target - Vector3(0, Target.y * 0.6f), ss.str());
 
 	cUI_System.cUIS_LayerContainer.push_back(EnemyInfoBox);
@@ -309,7 +381,7 @@ void BattleSystem::UpdateInfoBoxAnimation(float dt)
 			int ParticleCount = Math::RandIntMinMax(50, 100);
 			for (int i = 0; i < ParticleCount; ++i)
 			{
-				cBillboardManager.AddParticle("WhiteParticle", CenterPosition + Vector3(0, Math::RandFloatMinMax(-Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.5f)), Vector3(PlayerScale* 0.5f, PlayerScale * 0.5f, 1.f), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale)), Vector3(0, 0, 1), 2);
+				cBillboardManager.AddParticle("Smoke", CenterPosition + Vector3(0, Math::RandFloatMinMax(-Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.5f)), Vector3(PlayerScale* 0.5f, PlayerScale * 0.5f, 1.f), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale)), Vector3(0, 0, 1), 2);
 			}
 		}
 	}
@@ -328,7 +400,7 @@ void BattleSystem::UpdateInfoBoxAnimation(float dt)
 	{
 		float Check1 = (PlayerInfoBox->LayerCenterPosition - PlayerInfoBox->LayerTargetPosition).LengthSquared();
 		float Check2 = (EnemyInfoBox->LayerCenterPosition - EnemyInfoBox->LayerTargetPosition).LengthSquared();
-		if (Check1 < 1000.f && Check2 < 1000.f)
+		if (Check1 < 500.f && Check2 < 500.f)
 		{
 			BattleState = BS_BattlePhase;
 		}
@@ -339,10 +411,68 @@ void BattleSystem::UpdateInfoBoxAnimation(float dt)
 
 void BattleSystem::UpdateBattlePhase(float dt)
 {
+	UpdateEnemyLogic(dt);
 	EnemyLayer->Update(dt);
+	UpdatePhysics(dt);
 	UpdatePlayer(dt);
 }
 
+void BattleSystem::UpdateEnemyLogic(float dt)
+{
+	CurrentStaminaTimer += dt;
+	if (CurrentStaminaTimer < EnemyStaminaTimer)
+	{
+		float StaminaRatio = (float)(EnemyStaminaTimer - CurrentStaminaTimer) / EnemyStaminaTimer;
+		float RBarWidth = StaminaRatio * HealthBarDefaultScale * 0.5f;
+		float BarPosition = RBarPosition - (HealthBarDefaultScale - RBarWidth) * 0.5f + HealthBarDefaultScale * 0.25f;
+		EnemyStaminaBar->Dimensions.x = RBarWidth;
+		if (EnemyStaminaBar->AtTarget)
+			EnemyStaminaBar->Position.x = BarPosition;
+		else if ((EnemyStaminaBar->Position - EnemyStaminaBar->TargetPosition).LengthSquared() < 1.f)
+			EnemyStaminaBar->AtTarget = true;
+
+		// Use Current Attack
+		if (CurrentProjectile && CurrentEnemy->CurrentAttackCount < CurrentProjectile->AttacksPerWave)
+		{
+			CurrentEnemy->CurrentTime += dt;
+			// Can fire an attack
+			if (CurrentEnemy->CurrentTime > CurrentProjectile->AttackSpeed)
+			{
+				CurrentEnemy->CurrentTime = 0;
+				CurrentEnemy->CurrentAttackCount++;
+				BatchCreateAttacks(*CurrentProjectile);
+			}
+		}
+		// Reselect an attack from the pool
+		else 
+		{
+			int EnemyAttack = Math::RandIntMinMax(0, CurrentEnemy->cE_Projectiles.size() - 1);
+			CurrentProjectile = CurrentEnemy->cE_Projectiles[EnemyAttack];
+			CurrentEnemy->CurrentAttackCount = 0;
+		}
+	}
+	else // Out of stamina
+	{
+
+	}
+
+	// Bullet Update
+	UI_Element* BBox = BattleBox->cUI_Layer[0];
+	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
+	{
+		if ((*it)->Active)
+		{
+			if ((*it)->GetPosition().y - (*it)->GetDimensions().y * 0.5f < BBox->Position.y - BBox->Dimensions.y ||
+				(*it)->GetPosition().x - (*it)->GetDimensions().x * 0.5f < BBox->Position.x - BBox->Dimensions.x || 
+				(*it)->GetPosition().y + (*it)->GetDimensions().y * 0.5f < BBox->Position.y + BBox->Dimensions.x)
+			{
+				(*it)->Update(dt);
+				//++ActiveCount;
+			}
+			else (*it)->Active = false;
+		}
+	}
+}
 
 // Player Calls
 void BattleSystem::UpdatePlayer(float dt)
@@ -358,7 +488,7 @@ void BattleSystem::UpdateITimer(float dt)
 		PlayerIFrameTimer -= dt;
 		int RPcount = Math::RandIntMinMax(1, 2);
 		for (int i = 0; i < RPcount; ++i)
-			cBillboardManager.AddParticle("ParticleW", PlayerObj->GetPosition(), Vector3(PlayerScale * 0.75f, PlayerScale * 0.75f, 1), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0), Vector3(0, 0, 1), 2);
+			cBillboardManager.AddParticle("WhiteParticle", PlayerObj->GetPosition(), Vector3(PlayerScale * 0.75f, PlayerScale * 0.75f, 1), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0), Vector3(0, 0, 1), 2);
 
 		if (PlayerIsInvincible && PlayerIFrameTimer < Math::EPSILON)
 		{
@@ -451,6 +581,12 @@ void BattleSystem::UpdatePhysics(float dt)
 					{
 						PlayerIsInvincible = true;
 						PlayerIFrameTimer = 2;
+
+						float HealthRatio = (float)Scene_System::accessing().gPlayer->GetCurrentHealth() / (float)Scene_System::accessing().gPlayer->GetMaxHealth();
+						float GBarWidth = HealthRatio * HealthBarDefaultScale * 0.5f;
+						float BarPosition = GBarPosition - (HealthBarDefaultScale - GBarWidth) * 0.5f + HealthBarDefaultScale * 0.25f;
+						HealthBarGreen->Dimensions.x = GBarWidth;
+						HealthBarGreen->Position.x = BarPosition;
 					}
 				}
 		}
@@ -462,15 +598,11 @@ bool BattleSystem::CollisionCheck(const BattleScreenObject& BSO1, const BattleSc
 	// Consider Making a projectile class that holds coltype
 	switch (BSO2.Type)
 	{
-		case BattleScreenObject::BS_Normal:
-		{
-
-			break;
-		}
 		case BattleScreenObject::BS_Bullet:
 		{
 			// Simple Circle BC.
-			float CombinedRadiusSquared = (BSO1.GetDimensions().x * 0.4f + BSO2.GetDimensions().x * 0.4f) * (BSO1.GetDimensions().x * 0.4f + BSO2.GetDimensions().x * 0.4f);
+			float CollisionRadius = 0.4f;
+			float CombinedRadiusSquared = (BSO1.GetDimensions().x * CollisionRadius + BSO2.GetDimensions().x * CollisionRadius) * (BSO1.GetDimensions().x * CollisionRadius + BSO2.GetDimensions().x * CollisionRadius);
 			float DistSquared = ((BSO1.GetPosition() + BSO1.GetVelocity() * dt) - (BSO2.GetPosition() + BSO2.GetVelocity() * dt)).LengthSquared();
 			Vector3 RelativeVelocity = BSO2.GetVelocity() - BSO1.GetVelocity();
 			Vector3 RelativeDisplacement = BSO1.GetPosition() - BSO2.GetPosition();
@@ -481,10 +613,11 @@ bool BattleSystem::CollisionCheck(const BattleScreenObject& BSO1, const BattleSc
 			}
 			break;
 		}
-		case BattleScreenObject::BS_Trap:
+		case BattleScreenObject::BS_Blast:
 		{
 			// Simple Circle BC.
-			float CombinedRadiusSquared = (BSO1.GetDimensions().x * 0.3f + BSO2.GetDimensions().x * 0.3f) * (BSO1.GetDimensions().x * 0.3f + BSO2.GetDimensions().x * 0.3f);
+			float CollisionRadius = 0.3f;
+			float CombinedRadiusSquared = (BSO1.GetDimensions().x * CollisionRadius + BSO2.GetDimensions().x * CollisionRadius) * (BSO1.GetDimensions().x * CollisionRadius + BSO2.GetDimensions().x * CollisionRadius);
 			float DistSquared = ((BSO1.GetPosition() + BSO1.GetVelocity() * dt) - (BSO2.GetPosition() + BSO2.GetVelocity() * dt)).LengthSquared();
 			Vector3 RelativeVelocity = BSO2.GetVelocity() - BSO1.GetVelocity();
 			Vector3 RelativeDisplacement = BSO1.GetPosition() - BSO2.GetPosition();
@@ -493,12 +626,6 @@ bool BattleSystem::CollisionCheck(const BattleScreenObject& BSO1, const BattleSc
 			{
 				return true;
 			}
-			break;
-			break;
-		}
-		case BattleScreenObject::BS_Bouncer:
-		{
-
 			break;
 		}
 	}
@@ -510,12 +637,6 @@ bool BattleSystem::CollisionResponse(const BattleScreenObject& BSO1, const Battl
 	// Do stuff like hp decrement
 	switch (BSO2.Type)
 	{
-	case BattleScreenObject::BS_Normal:
-	{
-
-		return true;
-		break;
-	}
 	case BattleScreenObject::BS_Bullet:
 	{
 		EnemyProjectile* P = nullptr;
@@ -531,7 +652,7 @@ bool BattleSystem::CollisionResponse(const BattleScreenObject& BSO1, const Battl
 		return true;
 		break;
 	}
-	case BattleScreenObject::BS_Trap:
+	case BattleScreenObject::BS_Blast:
 	{
 		EnemyProjectile* P = nullptr;
 		for (std::vector<EnemyProjectile*>::iterator it = CurrentEnemy->cE_Projectiles.begin(); it != CurrentEnemy->cE_Projectiles.end(); ++it)
@@ -543,12 +664,6 @@ bool BattleSystem::CollisionResponse(const BattleScreenObject& BSO1, const Battl
 		{
 			Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetCurrentHealth() - P->DamagePerAttack);
 		}
-		return true;
-		break;
-	}
-	case BattleScreenObject::BS_Bouncer:
-	{
-
 		return true;
 		break;
 	}
@@ -619,7 +734,7 @@ void BattleSystem::Attack_Trap(EnemyProjectile& CurrentProjectile)
 	BSO = GetInactiveBSO();
 	BSO->SetParameters(CurrentProjectile.StoredMesh, 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), Vector3(CurrentProjectile.ScalarAcceleration, CurrentProjectile.ScalarAcceleration), RAngle, Vector3(0, 0, 1));
 	CurrentProjectile.setName(BSO->GetMeshName());
-	BSO->Type = BattleScreenObject::BS_Trap;
+	BSO->Type = BattleScreenObject::BS_Blast;
 	BSO->Visible = false;
 	BSO->Active = true;
 	BSO->LifeTime = 4;
