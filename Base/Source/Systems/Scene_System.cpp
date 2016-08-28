@@ -170,7 +170,10 @@ void Scene_System::doingLoadingEffect()
 {
     theLoadingEffect = new UI_System();
     UI_Layer *theLayer = new UI_Layer();
-    theLayer->AddUIElement(UI_Element::UI_UNASSIGNED, "SmallWhiteSquare", Vector3(1400, 300, 0), Vector3(400, 300, 0), Vector3(50, 50, 50), Vector3(400, 300, 0));
+    Vector3 sizeofSquare(80, 80, 1);
+    theLayer->AddUIElement(UI_Element::UI_UNASSIGNED, "SmallWhiteSquare", Vector3(1400, 300, 0), Vector3(400, 300, 0), sizeofSquare, Vector3(400, 300, 0));
+    int rowsOfSquares = (int)ceil((int)ceil(cSS_InputManager->cIM_ScreenHeight) / (int)ceil(sizeofSquare.y));
+    int colsOfSquares = (int)ceil((int)ceil(cSS_InputManager->cIM_ScreenWidth) / (int)ceil(sizeofSquare.x));
     theLoadingEffect->cUIS_LayerContainer.push_back(theLayer);
 }
 
