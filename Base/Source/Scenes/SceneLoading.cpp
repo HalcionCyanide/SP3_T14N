@@ -4,7 +4,7 @@
 
 SceneLoading::SceneLoading()
 {
-
+    theLoadingUISystem = nullptr;
 }
 
 SceneLoading::~SceneLoading()
@@ -29,5 +29,9 @@ void SceneLoading::Render()
 
 void SceneLoading::Exit()
 {
-
+    if (theLoadingUISystem)
+    {
+        delete theLoadingUISystem;
+        theLoadingUISystem = nullptr;
+    }
 }

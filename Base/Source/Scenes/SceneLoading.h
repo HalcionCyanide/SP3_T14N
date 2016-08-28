@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Classes/SceneEntity.h"
+#include "../Systems/UI_System.h"
 
 class SceneLoading : public SceneEntity
 {
@@ -14,4 +15,5 @@ public:
     virtual void Exit();
 
 private:
+    UI_System *theLoadingUISystem;
 };
