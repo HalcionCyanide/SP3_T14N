@@ -9,7 +9,7 @@ class UI_Layer : public GenericSystem
 {
 public:
 	UI_Layer();
-	~UI_Layer();
+	virtual ~UI_Layer();
 
 	virtual void Init();
 	virtual void Update(double dt);

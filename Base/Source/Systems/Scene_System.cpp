@@ -43,7 +43,9 @@ void Scene_System::Init()
 		}
 	}
     theLoadingEffect = nullptr;
-    delayingLoadingTime = 0;
+    delayingLoadingTime = m_accumulatedLoadingTime = 0;
+    prevLoadingState = BEGIN_LOADING;  
+    whatLoadingState = FINISHED_LOADING;
 }
 
 void Scene_System::Update(double dt)
@@ -169,20 +171,58 @@ void Scene_System::doingLoadingEffect()
 {
     theLoadingEffect = new UI_System();
     UI_Layer *theLayer = new UI_Layer();
-    theLayer->AddUIElement(UI_Element::UI_UNASSIGNED, "SmallWhiteSquare", Vector3(400, 300, 0), Vector3(400, 300, 0), Vector3(50, 50, 50), Vector3(400, 300, 0));
+    Vector3 sizeofSquare(200, 200, 1);
+    //theLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "SmallWhiteSquare", Vector3(400, 300, 0), Vector3(400, 300, 0), sizeofSquare, Vector3(-400, 300, 0));
+    int rowsOfSquares = (int)ceil((int)ceil(cSS_InputManager->cIM_ScreenHeight) / (int)ceil(sizeofSquare.y)) * 2;
+    int colsOfSquares = ((int)ceil((int)ceil(cSS_InputManager->cIM_ScreenWidth) / (int)ceil(sizeofSquare.x)) * 2) + 1;
+    Vector3 leftSide(-sizeofSquare.x, cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
+    Vector3 botSide(cSS_InputManager->cIM_ScreenWidth * 0.5f, -sizeofSquare.y, 0);
+    Vector3 rightSide(cSS_InputManager->cIM_ScreenWidth + sizeofSquare.x, cSS_InputManager->cIM_ScreenHeight * 0.5f);
+    Vector3 topSide(cSS_InputManager->cIM_ScreenWidth * 0.5f, cSS_InputManager->cIM_ScreenHeight + sizeofSquare.y);
+    Vector3 *whichTarget = nullptr;
+    for (int numOFRows = 0; numOFRows < rowsOfSquares; ++numOFRows)
+    {
+        for (int numOfCols = 0; numOfCols < colsOfSquares; ++numOfCols)
+        {
+            if (numOfCols % 4 == 1)
+                whichTarget = &botSide;
+            else if (numOfCols % 4 == 2)
+                whichTarget = &rightSide;
+            else if (numOfCols % 4 == 3)
+                whichTarget = &topSide;
+            else
+                whichTarget = &leftSide;
+            Vector3 thePos((sizeofSquare.x * 0.5f) + (numOfCols * sizeofSquare.x * 0.5f), (sizeofSquare.y * 0.5f) + (numOFRows * sizeofSquare.y * 0.5f), 0);
+            theLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "SmallWhiteSquare",*whichTarget , thePos, sizeofSquare, thePos);
+        }
+    }
+    theLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", topSide, Vector3(cSS_InputManager->cIM_ScreenWidth * 0.5f, cSS_InputManager->cIM_ScreenHeight * 0.5f, 5.f), Vector3(600, 100, 1), Vector3(cSS_InputManager->cIM_ScreenWidth * 0.5f, cSS_InputManager->cIM_ScreenHeight * 0.5f, 5.f), "Smoke Weed Everyday!");
     theLoadingEffect->cUIS_LayerContainer.push_back(theLayer);
 }
 
 void Scene_System::UpdateLoadingStuff(double dt)
 {
-    //bool noLongerNeedToUpdate = true;
-    //for (std::vector<UI_Layer*>::iterator it = theLoadingEffect->cUIS_LayerContainer.begin(), end = theLoadingEffect->cUIS_LayerContainer.end(); it != end; ++it)
-    //{
-    //    UI_Layer *theLayer = (*it);
-    //    for (std::vector<UI_Element*>::iterator it2 = theLayer->cUI_Layer.begin(), end2 = theLayer->cUI_Layer.end(); it2 != end2; ++it2)
-    //    {
-    //        UI_Element *theElement = (*it2);
-    //        //theElement->
-    //    }
-    //}
+    m_accumulatedLoadingTime += dt;
+    if (m_accumulatedLoadingTime > delayingLoadingTime)
+    {
+        for (std::vector<UI_Layer*>::iterator it = theLoadingEffect->cUIS_LayerContainer.begin(), end = theLoadingEffect->cUIS_LayerContainer.end(); it != end; ++it)
+        {
+            UI_Layer *theLayer = (*it);
+            for (std::vector<UI_Element*>::iterator it2 = theLayer->cUI_Layer.begin(), end2 = theLayer->cUI_Layer.end(); it2 != end2; ++it2)
+            {
+                UI_Element *theElement = (*it2);
+                theElement->Update((float)dt);
+                if (whatLoadingState != prevLoadingState)
+                    theElement->SwapOriginalWithTarget();
+            }
+        }
+        if (whatLoadingState != prevLoadingState)
+            prevLoadingState = whatLoadingState;
+    }
+}
+
+void Scene_System::SetLoadingTime(const double &dt)
+{
+    delayingLoadingTime = dt;
+    m_accumulatedLoadingTime = 0;
 }
