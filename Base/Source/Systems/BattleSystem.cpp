@@ -258,11 +258,12 @@ void BattleSystem::SetEnemy(Enemy& E)
 	CurrentEnemy = new Enemy(E);
 	EnemyLayer = new UI_Layer();
 	BattleBox = new UI_Layer();
+	EnemyDefaultPosition.Set(CenterPosition.x * 1.75f, CenterPosition.y * 1.7f, 0);
 
 	// Set Wave Time
 	EnemyStaminaTimer *= CurrentEnemy->MaxEnemyWave;
 
-	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, CurrentEnemy->MeshName, Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(PlayerScale * 5, PlayerScale * 5, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.7f, 0));
+	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, CurrentEnemy->MeshName, Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(PlayerScale * 5, PlayerScale * 5, 1), EnemyDefaultPosition);
 	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.35f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.35f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.35f, 0), CurrentEnemy->MeshName);
 	
 	// Spell Power
@@ -427,6 +428,8 @@ void BattleSystem::UpdateBattlePhase(float dt)
 
 void BattleSystem::UpdateEnemyLogic(float dt)
 {
+	if ((EnemyLayer->cUI_Layer[0]->Position - EnemyLayer->cUI_Layer[0]->TargetPosition).LengthSquared() < 1.f)
+		EnemyLayer->cUI_Layer[0]->TargetPosition = EnemyDefaultPosition;
 	CurrentStaminaTimer += dt;
 	if (CurrentStaminaTimer < EnemyStaminaTimer)
 	{
@@ -448,6 +451,7 @@ void BattleSystem::UpdateEnemyLogic(float dt)
 			{
 				CurrentEnemy->CurrentTime = 0;
 				CurrentEnemy->CurrentAttackCount++;
+				AnimateEnemy();
 				BatchCreateAttacks(*CurrentProjectile);
 			}
 		}
@@ -480,6 +484,11 @@ void BattleSystem::UpdateEnemyLogic(float dt)
 			else (*it)->Active = false;
 		}
 	}
+}
+
+void BattleSystem::AnimateEnemy()
+{
+	EnemyLayer->cUI_Layer[0]->TargetPosition = EnemyDefaultPosition + Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0);
 }
 
 // Player Calls

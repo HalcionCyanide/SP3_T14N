@@ -83,6 +83,7 @@ private:
 	UI_Layer* PlayerInfoBox;
 	UI_Layer* EnemyInfoBox;
 	UI_Layer* EnemyLayer; // Enemy Image
+	Vector3 EnemyDefaultPosition;
 	// Intro End
 	
 	// Battle State Call
@@ -117,8 +118,9 @@ private:
 	EnemyProjectile* CurrentProjectile;
 	float EnemyStaminaTimer;	// Default to 30s round
 	float CurrentStaminaTimer;
-	// Enemy Calls [Based on type use a specific attack call]
+	// Enemy Calls
 	int BatchCreateAttacks(EnemyProjectile& CurrentProjectile);
+	void AnimateEnemy();
 	// Attack Calls
 	void Attack_Bullet(EnemyProjectile& CurrentProjectile);
 	void Attack_Trap(EnemyProjectile& CurrentProjectile);
