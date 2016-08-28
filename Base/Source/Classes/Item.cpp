@@ -20,9 +20,9 @@ void Item::SetNumberOfItem(const int &number)
 	this->Number_of_Item = number;
 }
 
-void Item::SetTimeAffected(const bool &timeAffected)
+void Item::SetActive(const bool &active)
 {
-	this->TimeAffected = timeAffected;
+	this->Active = active;
 }
 
 void Item::SetTimer(const float &time)
@@ -45,9 +45,9 @@ int Item::GetNumberOfItem()const
 	return Number_of_Item;
 }
 
-bool Item::GetTimeAffected()const
+bool Item::GetActive()const
 {
-	return TimeAffected;
+	return Active;
 }
 
 float Item::GetDuration()const

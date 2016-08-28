@@ -13,11 +13,12 @@ carpenter,c,NPC_carpenter,10,10,3.33333333,,,,1,0
 mapguy,m,NPC_mapguy,10,10,10,,,,1,0
 priest,p,NPC_priest,10,10,10,,,,1,0
 princess,P,NPC_noblelady,14.13427562,10,10,,,,1,0
-1_Scene,1,door,10,10,10,,,,1,0
-2_Scene,2,door,10,10,10,,,,1,0
-3_Scene,3,door,10,10,10,,,,1,0
+1_Scene,1,Entrance_City,10,10,10,,,,1,0
+2_Scene,2,Entrance_Village,10,10,10,,,,1,0
+3_Scene,3,Entrance_Forest,10,10,10,,,,1,0
 F1_Scene,f,door,50,40,10,,,,1,0
 F2_Scene,F,door,10,10,10,,,,1,0
 CastleWall,W,Castle_Wall,30,60,15,,,,1,0
 CastleWall2,o,Castle_Wall2,29.9,60,15,,,,1,0
 CastlePillar,w,Castle_Pillar,40,70,40,,,,1,0
+Fence,Q,Fence,10,10,1,,,,1,0

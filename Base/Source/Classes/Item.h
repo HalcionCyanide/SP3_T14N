@@ -21,13 +21,13 @@ public:
 
 	virtual void SetItemType(const Item::ItemType &type);
 	virtual void SetNumberOfItem(const int &number);
-	virtual void SetTimeAffected(const bool &timeAffected);
+	virtual void SetActive(const bool &active);
 	virtual void SetTimer(const float &time);
 	virtual void SetEffectiveValue(const float &value);
 
 	Item::ItemType GetItemType()const;
 	int GetNumberOfItem()const;
-	bool GetTimeAffected()const;
+	bool GetActive()const;
 	float GetDuration()const;
 	float GetEffectiveValue()const;
 
@@ -37,9 +37,8 @@ public:
 private:
 	ItemType TypeOfItem;	//Type of item
 	int Number_of_Item;		//Amount of item
-	bool Active;
-	bool TimeAffected;		//If item has a duration when used
-	float Duration;			//Duration if it is enabled
+	bool Active;			//If item is currently in use
+	float Duration;			//Duration of the item
 	float EffectiveValue;	//Value change
 };
 
