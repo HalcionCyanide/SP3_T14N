@@ -314,7 +314,8 @@ void SceneTown1::Update(float dt)
 			if (temp == "Exit")
 			{
 				camera->CameraIsLocked = false;
-				ChatLayer->SwapOriginalWithTarget();
+				if (ChatLayer->LayerTargetPosition.y > -1)
+					ChatLayer->SwapOriginalWithTarget();
 				CurrentNPC->setInteracting(false);
 				Scene_System::accessing().cSS_InputManager->SetMousePosition(CenterPosition);
 				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
@@ -336,6 +337,14 @@ void SceneTown1::RenderShadowCasters()
 {
 	RenderTerrain();
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
+	//<!> will remove soon <!>
+	for (auto it : objVec)
+	{
+		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
+		if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
+			the3DObject->Render();
+	}
+
 	for (std::vector<Billboard*>::iterator it = BManager.BillboardContainer.begin(); it != BManager.BillboardContainer.end(); ++it)
 	{
 		if ((*it)->Active)
@@ -347,18 +356,13 @@ void SceneTown1::RenderShadowCasters()
 			modelStack->Translate((*it)->GetPosition().x, (*it)->GetPosition().y, (*it)->GetPosition().z);
 			modelStack->Rotate(Math::RadianToDegree(atan2(camera->position.x - (*it)->GetPosition().x, camera->position.z - (*it)->GetPosition().z)), 0, 1, 0);
 			modelStack->Scale(TimeRatio * (*it)->GetDimensions().x, TimeRatio *(*it)->GetDimensions().y, TimeRatio *(*it)->GetDimensions().z);
-			SceneGraphics->RenderMesh((*it)->GetMeshName(), false);
+			if ((*it)->GetLifeTime() == -1)
+				SceneGraphics->RenderMesh((*it)->GetMeshName(), true);
+			else SceneGraphics->RenderMesh((*it)->GetMeshName(), false);
 			modelStack->PopMatrix();
 		}
 	}
 
-	//<!> will remove soon <!>
-	for (auto it : objVec)
-	{
-		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
-		if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
-			the3DObject->Render();
-	}
 }
 
 void SceneTown1::RenderSkybox()

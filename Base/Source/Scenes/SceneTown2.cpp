@@ -144,6 +144,16 @@ void SceneTown2::RenderShadowCasters()
 {
 	RenderTerrain();
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
+
+	//<!> will remove soon <!>
+	for (auto it : objVec)
+	{
+		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
+		if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
+			the3DObject->Render();
+	}
+	//<!> will remove soon <!>
+
 	for (std::vector<Billboard*>::iterator it = BManager.BillboardContainer.begin(); it != BManager.BillboardContainer.end(); ++it)
 	{
 		if ((*it)->Active)
@@ -155,19 +165,13 @@ void SceneTown2::RenderShadowCasters()
 			modelStack->Translate((*it)->GetPosition().x, (*it)->GetPosition().y, (*it)->GetPosition().z);
 			modelStack->Rotate(Math::RadianToDegree(atan2(camera->position.x - (*it)->GetPosition().x, camera->position.z - (*it)->GetPosition().z)), 0, 1, 0);
 			modelStack->Scale(TimeRatio * (*it)->GetDimensions().x, TimeRatio *(*it)->GetDimensions().y, TimeRatio *(*it)->GetDimensions().z);
-			SceneGraphics->RenderMesh((*it)->GetMeshName(), false);
+			if ((*it)->GetLifeTime() == -1)
+				SceneGraphics->RenderMesh((*it)->GetMeshName(), true);
+			else SceneGraphics->RenderMesh((*it)->GetMeshName(), false);
 			modelStack->PopMatrix();
 		}
 	}
 
-	//<!> will remove soon <!>
-	for (auto it : objVec)
-	{
-		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
-		if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
-			the3DObject->Render();
-	}
-	//<!> will remove soon <!>
 }
 
 void SceneTown2::RenderSkybox()

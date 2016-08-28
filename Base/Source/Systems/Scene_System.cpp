@@ -193,10 +193,10 @@ void Scene_System::doingLoadingEffect()
             else
                 whichTarget = &leftSide;
             Vector3 thePos((sizeofSquare.x * 0.5f) + (numOfCols * sizeofSquare.x * 0.5f), (sizeofSquare.y * 0.5f) + (numOFRows * sizeofSquare.y * 0.5f), 0);
-            theLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "SmallWhiteSquare",*whichTarget , thePos, sizeofSquare, thePos);
+            theLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "SmallBlackSquare",*whichTarget , thePos, sizeofSquare, thePos);
         }
     }
-    theLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", topSide, Vector3(cSS_InputManager->cIM_ScreenWidth * 0.5f, cSS_InputManager->cIM_ScreenHeight * 0.5f, 5.f), Vector3(600, 100, 1), Vector3(cSS_InputManager->cIM_ScreenWidth * 0.5f, cSS_InputManager->cIM_ScreenHeight * 0.5f, 5.f), "Smoke Weed Everyday!");
+    theLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", topSide, Vector3(cSS_InputManager->cIM_ScreenWidth * 0.5f, cSS_InputManager->cIM_ScreenHeight * 0.5f, 5.f), Vector3(600, 100, 1), Vector3(cSS_InputManager->cIM_ScreenWidth * 0.5f, cSS_InputManager->cIM_ScreenHeight * 0.5f, 5.f), "Loading Game");
     theLoadingEffect->cUIS_LayerContainer.push_back(theLayer);
 }
 
@@ -205,24 +205,30 @@ void Scene_System::UpdateLoadingStuff(double dt)
     m_accumulatedLoadingTime += dt;
     if (m_accumulatedLoadingTime > delayingLoadingTime)
     {
-        for (std::vector<UI_Layer*>::iterator it = theLoadingEffect->cUIS_LayerContainer.begin(), end = theLoadingEffect->cUIS_LayerContainer.end(); it != end; ++it)
-        {
-            UI_Layer *theLayer = (*it);
-            for (std::vector<UI_Element*>::iterator it2 = theLayer->cUI_Layer.begin(), end2 = theLayer->cUI_Layer.end(); it2 != end2; ++it2)
-            {
-                UI_Element *theElement = (*it2);
-                theElement->Update((float)dt);
-                if (whatLoadingState != prevLoadingState)
-                    theElement->SwapOriginalWithTarget();
-            }
-        }
-        if (whatLoadingState != prevLoadingState)
-            prevLoadingState = whatLoadingState;
+            whatLoadingState = FINISHED_LOADING;
     }
+    for (std::vector<UI_Layer*>::iterator it = theLoadingEffect->cUIS_LayerContainer.begin(), end = theLoadingEffect->cUIS_LayerContainer.end(); it != end; ++it)
+    {
+        UI_Layer *theLayer = (*it);
+        for (std::vector<UI_Element*>::iterator it2 = theLayer->cUI_Layer.begin(), end2 = theLayer->cUI_Layer.end(); it2 != end2; ++it2)
+        {
+            UI_Element *theElement = (*it2);
+            theElement->Update((float)dt);
+            if (whatLoadingState != prevLoadingState)
+                theElement->SwapOriginalWithTarget();
+        }
+    }
+    if (whatLoadingState != prevLoadingState)
+        prevLoadingState = whatLoadingState;
+    //if (m_accumulatedLoadingTime > 5)
+    //{
+    //    SetLoadingTime(2);
+    //}
 }
 
 void Scene_System::SetLoadingTime(const double &dt)
 {
     delayingLoadingTime = dt;
     m_accumulatedLoadingTime = 0;
+    whatLoadingState = BEGIN_LOADING;
 }

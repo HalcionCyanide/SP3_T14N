@@ -30,10 +30,20 @@ void BattleSystem::Init()
 	BattleBox = nullptr;
 	HealthBarGreen = nullptr;
 	EnemyStaminaBar = nullptr;
+	EndScreenSuccess = nullptr;
+	EndScreenFail = nullptr;
+	ExitButton = nullptr;
 }
 
 void BattleSystem::QuickInit()
 {
+	// Generic
+	SpellPowerRatio = EnemySpellPowerRatio = 0;
+	RoundOver = false;
+	RemoveBattleUI = false;
+	SealAnimationOver = false;
+	UISwapped = false;
+
 	// Intro
 	AnimationPaused = false;
 	AnimationResumed = false;
@@ -63,8 +73,6 @@ void BattleSystem::QuickInit()
 	//PlayerInventoryUI = new UI_Layer();
 	PlayerInfoBox = new UI_Layer();
 	EnemyInfoBox = new UI_Layer();
-
-	RoundOver = false;
 }
 
 void BattleSystem::Update(double dt)
@@ -79,12 +87,12 @@ void BattleSystem::Update(double dt)
 		UpdateBattlePhase((float)dt);
 		break;
 	case BS_EndScreenSuccess:
+		UpdateEndScreenSuccess((float)dt);
 		break;
 	case BS_EndScreenFail:
+		UpdateEndScreenFail((float)dt);
 		break;
 	}
-	if (ActiveBSOCount == 0 && RoundOver)
-		QuickExit();
 }
 
 void BattleSystem::Render()
@@ -98,19 +106,14 @@ void BattleSystem::Render()
 		RenderBattleScreen();
 		break;
 	case BS_EndScreenSuccess:
+		RenderEndScreenSuccess();
 		break;
 	case BS_EndScreenFail:
+		RenderEndScreenFail();
 		break;
 	}
 
 	cBillboardManager.Render();
-	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
-	{
-		if ((*it)->Active && (*it)->Visible)
-		{
-			(*it)->Render();
-		}
-	}
 }
 
 void BattleSystem::RenderIntroScreen()
@@ -124,6 +127,13 @@ void BattleSystem::RenderIntroScreen()
 	}
 	if (AnimationResumed)
 		RenderBattleScreen();
+	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
+	{
+		if ((*it)->Active && (*it)->Visible)
+		{
+			(*it)->Render();
+		}
+	}
 }
 
 void BattleSystem::RenderBattleScreen()
@@ -142,6 +152,23 @@ void BattleSystem::RenderBattleScreen()
 		EnemyLayer->Render();
 	if (BattleBox)
 		BattleBox->Render();
+	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
+	{
+		if ((*it)->Active && (*it)->Visible)
+		{
+			(*it)->Render();
+		}
+	}
+}
+
+void BattleSystem::RenderEndScreenSuccess()
+{
+	cUI_System.Render();
+}
+
+void BattleSystem::RenderEndScreenFail()
+{
+	cUI_System.Render();
 }
 
 void BattleSystem::Exit()
@@ -225,7 +252,7 @@ void BattleSystem::SetEnemy(Enemy& E)
 	float BoxHeightUnits = 12;
 	HealthBarDefaultScale = PlayerScale * 13;
 
-	GBarPosition = CenterPosition.x * 0.75f;
+	GBarPosition = CenterPosition.x * 0.95f;
 	RBarPosition = CenterPosition.x * 1.75f;
 
 	float StaminaRatio = (float)(EnemyStaminaTimer - CurrentStaminaTimer) / EnemyStaminaTimer;
@@ -237,13 +264,16 @@ void BattleSystem::SetEnemy(Enemy& E)
 	BattleBox = new UI_Layer();
 	EnemyDefaultPosition.Set(CenterPosition.x * 1.75f, CenterPosition.y * 1.7f, 0);
 
+	EnemySpellPowerRatio = (float)(CurrentEnemy->SpellPower / Scene_System::accessing().gPlayer->GetSpellPower());
+	SpellPowerRatio = (float)(Scene_System::accessing().gPlayer->GetSpellPower() / CurrentEnemy->SpellPower);
+
 	// Set Wave Time
 	EnemyStaminaTimer *= CurrentEnemy->MaxEnemyWave;
 	int EnemyAttack = Math::RandIntMinMax(0, CurrentEnemy->cE_Projectiles.size() - 1);
 	CurrentProjectile = *CurrentEnemy->cE_Projectiles[EnemyAttack];
 
 	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, CurrentEnemy->MeshName, Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(PlayerScale * 5, PlayerScale * 5, 1), EnemyDefaultPosition);
-	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.35f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.35f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.35f, 0), CurrentEnemy->MeshName);
+	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.35f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.35f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.35f, 0), CurrentEnemy->EnemyName);
 	
 	// Spell Power
 	std::stringstream ss;
@@ -256,10 +286,10 @@ void BattleSystem::SetEnemy(Enemy& E)
 	
 	cUI_System.cUIS_LayerContainer.push_back(EnemyLayer);
 
-	BattleBox->AddUIElement(UI_Element::UI_LOGO, "GBox", Vector3(CenterPosition.x * -2.f, CenterPosition.y, 0), Vector3(CenterPosition.x * -2.f, CenterPosition.y, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.65f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.6f, 1), Vector3(CenterPosition.x * 0.9f, CenterPosition.y, 0));
+	BattleBox->AddUIElement(UI_Element::UI_LOGO, "GBox", Vector3(CenterPosition.x * -2.f, CenterPosition.y, 0), Vector3(CenterPosition.x * -2.f, CenterPosition.y, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.6f, 1), Vector3(CenterPosition.x * 0.9f, CenterPosition.y, 0));
 	BattleBox->cUI_Layer[0]->UI_Bounds->ResetValues();
 
-	BattleBox->AddUIElement(UI_Element::UI_BUTTON_R_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 0.3f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y - PlayerScale *  (1 + BoxHeightUnits * 0.5f), 0), Vector3(PlayerScale * 6, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 0.25f, CenterPosition.y * 0.3f, 0), "Remaining Health: ");
+	BattleBox->AddUIElement(UI_Element::UI_BUTTON_R_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * -4.f, CenterPosition.y * 0.3f, 0), Vector3(CenterPosition.x * -4.f, CenterPosition.y - PlayerScale *  (1 + BoxHeightUnits * 0.5f), 0), Vector3(PlayerScale * 6, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 0.65f, CenterPosition.y * 0.3f, 0), "Remaining Health: ");
 	
 	float HealthRatio = (float)Scene_System::accessing().gPlayer->GetCurrentHealth() / (float)Scene_System::accessing().gPlayer->GetMaxHealth();
 	float GBarWidth = HealthRatio * HealthBarDefaultScale * 0.5f;
@@ -338,10 +368,10 @@ void BattleSystem::UpdateEnemyInfoBox(float dt)
 	// Layer Backing Image
 	EnemyInfoBox->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "BS_LPanel", Target, Target, Vector3(-Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 1), Target);
 
-	// Player Name
-	EnemyInfoBox->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "UI_ChatBox", Target + Vector3(0, Target.y * 0.75f), Target + Vector3(0, Target.y * 0.75f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.4f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.05f * AspectRatio, 1), Target + Vector3(0, Target.y * 0.75f), CurrentEnemy->MeshName);
+	// Enemy Name
+	EnemyInfoBox->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "UI_ChatBox", Target + Vector3(0, Target.y * 0.75f), Target + Vector3(0, Target.y * 0.75f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.4f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.05f * AspectRatio, 1), Target + Vector3(0, Target.y * 0.75f), CurrentEnemy->EnemyName);
 
-	// Player Image
+	// Enemy Image
 	EnemyInfoBox->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, CurrentEnemy->MeshName, Target + Vector3(0, Target.y * 0.2f), Target + Vector3(0, Target.y * 0.2f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.2f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.2f * AspectRatio, 1), Target + Vector3(0, Target.y * 0.2f));
 
 	// Spell Power
@@ -439,17 +469,17 @@ void BattleSystem::UpdateEnemyLogic(float dt)
 			// Reselect an attack from the pool
 			else
 			{
+				EnemyReselectionInterval += CurrentProjectile.AttacksPerWave * CurrentProjectile.AttackSpeed * CurrentProjectile.BatchCreateCount;
 				int EnemyAttack = Math::RandIntMinMax(0, CurrentEnemy->cE_Projectiles.size() - 1);
 				CurrentProjectile = *CurrentEnemy->cE_Projectiles[EnemyAttack];
 				CurrentEnemy->CurrentAttackCount = 0;
-				EnemyReselectionInterval += CurrentProjectile.AttacksPerWave * CurrentProjectile.AttackSpeed * CurrentProjectile.BatchCreateCount; 
 			}
 		}
 		else EnemyReselectionInterval -= dt;
 	}
-	else // Out of stamina
+	else if (ActiveBSOCount <= 0)// Out of stamina and no more attacks
 	{
-		RoundOver = true;
+		BattleState = BS_EndScreenSuccess;
 	}
 
 	// Bullet Update
@@ -459,13 +489,30 @@ void BattleSystem::UpdateEnemyLogic(float dt)
 	{
 		if ((*it)->Active)
 		{
-			if ((*it)->GetPosition().y - (*it)->GetDimensions().y * 0.5f < BBox->Position.y - BBox->Dimensions.y ||
-				(*it)->GetPosition().x - (*it)->GetDimensions().x * 0.5f < BBox->Position.x - BBox->Dimensions.x || 
-				(*it)->GetPosition().y + (*it)->GetDimensions().y * 0.5f < BBox->Position.y + BBox->Dimensions.x)
+			if ((*it)->Type == BattleScreenObject::BS_Bullet && 
+				(*it)->GetPosition().y - (*it)->GetDimensions().y * 0.5f > BBox->Position.y - BBox->Dimensions.y * 0.5f)
+				{
+					(*it)->Update(dt);
+					++ActiveBSOCount;
+				}
+			else if ((*it)->Type == BattleScreenObject::BS_Blast || (*it)->Type == BattleScreenObject::BS_Null &&
+				BattleBox->cUI_Layer[0]->UI_Bounds->CheckCollision((*it)->GetPosition()))
+				{
+					(*it)->Update(dt);
+					++ActiveBSOCount;
+				}
+			else if ((*it)->Type == BattleScreenObject::BS_HRay &&
+				(*it)->GetPosition().x + (*it)->GetDimensions().x * 0.5f < Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 1.1f)
 			{
 				(*it)->Update(dt);
 				++ActiveBSOCount;
 			}
+			else if ((*it)->Type == BattleScreenObject::BS_VRay &&
+				(*it)->GetPosition().y - (*it)->GetDimensions().y * 0.5f > BBox->Position.y - BBox->Dimensions.y * 0.5f)
+				{
+					(*it)->Update(dt);
+					++ActiveBSOCount;
+				}
 			else
 			{
 				--ActiveBSOCount;
@@ -478,6 +525,156 @@ void BattleSystem::UpdateEnemyLogic(float dt)
 void BattleSystem::AnimateEnemy()
 {
 	EnemyLayer->cUI_Layer[0]->TargetPosition = EnemyDefaultPosition + Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0);
+}
+
+void BattleSystem::UpdateEndScreenSuccess(float dt)
+{
+	if (!RemoveBattleUI)
+	{
+		RemoveBattleUI = true;
+		InitSuccessScreen();
+	}
+	cUI_System.Update((float)dt);
+	if (!SealAnimationOver && (EndScreenSuccess->cUI_Layer[0]->Position - EndScreenSuccess->cUI_Layer[0]->TargetPosition).LengthSquared() < 300.f)
+	{
+		Vector3 Decrement = EndScreenSuccess->cUI_Layer[0]->Dimensions * dt;
+		if (EndScreenSuccess->cUI_Layer[0]->Dimensions.LengthSquared() > 100.f)
+		{
+			EndScreenSuccess->cUI_Layer[0]->Dimensions -= Decrement;
+			cBillboardManager.AddParticle("WhiteParticle", EndScreenSuccess->cUI_Layer[0]->Position, Vector3(PlayerScale * 0.5f, PlayerScale * 0.5f, 1), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0), Vector3(0, 0, 1), 1);
+		}
+		else
+		{
+			SealAnimationOver = true;
+			EndScreenSuccess->cUI_Layer[0]->Active = false;
+		}
+	}
+	if (SealAnimationOver && !UISwapped)
+	{
+		UISwapped = true;
+		for (std::vector<UI_Element*>::iterator it = EndScreenSuccess->cUI_Layer.begin(); it != EndScreenSuccess->cUI_Layer.end(); ++it)
+		{
+			(*it)->SwapOriginalWithTarget();
+		}
+	}
+	ExitButton->UI_Bounds->SetPosition(ExitButton->Position);
+	ExitButton->UI_Bounds->SetDimensions(ExitButton->Dimensions);
+	ExitButton->UI_Bounds->ResetValues();
+	ExitButton->BoundsActive = true;
+	bool ClickSucceeded = false;
+	ExitButton->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+	if (ClickSucceeded)
+	{
+		QuickExit();
+	}
+}
+
+void BattleSystem::UpdateEndScreenFail(float dt)
+{
+	if (!RemoveBattleUI)
+	{
+		RemoveBattleUI = true;
+		InitFailScreen();
+	}
+	cUI_System.Update((float)dt);
+	if (!UISwapped)
+	{
+		UISwapped = true;
+		for (std::vector<UI_Element*>::iterator it = EndScreenFail->cUI_Layer.begin(); it != EndScreenFail->cUI_Layer.end(); ++it)
+		{
+			(*it)->SwapOriginalWithTarget();
+		}
+	}
+	ExitButton->UI_Bounds->SetPosition(ExitButton->Position);
+	ExitButton->UI_Bounds->SetDimensions(ExitButton->Dimensions);
+	ExitButton->UI_Bounds->ResetValues();
+	ExitButton->BoundsActive = true;
+	bool ClickSucceeded = false;
+	ExitButton->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+	if (ClickSucceeded)
+	{
+		Exit();
+		Scene_System::accessing().SwitchScene(Scene_MainMenu::id_);
+		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+	}
+}
+
+void BattleSystem::InitSuccessScreen()
+{
+	float AspectRatio = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight;
+
+	EndScreenSuccess = new UI_Layer();
+	// Set Spawn and Target
+	Vector3 SpawnPos = Vector3(CenterPosition.x, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 2.f, 0);
+	EndScreenSuccess->LayerOriginalPosition.y = EndScreenSuccess->LayerCenterPosition.y = SpawnPos.y;
+	EndScreenSuccess->LayerTargetPosition = 0;
+
+	// Layer Backing Image
+	EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, CurrentEnemy->MeshName, 3 * CenterPosition, 3 * CenterPosition, Vector3(PlayerScale * 5, PlayerScale * 5, 1), CenterPosition);
+
+	EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "PlayerHeart", CenterPosition * -2.5f, CenterPosition * -2.5f, Vector3(PlayerScale, PlayerScale, 1), CenterPosition);
+	
+	EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "BS_FPanel", CenterPosition, SpawnPos, Vector3(-Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 1), SpawnPos);
+
+	EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "UI_ChatBox", CenterPosition + Vector3(0, CenterPosition.y * 0.65f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.8f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "The Monster Has Been Sealed!");
+
+	std::stringstream ss;
+	if (CurrentEnemy->SpellPower <= Scene_System::accessing().gPlayer->GetSpellPower())
+	{
+		ss.str("");
+		ss << "Spell Power: No Change [" << Scene_System::accessing().gPlayer->GetSpellPower() << "]";
+		EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", CenterPosition, SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.06f * AspectRatio, 1), SpawnPos, ss.str());
+	}
+	else {
+		ss.str("");
+		ss << "Old Spell Power: " << Scene_System::accessing().gPlayer->GetSpellPower();
+		EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.06f * AspectRatio, 1), SpawnPos, ss.str());
+		Scene_System::accessing().gPlayer->SetSpellPower(CurrentEnemy->SpellPower);
+		ss.str("");
+		ss << "New Spell Power: " << Scene_System::accessing().gPlayer->GetSpellPower();
+		EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", CenterPosition - Vector3(0, CenterPosition.y * 0.15f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.06f * AspectRatio, 1), SpawnPos, ss.str());
+	}
+
+	ExitButton = new UI_Element(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", CenterPosition - Vector3(0, CenterPosition.y * 0.7f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "Click Here To Exit The Battle Screen.");
+	
+	EndScreenSuccess->cUI_Layer.push_back(ExitButton);
+
+	cUI_System.cUIS_LayerContainer.push_back(EndScreenSuccess);
+	ShiftBattleUI();
+}
+
+void BattleSystem::InitFailScreen()
+{
+	float AspectRatio = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight;
+
+	EndScreenFail = new UI_Layer();
+	// Set Spawn and Target
+	Vector3 SpawnPos = Vector3(CenterPosition.x, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 2.f, 0);
+	EndScreenFail->LayerOriginalPosition.y = EndScreenFail->LayerCenterPosition.y = SpawnPos.y;
+	EndScreenFail->LayerTargetPosition = 0;
+
+	// Layer Backing Image
+	EndScreenFail->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, CurrentEnemy->MeshName, 3 * CenterPosition, 3 * CenterPosition, Vector3(PlayerScale * 5, PlayerScale * 5, 1), CenterPosition);
+
+	EndScreenFail->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "PlayerHeart", CenterPosition * -2.5f, CenterPosition * -2.5f, Vector3(PlayerScale, PlayerScale, 1), CenterPosition);
+
+	EndScreenFail->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "BS_FPanel", CenterPosition, SpawnPos, Vector3(-Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 1), SpawnPos);
+
+	EndScreenFail->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "UI_ChatBox", CenterPosition + Vector3(0, CenterPosition.y * 0.3f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.8f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "You Have Been Killed By The Monster...");
+
+	ExitButton = new UI_Element(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", CenterPosition - Vector3(0, CenterPosition.y * 0.3f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "Click Here To Return To The Main Menu.");
+
+	EndScreenFail->cUI_Layer.push_back(ExitButton);
+
+	cUI_System.cUIS_LayerContainer.push_back(EndScreenFail);
+	ShiftBattleUI();
+}
+
+void BattleSystem::ShiftBattleUI()
+{
+	//PlayerInventoryUI.x = 3 * CenterPosition.x;
+	EnemyLayer->LayerTargetPosition = CenterPosition * 3.f;
+	BattleBox->LayerTargetPosition.x = -3 * CenterPosition.x;
 }
 
 // Player Calls
@@ -586,9 +783,15 @@ void BattleSystem::UpdatePhysics(float dt)
 					if (CollisionResponse(*PlayerObj, **it, dt))
 					{
 						PlayerIsInvincible = true;
-						PlayerIFrameTimer = 2;
+						PlayerIFrameTimer = 1 * Math::Clamp(SpellPowerRatio, 0.8f, 1.f);
 
-						float HealthRatio = (float)Scene_System::accessing().gPlayer->GetCurrentHealth() / (float)Scene_System::accessing().gPlayer->GetMaxHealth();
+						int HP = Scene_System::accessing().gPlayer->GetCurrentHealth();
+						if (HP == 0)
+							BattleState = BS_EndScreenFail;
+						HP = Math::Clamp(Scene_System::accessing().gPlayer->GetCurrentHealth(), 0, Scene_System::accessing().gPlayer->GetMaxHealth());
+						Scene_System::accessing().gPlayer->SetCurrentHealth(HP);
+
+						float HealthRatio = (float)Scene_System::accessing().gPlayer->GetCurrentHealth() / (float)Scene_System::accessing().gPlayer->GetMaxHealth() + 0.001f;
 						float GBarWidth = HealthRatio * HealthBarDefaultScale * 0.5f;
 						float BarPosition = GBarPosition - (HealthBarDefaultScale - GBarWidth) * 0.5f + HealthBarDefaultScale * 0.25f;
 						HealthBarGreen->Dimensions.x = GBarWidth;
@@ -605,6 +808,37 @@ bool BattleSystem::CollisionCheck(const BattleScreenObject& BSO1, const BattleSc
 	switch (BSO2.Type)
 	{
 		case BattleScreenObject::BS_Bullet:
+		{
+			// Simple Circle BC.
+			float CollisionRadius = 0.4f;
+			float CombinedRadiusSquared = (BSO1.GetDimensions().x * CollisionRadius + BSO2.GetDimensions().x * CollisionRadius) * (BSO1.GetDimensions().x * CollisionRadius + BSO2.GetDimensions().x * CollisionRadius);
+			float DistSquared = ((BSO1.GetPosition() + BSO1.GetVelocity() * dt) - (BSO2.GetPosition() + BSO2.GetVelocity() * dt)).LengthSquared();
+			Vector3 RelativeVelocity = BSO2.GetVelocity() - BSO1.GetVelocity();
+			Vector3 RelativeDisplacement = BSO1.GetPosition() - BSO2.GetPosition();
+			if (DistSquared < CombinedRadiusSquared &&
+				RelativeVelocity.Dot(RelativeDisplacement) > 0) // Check Angle Between Relative Velocity Vectors in attempt to see if the angle between them is smaller than zero
+			{
+				return true;
+			}
+			break;
+		}
+		case BattleScreenObject::BS_HRay:
+		{
+			// Simple Circle BC.
+			float CollisionRadius = 0.4f;
+			float CombinedRadiusSquared = (BSO1.GetDimensions().x * CollisionRadius + BSO2.GetDimensions().x * CollisionRadius) * (BSO1.GetDimensions().x * CollisionRadius + BSO2.GetDimensions().x * CollisionRadius);
+			float DistSquared = ((BSO1.GetPosition() + BSO1.GetVelocity() * dt) - (BSO2.GetPosition() + BSO2.GetVelocity() * dt)).LengthSquared();
+			Vector3 RelativeVelocity = BSO2.GetVelocity() - BSO1.GetVelocity();
+			Vector3 RelativeDisplacement = BSO1.GetPosition() - BSO2.GetPosition();
+			if (DistSquared < CombinedRadiusSquared &&
+				RelativeVelocity.Dot(RelativeDisplacement) > 0) // Check Angle Between Relative Velocity Vectors in attempt to see if the angle between them is smaller than zero
+			{
+				return true;
+			}
+			break;
+		}
+		case BattleScreenObject::BS_VRay:
+
 		{
 			// Simple Circle BC.
 			float CollisionRadius = 0.4f;
@@ -643,22 +877,11 @@ bool BattleSystem::CollisionResponse(const BattleScreenObject& BSO1, const Battl
 	// Do stuff like hp decrement
 	switch (BSO2.Type)
 	{
-	case BattleScreenObject::BS_Bullet:
+	case BattleScreenObject::BS_Null:
 	{
-		EnemyProjectile* P = nullptr;
-		for (std::vector<EnemyProjectile*>::iterator it = CurrentEnemy->cE_Projectiles.begin(); it != CurrentEnemy->cE_Projectiles.end(); ++it)
-		{
-			if ((*it)->getName() == BSO2.GetMeshName())
-				P = *it;
-		}
-		if (P != nullptr)
-		{
-			Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetCurrentHealth() - P->DamagePerAttack);
-		}
-		return true;
 		break;
 	}
-	case BattleScreenObject::BS_Blast:
+	default:
 	{
 		EnemyProjectile* P = nullptr;
 		for (std::vector<EnemyProjectile*>::iterator it = CurrentEnemy->cE_Projectiles.begin(); it != CurrentEnemy->cE_Projectiles.end(); ++it)
@@ -668,7 +891,7 @@ bool BattleSystem::CollisionResponse(const BattleScreenObject& BSO1, const Battl
 		}
 		if (P != nullptr)
 		{
-			Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetCurrentHealth() - P->DamagePerAttack);
+			Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetCurrentHealth() - (int(P->DamagePerAttack * Math::Clamp(EnemySpellPowerRatio, 1.f, 1.5f))));
 		}
 		return true;
 		break;
@@ -695,6 +918,20 @@ int BattleSystem::BatchCreateAttacks(EnemyProjectile& CurrentProjectile)
 			Attack_Trap(CurrentProjectile);
 		return AttackCount;
 	}
+	else if (CurrentProjectile.AttackType == "VRay")
+	{
+		int AttackCount = Math::RandIntMinMax(1, CurrentProjectile.BatchCreateCount);
+		for (unsigned short i = 0; i < AttackCount; ++i)
+			Attack_VerticalRay(CurrentProjectile);
+		return AttackCount;
+	}
+	else if (CurrentProjectile.AttackType == "HRay")
+	{
+		int AttackCount = Math::RandIntMinMax(1, CurrentProjectile.BatchCreateCount);
+		for (unsigned short i = 0; i < AttackCount; ++i)
+			Attack_HorizontalRay(CurrentProjectile);
+		return AttackCount;
+	}
 	return 0;
 }
 
@@ -710,32 +947,89 @@ void BattleSystem::Attack_Bullet(EnemyProjectile& CurrentProjectile)
 	BSO->Type = BattleScreenObject::BS_Bullet;
 	BSO->Active = true;
 	BSO->TargetPoint = TargetPos;
-	BSO->AltTargetPoint = PlayerObj->GetPosition();
+	BSO->AltTargetPoint = PlayerObj->GetPosition() + 2 * Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0);
 	BSO->MoveToTarget = true;
 	BSO->SetMass(3.f);
 }
 
 void BattleSystem::Attack_Trap(EnemyProjectile& CurrentProjectile)
 {
-	Vector3 SpawnPos = PlayerObj->GetPosition() + Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0);
-	float RAngle = Math::RandFloatMinMax(-360.f, 360.f);
+	Vector3 SpawnPos = PlayerObj->GetPosition() + 2 * Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0);
+	if (BattleBox->cUI_Layer[0]->UI_Bounds->CheckCollision(SpawnPos))
+	{
+		float RAngle = Math::RandFloatMinMax(-360.f, 360.f);
+		BattleScreenObject* BSO = GetInactiveBSO();
+		BSO->SetParameters("CrossMarker", 3, SpawnPos + Vector3(0, 0, -1), Vector3(PlayerScale, PlayerScale, 1), 0, RAngle, Vector3(0, 0, 1));
+		BSO->Type = BattleScreenObject::BS_Null;
+		BSO->Active = true;
+		BSO->LifeTime = 1;
+		BSO->SetAcceleration(0);
+		BSO->MoveToTarget = false;
+		BSO->AltTargetPoint = 0;
+
+		BSO = GetInactiveBSO();
+		BSO->SetParameters(CurrentProjectile.StoredMesh, 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), Vector3(CurrentProjectile.ScalarAcceleration, CurrentProjectile.ScalarAcceleration), RAngle, Vector3(0, 0, 1));
+		CurrentProjectile.setName(BSO->GetMeshName());
+		BSO->Type = BattleScreenObject::BS_Blast;
+		BSO->Visible = false;
+		BSO->Active = true;
+		BSO->LifeTime = 4;
+		BSO->SetMass(3.f);
+		BSO->MoveToTarget = false;
+		BSO->AltTargetPoint = 0;
+	}
+}
+
+void BattleSystem::Attack_HorizontalRay(EnemyProjectile& CurrentProjectile)
+{
+	// Spawn a bullet at the exterior of the GBox, fire it at the player.
+	Vector3 SpawnPos = EnemyLayer->cUI_Layer[0]->TargetPosition - Vector3(EnemyLayer->cUI_Layer[0]->Dimensions.x * 0.5f);
+	Vector3 TargetPos = Vector3(Math::RandFloatMinMax(BattleBox->cUI_Layer[0]->Position.x - BattleBox->cUI_Layer[0]->Dimensions.x, BattleBox->cUI_Layer[0]->Position.x + BattleBox->cUI_Layer[0]->Dimensions.x), CenterPosition.y * 2.5f);
+	Vector3 Target2 = Vector3(-CenterPosition.x * 0.2f, Math::RandFloatMinMax(BattleBox->cUI_Layer[0]->Position.y - BattleBox->cUI_Layer[0]->Dimensions.y * 0.5f, BattleBox->cUI_Layer[0]->Position.y + BattleBox->cUI_Layer[0]->Dimensions.y * 0.5f), 0);
+
 	BattleScreenObject* BSO = GetInactiveBSO();
-	BSO->SetParameters("CrossMarker", 3, SpawnPos + Vector3(0, 0, -1), Vector3(PlayerScale, PlayerScale, 1), 0, RAngle, Vector3(0, 0, 1));
+	BSO->SetParameters(CurrentProjectile.StoredMesh, 5, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), 0, 0, Vector3(0, 0, 1));
+	BSO->Type = BattleScreenObject::BS_HRay;
+	BSO->Active = true;
+	BSO->TargetPoint = TargetPos;
+	BSO->AltTargetPoint = Target2;
+	BSO->SetAcceleration(Vector3(CurrentProjectile.ScalarAcceleration));
+	BSO->MoveToTarget = true;
+	BSO->SetMass(2.f);
+
+	BSO = GetInactiveBSO();
+	BSO->SetParameters("BS_DangerZone", 3, Vector3(BattleBox->cUI_Layer[0]->Position.x, Target2.y), Vector3(BattleBox->cUI_Layer[0]->Dimensions.x, PlayerScale, 1), 0, 0, Vector3(0, 0, 1));
 	BSO->Type = BattleScreenObject::BS_Null;
 	BSO->Active = true;
-	BSO->LifeTime = 1;
+	BSO->LifeTime = 3;
 	BSO->SetAcceleration(0);
 	BSO->MoveToTarget = false;
 	BSO->AltTargetPoint = 0;
+}
+
+void BattleSystem::Attack_VerticalRay(EnemyProjectile& CurrentProjectile)
+{
+	// Spawn a bullet at the exterior of the GBox, fire it at the player.
+	Vector3 SpawnPos = EnemyLayer->cUI_Layer[0]->TargetPosition - Vector3(EnemyLayer->cUI_Layer[0]->Dimensions.x * 0.5f);
+	Vector3 TargetPos = Vector3(Math::RandFloatMinMax(BattleBox->cUI_Layer[0]->Position.x - BattleBox->cUI_Layer[0]->Dimensions.x, BattleBox->cUI_Layer[0]->Position.x + BattleBox->cUI_Layer[0]->Dimensions.x), CenterPosition.y * 2.5f);
+	Vector3 Target2 = Vector3(Math::RandFloatMinMax(BattleBox->cUI_Layer[0]->Position.x - BattleBox->cUI_Layer[0]->Dimensions.x * 0.5f, BattleBox->cUI_Layer[0]->Position.x + BattleBox->cUI_Layer[0]->Dimensions.x * 0.5f), 2.2f * CenterPosition.y, 0);
+
+	BattleScreenObject* BSO = GetInactiveBSO();
+	BSO->SetParameters(CurrentProjectile.StoredMesh, 5, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), 0, 0, Vector3(0, 0, 1));
+	BSO->Type = BattleScreenObject::BS_VRay;
+	BSO->Active = true;
+	BSO->TargetPoint = TargetPos;
+	BSO->AltTargetPoint = Target2;
+	BSO->SetAcceleration(Vector3(0, -CurrentProjectile.ScalarAcceleration));
+	BSO->MoveToTarget = true;
+	BSO->SetMass(2.f);
 
 	BSO = GetInactiveBSO();
-	BSO->SetParameters(CurrentProjectile.StoredMesh, 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), Vector3(CurrentProjectile.ScalarAcceleration, CurrentProjectile.ScalarAcceleration), RAngle, Vector3(0, 0, 1));
-	CurrentProjectile.setName(BSO->GetMeshName());
-	BSO->Type = BattleScreenObject::BS_Blast;
-	BSO->Visible = false;
+	BSO->SetParameters("BS_DangerZone", 3, Vector3(Target2.x, BattleBox->cUI_Layer[0]->Position.y), Vector3(PlayerScale, BattleBox->cUI_Layer[0]->Dimensions.y, 1), 0, 0, Vector3(0, 0, 1));
+	BSO->Type = BattleScreenObject::BS_Null;
 	BSO->Active = true;
-	BSO->LifeTime = 4;
-	BSO->SetMass(3.f);
+	BSO->LifeTime = 3;
+	BSO->SetAcceleration(0);
 	BSO->MoveToTarget = false;
 	BSO->AltTargetPoint = 0;
 }

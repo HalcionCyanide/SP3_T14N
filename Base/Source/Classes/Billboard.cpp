@@ -50,17 +50,25 @@ void Billboard::Render()
 	if (Active && StoredMesh)
 	{
 		float TimeRatio = 1;
-		if (LifeTime != -1)
-			TimeRatio = 1.1f - CurrentTime / LifeTime;
 		GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 		Scene_System::accessing().getCurrScene().modelStack->PushMatrix();
 		Scene_System::accessing().getCurrScene().modelStack->Translate(Position.x, Position.y, Position.z); 
 		if (LifeTime != -1)
+		{
+			TimeRatio = 1.1f - CurrentTime / LifeTime;
 			Scene_System::accessing().getCurrScene().modelStack->Rotate(TimeRatio * 360, 0, 0, 1);
+		}
 		Scene_System::accessing().getCurrScene().modelStack->Scale(TimeRatio * Dimensions.x, TimeRatio * Dimensions.y, TimeRatio * Dimensions.z);
-		SceneGraphics->RenderMesh(*StoredMesh, LifeTime == -1);
+		if (LifeTime == -1)
+			SceneGraphics->RenderMesh(*StoredMesh, true);
+		else SceneGraphics->RenderMesh(*StoredMesh, false);
 		Scene_System::accessing().getCurrScene().modelStack->PopMatrix();
 	}
+}
+
+void Billboard::SetDefaultLifeTime()
+{
+	LifeTime = -1;
 }
 
 bool Billboard::CheckLife()

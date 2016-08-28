@@ -143,7 +143,7 @@ void UI_Element::Render(const Vector3& LayerPos)
 		else if (TextWrappingEnabled)
 			for (unsigned int i = 0; i < UI_Text_Container.size(); ++i)
 			{
-				SceneGraphics->RenderTextOnScreen(UI_Text_Container[i], Color(1, 1, 1), Dimensions.y * 0.25f, Position.x + LayerPos.y - Dimensions.x * 0.5f + (Dimensions.y * 0.25f), Position.y + LayerPos.y + (0.5f * Dimensions.y * 0.25f) - (i * Dimensions.y * 0.25f));
+				SceneGraphics->RenderTextOnScreen(UI_Text_Container[i], Color(1, 1, 1), Dimensions.y * 0.275f, Position.x - Dimensions.x * 0.5f + (Dimensions.y * 0.25f), Position.y + LayerPos.y + (0.5f * Dimensions.y * 0.25f) - (i * Dimensions.y * 0.25f));
 			}
 		glEnable(GL_CULL_FACE);
 	}

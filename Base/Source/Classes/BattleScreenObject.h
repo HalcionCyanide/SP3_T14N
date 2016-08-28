@@ -21,7 +21,8 @@ public:
 		BS_Null,
 		BS_Normal,
 		BS_Bullet,
-		BS_ScatterShot,
+		BS_HRay,
+		BS_VRay,
 		BS_Blast,
 		BS_Chaser,
 	};
@@ -30,6 +31,7 @@ public:
 	virtual ~BattleScreenObject();
 
 	virtual void Init(const std::string& MeshName, const float& Mass, const Vector3& Position, const Vector3& Dimensions, const Vector3& Acceleration, const float& RotationAngle, const Vector3& RotationAxis);
+	virtual void Render();
 	virtual void Update(double dt);
 
 	void SetAcceleration(const Vector3&);
