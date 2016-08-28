@@ -40,7 +40,7 @@ void SceneTown1::Init()
 	projectionStack->LoadMatrix(perspective);
 
     camera = new Camera3();
-	camera->Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
+	camera->Init(Vector3(0, 5, 0), Vector3(0, 5, 10), Vector3(0, 1, 0));
 	CenterPosition.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
 	// Initiallise Model Specific Meshes Here

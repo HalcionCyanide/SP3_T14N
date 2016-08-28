@@ -404,6 +404,7 @@ void Scene_MainMenu::Update(float dt)
 	UpdateUILogic(dt, CurrentMenuState);
 	BManager.UpdateContainer(dt, camera.position);
 	camera.Update(dt);
+    Scene_System::accessing().UpdateLoadingStuff(dt);
 }
 
 void Scene_MainMenu::RenderTerrain()
