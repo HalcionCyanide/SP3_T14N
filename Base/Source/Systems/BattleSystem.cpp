@@ -30,6 +30,9 @@ void BattleSystem::Init()
 	BattleBox = nullptr;
 	HealthBarGreen = nullptr;
 	EnemyStaminaBar = nullptr;
+	EndScreenSuccess = nullptr;
+	EndScreenFail = nullptr;
+	ExitButton = nullptr;
 }
 
 void BattleSystem::QuickInit()
@@ -37,6 +40,9 @@ void BattleSystem::QuickInit()
 	// Generic
 	SpellPowerRatio = EnemySpellPowerRatio = 0;
 	RoundOver = false;
+	RemoveBattleUI = false;
+	SealAnimationOver = false;
+	UISwapped = false;
 
 	// Intro
 	AnimationPaused = false;
@@ -81,12 +87,12 @@ void BattleSystem::Update(double dt)
 		UpdateBattlePhase((float)dt);
 		break;
 	case BS_EndScreenSuccess:
+		UpdateEndScreenSuccess((float)dt);
 		break;
 	case BS_EndScreenFail:
+		UpdateEndScreenFail((float)dt);
 		break;
 	}
-	if (ActiveBSOCount == 0 && RoundOver)
-		QuickExit();
 }
 
 void BattleSystem::Render()
@@ -100,19 +106,14 @@ void BattleSystem::Render()
 		RenderBattleScreen();
 		break;
 	case BS_EndScreenSuccess:
+		RenderEndScreenSuccess();
 		break;
 	case BS_EndScreenFail:
+		RenderEndScreenFail();
 		break;
 	}
 
 	cBillboardManager.Render();
-	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
-	{
-		if ((*it)->Active && (*it)->Visible)
-		{
-			(*it)->Render();
-		}
-	}
 }
 
 void BattleSystem::RenderIntroScreen()
@@ -126,6 +127,13 @@ void BattleSystem::RenderIntroScreen()
 	}
 	if (AnimationResumed)
 		RenderBattleScreen();
+	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
+	{
+		if ((*it)->Active && (*it)->Visible)
+		{
+			(*it)->Render();
+		}
+	}
 }
 
 void BattleSystem::RenderBattleScreen()
@@ -144,6 +152,23 @@ void BattleSystem::RenderBattleScreen()
 		EnemyLayer->Render();
 	if (BattleBox)
 		BattleBox->Render();
+	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
+	{
+		if ((*it)->Active && (*it)->Visible)
+		{
+			(*it)->Render();
+		}
+	}
+}
+
+void BattleSystem::RenderEndScreenSuccess()
+{
+	cUI_System.Render();
+}
+
+void BattleSystem::RenderEndScreenFail()
+{
+	cUI_System.Render();
 }
 
 void BattleSystem::Exit()
@@ -452,9 +477,9 @@ void BattleSystem::UpdateEnemyLogic(float dt)
 		}
 		else EnemyReselectionInterval -= dt;
 	}
-	else // Out of stamina
+	else if (ActiveBSOCount <= 0)// Out of stamina and no more attacks
 	{
-		RoundOver = true;
+		BattleState = BS_EndScreenSuccess;
 	}
 
 	// Bullet Update
@@ -500,6 +525,156 @@ void BattleSystem::UpdateEnemyLogic(float dt)
 void BattleSystem::AnimateEnemy()
 {
 	EnemyLayer->cUI_Layer[0]->TargetPosition = EnemyDefaultPosition + Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0);
+}
+
+void BattleSystem::UpdateEndScreenSuccess(float dt)
+{
+	if (!RemoveBattleUI)
+	{
+		RemoveBattleUI = true;
+		InitSuccessScreen();
+	}
+	cUI_System.Update((float)dt);
+	if (!SealAnimationOver && (EndScreenSuccess->cUI_Layer[0]->Position - EndScreenSuccess->cUI_Layer[0]->TargetPosition).LengthSquared() < 300.f)
+	{
+		Vector3 Decrement = EndScreenSuccess->cUI_Layer[0]->Dimensions * dt;
+		if (EndScreenSuccess->cUI_Layer[0]->Dimensions.LengthSquared() > 100.f)
+		{
+			EndScreenSuccess->cUI_Layer[0]->Dimensions -= Decrement;
+			cBillboardManager.AddParticle("WhiteParticle", EndScreenSuccess->cUI_Layer[0]->Position, Vector3(PlayerScale * 0.5f, PlayerScale * 0.5f, 1), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0), Vector3(0, 0, 1), 1);
+		}
+		else
+		{
+			SealAnimationOver = true;
+			EndScreenSuccess->cUI_Layer[0]->Active = false;
+		}
+	}
+	if (SealAnimationOver && !UISwapped)
+	{
+		UISwapped = true;
+		for (std::vector<UI_Element*>::iterator it = EndScreenSuccess->cUI_Layer.begin(); it != EndScreenSuccess->cUI_Layer.end(); ++it)
+		{
+			(*it)->SwapOriginalWithTarget();
+		}
+	}
+	ExitButton->UI_Bounds->SetPosition(ExitButton->Position);
+	ExitButton->UI_Bounds->SetDimensions(ExitButton->Dimensions);
+	ExitButton->UI_Bounds->ResetValues();
+	ExitButton->BoundsActive = true;
+	bool ClickSucceeded = false;
+	ExitButton->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+	if (ClickSucceeded)
+	{
+		QuickExit();
+	}
+}
+
+void BattleSystem::UpdateEndScreenFail(float dt)
+{
+	if (!RemoveBattleUI)
+	{
+		RemoveBattleUI = true;
+		InitFailScreen();
+	}
+	cUI_System.Update((float)dt);
+	if (!UISwapped)
+	{
+		UISwapped = true;
+		for (std::vector<UI_Element*>::iterator it = EndScreenFail->cUI_Layer.begin(); it != EndScreenFail->cUI_Layer.end(); ++it)
+		{
+			(*it)->SwapOriginalWithTarget();
+		}
+	}
+	ExitButton->UI_Bounds->SetPosition(ExitButton->Position);
+	ExitButton->UI_Bounds->SetDimensions(ExitButton->Dimensions);
+	ExitButton->UI_Bounds->ResetValues();
+	ExitButton->BoundsActive = true;
+	bool ClickSucceeded = false;
+	ExitButton->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+	if (ClickSucceeded)
+	{
+		Exit();
+		Scene_System::accessing().SwitchScene(Scene_MainMenu::id_);
+		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+	}
+}
+
+void BattleSystem::InitSuccessScreen()
+{
+	float AspectRatio = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight;
+
+	EndScreenSuccess = new UI_Layer();
+	// Set Spawn and Target
+	Vector3 SpawnPos = Vector3(CenterPosition.x, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 2.f, 0);
+	EndScreenSuccess->LayerOriginalPosition.y = EndScreenSuccess->LayerCenterPosition.y = SpawnPos.y;
+	EndScreenSuccess->LayerTargetPosition = 0;
+
+	// Layer Backing Image
+	EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, CurrentEnemy->MeshName, 3 * CenterPosition, 3 * CenterPosition, Vector3(PlayerScale * 5, PlayerScale * 5, 1), CenterPosition);
+
+	EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "PlayerHeart", CenterPosition * -2.5f, CenterPosition * -2.5f, Vector3(PlayerScale, PlayerScale, 1), CenterPosition);
+	
+	EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "BS_FPanel", CenterPosition, SpawnPos, Vector3(-Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 1), SpawnPos);
+
+	EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "UI_ChatBox", CenterPosition + Vector3(0, CenterPosition.y * 0.65f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.8f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "The Monster Has Been Sealed!");
+
+	std::stringstream ss;
+	if (CurrentEnemy->SpellPower < Scene_System::accessing().gPlayer->GetSpellPower())
+	{
+		ss.str("");
+		ss << "Spell Power: No Change [" << Scene_System::accessing().gPlayer->GetSpellPower() << "]";
+		EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", CenterPosition, SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.06f * AspectRatio, 1), SpawnPos, ss.str());
+	}
+	else {
+		ss.str("");
+		ss << "Old Spell Power: " << Scene_System::accessing().gPlayer->GetSpellPower();
+		EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.06f * AspectRatio, 1), SpawnPos, ss.str());
+		Scene_System::accessing().gPlayer->SetSpellPower(CurrentEnemy->SpellPower);
+		ss.str("");
+		ss << "New Spell Power: " << Scene_System::accessing().gPlayer->GetSpellPower();
+		EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", CenterPosition - Vector3(0, CenterPosition.y * 0.15f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.06f * AspectRatio, 1), SpawnPos, ss.str());
+	}
+
+	ExitButton = new UI_Element(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", CenterPosition - Vector3(0, CenterPosition.y * 0.7f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "Click Here To Exit The Battle Screen.");
+	
+	EndScreenSuccess->cUI_Layer.push_back(ExitButton);
+
+	cUI_System.cUIS_LayerContainer.push_back(EndScreenSuccess);
+	ShiftBattleUI();
+}
+
+void BattleSystem::InitFailScreen()
+{
+	float AspectRatio = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight;
+
+	EndScreenFail = new UI_Layer();
+	// Set Spawn and Target
+	Vector3 SpawnPos = Vector3(CenterPosition.x, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 2.f, 0);
+	EndScreenFail->LayerOriginalPosition.y = EndScreenFail->LayerCenterPosition.y = SpawnPos.y;
+	EndScreenFail->LayerTargetPosition = 0;
+
+	// Layer Backing Image
+	EndScreenFail->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, CurrentEnemy->MeshName, 3 * CenterPosition, 3 * CenterPosition, Vector3(PlayerScale * 5, PlayerScale * 5, 1), CenterPosition);
+
+	EndScreenFail->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "PlayerHeart", CenterPosition * -2.5f, CenterPosition * -2.5f, Vector3(PlayerScale, PlayerScale, 1), CenterPosition);
+
+	EndScreenFail->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "BS_FPanel", CenterPosition, SpawnPos, Vector3(-Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 1), SpawnPos);
+
+	EndScreenFail->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "UI_ChatBox", CenterPosition + Vector3(0, CenterPosition.y * 0.3f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.8f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "You Have Been Killed By The Monster...");
+
+	ExitButton = new UI_Element(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", CenterPosition - Vector3(0, CenterPosition.y * 0.3f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "Click Here To Return To The Main Menu.");
+
+	EndScreenFail->cUI_Layer.push_back(ExitButton);
+
+	cUI_System.cUIS_LayerContainer.push_back(EndScreenFail);
+	ShiftBattleUI();
+}
+
+void BattleSystem::ShiftBattleUI()
+{
+	//PlayerInventoryUI.x = 3 * CenterPosition.x;
+	EnemyLayer->LayerTargetPosition = CenterPosition * 3.f;
+	BattleBox->LayerTargetPosition.x = -3 * CenterPosition.x;
 }
 
 // Player Calls
@@ -611,6 +786,8 @@ void BattleSystem::UpdatePhysics(float dt)
 						PlayerIFrameTimer = 1 * Math::Clamp(SpellPowerRatio, 0.8f, 1.f);
 
 						int HP = Scene_System::accessing().gPlayer->GetCurrentHealth();
+						if (HP == 0)
+							BattleState = BS_EndScreenFail;
 						HP = Math::Clamp(Scene_System::accessing().gPlayer->GetCurrentHealth(), 0, Scene_System::accessing().gPlayer->GetMaxHealth());
 						Scene_System::accessing().gPlayer->SetCurrentHealth(HP);
 
@@ -618,7 +795,7 @@ void BattleSystem::UpdatePhysics(float dt)
 						float GBarWidth = HealthRatio * HealthBarDefaultScale * 0.5f;
 						float BarPosition = GBarPosition - (HealthBarDefaultScale - GBarWidth) * 0.5f + HealthBarDefaultScale * 0.25f;
 						HealthBarGreen->Dimensions.x = GBarWidth;
-						HealthBarGreen->Position.x = BarPosition
+						HealthBarGreen->Position.x = BarPosition;
 					}
 				}
 		}
@@ -661,6 +838,7 @@ bool BattleSystem::CollisionCheck(const BattleScreenObject& BSO1, const BattleSc
 			break;
 		}
 		case BattleScreenObject::BS_VRay:
+
 		{
 			// Simple Circle BC.
 			float CollisionRadius = 0.4f;
