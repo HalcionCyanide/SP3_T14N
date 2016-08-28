@@ -439,10 +439,10 @@ void BattleSystem::UpdateEnemyLogic(float dt)
 			// Reselect an attack from the pool
 			else
 			{
+				EnemyReselectionInterval += CurrentProjectile.AttacksPerWave * CurrentProjectile.AttackSpeed * CurrentProjectile.BatchCreateCount;
 				int EnemyAttack = Math::RandIntMinMax(0, CurrentEnemy->cE_Projectiles.size() - 1);
 				CurrentProjectile = *CurrentEnemy->cE_Projectiles[EnemyAttack];
 				CurrentEnemy->CurrentAttackCount = 0;
-				EnemyReselectionInterval += CurrentProjectile.AttacksPerWave * CurrentProjectile.AttackSpeed * CurrentProjectile.BatchCreateCount; 
 			}
 		}
 		else EnemyReselectionInterval -= dt;
