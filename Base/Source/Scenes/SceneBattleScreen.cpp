@@ -41,6 +41,7 @@ void SceneBattleScreen::Init()
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	camera.Init(Vector3(0, 0, 1), 0, Vector3(0, 1, 0));
+
 	Scene_System::accessing().BSys = new BattleSystem();
 	Scene_System::accessing().BSys->Init();
 	Scene_System::accessing().BSys->cBillboardManager.Init();
@@ -195,7 +196,6 @@ void SceneBattleScreen::Exit()
 {
 	if (theInteractiveMap)
 		delete theInteractiveMap;
-	Scene_System::accessing().BSys->cUI_System.Exit();
 	Scene_System::accessing().BSys->cBillboardManager.Exit();
 	Scene_System::accessing().BSys->Exit();
 }
