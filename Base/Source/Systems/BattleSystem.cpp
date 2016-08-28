@@ -53,6 +53,7 @@ void BattleSystem::QuickInit()
 	// Enemy
 	EnemyStaminaTimer = 15; // 30s round
 	CurrentStaminaTimer = 0;
+	EnemyReselectionInterval = 0;
 
 	// BSOs
 	PlayerObj = new BattleScreenObject("PlayerHeart", 1, CenterPosition, Vector3(PlayerScale, PlayerScale, 1), 0, 0, Vector3(0, 0, 1));
@@ -420,26 +421,31 @@ void BattleSystem::UpdateEnemyLogic(float dt)
 		else if ((EnemyStaminaBar->Position - EnemyStaminaBar->TargetPosition).LengthSquared() < 1.f)
 			EnemyStaminaBar->AtTarget = true;
 
-		// Use Current Attack
-		if (CurrentProjectile.StoredMesh && CurrentEnemy->CurrentAttackCount < CurrentProjectile.AttacksPerWave)
+		if (EnemyReselectionInterval < Math::EPSILON)
 		{
-			CurrentEnemy->CurrentTime += dt;
-			// Can fire an attack
-			if (CurrentEnemy->CurrentTime > CurrentProjectile.AttackSpeed)
+			// Use Current Attack
+			if (CurrentProjectile.StoredMesh && CurrentEnemy->CurrentAttackCount < CurrentProjectile.AttacksPerWave)
 			{
-				CurrentEnemy->CurrentTime = 0;
-				CurrentEnemy->CurrentAttackCount++;
-				AnimateEnemy();
-				BatchCreateAttacks(CurrentProjectile);
+				CurrentEnemy->CurrentTime += dt;
+				// Can fire an attack
+				if (CurrentEnemy->CurrentTime > CurrentProjectile.AttackSpeed)
+				{
+					CurrentEnemy->CurrentTime = 0;
+					CurrentEnemy->CurrentAttackCount++;
+					AnimateEnemy();
+					BatchCreateAttacks(CurrentProjectile);
+				}
+			}
+			// Reselect an attack from the pool
+			else
+			{
+				int EnemyAttack = Math::RandIntMinMax(0, CurrentEnemy->cE_Projectiles.size() - 1);
+				CurrentProjectile = *CurrentEnemy->cE_Projectiles[EnemyAttack];
+				CurrentEnemy->CurrentAttackCount = 0;
+				EnemyReselectionInterval += CurrentProjectile.AttacksPerWave * CurrentProjectile.AttackSpeed * CurrentProjectile.BatchCreateCount; 
 			}
 		}
-		// Reselect an attack from the pool
-		else 
-		{
-			int EnemyAttack = Math::RandIntMinMax(0, CurrentEnemy->cE_Projectiles.size() - 1);
-			CurrentProjectile = *CurrentEnemy->cE_Projectiles[EnemyAttack];
-			CurrentEnemy->CurrentAttackCount = 0;
-		}
+		else EnemyReselectionInterval -= dt;
 	}
 	else // Out of stamina
 	{
@@ -697,20 +703,16 @@ int BattleSystem::BatchCreateAttacks(EnemyProjectile& CurrentProjectile)
 void BattleSystem::Attack_Bullet(EnemyProjectile& CurrentProjectile)
 {
 	// Spawn a bullet at the exterior of the GBox, fire it at the player.
-	//float XSpawn = ExteriorBounds.GetDimensions().x * 0.5f - InteriorBounds.GetDimensions().x * 0.5f;
-	//float YSpawn = ExteriorBounds.GetDimensions().x * 0.5f - InteriorBounds.GetDimensions().x * 0.5f;
-	//Vector3 SpawnPos = CenterPosition + Vector3(Math::RandFloatMinMax(-CenterPosition.x - XSpawn, CenterPosition.x + XSpawn), Math::RandFloatMinMax(-CenterPosition.y - YSpawn, CenterPosition.y + YSpawn));
-	//if (ExteriorBounds.CheckCollision(SpawnPos) && !InteriorBounds.CheckCollision(SpawnPos))
-	//{
-	//	Vector3 DVec = (PlayerObj->GetPosition() - SpawnPos).Normalize() * CurrentProjectile.ScalarAcceleration; 
-	//	BattleScreenObject* BSO = GetInactiveBSO();
-	//	BSO->SetParameters(CurrentProjectile.StoredMesh, 5, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), 0, 0, Vector3(0, 0, 1));
-	//	BSO->Type = BattleScreenObject::BS_Bullet;
-	//	BSO->Active = true;
-	//	BSO->SetAcceleration(DVec);
-	//	BSO->SetMass(3.f);
-	//}
-	//else Attack_Bullet(CurrentProjectile);
+	Vector3 SpawnPos = EnemyLayer->cUI_Layer[0]->TargetPosition - Vector3(EnemyLayer->cUI_Layer[0]->Dimensions.x * 0.5f);
+	Vector3 TargetPos = Vector3(Math::RandFloatMinMax(BattleBox->cUI_Layer[0]->Position.x - BattleBox->cUI_Layer[0]->Dimensions.x, BattleBox->cUI_Layer[0]->Position.x + BattleBox->cUI_Layer[0]->Dimensions.x), CenterPosition.y * 2.5f);
+	BattleScreenObject* BSO = GetInactiveBSO();
+	BSO->SetParameters(CurrentProjectile.StoredMesh, 5, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), 0, 0, Vector3(0, 0, 1));
+	BSO->Type = BattleScreenObject::BS_Bullet;
+	BSO->Active = true;
+	BSO->TargetPoint = TargetPos;
+	BSO->AltTargetPoint = PlayerObj->GetPosition();
+	BSO->MoveToTarget = true;
+	BSO->SetMass(3.f);
 }
 
 void BattleSystem::Attack_Trap(EnemyProjectile& CurrentProjectile)
@@ -723,6 +725,8 @@ void BattleSystem::Attack_Trap(EnemyProjectile& CurrentProjectile)
 	BSO->Active = true;
 	BSO->LifeTime = 1;
 	BSO->SetAcceleration(0);
+	BSO->MoveToTarget = false;
+	BSO->AltTargetPoint = 0;
 
 	BSO = GetInactiveBSO();
 	BSO->SetParameters(CurrentProjectile.StoredMesh, 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), Vector3(CurrentProjectile.ScalarAcceleration, CurrentProjectile.ScalarAcceleration), RAngle, Vector3(0, 0, 1));
@@ -732,4 +736,6 @@ void BattleSystem::Attack_Trap(EnemyProjectile& CurrentProjectile)
 	BSO->Active = true;
 	BSO->LifeTime = 4;
 	BSO->SetMass(3.f);
+	BSO->MoveToTarget = false;
+	BSO->AltTargetPoint = 0;
 }

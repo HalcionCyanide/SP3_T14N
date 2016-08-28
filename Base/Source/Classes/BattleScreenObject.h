@@ -40,6 +40,8 @@ public:
 	float LifeTimer = 0;
 	bool GravityAffected = false;
 	Vector3 TargetPoint;
+	bool MoveToTarget = false;
+	Vector3 AltTargetPoint;
 
 private:
 	Vector3 Acceleration;
