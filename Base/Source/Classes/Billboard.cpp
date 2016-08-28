@@ -59,7 +59,9 @@ void Billboard::Render()
 			Scene_System::accessing().getCurrScene().modelStack->Rotate(TimeRatio * 360, 0, 0, 1);
 		}
 		Scene_System::accessing().getCurrScene().modelStack->Scale(TimeRatio * Dimensions.x, TimeRatio * Dimensions.y, TimeRatio * Dimensions.z);
-		SceneGraphics->RenderMesh(*StoredMesh, true);
+		if (LifeTime == -1)
+			SceneGraphics->RenderMesh(*StoredMesh, true);
+		else SceneGraphics->RenderMesh(*StoredMesh, false);
 		Scene_System::accessing().getCurrScene().modelStack->PopMatrix();
 	}
 }

@@ -581,8 +581,6 @@ void Scene_MainMenu::RenderPassMain()
 	//<!> will remove soon <!>
 
 	SceneGraphics->SetHUD(true);
-    if (Scene_System::accessing().theLoadingEffect)
-        Scene_System::accessing().theLoadingEffect->Render();
 
 	UI_Sys.Render();
 
@@ -590,6 +588,9 @@ void Scene_MainMenu::RenderPassMain()
 	{
 		SceneGraphics->RenderMeshIn2D("TFB_Gem", false, 100, 100, Scene_System::accessing().cSS_InputManager->GetMousePosition().x, Scene_System::accessing().cSS_InputManager->GetMousePosition().y);
 	}
+
+    if (Scene_System::accessing().theLoadingEffect)
+        Scene_System::accessing().theLoadingEffect->Render();
 
 	std::ostringstream ss;
 	ss.str("");

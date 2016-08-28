@@ -1,4 +1,6 @@
 #include "BattleScreenObject.h"
+#include "..\\Systems\\Scene_System.h"
+#include "..\\Scenes\\GraphicsEntity.h"
 
 BattleScreenObject::BattleScreenObject(const std::string& MeshName, const float& Mass, const Vector3& Position, const Vector3& Dimensions, const Vector3& Acceleration, const float& RotationAngle, const Vector3& RotationAxis)
 {
@@ -87,6 +89,21 @@ void BattleScreenObject::Update(double dt)
 		}
 	}
 }
+
+void BattleScreenObject::Render()
+{
+	if (Active && Visible)
+	{
+		GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
+		Scene_System::accessing().getCurrScene().modelStack->PushMatrix();
+		Scene_System::accessing().getCurrScene().modelStack->Translate(GetPosition().x, GetPosition().y, GetPosition().z);
+		Scene_System::accessing().getCurrScene().modelStack->Rotate(GetRotationAngle(), GetRotationAxis().x, GetRotationAxis().y, GetRotationAxis().z);
+		Scene_System::accessing().getCurrScene().modelStack->Scale(GetDimensions().x, GetDimensions().y, GetDimensions().z);
+		SceneGraphics->RenderMesh(*GetMesh(), false);
+		Scene_System::accessing().getCurrScene().modelStack->PopMatrix();
+	}
+}
+
 
 void BattleScreenObject::SetAcceleration(const Vector3& A)
 {

@@ -723,24 +723,27 @@ void BattleSystem::Attack_Bullet(EnemyProjectile& CurrentProjectile)
 void BattleSystem::Attack_Trap(EnemyProjectile& CurrentProjectile)
 {
 	Vector3 SpawnPos = PlayerObj->GetPosition() + 2 * Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0);
-	float RAngle = Math::RandFloatMinMax(-360.f, 360.f);
-	BattleScreenObject* BSO = GetInactiveBSO();
-	BSO->SetParameters("CrossMarker", 3, SpawnPos + Vector3(0, 0, -1), Vector3(PlayerScale, PlayerScale, 1), 0, RAngle, Vector3(0, 0, 1));
-	BSO->Type = BattleScreenObject::BS_Null;
-	BSO->Active = true;
-	BSO->LifeTime = 1;
-	BSO->SetAcceleration(0);
-	BSO->MoveToTarget = false;
-	BSO->AltTargetPoint = 0;
+	if (BattleBox->cUI_Layer[0]->UI_Bounds->CheckCollision(SpawnPos))
+	{
+		float RAngle = Math::RandFloatMinMax(-360.f, 360.f);
+		BattleScreenObject* BSO = GetInactiveBSO();
+		BSO->SetParameters("CrossMarker", 3, SpawnPos + Vector3(0, 0, -1), Vector3(PlayerScale, PlayerScale, 1), 0, RAngle, Vector3(0, 0, 1));
+		BSO->Type = BattleScreenObject::BS_Null;
+		BSO->Active = true;
+		BSO->LifeTime = 1;
+		BSO->SetAcceleration(0);
+		BSO->MoveToTarget = false;
+		BSO->AltTargetPoint = 0;
 
-	BSO = GetInactiveBSO();
-	BSO->SetParameters(CurrentProjectile.StoredMesh, 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), Vector3(CurrentProjectile.ScalarAcceleration, CurrentProjectile.ScalarAcceleration), RAngle, Vector3(0, 0, 1));
-	CurrentProjectile.setName(BSO->GetMeshName());
-	BSO->Type = BattleScreenObject::BS_Blast;
-	BSO->Visible = false;
-	BSO->Active = true;
-	BSO->LifeTime = 4;
-	BSO->SetMass(3.f);
-	BSO->MoveToTarget = false;
-	BSO->AltTargetPoint = 0;
+		BSO = GetInactiveBSO();
+		BSO->SetParameters(CurrentProjectile.StoredMesh, 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), Vector3(CurrentProjectile.ScalarAcceleration, CurrentProjectile.ScalarAcceleration), RAngle, Vector3(0, 0, 1));
+		CurrentProjectile.setName(BSO->GetMeshName());
+		BSO->Type = BattleScreenObject::BS_Blast;
+		BSO->Visible = false;
+		BSO->Active = true;
+		BSO->LifeTime = 4;
+		BSO->SetMass(3.f);
+		BSO->MoveToTarget = false;
+		BSO->AltTargetPoint = 0;
+	}
 }
