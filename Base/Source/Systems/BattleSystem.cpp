@@ -619,7 +619,7 @@ void BattleSystem::InitSuccessScreen()
 	EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "UI_ChatBox", CenterPosition + Vector3(0, CenterPosition.y * 0.65f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.8f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "The Monster Has Been Sealed!");
 
 	std::stringstream ss;
-	if (CurrentEnemy->SpellPower < Scene_System::accessing().gPlayer->GetSpellPower())
+	if (CurrentEnemy->SpellPower <= Scene_System::accessing().gPlayer->GetSpellPower())
 	{
 		ss.str("");
 		ss << "Spell Power: No Change [" << Scene_System::accessing().gPlayer->GetSpellPower() << "]";
