@@ -167,12 +167,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                             else if (((*it2)->UI_Text == UI_Text[3]))
                             {
                                 // Exit2
-								std::ostringstream ss;
-								ss << Math::RandIntMinMax(1, Scene_System::accessing().EnemyData.size());
-								std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find(ss.str());
-								Scene_System::accessing().BSys->SetEnemy(*it->second);
-								Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
-                                //Application::ExitGame = true;
+                                Application::ExitGame = true;
                             }
                         }
                     }
