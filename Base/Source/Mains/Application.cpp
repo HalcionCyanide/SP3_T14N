@@ -83,7 +83,6 @@ void Application::Init()
 {
 	// Initialize the default values of the Scene_System
 	Scene_System::accessing().Init();
-    MusicSystem::accessing().Init();
 	//Start Sound Engine with Default params
 	//theSoundEngine = createIrrKlangDevice();
 	//theSoundEngine->setSoundVolume(0.25f);
@@ -157,11 +156,14 @@ void Application::Init()
 #else
     loadThoseKeyCommandsStuff();
 #endif
-    //Scene_System::accessing().doingLoadingEffect();
+    Scene_System::accessing().doingLoadingEffect();
 
 	Scene_MainMenu *MainMenuScene = new Scene_MainMenu();
 	MainMenuScene->Init();
 	Scene_System::accessing().AddScene(*MainMenuScene);
+
+    Scene_System::accessing().getCurrScene().Render();
+    glfwSwapBuffers(m_window);
 
 	SceneTown1* town1 = new SceneTown1();
 	town1->Init();
@@ -186,6 +188,8 @@ void Application::Init()
 	SceneBattleScreen* battlescreen = new SceneBattleScreen();
 	battlescreen->Init();
 	Scene_System::accessing().AddScene(*battlescreen);
+
+    MusicSystem::accessing().Init();
 }
 
 void Application::Run()

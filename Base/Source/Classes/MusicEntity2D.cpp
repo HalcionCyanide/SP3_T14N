@@ -29,6 +29,7 @@ void MusicEntity2D::SetVolume(const float &theNum)
 {
     volume_ = theNum;
     volume_ = Math::Clamp(volume_, 0.01f, 1.f);
+    SoundSource->setDefaultVolume(volume_);
 }
 
 void MusicEntity2D::Init(const std::string &theName, const std::string &fileName, const float &theVol, const int &playHowManyTime, const bool &unlimitedTimes, const bool &loop)

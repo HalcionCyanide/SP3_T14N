@@ -39,7 +39,7 @@ public:
 	virtual ~BattleSystem();
 
 	//Public Variables
-	BS_State BattleState = BS_BattlePhase;
+	BS_State BattleState = BS_IntroScreen;
 
 	// Public Function Calls
 	virtual void Init();
@@ -57,6 +57,7 @@ private:
 	// Private Variables
 	Vector3 CursorPosition;
 	Vector3 CenterPosition;
+	int ActiveBSOCount;
 
 	BattleScreenObject* GetInactiveBSO();
 
@@ -76,13 +77,14 @@ private:
 	// Intro Variables
 	bool AnimationPaused = false;						// Value for whether they are paused.
 	bool AnimationResumed = false;
-	float AnimationPauseTimer = 0.f;					// Timer to check how long they have been stopped.
-	float AnimationPauseTime = 5.f;						// How long the boxes stay at the screen's center before moving
+	float AnimationPauseTimer;					// Timer to check how long they have been stopped.
+	float AnimationPauseTime; 						// How long the boxes stay at the screen's center before moving
 	bool HasPlayerAndEnemyInfoInit = false;				// Is the Player and Enemy's data inited yet?
 	bool IsInfoBoxOut = false;							// Have the boxes gone out of screen?
 	UI_Layer* PlayerInfoBox;
 	UI_Layer* EnemyInfoBox;
 	UI_Layer* EnemyLayer; // Enemy Image
+	Vector3 EnemyDefaultPosition;
 	// Intro End
 	
 	// Battle State Call
@@ -91,6 +93,7 @@ private:
 	void UpdatePlayer(float dt);
 	void UpdateITimer(float dt);
 	void UpdateControls(float dt);
+	void UpdateEnemyLogic(float dt);
 	// Battle Physics Calls
 	void UpdatePhysics(float dt);
 	bool CollisionCheck(const BattleScreenObject&, const BattleScreenObject&, float dt);
@@ -100,27 +103,34 @@ private:
 	UI_Layer* BattleBox;
 	UI_Element* HealthBarGreen;
 	UI_Element* EnemyStaminaBar;
+	float GBarPosition;
+	float RBarPosition;
 	float HealthBarDefaultScale;
 	// Player Variables
 	float PlayerBaseMovementSpeed;
 	float PlayerCurrentMovementSpeed;
 	UI_Layer* PlayerInventoryUI;
 	bool PlayerIsInvincible = false;
-	float PlayerIFrameTimer = 0;
-	float FrictionDecrementMultiplier = 0.2f;
+	float PlayerIFrameTimer;
+	float FrictionDecrementMultiplier;
 	BattleScreenObject* PlayerObj;
 	// Enemy Variables
 	Enemy* CurrentEnemy;		// To Store Attack Patterns and Stats
+	EnemyProjectile CurrentProjectile;
 	float EnemyStaminaTimer;	// Default to 30s round
-	// Enemy Calls [Based on type use a specific attack call]
+	float CurrentStaminaTimer;
+	// Enemy Calls
 	int BatchCreateAttacks(EnemyProjectile& CurrentProjectile);
-	// Attack Calls // Think of better names later
+	void AnimateEnemy();
+	// Attack Calls
 	void Attack_Bullet(EnemyProjectile& CurrentProjectile);
 	void Attack_Trap(EnemyProjectile& CurrentProjectile);
 	// Battle End
 
 	void UpdateEndScreenSuccess(float dt);
 	void UpdateEndScreenFail(float dt);
+
+	bool RoundOver = false;
 
 	// Base Object Container [The container that holds the enemy projectiles/attacks]
 	std::vector<BattleScreenObject*> cBS_ObjectContainer;

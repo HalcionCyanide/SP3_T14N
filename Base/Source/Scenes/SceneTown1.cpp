@@ -157,7 +157,7 @@ void SceneTown1::Update(float dt)
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	SceneGraphics->Update(dt);
-    MusicSystem::accessing().playBackgroundMusic("town1");
+    MusicSystem::accessing().playBackgroundMusic("town1Alt");
 
 	//Update Camera's Minimum Possible & Current Y Pos
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera->position.x / TerrainScale.x, camera->position.z / TerrainScale.z) + camera->PlayerHeight;
@@ -241,7 +241,8 @@ void SceneTown1::Update(float dt)
 			NPC_Name->UI_Text = CurrentNPC->getName();
 			NPC_TextBox->UI_Text = CurrentNPC->getFText();
 			NPC_TextBox->WrapText();
-			ChatLayer->SwapOriginalWithTarget();
+			if (ChatLayer->LayerTargetPosition.y < 0)
+				ChatLayer->SwapOriginalWithTarget();
 			break;
 		}
 		// The NPC has interacted with the player successfully.

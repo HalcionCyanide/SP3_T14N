@@ -43,7 +43,7 @@ void BattleScreenObject::Update(double dt)
 			SetRotationAngle(Math::RadianToDegree(atan2(-GetVelocity().x, GetVelocity().y)));
 			break;
 		}
-		case BS_Trap:
+		case BS_Blast:
 		{
 			if (LifeTimer > (LifeTime * 0.25f))
 			{
