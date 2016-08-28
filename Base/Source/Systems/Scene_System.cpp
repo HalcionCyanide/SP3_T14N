@@ -44,6 +44,7 @@ void Scene_System::Init()
 	}
     theLoadingEffect = nullptr;
     delayingLoadingTime = 0;
+    whatLoadingState = BEGIN_LOADING;
 }
 
 void Scene_System::Update(double dt)
@@ -169,7 +170,7 @@ void Scene_System::doingLoadingEffect()
 {
     theLoadingEffect = new UI_System();
     UI_Layer *theLayer = new UI_Layer();
-    theLayer->AddUIElement(UI_Element::UI_UNASSIGNED, "SmallWhiteSquare", Vector3(400, 300, 0), Vector3(400, 300, 0), Vector3(50, 50, 50), Vector3(400, 300, 0));
+    theLayer->AddUIElement(UI_Element::UI_UNASSIGNED, "SmallWhiteSquare", Vector3(1400, 300, 0), Vector3(400, 300, 0), Vector3(50, 50, 50), Vector3(400, 300, 0));
     theLoadingEffect->cUIS_LayerContainer.push_back(theLayer);
 }
 

@@ -71,6 +71,13 @@ private:
     std::map<std::string, SceneEntity*> theSceneList;
     SceneEntity *graphics_scene;
     double delayingLoadingTime;
+    enum LOADING_STATE {
+        BEGIN_LOADING,
+        STILL_LOADING,
+        FINISHED_LOADING,
+        TOTAL_LOADING_STATES,
+    };
+    LOADING_STATE whatLoadingState;
 };
 
 #endif
