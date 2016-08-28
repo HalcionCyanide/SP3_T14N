@@ -171,7 +171,7 @@ void Scene_System::doingLoadingEffect()
     theLoadingEffect = new UI_System();
     UI_Layer *theLayer = new UI_Layer();
     Vector3 sizeofSquare(80, 80, 1);
-    theLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "SmallWhiteSquare", Vector3(1400, 300, 0), Vector3(400, 300, 0), sizeofSquare, Vector3(1400, 300, 0));
+    theLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "SmallWhiteSquare", Vector3(400, 300, 0), Vector3(400, 300, 0), sizeofSquare, Vector3(-400, 300, 0));
     int rowsOfSquares = (int)ceil((int)ceil(cSS_InputManager->cIM_ScreenHeight) / (int)ceil(sizeofSquare.y));
     int colsOfSquares = (int)ceil((int)ceil(cSS_InputManager->cIM_ScreenWidth) / (int)ceil(sizeofSquare.x));
     theLoadingEffect->cUIS_LayerContainer.push_back(theLayer);
@@ -179,14 +179,13 @@ void Scene_System::doingLoadingEffect()
 
 void Scene_System::UpdateLoadingStuff(double dt)
 {
-    //bool noLongerNeedToUpdate = true;
-    //for (std::vector<UI_Layer*>::iterator it = theLoadingEffect->cUIS_LayerContainer.begin(), end = theLoadingEffect->cUIS_LayerContainer.end(); it != end; ++it)
-    //{
-    //    UI_Layer *theLayer = (*it);
-    //    for (std::vector<UI_Element*>::iterator it2 = theLayer->cUI_Layer.begin(), end2 = theLayer->cUI_Layer.end(); it2 != end2; ++it2)
-    //    {
-    //        UI_Element *theElement = (*it2);
-    //        //theElement->
-    //    }
-    //}
+    for (std::vector<UI_Layer*>::iterator it = theLoadingEffect->cUIS_LayerContainer.begin(), end = theLoadingEffect->cUIS_LayerContainer.end(); it != end; ++it)
+    {
+        UI_Layer *theLayer = (*it);
+        for (std::vector<UI_Element*>::iterator it2 = theLayer->cUI_Layer.begin(), end2 = theLayer->cUI_Layer.end(); it2 != end2; ++it2)
+        {
+            UI_Element *theElement = (*it2);
+            theElement->Update((float)dt);
+        }
+    }
 }
