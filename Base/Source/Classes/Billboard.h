@@ -36,6 +36,8 @@ public:
 	void SetPlayerPosition(const Vector3&);
 	void SetParameters(const Vector3& Position, const Vector3& Dimensions, const Vector3& PlayerPosition, const Vector3& Velocity, const std::string& MeshName, const float& CurrentTime, const float& LifeTime = -1);
 
+	void SetDefaultLifeTime();
+
 private:
 	Vector3 Position;
 	Vector3 Dimensions;

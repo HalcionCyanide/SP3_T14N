@@ -46,7 +46,7 @@ void BaseObject::Render()
 		Scene_System::accessing().getCurrScene().modelStack->Translate(Position.x, Position.y, Position.z);
 		Scene_System::accessing().getCurrScene().modelStack->Rotate(RotationAngle, RotationAxis.x, RotationAxis.y, RotationAxis.z);
 		Scene_System::accessing().getCurrScene().modelStack->Scale(Dimensions.x, Dimensions.y, Dimensions.z);
-		SceneGraphics->RenderMesh(*StoredMesh, false);
+		SceneGraphics->RenderMesh(*StoredMesh, true);
 		Scene_System::accessing().getCurrScene().modelStack->PopMatrix();
 	}
 }

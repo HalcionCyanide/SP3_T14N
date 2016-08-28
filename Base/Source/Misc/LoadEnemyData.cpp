@@ -47,7 +47,7 @@ bool LoadEnemyData(const char *file_path, std::map<std::string, Enemy*> &EMap)
 			size_t pos = it - CSV_Keys.begin();
 			Temp->setName(CSV_Values[pos]);
 
-			it = std::find(CSV_Keys.begin(), CSV_Keys.end(), "ENEMYNAME");
+			it = std::find(CSV_Keys.begin(), CSV_Keys.end(), "MESHNAME");
 			pos = it - CSV_Keys.begin();
 			Temp->MeshName = CSV_Values[pos];
 
@@ -57,6 +57,14 @@ bool LoadEnemyData(const char *file_path, std::map<std::string, Enemy*> &EMap)
 			{
 				Temp->EnemyMesh = iter->second;
 			}
+
+			it = std::find(CSV_Keys.begin(), CSV_Keys.end(), "ENEMYNAME");
+			pos = it - CSV_Keys.begin();
+			Temp->EnemyName = CSV_Values[pos];
+
+			it = std::find(CSV_Keys.begin(), CSV_Keys.end(), "ENEMYTYPE");
+			pos = it - CSV_Keys.begin();
+			Temp->EnemyType = CSV_Values[pos];
 
 			it = std::find(CSV_Keys.begin(), CSV_Keys.end(), "SPELLPOWER");
 			pos = it - CSV_Keys.begin();

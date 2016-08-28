@@ -243,7 +243,7 @@ void BattleSystem::SetEnemy(Enemy& E)
 	CurrentProjectile = *CurrentEnemy->cE_Projectiles[EnemyAttack];
 
 	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, CurrentEnemy->MeshName, Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(PlayerScale * 5, PlayerScale * 5, 1), EnemyDefaultPosition);
-	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.35f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.35f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.35f, 0), CurrentEnemy->MeshName);
+	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.35f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.35f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.35f, 0), CurrentEnemy->EnemyName);
 	
 	// Spell Power
 	std::stringstream ss;
@@ -338,10 +338,10 @@ void BattleSystem::UpdateEnemyInfoBox(float dt)
 	// Layer Backing Image
 	EnemyInfoBox->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "BS_LPanel", Target, Target, Vector3(-Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 1), Target);
 
-	// Player Name
-	EnemyInfoBox->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "UI_ChatBox", Target + Vector3(0, Target.y * 0.75f), Target + Vector3(0, Target.y * 0.75f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.4f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.05f * AspectRatio, 1), Target + Vector3(0, Target.y * 0.75f), CurrentEnemy->MeshName);
+	// Enemy Name
+	EnemyInfoBox->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "UI_ChatBox", Target + Vector3(0, Target.y * 0.75f), Target + Vector3(0, Target.y * 0.75f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.4f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.05f * AspectRatio, 1), Target + Vector3(0, Target.y * 0.75f), CurrentEnemy->EnemyName);
 
-	// Player Image
+	// Enemy Image
 	EnemyInfoBox->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, CurrentEnemy->MeshName, Target + Vector3(0, Target.y * 0.2f), Target + Vector3(0, Target.y * 0.2f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.2f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.2f * AspectRatio, 1), Target + Vector3(0, Target.y * 0.2f));
 
 	// Spell Power

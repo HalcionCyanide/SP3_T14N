@@ -173,24 +173,7 @@ void SceneFreeField::RenderShadowCasters()
 {
 	RenderTerrain();
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
-	for (std::vector<Billboard*>::iterator it = BManager.BillboardContainer.begin(); it != BManager.BillboardContainer.end(); ++it)
-	{
-		if ((*it)->Active)
-		{
-			if ((camera->position - camera->target).Normalize().Dot((*it)->GetPosition().Normalized()) < 1.f)
-			{
-				float TimeRatio = 1;
-				if ((*it)->GetLifeTime() != -1)
-					TimeRatio = 1.1f - (*it)->GetCurrTime() / (*it)->GetLifeTime();
-				modelStack->PushMatrix();
-				modelStack->Translate((*it)->GetPosition().x, (*it)->GetPosition().y, (*it)->GetPosition().z);
-				modelStack->Rotate(Math::RadianToDegree(atan2(camera->position.x - (*it)->GetPosition().x, camera->position.z - (*it)->GetPosition().z)), 0, 1, 0);
-				modelStack->Scale(TimeRatio * (*it)->GetDimensions().x, TimeRatio *(*it)->GetDimensions().y, TimeRatio *(*it)->GetDimensions().z);
-				SceneGraphics->RenderMesh((*it)->GetMeshName(), false);
-				modelStack->PopMatrix();
-			}
-		}
-	}
+	
 	//<!> will remove soon <!>
 	for (auto it : objVec)
 	{
@@ -199,6 +182,25 @@ void SceneFreeField::RenderShadowCasters()
 			the3DObject->Render();
 	}
 	//<!> will remove soon <!>
+
+	for (std::vector<Billboard*>::iterator it = BManager.BillboardContainer.begin(); it != BManager.BillboardContainer.end(); ++it)
+	{
+		if ((*it)->Active)
+		{
+			float TimeRatio = 1;
+			if ((*it)->GetLifeTime() != -1)
+				TimeRatio = 1.1f - (*it)->GetCurrTime() / (*it)->GetLifeTime();
+			modelStack->PushMatrix();
+			modelStack->Translate((*it)->GetPosition().x, (*it)->GetPosition().y, (*it)->GetPosition().z);
+			modelStack->Rotate(Math::RadianToDegree(atan2(camera->position.x - (*it)->GetPosition().x, camera->position.z - (*it)->GetPosition().z)), 0, 1, 0);
+			modelStack->Scale(TimeRatio * (*it)->GetDimensions().x, TimeRatio *(*it)->GetDimensions().y, TimeRatio *(*it)->GetDimensions().z);
+			if ((*it)->GetLifeTime() == -1)
+				SceneGraphics->RenderMesh((*it)->GetMeshName(), true);
+			else SceneGraphics->RenderMesh((*it)->GetMeshName(), false);
+			modelStack->PopMatrix();
+		}
+	}
+
 }
 
 void SceneFreeField::RenderSkybox()
