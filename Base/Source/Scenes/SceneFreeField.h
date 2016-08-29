@@ -54,6 +54,7 @@ private:
     double framerates;
     GenericEntity *theInteractiveMap;
     std::vector<GameObject*> objVec;
+    std::string transitingSceneName;
 };
 
 #endif // _SCENE_FREE_FIELD_H

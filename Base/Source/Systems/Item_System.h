@@ -16,7 +16,7 @@ public:
 	virtual void Update(float dt);
 	virtual void Exit();
 
-	std::map<Item*, int> ItemMap;
+	std::map<Item, bool> ItemMap;
 };
 
 #endif

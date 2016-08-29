@@ -56,6 +56,7 @@ private:
     std::vector<GameObject*> objVec;
 	Vector3 CenterPosition;
 	UI_System* UI_Sys;
+    std::string transitingSceneName;
 };
 
 #endif // _SCENE_TOWN_1_H

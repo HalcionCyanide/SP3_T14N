@@ -161,7 +161,7 @@ void SceneBattleScreen::RenderPassMain()
 		modelStack->PopMatrix();
 	}
     if (Scene_System::accessing().theLoadingEffect)
-        Scene_System::accessing().theLoadingEffect->Render();
+        Scene_System::accessing().RenderLoadingStuff();
 
 	std::ostringstream ss;
 	ss.str("");

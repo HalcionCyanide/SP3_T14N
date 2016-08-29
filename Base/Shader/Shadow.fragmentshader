@@ -167,7 +167,7 @@ vec2 poissonDisk[64] = vec2[](
 float getShadowEffect(float cosTheta)
 {
 	//CHANGE THIS VARIABLE TO SWAP SHADOWS
-	bool UseUpgradedShaders = true;
+	bool UseUpgradedShaders = false;
 	//
 
 	float visibility = 1.0;
