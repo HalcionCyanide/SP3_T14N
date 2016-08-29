@@ -239,9 +239,7 @@ void SceneTown1::Update(float dt)
 		if (DistanceCheck < CurrentNPC->GetDetectionRadiusSquared() && Scene_System::accessing().cSS_InputManager->GetKeyValue('Q') && !CurrentNPC->getInteracting())
 		{
 			CurrentNPC->setInteracting(true);
-			NPC_Name->UI_Text = CurrentNPC->getName();
-			NPC_TextBox->UI_Text = CurrentNPC->getFText();
-			NPC_TextBox->WrapText();
+
 			if (ChatLayer->LayerTargetPosition.y < 0)
 				ChatLayer->SwapOriginalWithTarget();
 			break;
@@ -249,6 +247,10 @@ void SceneTown1::Update(float dt)
 		// The NPC has interacted with the player successfully.
 		if (CurrentNPC->getInteracting())
 		{
+			NPC_Name->UI_Text = CurrentNPC->getName();
+			NPC_TextBox->UI_Text = CurrentNPC->getFText();
+			NPC_TextBox->WrapText();
+
 			// Enable the mouse.
 			Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
 			camera->CameraIsLocked = true;
@@ -257,67 +259,54 @@ void SceneTown1::Update(float dt)
 			camera->target = Vector3(CurrentNPC->GetPosition().x, Application::cA_CurrentTerrainY + (CurrentNPC->GetPosition().y - Application::cA_CurrentTerrainY) + (CurrentNPC->GetDimensions().y * 0.5f), CurrentNPC->GetPosition().z);
 			camera->CurrentCameraRotation.x = 0;
 			int buttonCount = 1;
-			for (auto it : CurrentNPC->NPCcurrQstate) // go thru the NPC's states
+			for (std::map<std::string, std::vector<int>>::iterator it = CurrentNPC->NPCcurrQstate.begin(); it != CurrentNPC->NPCcurrQstate.end(); ++it) // go thru the NPC's states
 			{
-				for (auto it2 : Scene_System::accessing().gPlayer->playerCurrQState) // go thru the player's states
+				for (std::map<std::string, int>::iterator it2 = Scene_System::accessing().gPlayer->playerCurrQState.begin(); it2 != Scene_System::accessing().gPlayer->playerCurrQState.end(); ++it2) // go thru the player's states
 				{
-					if (it.first == it2.first) // compare the same quests
+					if (it->first == it2->first) // compare the same quests
 					{
-						for (auto it3 : it.second)
+						//loop thru the NPC's vector of quest stages to offer
+						for (std::vector<int>::iterator it3 = it->second.begin(); it3 != it->second.end(); ++it3)
 						{
-							if (buttonCount <= 3)
+							if (*it3 == it2->second)
 							{
-								if (it3 - it2.second == 1)
+								for (std::vector<Quest*>::iterator it4 = Scene_System::accessing().QM.allQuests.begin(); it4 != Scene_System::accessing().QM.allQuests.end(); ++it4)
 								{
-									for (auto it4 : Scene_System::accessing().QM.allQuests)
+									Quest* test = *it4;
+									if (test->getName() == it->first)
 									{
-										if (buttonCount > 3)
+										for (std::map<std::string, int>::iterator it5 = Scene_System::accessing().gPlayer->playerCurrQState.begin(); it5 != Scene_System::accessing().gPlayer->playerCurrQState.end(); ++it5)
 										{
-											break;
-										}
-										for (auto it5 : it4->qStages)
-										{
-											if (buttonCount > 3)
+											if (it5->first == test->preReq)
 											{
-													break;
-											}
-											if (it5->getComplete() || it4->getCurrentStage() == 0)
-											{
-												if (it5->getStageNO() + 1 == it3 && it5->getGiver() == CurrentNPC->getName())
+												if (it5->second >= test->preReqVal && !test->getActive())
 												{
-													NPC_QuestButtons.at(buttonCount)->UI_Text = it4->getName();
-													buttonCount++;
-													break;
-												}
-												else
-												{
-													NPC_QuestButtons.at(buttonCount)->UI_Text = "";
-													buttonCount++;
-													break;
+													for (std::vector<QuestStage*>::iterator it6 = test->qStages.begin(); it6 != test->qStages.end(); ++it6)
+													{
+														QuestStage* temp2 = *it6;
+														if ((temp2->getGiver() == CurrentNPC->getName()) && (buttonCount <= 3))
+														{
+															NPC_QuestButtons.at(buttonCount)->UI_Text = it->first;
+															buttonCount++;
+															break;
+														}
+													}
 												}
 											}
-											else
-											{
-												NPC_QuestButtons.at(buttonCount)->UI_Text = "";
-												buttonCount++;
-												break;
-											}
 										}
-										}
+									}
 								}
-								else
-								{
-									break;
-								}
-							}
-							else
-							{
-								break;
 							}
 						}
 					}
 				}
 			}
+			while (buttonCount <= 3)
+			{
+				NPC_QuestButtons.at(buttonCount)->UI_Text = "";
+				buttonCount++;
+			}
+
 			//Interacting with NPC: Check UI Key Press
 			std::string temp = HandleChatUIInput((float)dt);
 			if (temp == "Exit")
@@ -330,21 +319,49 @@ void SceneTown1::Update(float dt)
 				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
 				temp.clear();
 			}
-			for (auto it : Scene_System::accessing().QM.allQuests)
+			bool changedFText = false;
+			for (std::vector<UI_Element*>::iterator it = NPC_QuestButtons.begin(); it != NPC_QuestButtons.end(); ++it)
 			{
-				if (temp == it->getName())
+				UI_Element* dat = *it;
+				dat->UI_Bounds->ResetValues();
+				if (dat->UI_Bounds->CheckCollision(Scene_System::accessing().cSS_InputManager->GetMousePosition()))
 				{
-					if (!it->getActive())
+					for (std::vector<Quest*>::iterator it2 = Scene_System::accessing().QM.allQuests.begin(); it2 != Scene_System::accessing().QM.allQuests.end(); ++it2)
 					{
-						it->setActive(true);
-					}
-					int temp2 = it->getCurrentStage();
-					it->setCurrStage(temp2 + 1);
-					for (auto it2 : Scene_System::accessing().gPlayer->playerCurrQState)
-					{
-						if (it2.first == it->getName())
+						Quest* dis = *it2;
+						if (dis->getName() == dat->UI_Text)
 						{
-							it2.second++;
+							NPC_TextBox->UI_Text = dis->theStageAT->getDesc();
+							NPC_TextBox->WrapText();
+							changedFText = true;
+							break;
+						}
+					}
+				}
+				else if (changedFText == false)
+				{
+					NPC_TextBox->UI_Text = CurrentNPC->getFText();
+					NPC_TextBox->WrapText();
+				}
+				else
+					break;
+			}
+			for (std::vector<Quest*>::iterator it = Scene_System::accessing().QM.allQuests.begin(); it != Scene_System::accessing().QM.allQuests.end(); ++it)
+			{
+				Quest* dis = *it;
+				if (temp == dis->getName())
+				{
+					if (!dis->getActive())
+					{
+						dis->setActive(true);
+					}
+					int temp2 = dis->getCurrentStage();
+					dis->setCurrStage(temp2 + 1);
+					for (std::map<std::string, int>::iterator it2 = Scene_System::accessing().gPlayer->playerCurrQState.begin(); it2 != Scene_System::accessing().gPlayer->playerCurrQState.end(); ++it2)
+					{
+						if (it2->first == dis->getName())
+						{
+							it2->second++;
 						}
 					}
 					camera->CameraIsLocked = false;
@@ -369,6 +386,18 @@ void SceneTown1::Update(float dt)
 					it->Update(dt);
 				}
 			}
+		}
+		for (auto it3 : it->qStages)
+		{
+			if (it3->getGiver() == "NONE")
+			{
+				if (it3->getComplete())
+				{
+					it3->setStageNO(it3->getStageNO() + 1);
+				}
+				else break;
+			}
+			else break;
 		}
 	}
     Scene_System::accessing().UpdateLoadingStuff(dt);
