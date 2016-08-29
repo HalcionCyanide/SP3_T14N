@@ -42,6 +42,7 @@ protected:
     unsigned maxTimeToPlay;
     bool unlimitedTimes, loopIt;
     std::string fileName;
+    double m_ElapsedTime;
 };
 
 #endif
