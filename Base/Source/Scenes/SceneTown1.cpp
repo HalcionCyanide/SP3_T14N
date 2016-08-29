@@ -405,6 +405,10 @@ void SceneTown1::Update(float dt)
 		}
 	}
     Scene_System::accessing().UpdateLoadingStuff(dt);
+    if (transitingSceneName != "" && Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
+    {
+
+    }
 }
 
 void SceneTown1::RenderTerrain()
@@ -677,12 +681,13 @@ bool SceneTown1::onNotify(const std::string &theEvent)
     }
     else if (checkWhetherTheWordInThatString("TRANSITIONING", theEvent))
     {
+        Scene_System::accessing().SwitchScene(theEvent);
         PlayerObject *PlayerPTR = Scene_System::accessing().gPlayer->PlayerObj = dynamic_cast<PlayerObject*>(Player);
         PlayerPTR->SetVelocity(Vector3(0, 0, 0));
         Scene_System::accessing().gPlayer->CurrCamera = camera;
         for (std::vector<GameObject*>::iterator it = objVec.begin(), end = objVec.end(); it != end; ++it)
         {
-            if (checkWhetherTheWordInThatString(Scene_System::accessing().gPlayer->currSceneID, (*it)->getName()))
+            if (checkWhetherTheWordInThatString(theEvent, (*it)->getName()))
             {
                 Vector3 theGatePos = (*it)->GetPosition();
                 Vector3 theDirectionalPosBetweenPlayerGate = (PlayerPTR->GetPosition() - theGatePos).Normalize();
@@ -691,13 +696,15 @@ bool SceneTown1::onNotify(const std::string &theEvent)
                 break;
             }
         }
-        Scene_System::accessing().gPlayer->currSceneID = id_;
+        Scene_System::accessing().gPlayer->currSceneID = theEvent;
+        transitingSceneName = "";
         return true;
     }
     else if (checkWhetherTheWordInThatString("LOADING", theEvent))
     {
         Scene_System::accessing().SetLoadingTime(3.0);
-
+        size_t posOfUnderScore = theEvent.find_first_of('_');
+        transitingSceneName = theEvent.substr(posOfUnderScore+1);
         return true;
     }
     return false;
