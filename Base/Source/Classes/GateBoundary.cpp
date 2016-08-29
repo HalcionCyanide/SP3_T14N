@@ -37,7 +37,8 @@ bool GateBoundary::CheckCollision(const Vector3 &point)
 	}
 	SetOverlappingDistance(overlap);
 	SetOverlappingAxis(overlappedAxis);
-	TransitScene(name_);
+    Scene_System::accessing().getCurrScene().onNotify("LOADING");
+    //TransitScene(name_);
 	return true;
 }
 
