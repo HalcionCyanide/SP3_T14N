@@ -79,6 +79,7 @@ void SceneFreeField::Init()
 	/*std::map<std::string, Enemy*>::iterator it2 = Scene_System::accessing().EnemyData.begin();
 	Scene_System::accessing().BSys->SetEnemy(*it2->second);
 	Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);*/
+    transitingSceneName = "";
 }
 
 void SceneFreeField::Update(float dt)

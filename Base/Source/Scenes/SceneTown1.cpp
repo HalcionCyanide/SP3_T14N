@@ -91,6 +91,7 @@ void SceneTown1::Init()
 	UI_Sys = new UI_System();
 	UI_Sys->Init();
 	InitChatUI();
+    transitingSceneName = "";
 }
 
 void SceneTown1::InitChatUI()
@@ -688,7 +689,7 @@ bool SceneTown1::onNotify(const std::string &theEvent)
         Scene_System::accessing().gPlayer->currSceneID = id_;
         return true;
     }
-    else if (checkWhetherTheWordInThatString("LOAD", theEvent))
+    else if (checkWhetherTheWordInThatString("LOADING", theEvent))
     {
         Scene_System::accessing().SetLoadingTime(3.0);
         return onNotify("TRANSITIONING");

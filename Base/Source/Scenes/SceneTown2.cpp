@@ -67,6 +67,7 @@ void SceneTown2::Init()
 	PlayerPTR->setPlayerBoundaries(objVec);
 	camera->position = PlayerPTR->GetPosition();
 	//<!> There can only be 1 Player
+    transitingSceneName = "";
 }
 
 void SceneTown2::Update(float dt)
