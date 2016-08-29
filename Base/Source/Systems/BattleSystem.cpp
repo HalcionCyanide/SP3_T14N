@@ -295,8 +295,8 @@ void BattleSystem::SetEnemy(Enemy& E)
 	ss << "Spell Power: " << CurrentEnemy->SpellPower;
 	EnemyLayer->AddUIElement("UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.2f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.2f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.2f, 0), ss.str());
 	
-	EnemyLayer->AddUIElement("UI_ChatBox", Vector3(CenterPosition.x * 2.f, CenterPosition.y * 1.f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.f, 0), "Time Left");
-	EnemyStaminaBar = new UI_Element("UI_HP_Red", Vector3(CenterPosition.x * 2.f, CenterPosition.y * 0.85f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 0.85f, 0), Vector3(RBarWidth, PlayerScale * 1.25f, 1), Vector3(cRBarPosition, CenterPosition.y * 0.85f, 0));
+	EnemyLayer->AddUIElement("UI_ChatBox", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.f, 0), "Time Left");
+	EnemyStaminaBar = new UI_Element("UI_HP_Red", Vector3(cRBarPosition, CenterPosition.y * -4.f, 0), Vector3(cRBarPosition, CenterPosition.y * -4.f, 0), Vector3(RBarWidth, PlayerScale * 1.25f, 1), Vector3(cRBarPosition, CenterPosition.y * 0.85f, 0));
 	EnemyLayer->cUI_Layer.push_back(EnemyStaminaBar);
 	
 	cUI_System.cUIS_LayerContainer.push_back(EnemyLayer);
@@ -408,13 +408,13 @@ void BattleSystem::UpdateInfoBoxAnimation(float dt)
 	{
 		float Check1 = (PlayerInfoBox->LayerCenterPosition - PlayerInfoBox->LayerTargetPosition).LengthSquared();
 		float Check2 = (EnemyInfoBox->LayerCenterPosition - EnemyInfoBox->LayerTargetPosition).LengthSquared();
-		if (Check1 < 50.f && Check2 < 50.f)
+		if (Check1 < 20.f && Check2 < 20.f)
 		{
 			AnimationPaused = true;
 			int ParticleCount = Math::RandIntMinMax(50, 100);
 			for (int i = 0; i < ParticleCount; ++i)
 			{
-				cBillboardManager.AddParticle("Smoke", CenterPosition + Vector3(0, Math::RandFloatMinMax(-Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.5f)), Vector3(PlayerScale* 10.f, PlayerScale * 10.f, 1.f), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale)), Vector3(0, 0, 1), 2);
+				cBillboardManager.AddParticle("Smoke", CenterPosition + Vector3(0, Math::RandFloatMinMax(-Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.5f)), Vector3(PlayerScale* 5.f, PlayerScale * 5.f, 1.f), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale)), Vector3(0, 0, 1), 2);
 			}
 		}
 	}
@@ -461,11 +461,8 @@ void BattleSystem::UpdateEnemyLogic(float dt)
 		float RBarWidth = StaminaRatio * HealthBarDefaultScale * 0.5f;
 		float BarPosition = RBarPosition - (HealthBarDefaultScale - RBarWidth) * 0.5f + HealthBarDefaultScale * 0.25f;
 		EnemyStaminaBar->Dimensions.x = RBarWidth;
-		if (EnemyStaminaBar->AtTarget)
-			EnemyStaminaBar->Position.x = BarPosition;
-		else if ((EnemyStaminaBar->Position - EnemyStaminaBar->TargetPosition).LengthSquared() < 1.f)
-			EnemyStaminaBar->AtTarget = true;
-
+		EnemyStaminaBar->Position.x = BarPosition;
+		
 		if (EnemyReselectionInterval < Math::EPSILON)
 		{
 			// Use Current Attack
