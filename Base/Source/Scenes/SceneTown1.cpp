@@ -263,28 +263,30 @@ void SceneTown1::Update(float dt)
 				{
 					if (it.first == it2.first) // compare the same quests
 					{
-							for (auto it3 : it.second)
+						for (auto it3 : it.second)
+						{
+							if (buttonCount <= 3)
 							{
-								if (buttonCount <= 3)
+								if (it3 - it2.second == 1)
 								{
-									if (it3 - it2.second == 1)
+									for (auto it4 : Scene_System::accessing().QM.allQuests)
 									{
-										for (auto it4 : Scene_System::accessing().QM.allQuests)
+										if (buttonCount > 3)
+										{
+											break;
+										}
+										for (auto it5 : it4->qStages)
 										{
 											if (buttonCount > 3)
 											{
-												break;
+													break;
 											}
-											for (auto it5 : it4->qStages)
+											if (it5->getComplete() || it4->getCurrentStage() == 0)
 											{
-												if (it5->getStageNO() == it3 && it5->getGiver() == CurrentNPC->getName())
+												if (it5->getStageNO() + 1 == it3 && it5->getGiver() == CurrentNPC->getName())
 												{
 													NPC_QuestButtons.at(buttonCount)->UI_Text = it4->getName();
 													buttonCount++;
-													break;
-												}
-												if (buttonCount > 3)
-												{
 													break;
 												}
 												else
@@ -294,23 +296,29 @@ void SceneTown1::Update(float dt)
 													break;
 												}
 											}
+											else
+											{
+												NPC_QuestButtons.at(buttonCount)->UI_Text = "";
+												buttonCount++;
+												break;
+											}
 										}
-									}
-									else
-									{
-										break;
-									}
+										}
 								}
 								else
 								{
 									break;
 								}
 							}
+							else
+							{
+								break;
+							}
 						}
 					}
 				}
-			
-			 //Interacting with NPC: Check UI Key Press
+			}
+			//Interacting with NPC: Check UI Key Press
 			std::string temp = HandleChatUIInput((float)dt);
 			if (temp == "Exit")
 			{
@@ -320,22 +328,50 @@ void SceneTown1::Update(float dt)
 				CurrentNPC->setInteracting(false);
 				Scene_System::accessing().cSS_InputManager->SetMousePosition(CenterPosition);
 				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+				temp.clear();
 			}
 			for (auto it : Scene_System::accessing().QM.allQuests)
 			{
 				if (temp == it->getName())
 				{
-					it->setCurrStage(it->getCurrentStage() + 1);
+					if (!it->getActive())
+					{
+						it->setActive(true);
+					}
+					int temp2 = it->getCurrentStage();
+					it->setCurrStage(temp2 + 1);
+					for (auto it2 : Scene_System::accessing().gPlayer->playerCurrQState)
+					{
+						if (it2.first == it->getName())
+						{
+							it2.second++;
+						}
+					}
 					camera->CameraIsLocked = false;
 					if (ChatLayer->LayerTargetPosition.y > -1)
 						ChatLayer->SwapOriginalWithTarget();
 					CurrentNPC->setInteracting(false);
 					Scene_System::accessing().cSS_InputManager->SetMousePosition(CenterPosition);
 					Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+					temp.clear();
 				}
 			}
 		}
 	}
+	for (auto it : Scene_System::accessing().QM.allQuests)
+	{
+		for (auto it2 : Scene_System::accessing().gPlayer->playerCurrQState)
+		{
+			if (it2.first == it->getName())
+			{
+				if (it->getActive())
+				{
+					it->Update(dt);
+				}
+			}
+		}
+	}
+    Scene_System::accessing().UpdateLoadingStuff(dt);
 }
 
 void SceneTown1::RenderTerrain()
@@ -525,6 +561,8 @@ void SceneTown1::RenderPassMain()
 	{
 		SceneGraphics->RenderMeshIn2D("TFB_Gem", false, 100, 100, Scene_System::accessing().cSS_InputManager->GetMousePosition().x, Scene_System::accessing().cSS_InputManager->GetMousePosition().y);
 	}
+    if (Scene_System::accessing().theLoadingEffect)
+        Scene_System::accessing().theLoadingEffect->Render();
 
 	std::ostringstream ss;
 	ss.str("");

@@ -65,20 +65,22 @@ public:
     void SetLoadingTime(const double &dt);
     void UpdateLoadingStuff(double dt);
     void doingLoadingEffect();
+    enum LOADING_STATE {
+        BEGIN_LOADING,
+        STILL_LOADING,
+        FINISHED_LOADING,
+        NOT_LOADING,
+        TOTAL_LOADING_STATES,
+    };
+    LOADING_STATE whatLoadingState;
+    LOADING_STATE prevLoadingState;
 
 private:
 	std::stack<SceneEntity* > SceneHistory;
     std::map<std::string, SceneEntity*> theSceneList;
     SceneEntity *graphics_scene;
     double delayingLoadingTime, m_accumulatedLoadingTime;
-    enum LOADING_STATE {
-        BEGIN_LOADING,
-        STILL_LOADING,
-        FINISHED_LOADING,
-        TOTAL_LOADING_STATES,
-    };
-    LOADING_STATE whatLoadingState;
-    LOADING_STATE prevLoadingState;
+    bool hasLoadingEnded;
 };
 
 #endif

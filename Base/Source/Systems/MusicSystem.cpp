@@ -114,7 +114,7 @@ bool MusicSystem::playBackgroundMusic(const std::string &songName)
     {
         if (theOnlyBackgroundMusic && theOnlyBackgroundMusic->getName() != it->second->getName())
         {
-            theOnlyBackgroundMusic->Stop();
+            theOnlyBackgroundMusic->Stop(1);
             theOnlyBackgroundMusic = nullptr;
         }
         if (theOnlyBackgroundMusic == nullptr)

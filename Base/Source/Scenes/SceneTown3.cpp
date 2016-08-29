@@ -125,6 +125,7 @@ void SceneTown3::Update(float dt)
 
 	camera->position = PlayerPTR->GetPosition();
 	camera->Update(dt);
+    Scene_System::accessing().UpdateLoadingStuff(dt);
 }
 
 void SceneTown3::RenderTerrain()
@@ -303,7 +304,9 @@ void SceneTown3::RenderPassMain()
 	SceneGraphics->RenderMesh("reference", false);
 
 	SceneGraphics->SetHUD(true);
-	std::ostringstream ss;
+    if (Scene_System::accessing().theLoadingEffect)
+        Scene_System::accessing().theLoadingEffect->Render();
+    std::ostringstream ss;
 	ss.str("");
 	ss << "Scene 1 - FPS:" << framerates;
 	ss.precision(3);
