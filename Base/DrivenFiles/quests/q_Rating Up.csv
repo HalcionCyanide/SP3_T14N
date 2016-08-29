@@ -1,5 +1,5 @@
 stage,ConditionName,Value,Description,qOrigin
-1,rating,20,Achieve a rating of 20 or higher.,NPC_guardcaptain
-2,rating,40,Achieve a rating of 40 or higher.,NPC_guardcaptain
-3,rating,60,Achieve a rating of 60 or higher.,NPC_guardcaptain
-4,rating,80,Achieve a rating of 80 or higher.,NPC_guardcaptain
+0,rating,200,Achieve a rating of 200 or higher.,Guard Captain
+1,rating,400,Achieve a rating of 400 or higher.,Guard Captain
+2,rating,600,Achieve a rating of 600 or higher.,Guard Captain
+3,rating,800,Achieve a rating of 800 or higher.,Guard Captain

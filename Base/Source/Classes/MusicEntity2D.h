@@ -5,6 +5,7 @@
 #include "irrklang.h"
 #include <queue>
 #include "Vector3.h"
+#include <vector>
 
 using namespace irrklang;
 
@@ -25,7 +26,7 @@ public:
     virtual void SetNumTimeToPlay(const int &numTime);
     virtual void setISoundSouce(const std::string &theFile);
 
-    virtual void Stop();
+    virtual void Stop(double dt);
 
     float getVolume();
     unsigned getMaxTimesToPlay();
@@ -36,10 +37,12 @@ public:
 protected:
     ISoundSource *SoundSource;
     float volume_;
-    std::queue<ISound*> HistoryOfPlayTimes;
+    //std::queue<ISound*> HistoryOfPlayTimes;
+    std::vector<ISound*> HistoryOfPlayTimes;
     unsigned maxTimeToPlay;
     bool unlimitedTimes, loopIt;
     std::string fileName;
+    double m_ElapsedTime;
 };
 
 #endif

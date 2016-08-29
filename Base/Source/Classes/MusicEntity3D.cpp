@@ -26,7 +26,7 @@ void MusicEntity3D::Play()
     if (HistoryOfPlayTimes.size() < maxTimeToPlay)
     {
         ISound *theEffect = MusicSystem::accessing().musicEngine->play3D(SoundSource, position, loopIt, false, true);
-        HistoryOfPlayTimes.push(theEffect);
+        //HistoryOfPlayTimes.push(theEffect);
     }
 }
 

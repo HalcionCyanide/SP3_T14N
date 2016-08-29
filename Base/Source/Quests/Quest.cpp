@@ -4,6 +4,7 @@ Quest::Quest()
 	:qID(0)
 {
 	theStageAT = nullptr;
+	active = false;
 }
 
 Quest::~Quest()
@@ -42,16 +43,13 @@ int Quest::getCurrentStage()
 
 void Quest::setCurrStage(int i)
 {
-	if (active)
+	if (i > 0 && i <= (int)qStages.size())
 	{
-		if (i > 0 && i <= (int)qStages.size())
-		{
-			theStageAT = qStages.at(i - 1);
-		}
-		else
-		{
-			active = false;
-		}
+		theStageAT = qStages.at(i - 1);
+	}
+	else
+	{
+		theStageAT = qStages.at(0);
 	}
 }
 
@@ -144,5 +142,9 @@ void Quest::Update(double dt)
 	if (theStageAT != nullptr)
 	{
 		theStageAT->Update(dt);
+	}
+	else
+	{
+		active = false;
 	}
 }

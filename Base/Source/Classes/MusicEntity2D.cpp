@@ -9,6 +9,7 @@ MusicEntity2D::MusicEntity2D()
     volume_ = 1.f;
     maxTimeToPlay = 1;
     unlimitedTimes = loopIt = false;
+    m_ElapsedTime = 0;
 }
 
 MusicEntity2D::~MusicEntity2D()
@@ -21,7 +22,7 @@ MusicEntity2D::~MusicEntity2D()
             theFront->drop();
             theFront = 0;
         }
-        HistoryOfPlayTimes.pop();
+        HistoryOfPlayTimes.erase(HistoryOfPlayTimes.begin());
     }
 }
 
@@ -52,16 +53,17 @@ void MusicEntity2D::Play()
     if (HistoryOfPlayTimes.size() < maxTimeToPlay || unlimitedTimes == true)
     {
         ISound *thEffect = MusicSystem::accessing().musicEngine->play2D(SoundSource, loopIt, false, true);
-        HistoryOfPlayTimes.push(thEffect);
+        HistoryOfPlayTimes.push_back(thEffect);
     }
 }
 
 void MusicEntity2D::Update(double dt)
 {
+    m_ElapsedTime = dt;
     if (HistoryOfPlayTimes.size() > 0 && HistoryOfPlayTimes.front()->isFinished())
     {
         ISound *theFront = HistoryOfPlayTimes.front();
-        HistoryOfPlayTimes.pop();
+        HistoryOfPlayTimes.erase(HistoryOfPlayTimes.begin());
         if (theFront)
         {
             theFront->drop();
@@ -91,18 +93,42 @@ void MusicEntity2D::SetPosition(const Vector3 &pos)
 
 }
 
-void MusicEntity2D::Stop()
+void MusicEntity2D::Stop(double dt)
 {
-    while (HistoryOfPlayTimes.size() > 0)
+    for (std::vector<ISound*>::iterator it = HistoryOfPlayTimes.begin(), end = HistoryOfPlayTimes.end(); it != end;)
     {
-        ISound *theEffect = HistoryOfPlayTimes.front();
+        ISound * theEffect = (*it);
         if (theEffect)
         {
-            theEffect->stop();
-            theEffect->drop();
-            theEffect = 0;
+            float decrement = 0;
+            if (m_ElapsedTime > Math::EPSILON)
+                decrement = (float)m_ElapsedTime;
+            else
+                decrement = (float)dt;
+            if (theEffect->getVolume() - decrement > Math::EPSILON)
+            {
+                theEffect->setVolume(theEffect->getVolume() - decrement);
+                ++it;
+            }
+            else
+            {
+                theEffect->stop();
+                theEffect->drop();
+                theEffect = 0;
+                bool justBreakIt = false;
+                std::vector<ISound*>::iterator it2;
+                if (it + 1 == end)
+                {
+                    justBreakIt = true;
+                }
+                else
+                    it2 = it + 1;
+                HistoryOfPlayTimes.erase(it);
+                if (justBreakIt)
+                    break;
+                it = it2;
+            }
         }
-        HistoryOfPlayTimes.pop();
     }
 }
 

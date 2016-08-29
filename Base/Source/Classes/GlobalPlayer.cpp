@@ -128,6 +128,7 @@ bool GlobalPlayer::LoadPlayerSave(const std::string &fileName)
             else if (checkWhetherTheWordInThatString("SCENENAME", key))
             {
                 Scene_System::accessing().SwitchScene(value);
+                currSceneID = value;
             }
             else if (checkWhetherTheWordInThatString("CAMERAPOSITIONX", key))
             {

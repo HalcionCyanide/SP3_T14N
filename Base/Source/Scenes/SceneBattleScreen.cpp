@@ -53,8 +53,6 @@ void SceneBattleScreen::Update(float dt)
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	SceneGraphics->Update(dt);
 
-    MusicSystem::accessing().playBackgroundMusic("battle");
-
 	framerates = 1 / dt;
 
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
@@ -72,6 +70,7 @@ void SceneBattleScreen::Update(float dt)
 
 	camera.Update(dt);
 	Scene_System::accessing().BSys->Update((float)dt);
+    Scene_System::accessing().UpdateLoadingStuff(dt);
 }
 
 void SceneBattleScreen::RenderPassGPass()
@@ -159,6 +158,8 @@ void SceneBattleScreen::RenderPassMain()
 		SceneGraphics->RenderMesh("TFB_Gem", false);
 		modelStack->PopMatrix();
 	}
+    if (Scene_System::accessing().theLoadingEffect)
+        Scene_System::accessing().RenderLoadingStuff();
 
 	std::ostringstream ss;
 	ss.str("");

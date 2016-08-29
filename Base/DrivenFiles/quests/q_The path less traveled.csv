@@ -1,8 +1,8 @@
 stage,ConditionName,Value,Description,qOrigin
-1,goto,20;0;10;,Find a Map piece.,NONE
-2,goto,25;0;40;,Find a Map piece.,NONE
-3,goto,30;0;20;,Find a Map piece.,NONE
-4,goto,20;0;0;,Find a Map piece.,NONE
-5,interact,NPC_mapguy,Speak to the Royal Cartographer,NONE
-6,goto,60;0;15,Go to the location mentioned.,NPC_mapguy
-7,capture,MOB_pandora,Capture the Pandora's Box.,NONE
+0,goto,20;0;10;,Find a Map piece.,Cartographer
+1,goto,25;0;40;,Find a Map piece.,Cartographer
+2,goto,30;0;20;,Find a Map piece.,Cartographer
+3,goto,20;0;0;,Find a Map piece.,Cartographer
+4,interact,NPC_mapguy,Speak to the Royal Cartographer,Cartographer
+5,goto,60;0;15,Go to the location mentioned.,Cartographer
+6,capture,MOB_pandora,Capture the Pandora's Box.,Cartographer

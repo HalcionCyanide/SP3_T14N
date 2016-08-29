@@ -1,14 +1,14 @@
 stage,ConditionName,Value,Description,qOrigin
-1,collection,1,Capture a monster.,NPC_guardcaptain
-2,interact,NPC_guardcaptain,Report to the Guard Captain.,NONE
-3,capture,BOSS_Reaper,Capture the Reaper.,NPC_guardcaptain
-4,interact,NPC_T1door,Leave the City.,NPC_guardcaptain
-5,interact,NPC_villagechief,Find the village chief.,NONE
-6,interact,NPC_villager,Find the villagers.,NPC_villagechief
-7,goto,10;10;10;,Search the graveyard.,NONE
-8,goto,0;0;0;,Cleanse the graveyard.,NONE
-9,capture,BOSS_Manticore,Capture the Manticore.,NONE
-10,interact,NPC_mStranger,Talk to the Mysterious Stranger.,NONE
-11,interact,NPC_guardcaptain,Return to the Castle for instructions.,NPC_mStranger
-12,goto,50;0;50;,Reach the Cursed Woods.,NPC_guardcaptain
-13,capture,BOSS_Balrog,Capture the Balrog.,NONE
+0,collection,1,Capture a monster.,Guard Captain
+1,interact,NPC_guardcaptain,Report to the Guard Captain.,NONE
+2,capture,BOSS_Reaper,Capture the Reaper.,Guard Captain
+3,interact,NPC_T1door,Leave the City.,Guard Captain
+4,interact,NPC_villagechief,Find the village chief.,NONE
+5,interact,NPC_villager,Find the villagers.,Village Chief
+6,goto,10;10;10;,Search the graveyard.,NONE
+7,goto,0;0;0;,Cleanse the graveyard.,NONE
+8,capture,BOSS_Manticore,Capture the Manticore.,NONE
+9,interact,NPC_mStranger,Talk to the Mysterious Stranger.,NONE
+10,interact,NPC_guardcaptain,Return to the Castle for instructions.,Mysterious Stranger
+11,goto,50;0;50;,Reach the Cursed Woods.,Guard Captain
+12,capture,BOSS_Balrog,Capture the Balrog.,NONE

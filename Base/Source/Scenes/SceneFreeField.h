@@ -31,6 +31,7 @@ private:
 	float EncounterTimer = 0;
 	float EncounterTimeCheck = 1.;
 	int MaxEncounterRate = 1000;
+    bool MonsterFound;
 
     // Shadow GPass
     void RenderPassGPass();
@@ -53,6 +54,7 @@ private:
     double framerates;
     GenericEntity *theInteractiveMap;
     std::vector<GameObject*> objVec;
+    std::string transitingSceneName;
 };
 
 #endif // _SCENE_FREE_FIELD_H

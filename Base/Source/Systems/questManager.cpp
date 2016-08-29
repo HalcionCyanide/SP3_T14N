@@ -68,6 +68,12 @@ void questManager::readFile(const std::string fileName)
 				pos = it - theKeys.begin();
 				tempQuest->preReqVal = stoi(theValues[pos]);
 
+				std::string path = "DrivenFiles//quests//q_";
+				std::string fileFormat = ".csv";
+				std::string temp2 = path + tempQuest->getName() + fileFormat;
+				tempQuest->LoadFile(temp2);
+				tempQuest->setCurrStage(0);
+
 				allQuests.push_back(tempQuest);
 				theValues.clear();
 			}

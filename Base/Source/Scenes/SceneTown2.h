@@ -45,6 +45,7 @@ private:
     double framerates;
     GenericEntity *theInteractiveMap;
     std::vector<GameObject*> objVec;
+    std::string transitingSceneName;
 };
 
 #endif // _SCENE_TOWN_2_H

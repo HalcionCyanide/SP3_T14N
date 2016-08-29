@@ -42,6 +42,7 @@ void SceneFreeField::Init()
 
 	// Initiallise Model Specific Meshes Here
 	Mesh* newMesh = MeshBuilder::GenerateTerrain("FreeField", "HeightMapFiles//heightmap_FreeField.raw", m_heightMap);
+	newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
 	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
@@ -72,11 +73,13 @@ void SceneFreeField::Init()
 	CurrentEncounterRateBoost = 0;
 	PreviousPosition = camera->position;
 	PreviousPosition.y = Application::cA_MinimumTerrainY;
+    MonsterFound = false;
 
 	// Codes to swap to bs
 	/*std::map<std::string, Enemy*>::iterator it2 = Scene_System::accessing().EnemyData.begin();
 	Scene_System::accessing().BSys->SetEnemy(*it2->second);
 	Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);*/
+    transitingSceneName = "";
 }
 
 void SceneFreeField::Update(float dt)
@@ -104,60 +107,76 @@ void SceneFreeField::Update(float dt)
 		PreviousPosition = camera->position;
 		PreviousPosition.y = Application::cA_MinimumTerrainY;
 	}
-	if (EncounterTimer < EncounterTimeCheck)
+    if (MonsterFound == false && EncounterTimer < EncounterTimeCheck)
 	{
 		EncounterTimer += (float)dt;
 	}
-	else if ((camera->position - PreviousPosition).LengthSquared() > 4.f) // 2 Units
+    else if (MonsterFound == false && (camera->position - PreviousPosition).LengthSquared() > 4.f) // 2 Units
 	{
 		EncounterTimer = 0;
-		if (Math::RandIntMinMax(0, MaxEncounterRate - CurrentEncounterRateBoost) < MaxEncounterRate * EncounterRatio)
+        if (Math::RandIntMinMax(0, MaxEncounterRate - CurrentEncounterRateBoost) < MaxEncounterRate * EncounterRatio)
 		{
-			CurrentEncounterRateBoost = 0;
-			std::ostringstream ss;
-			ss << Math::RandIntMinMax(1, Scene_System::accessing().EnemyData.size());
-			std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find(ss.str());
-			Scene_System::accessing().BSys->SetEnemy(*it->second);
-			Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
+            MonsterFound = true;
+            Scene_System::accessing().SetLoadingTime(3.f);
 		}
 	}
+    else if (MonsterFound && Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
+    {
+        Scene_System::accessing().whatLoadingState = Scene_System::NOT_LOADING;
+        MonsterFound = false;
+        CurrentEncounterRateBoost = 0;
+        std::ostringstream ss;
+        ss << Math::RandIntMinMax(1, Scene_System::accessing().EnemyData.size());
+        std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find(ss.str());
+        Scene_System::accessing().BSys->SetEnemy(*it->second);
+        Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
+    }
 
 	framerates = 1 / dt;
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('1'))
-	{
-		Scene_System::accessing().SwitchScene(SceneTown1::id_);
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
-	{
-		Scene_System::accessing().SwitchScene(SceneTown2::id_);
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('3'))
-	{
-		Scene_System::accessing().SwitchScene(SceneTown3::id_);
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('5'))
-	{
-		Scene_System::accessing().SwitchScene(Scene_2::id_);
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
-	{
-		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-		Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0;
-		Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0;
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('0'))
-	{
-		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
-	}
+    PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
+    if (Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)
+    {
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('1'))
+        {
+            Scene_System::accessing().SwitchScene(SceneTown1::id_);
+        }
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
+        {
+            Scene_System::accessing().SwitchScene(SceneTown2::id_);
+        }
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('3'))
+        {
+            Scene_System::accessing().SwitchScene(SceneTown3::id_);
+        }
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('5'))
+        {
+            Scene_System::accessing().SwitchScene(Scene_2::id_);
+        }
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
+        {
+            Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+            Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0;
+            Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0;
+        }
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('0'))
+        {
+            Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+        }
 
-	BManager.UpdateContainer(dt, camera->position);
+        BManager.UpdateContainer(dt, camera->position);
+        camera->CameraIsLocked = false;
+    }
+    else
+    {
+        camera->CameraIsLocked = true;
+        PlayerPTR->SetVelocity(Vector3(0, 0, 0));
+    }
+    PlayerPTR->Update(dt);
+    PlayerPTR->SetRotationAngle(camera->CurrentCameraRotation.y);
 
-	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
-	PlayerPTR->Update(dt);
-	PlayerPTR->SetRotationAngle(camera->CurrentCameraRotation.y);
-
-	camera->position = PlayerPTR->GetPosition();
-	camera->Update(dt);
+    camera->position = PlayerPTR->GetPosition();
+    camera->Update(dt);
+    Scene_System::accessing().UpdateLoadingStuff(dt);
 }
 
 void SceneFreeField::RenderTerrain()
@@ -332,7 +351,9 @@ void SceneFreeField::RenderPassMain()
 	SceneGraphics->RenderMesh("reference", false);
 
 	SceneGraphics->SetHUD(true);
-	std::ostringstream ss;
+    if (Scene_System::accessing().theLoadingEffect)
+        Scene_System::accessing().RenderLoadingStuff();
+    std::ostringstream ss;
 	ss.str("");
 	ss << "Scene 1 - FPS:" << framerates;
 	ss.precision(3);

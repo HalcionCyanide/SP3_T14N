@@ -1,13 +1,13 @@
 stage,ConditionName,Value,Description,qOrigin
-1,interact,NPC_rocks,Mine the rocks.,NPC_carpenter
-2,interact,NPC_wood,Chop the wood.,NONE
-3,interact,NPC_carpenter,Bring them back to the carpenter.,NONE
-4,interact,NPC_rocks,Mine the rocks.,NONE
-5,interact,NPC_wood,Chop the wood.,NONE
-6,interact,NPC_carpenter,Bring them back to the carpenter.,NONE
-8,interact,NPC_rocks,Mine the rocks.,NPC_carpenter
-9,interact,NPC_wood,Chop the wood.,NONE
-10,interact,NPC_carpenter,Bring them back to the carpenter.,NONE
-11,interact,NPC_rocks,Mine the rocks.,NONE
-12,interact,NPC_wood,Chop the wood.,NONE
-13,interact,NPC_carpenter,Bring them back to the carpenter.,NONE
+0,interact,NPC_rocks,Mine the rocks.,Carpenter
+1,interact,NPC_wood,Chop the wood.,NONE
+2,interact,NPC_carpenter,Bring them back to the carpenter.,NONE
+3,interact,NPC_rocks,Mine the rocks.,NONE
+4,interact,NPC_wood,Chop the wood.,NONE
+5,interact,NPC_carpenter,Bring them back to the carpenter.,NONE
+6,interact,NPC_rocks,Mine the rocks.,Carpenter
+8,interact,NPC_wood,Chop the wood.,NONE
+9,interact,NPC_carpenter,Bring them back to the carpenter.,NONE
+10,interact,NPC_rocks,Mine the rocks.,NONE
+11,interact,NPC_wood,Chop the wood.,NONE
+12,interact,NPC_carpenter,Bring them back to the carpenter.,NONE

@@ -13,6 +13,7 @@
 #include "../Misc/SimpleCommand.h"
 #include "../Misc/LoadEnemyData.h"
 #include <climits>
+#include "../Systems/MusicSystem.h"
 
 std::string Scene_MainMenu::id_ = "M_Scene";
 
@@ -44,6 +45,7 @@ void Scene_MainMenu::Init()
 
 	// Initiallise Model Specific Meshes Here
 	Mesh* newMesh = MeshBuilder::GenerateTerrain("terrain", "HeightMapFiles//heightmap_MainMenu.raw", m_heightMap);
+	newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
 	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
@@ -63,13 +65,14 @@ void Scene_MainMenu::Init()
 	CurrentMenuState = S_FIRSTLEVEL;
 	Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
 	InitSceneUIElems();
+
+    transitingSceneName = "";
 }
 
 void Scene_MainMenu::InitSceneUIElems()
 {
 	UI_Layer* NewL = new UI_Layer();
-	Vector3 ButtonScale(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.18f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.065f, 1);
-	Vector3 CenterPosition(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
+	Vector3 ButtonScale(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.20f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.1f, 1); Vector3 CenterPosition(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 	NewL->AddUIElement(UI_Element::UI_LOGO, "TFB_Logo", CenterPosition * 3, CenterPosition * 3, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.55f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.9f, 1), CenterPosition * 1.35f);
 
 	NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", CenterPosition * -2.f, CenterPosition * -2.f, ButtonScale, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), UI_Text[1]);
@@ -185,19 +188,13 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                             if (((*it2)->UI_Text == UI_Text[4]))
                             {
                                 // Start
-                                //Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-                                //Scene_System::accessing().SwitchScene(SceneTown1::id_);
-                                //Scene_System::accessing().Swit2chScene(SceneTown1::id_);
                                 //<!> the most hardcoding method ever!
-								Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-                                Scene_System::accessing().gPlayer->LoadPlayerSave("DrivenFiles//NewPlayerSave.csv");
+                                transitingSceneName = "DrivenFiles//NewPlayerSave.csv";
+                                Scene_System::accessing().SetLoadingTime(3.f);
                             }
                             else if (((*it2)->UI_Text == UI_Text[5]))
                             {
                                 // Load
-								//Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-        //                        Scene_System::accessing().gPlayer->settingTheFileToSave(1);
-        //                        Scene_System::accessing().gPlayer->automaticallyLoadFile();
                                 CurrentMenuState = S_LOADING_SAVE;
                                 for (std::vector<UI_Element*>::iterator it3 = (*it)->cUI_Layer.begin(); it3 != (*it)->cUI_Layer.end(); ++it3)
                                 {
@@ -332,9 +329,10 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                                 {
                                     if ((*it2)->UI_Text == UI_Text[num])
                                     {
-                                        Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-                                        Scene_System::accessing().gPlayer->settingTheFileToSave(num - beginningNum);
-                                        Scene_System::accessing().gPlayer->automaticallyLoadFile();
+                                        std::ostringstream ss;
+                                        ss << num - beginningNum;
+                                        transitingSceneName = ss.str();
+                                        Scene_System::accessing().SetLoadingTime(3.f);
                                     }
                                 }
                             }
@@ -346,6 +344,22 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                 //Loading of Save Stuff
      }
         }
+    }
+
+    //For Loading Screen
+    if (transitingSceneName != "" && Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
+    {
+        if (CurrentMenuState == S_LOADING_SAVE)
+        {
+            Scene_System::accessing().gPlayer->settingTheFileToSave(stoi(transitingSceneName));
+            Scene_System::accessing().gPlayer->automaticallyLoadFile();
+        }
+        else {
+            Scene_System::accessing().whatLoadingState = Scene_System::NOT_LOADING;
+            Scene_System::accessing().gPlayer->LoadPlayerSave(transitingSceneName);
+        }
+        Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+        transitingSceneName = "";
     }
 }
 
@@ -585,7 +599,7 @@ void Scene_MainMenu::RenderPassMain()
 	}
 
     if (Scene_System::accessing().theLoadingEffect)
-        Scene_System::accessing().theLoadingEffect->Render();
+        Scene_System::accessing().RenderLoadingStuff();
 
 	std::ostringstream ss;
 	ss.str("");
