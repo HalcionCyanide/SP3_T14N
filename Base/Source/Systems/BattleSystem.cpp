@@ -408,13 +408,13 @@ void BattleSystem::UpdateInfoBoxAnimation(float dt)
 	{
 		float Check1 = (PlayerInfoBox->LayerCenterPosition - PlayerInfoBox->LayerTargetPosition).LengthSquared();
 		float Check2 = (EnemyInfoBox->LayerCenterPosition - EnemyInfoBox->LayerTargetPosition).LengthSquared();
-		if (Check1 < 50.f && Check2 < 50.f)
+		if (Check1 < 20.f && Check2 < 20.f)
 		{
 			AnimationPaused = true;
 			int ParticleCount = Math::RandIntMinMax(50, 100);
 			for (int i = 0; i < ParticleCount; ++i)
 			{
-				cBillboardManager.AddParticle("Smoke", CenterPosition + Vector3(0, Math::RandFloatMinMax(-Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.5f)), Vector3(PlayerScale* 10.f, PlayerScale * 10.f, 1.f), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale)), Vector3(0, 0, 1), 2);
+				cBillboardManager.AddParticle("Smoke", CenterPosition + Vector3(0, Math::RandFloatMinMax(-Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.5f)), Vector3(PlayerScale* 5.f, PlayerScale * 5.f, 1.f), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale)), Vector3(0, 0, 1), 2);
 			}
 		}
 	}
@@ -970,6 +970,7 @@ void BattleSystem::Attack_Bullet(EnemyProjectile& CurrentProjectile)
 	BSO->TargetPoint = TargetPos;
 	BSO->AltTargetPoint = PlayerObj->GetPosition() + 1.5f * Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0);
 	BSO->MoveToTarget = true;
+	BSO->Retarget = false;
 	BSO->SetMass(2.f);
 }
 
@@ -987,6 +988,7 @@ void BattleSystem::Attack_Trap(EnemyProjectile& CurrentProjectile)
 		BSO->SetAcceleration(0);
 		BSO->MoveToTarget = false;
 		BSO->AltTargetPoint = 0;
+		BSO->Retarget = false;
 
 		BSO = GetInactiveBSO();
 		BSO->SetParameters(CurrentProjectile.StoredMesh, 3, SpawnPos, Vector3(PlayerScale, PlayerScale, 1), Vector3(CurrentProjectile.ScalarAcceleration, CurrentProjectile.ScalarAcceleration), RAngle, Vector3(0, 0, 1));
@@ -998,6 +1000,7 @@ void BattleSystem::Attack_Trap(EnemyProjectile& CurrentProjectile)
 		BSO->SetMass(3.f);
 		BSO->MoveToTarget = false;
 		BSO->AltTargetPoint = 0;
+		BSO->Retarget = false;
 	}
 }
 
@@ -1017,6 +1020,7 @@ void BattleSystem::Attack_HorizontalRay(EnemyProjectile& CurrentProjectile)
 	BSO->SetAcceleration(Vector3(CurrentProjectile.ScalarAcceleration));
 	BSO->MoveToTarget = true;
 	BSO->SetMass(2.f);
+	BSO->Retarget = false;
 
 	BSO = GetInactiveBSO();
 	BSO->SetParameters("BS_DangerZone", 3, Vector3(BattleBox->cUI_Layer[0]->Position.x, Target2.y), Vector3(BattleBox->cUI_Layer[0]->Dimensions.x, PlayerScale, 1), 0, 0, Vector3(0, 0, 1));
@@ -1026,6 +1030,7 @@ void BattleSystem::Attack_HorizontalRay(EnemyProjectile& CurrentProjectile)
 	BSO->SetAcceleration(0);
 	BSO->MoveToTarget = false;
 	BSO->AltTargetPoint = 0;
+	BSO->Retarget = false;
 }
 
 void BattleSystem::Attack_VerticalRay(EnemyProjectile& CurrentProjectile)
@@ -1044,6 +1049,7 @@ void BattleSystem::Attack_VerticalRay(EnemyProjectile& CurrentProjectile)
 	BSO->SetAcceleration(Vector3(0, -CurrentProjectile.ScalarAcceleration));
 	BSO->MoveToTarget = true;
 	BSO->SetMass(2.f);
+	BSO->Retarget = false;
 
 	BSO = GetInactiveBSO();
 	BSO->SetParameters("BS_DangerZone", 3, Vector3(Target2.x, BattleBox->cUI_Layer[0]->Position.y), Vector3(PlayerScale, BattleBox->cUI_Layer[0]->Dimensions.y, 1), 0, 0, Vector3(0, 0, 1));
@@ -1053,4 +1059,5 @@ void BattleSystem::Attack_VerticalRay(EnemyProjectile& CurrentProjectile)
 	BSO->SetAcceleration(0);
 	BSO->MoveToTarget = false;
 	BSO->AltTargetPoint = 0;
+	BSO->Retarget = false;
 }

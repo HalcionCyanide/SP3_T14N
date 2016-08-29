@@ -583,9 +583,9 @@ void SceneTown1::RenderPassMain()
 
 	SceneGraphics->SetHUD(true);
 
-	ChatLayer->Render();
-
 	Scene_System::accessing().cSS_PlayerUIManager->Render();
+
+	ChatLayer->Render();
 
 	if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
 	{

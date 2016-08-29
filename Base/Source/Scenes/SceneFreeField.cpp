@@ -351,6 +351,9 @@ void SceneFreeField::RenderPassMain()
 	SceneGraphics->RenderMesh("reference", false);
 
 	SceneGraphics->SetHUD(true);
+
+	Scene_System::accessing().cSS_PlayerUIManager->Render();
+
     if (Scene_System::accessing().theLoadingEffect)
         Scene_System::accessing().RenderLoadingStuff();
     std::ostringstream ss;
