@@ -74,7 +74,7 @@ void Item::Consumed(float dt)
 	switch (TypeOfItem)
 	{
 	case INSTANT_HEAL:
-		Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetCurrentHealth() + EffectiveValue);
+		Scene_System::accessing().gPlayer->SetCurrentHealth((int)(Scene_System::accessing().gPlayer->GetCurrentHealth() + EffectiveValue));
 		break;
 	}
 }

@@ -635,7 +635,7 @@ void BattleSystem::InitSuccessScreen()
 		EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", CenterPosition - Vector3(0, CenterPosition.y * 0.15f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.06f * AspectRatio, 1), SpawnPos, ss.str());
 	}
 
-	ExitButton = new UI_Element(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", CenterPosition - Vector3(0, CenterPosition.y * 0.7f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "Click Here To Exit The Battle Screen.");
+	ExitButton = new UI_Element(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", CenterPosition - Vector3(0, CenterPosition.y * 0.7f), SpawnPos + Vector3(0, CenterPosition.y * 2), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos + Vector3(0, CenterPosition.y * 2), "Click Here To Exit The Battle Screen.");
 	
 	EndScreenSuccess->cUI_Layer.push_back(ExitButton);
 
@@ -662,7 +662,7 @@ void BattleSystem::InitFailScreen()
 
 	EndScreenFail->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "UI_ChatBox", CenterPosition + Vector3(0, CenterPosition.y * 0.3f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.8f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "You Have Been Killed By The Monster...");
 
-	ExitButton = new UI_Element(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", CenterPosition - Vector3(0, CenterPosition.y * 0.3f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "Click Here To Return To The Main Menu.");
+	ExitButton = new UI_Element(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", CenterPosition - Vector3(0, CenterPosition.y * 0.3f), SpawnPos + Vector3(0, CenterPosition.y * 2), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos + Vector3(0, CenterPosition.y * 2), "Click Here To Return To The Main Menu.");
 
 	EndScreenFail->cUI_Layer.push_back(ExitButton);
 
@@ -699,6 +699,7 @@ void BattleSystem::UpdateITimer(float dt)
 			PlayerIFrameTimer = 0.f;
 		}
 	}
+	else PlayerIsInvincible = false;
 }
 
 void BattleSystem::UpdateControls(float dt)
