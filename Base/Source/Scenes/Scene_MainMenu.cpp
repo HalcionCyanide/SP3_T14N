@@ -191,8 +191,6 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                                 //<!> the most hardcoding method ever!
                                 transitingSceneName = "DrivenFiles//NewPlayerSave.csv";
                                 Scene_System::accessing().SetLoadingTime(3.f);
-								//Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-        //                        Scene_System::accessing().gPlayer->LoadPlayerSave("DrivenFiles//NewPlayerSave.csv");
                             }
                             else if (((*it2)->UI_Text == UI_Text[5]))
                             {
@@ -335,9 +333,6 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                                         ss << num - beginningNum;
                                         transitingSceneName = ss.str();
                                         Scene_System::accessing().SetLoadingTime(3.f);
-                                        //Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-                                        //Scene_System::accessing().gPlayer->settingTheFileToSave(num - beginningNum);
-                                        //Scene_System::accessing().gPlayer->automaticallyLoadFile();
                                     }
                                 }
                             }
@@ -604,7 +599,7 @@ void Scene_MainMenu::RenderPassMain()
 	}
 
     if (Scene_System::accessing().theLoadingEffect)
-        Scene_System::accessing().theLoadingEffect->Render();
+        Scene_System::accessing().RenderLoadingStuff();
 
 	std::ostringstream ss;
 	ss.str("");

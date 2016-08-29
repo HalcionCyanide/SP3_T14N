@@ -351,7 +351,7 @@ void SceneFreeField::RenderPassMain()
 
 	SceneGraphics->SetHUD(true);
     if (Scene_System::accessing().theLoadingEffect)
-        Scene_System::accessing().theLoadingEffect->Render();
+        Scene_System::accessing().RenderLoadingStuff();
     std::ostringstream ss;
 	ss.str("");
 	ss << "Scene 1 - FPS:" << framerates;

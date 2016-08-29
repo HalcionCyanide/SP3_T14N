@@ -200,7 +200,7 @@ void Scene_System::UpdateLoadingStuff(double dt)
     {
             whatLoadingState = FINISHED_LOADING;
     }
-    ShouldRenderLoadingStuff = false;
+    ShouldRenderLoadingStuff = true;
     for (std::vector<UI_Layer*>::iterator it = theLoadingEffect->cUIS_LayerContainer.begin(), end = theLoadingEffect->cUIS_LayerContainer.end(); it != end; ++it)
     {
         UI_Layer *theLayer = (*it);
@@ -210,7 +210,10 @@ void Scene_System::UpdateLoadingStuff(double dt)
             theElement->Update((float)dt);
             if (whatLoadingState != prevLoadingState)
                 theElement->SwapOriginalWithTarget();
-            if (whatLoadingState == NOT_LOADING && theElement->AtTarget == false)
+            float theLengthBetweenTargetAndPos = (theElement->TargetPosition - theElement->Position).LengthSquared();
+            if ((whatLoadingState == NOT_LOADING || whatLoadingState == FINISHED_LOADING) && theLengthBetweenTargetAndPos <= 26.f)
+                ShouldRenderLoadingStuff = false;
+            else
                 ShouldRenderLoadingStuff = true;
         }
     }
@@ -227,6 +230,7 @@ void Scene_System::SetLoadingTime(const double &dt)
     delayingLoadingTime = dt;
     m_accumulatedLoadingTime = 0;
     whatLoadingState = BEGIN_LOADING;
+    ShouldRenderLoadingStuff = true;
 }
 
 void Scene_System::RenderLoadingStuff()

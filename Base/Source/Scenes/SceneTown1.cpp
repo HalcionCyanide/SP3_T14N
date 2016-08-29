@@ -579,11 +579,6 @@ void SceneTown1::RenderPassMain()
 
 	SceneGraphics->SetHUD(true);
 
-	/*for (std::vector<UI_Element*>::iterator it = UI_Sys->cUIS_LayerContainer[0]->cUI_Layer.begin(); it != UI_Sys->cUIS_LayerContainer[0]->cUI_Layer.end(); ++it)
-	{
-		(*it)->Render(Vector3());
-	}*/
-
 	ChatLayer->Render();
 
 	if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
@@ -591,7 +586,7 @@ void SceneTown1::RenderPassMain()
 		SceneGraphics->RenderMeshIn2D("TFB_Gem", false, 100, 100, Scene_System::accessing().cSS_InputManager->GetMousePosition().x, Scene_System::accessing().cSS_InputManager->GetMousePosition().y);
 	}
     if (Scene_System::accessing().theLoadingEffect)
-        Scene_System::accessing().theLoadingEffect->Render();
+        Scene_System::accessing().RenderLoadingStuff();
 
 	std::ostringstream ss;
 	ss.str("");

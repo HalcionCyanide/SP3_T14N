@@ -41,16 +41,18 @@ void BattleScreenObject::Update(double dt)
 				SetVelocity(DVec);
 				if (DVec.LengthSquared() < 10.f)
 				{
-					if (AltTargetPoint != 0)
-					{
-						SetVelocity(0);
-						std::swap(TargetPoint, AltTargetPoint);
-						DVec = TargetPoint - GetPosition();
-						SetAcceleration(DVec);
-						MoveToTarget = false;
-					}
-					else MoveToTarget = false;
+					Retarget = true;
 				}
+				if (Retarget && PlayerPosition != 0)
+				{
+					SetVelocity(0);
+					std::swap(TargetPoint, PlayerPosition);
+					DVec = TargetPoint - GetPosition();
+					SetAcceleration(DVec);
+					MoveToTarget = false;
+				}
+				else if (PlayerPosition == 0) 
+					MoveToTarget = false;
 			}
 			Vector3 StoredVelocity = GetVelocity();
 			if (GravityAffected)
