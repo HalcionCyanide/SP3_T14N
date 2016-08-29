@@ -43,14 +43,7 @@ int Quest::getCurrentStage()
 
 void Quest::setCurrStage(int i)
 {
-	if (i > 0 && i <= (int)qStages.size())
-	{
-		theStageAT = qStages.at(i - 1);
-	}
-	else
-	{
-		theStageAT = qStages.at(0);
-	}
+	theStageAT = qStages.at(i);
 }
 
 int Quest::getID()

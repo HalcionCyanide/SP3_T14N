@@ -176,6 +176,32 @@ void SceneFreeField::Update(float dt)
 
     camera->position = PlayerPTR->GetPosition();
     camera->Update(dt);
+	for (auto it : Scene_System::accessing().QM.allQuests)
+	{
+		for (auto it2 : Scene_System::accessing().gPlayer->playerCurrQState)
+		{
+			if (it2.first == it->getName())
+			{
+				if (it->getActive())
+				{
+					it->Update(dt);
+					std::cout << it->theStageAT->getDesc() << std::endl;
+				}
+			}
+		}
+		for (auto it3 : it->qStages)
+		{
+			if (it3->getGiver() == "NONE")
+			{
+				if (it3->getComplete())
+				{
+					it3->setStageNO(it3->getStageNO() + 1);
+				}
+				else break;
+			}
+			else break;
+		}
+	}
     Scene_System::accessing().UpdateLoadingStuff(dt);
 }
 
