@@ -36,12 +36,41 @@ void PlayerUIManager::Init()
 void PlayerUIManager::InitHUD()
 {
 	HUD_Stats = new UI_Layer();
-	UI_Element* NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.25f, 1), 0);
+
+	HUD_Stats->LayerTargetPosition.y = 0;
+	HUD_Stats->LayerCenterPosition.y = 0;
+	HUD_Stats->LayerOriginalPosition.y = -CenterPosition.y;
+
+	UI_Element* NewE = new UI_Element("HUD_Stats", 0, 0, Vector3(CenterPosition.x * 0.6f, CenterPosition.y * 0.5f, 1), 0);
 	NewE->TargetPosition.Set(NewE->Dimensions.x * 0.5f, NewE->Dimensions.y * 0.5f);
-	NewE->UI_Text_Container.push_back("My HP");
-	NewE->UI_Text_Container.push_back("My SP");
-	NewE->TextWrappingEnabled = true;
+	NewE->Position = NewE->TargetPosition;
 	HUD_Stats->cUI_Layer.push_back(NewE);
+
+	NewE = new UI_Element("TextBacking", 0, 0, Vector3(CenterPosition.x * 0.35f, CenterPosition.y * 0.11f, 1), 0, "Open Menu - <Put Key Here>");
+	NewE->TargetPosition.Set(NewE->Dimensions.x * 0.625f, CenterPosition.y * 0.465f);
+	NewE->TextColor.SetZero();
+	NewE->Position = NewE->TargetPosition;
+	HUD_Stats->cUI_Layer.push_back(NewE);
+
+	NewE = new UI_Element("UI_ChatBox", 0, 0, Vector3(CenterPosition.x * 0.35f, CenterPosition.y * 0.11f, 1), 0, Scene_System::accessing().gPlayer->getName());
+	NewE->TargetPosition.Set(NewE->Dimensions.x * 0.65f, CenterPosition.y * 0.375f);
+	NewE->Position = NewE->TargetPosition;
+	HUD_Stats->cUI_Layer.push_back(NewE);
+
+	std::stringstream ss;
+	ss << "SP: " << Scene_System::accessing().gPlayer->GetSpellPower();
+	NewE = new UI_Element("UI_ChatBox", 0, 0, Vector3(CenterPosition.x * 0.35f, CenterPosition.y * 0.11f, 1), 0, ss.str());
+	NewE->TargetPosition.Set(NewE->Dimensions.x * 0.65f, CenterPosition.y * 0.245f);
+	NewE->Position = NewE->TargetPosition;
+	HUD_Stats->cUI_Layer.push_back(NewE);
+
+	ss.str("");
+	ss << "HP: " << Scene_System::accessing().gPlayer->GetCurrentHealth() << " / " << Scene_System::accessing().gPlayer->GetMaxHealth();
+	NewE = new UI_Element("UI_ChatBox", 0, 0, Vector3(CenterPosition.x * 0.35f, CenterPosition.y * 0.11f, 1), 0, ss.str());
+	NewE->TargetPosition.Set(NewE->Dimensions.x * 0.65f, CenterPosition.y  * 0.115f);
+	NewE->Position = NewE->TargetPosition;
+	HUD_Stats->cUI_Layer.push_back(NewE);
+
 	UI_HUD.cUIS_LayerContainer.push_back(HUD_Stats);
 }
 
