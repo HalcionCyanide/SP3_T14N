@@ -268,7 +268,7 @@ void BattleSystem::SetEnemy(Enemy& E)
 
 	if (CurrentEnemy->EnemyType == "Mob")
 	{
-		CurrentEnemy->SpellPower = Math::RandIntMinMax((int)(-0.5f * Scene_System::accessing().gPlayer->GetSpellPower()), (int)(0.25f * Scene_System::accessing().gPlayer->GetSpellPower()));
+		CurrentEnemy->SpellPower = Scene_System::accessing().gPlayer->GetSpellPower() + (int)Math::RandFloatMinMax(-0.5f * Scene_System::accessing().gPlayer->GetSpellPower(), 0.25f * Scene_System::accessing().gPlayer->GetSpellPower());
 		if (CurrentEnemy->SpellPower <= 0) CurrentEnemy->SpellPower = 1;
 		MusicSystem::accessing().playBackgroundMusic("battle");
 	}
@@ -648,6 +648,9 @@ void BattleSystem::InitSuccessScreen()
 		ss.str("");
 		ss << "New Spell Power: " << Scene_System::accessing().gPlayer->GetSpellPower();
 		EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", CenterPosition - Vector3(0, CenterPosition.y * 0.15f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.06f * AspectRatio, 1), SpawnPos, ss.str());
+	
+		Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetSpellPower());
+		Scene_System::accessing().gPlayer->SetMaxHealth(Scene_System::accessing().gPlayer->GetSpellPower());
 	}
 
 	ExitButton = new UI_Element(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", CenterPosition - Vector3(0, CenterPosition.y * 0.7f), SpawnPos + Vector3(0, CenterPosition.y * 2), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos + Vector3(0, CenterPosition.y * 2), "Click Here To Exit The Battle Screen.");
@@ -802,7 +805,7 @@ void BattleSystem::UpdatePhysics(float dt)
 						PlayerIFrameTimer = 1 * Math::Clamp(SpellPowerRatio, 0.8f, 1.f);
 
 						int HP = Scene_System::accessing().gPlayer->GetCurrentHealth();
-						if (HP == 0)
+						if (HP <= 0)
 							BattleState = BS_EndScreenFail;
 						HP = Math::Clamp(Scene_System::accessing().gPlayer->GetCurrentHealth(), 0, Scene_System::accessing().gPlayer->GetMaxHealth());
 						Scene_System::accessing().gPlayer->SetCurrentHealth(HP);
