@@ -72,6 +72,8 @@ private:
     //<?> is thr any other way to prevent hardcoding.....
     std::string whatKeyToChange;
     void writeToGlobalDrivenAndChangeCommand(const unsigned char &command, const std::string &theKey);
+
+    std::string transitingSceneName;
 };
 
 #endif //_SCENE_MAINMENU_H
