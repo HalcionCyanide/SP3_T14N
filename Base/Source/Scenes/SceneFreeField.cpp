@@ -72,6 +72,7 @@ void SceneFreeField::Init()
 	CurrentEncounterRateBoost = 0;
 	PreviousPosition = camera->position;
 	PreviousPosition.y = Application::cA_MinimumTerrainY;
+    MonsterFound = false;
 
 	// Codes to swap to bs
 	/*std::map<std::string, Enemy*>::iterator it2 = Scene_System::accessing().EnemyData.begin();
@@ -104,23 +105,31 @@ void SceneFreeField::Update(float dt)
 		PreviousPosition = camera->position;
 		PreviousPosition.y = Application::cA_MinimumTerrainY;
 	}
-	if (EncounterTimer < EncounterTimeCheck)
+    if (MonsterFound == false && EncounterTimer < EncounterTimeCheck)
 	{
 		EncounterTimer += (float)dt;
 	}
-	else if ((camera->position - PreviousPosition).LengthSquared() > 4.f) // 2 Units
+    else if (MonsterFound == false && (camera->position - PreviousPosition).LengthSquared() > 4.f) // 2 Units
 	{
 		EncounterTimer = 0;
-		if (Math::RandIntMinMax(0, MaxEncounterRate - CurrentEncounterRateBoost) < MaxEncounterRate * EncounterRatio)
+        if (Math::RandIntMinMax(0, MaxEncounterRate - CurrentEncounterRateBoost) < MaxEncounterRate * EncounterRatio)
 		{
-			CurrentEncounterRateBoost = 0;
-			std::ostringstream ss;
-			ss << Math::RandIntMinMax(1, Scene_System::accessing().EnemyData.size());
-			std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find(ss.str());
-			Scene_System::accessing().BSys->SetEnemy(*it->second);
-			Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
+            MonsterFound = true;
+            Scene_System::accessing().SetLoadingTime(3.f);
 		}
 	}
+    else if (MonsterFound && Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
+    {
+        Scene_System::accessing().whatLoadingState = Scene_System::NOT_LOADING;
+        //Scene_System::accessing().prevLoadingState = Scene_System::NOT_LOADING;
+        MonsterFound = false;
+        CurrentEncounterRateBoost = 0;
+        std::ostringstream ss;
+        ss << Math::RandIntMinMax(1, Scene_System::accessing().EnemyData.size());
+        std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find(ss.str());
+        Scene_System::accessing().BSys->SetEnemy(*it->second);
+        Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
+    }
 
 	framerates = 1 / dt;
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('1'))
@@ -158,6 +167,7 @@ void SceneFreeField::Update(float dt)
 
 	camera->position = PlayerPTR->GetPosition();
 	camera->Update(dt);
+    Scene_System::accessing().UpdateLoadingStuff(dt);
 }
 
 void SceneFreeField::RenderTerrain()
@@ -332,7 +342,9 @@ void SceneFreeField::RenderPassMain()
 	SceneGraphics->RenderMesh("reference", false);
 
 	SceneGraphics->SetHUD(true);
-	std::ostringstream ss;
+    if (Scene_System::accessing().theLoadingEffect)
+        Scene_System::accessing().theLoadingEffect->Render();
+    std::ostringstream ss;
 	ss.str("");
 	ss << "Scene 1 - FPS:" << framerates;
 	ss.precision(3);

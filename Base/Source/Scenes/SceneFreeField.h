@@ -31,6 +31,7 @@ private:
 	float EncounterTimer = 0;
 	float EncounterTimeCheck = 1.;
 	int MaxEncounterRate = 1000;
+    bool MonsterFound;
 
     // Shadow GPass
     void RenderPassGPass();

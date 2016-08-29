@@ -72,6 +72,7 @@ void SceneBattleScreen::Update(float dt)
 
 	camera.Update(dt);
 	Scene_System::accessing().BSys->Update((float)dt);
+    Scene_System::accessing().UpdateLoadingStuff(dt);
 }
 
 void SceneBattleScreen::RenderPassGPass()
@@ -159,6 +160,8 @@ void SceneBattleScreen::RenderPassMain()
 		SceneGraphics->RenderMesh("TFB_Gem", false);
 		modelStack->PopMatrix();
 	}
+    if (Scene_System::accessing().theLoadingEffect)
+        Scene_System::accessing().theLoadingEffect->Render();
 
 	std::ostringstream ss;
 	ss.str("");
