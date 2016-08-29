@@ -651,7 +651,7 @@ void BattleSystem::InitSuccessScreen()
 		Scene_System::accessing().gPlayer->SetMaxHealth(Scene_System::accessing().gPlayer->GetSpellPower());
 	}
 
-	ExitButton = new UI_Element("UI_ChatBox", CenterPosition - Vector3(0, CenterPosition.y * 0.7f), SpawnPos + Vector3(0, CenterPosition.y * 2), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos + Vector3(0, CenterPosition.y * 2), "Click Here To Exit The Battle Screen.");
+	ExitButton = new UI_Element("UI_ChatBox", CenterPosition - Vector3(CenterPosition.x * 4.f, CenterPosition.y * 0.7f), SpawnPos + Vector3(CenterPosition.x * 4.f, CenterPosition.y * 0.7f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos + Vector3(CenterPosition.x * 4.f, CenterPosition.y * 0.7f), "Click Here To Exit The Battle Screen.");
 	
 	EndScreenSuccess->cUI_Layer.push_back(ExitButton);
 
@@ -678,7 +678,7 @@ void BattleSystem::InitFailScreen()
 
 	EndScreenFail->AddUIElement("UI_ChatBox", CenterPosition + Vector3(0, CenterPosition.y * 0.3f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.8f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "You Have Been Killed By The Monster...");
 
-	ExitButton = new UI_Element("UI_ChatBox", CenterPosition - Vector3(0, CenterPosition.y * 0.3f), SpawnPos + Vector3(0, CenterPosition.y * 4), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos + Vector3(0, CenterPosition.y * 4), "Click Here To Return To The Main Menu.");
+	ExitButton = new UI_Element("UI_ChatBox", CenterPosition - Vector3(0, CenterPosition.y * 0.3f), SpawnPos + Vector3(CenterPosition.x * 4.f, CenterPosition.y * 0.3f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos + Vector3(CenterPosition.x * 4.f, CenterPosition.y * 0.3f), "Click Here To Return To The Main Menu.");
 
 	EndScreenFail->cUI_Layer.push_back(ExitButton);
 
