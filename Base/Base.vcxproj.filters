@@ -240,6 +240,12 @@
     <ClCompile Include="Source\Classes\GateBoundary.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Systems\Item_System.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Classes\Item.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Scenes\SceneLoading.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
@@ -447,6 +453,12 @@
       <Filter>Header Files\Quests</Filter>
     </ClInclude>
     <ClInclude Include="Source\Classes\GateBoundary.h">
+      <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Systems\Item_System.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Classes\Item.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scenes\SceneLoading.h">

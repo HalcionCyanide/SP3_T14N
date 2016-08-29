@@ -95,6 +95,7 @@ void SceneTown1::Init()
 
 void SceneTown1::InitChatUI()
 {
+	Vector3 ButtonScale(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.24f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f, 1);
 	ChatLayer = new UI_Layer();
 	// Name
 	Vector3 DefaultPos(CenterPosition.x  * 0.25f, CenterPosition.y * 0.7f, 0);
@@ -262,42 +263,53 @@ void SceneTown1::Update(float dt)
 				{
 					if (it.first == it2.first) // compare the same quests
 					{
-						for (auto it3 : Scene_System::accessing().QM.qPreReq)
-						{
-							if (buttonCount <= 3)
+							for (auto it3 : it.second)
 							{
-								if (it3.first == it2.first) // if i am talking about that same quest to check prerequsites
+								if (buttonCount <= 3)
 								{
-									if (it2.second >= it3.second) // if i have satisfied the prereq
+									if (it3 - it2.second == 1)
 									{
 										for (auto it4 : Scene_System::accessing().QM.allQuests)
 										{
+											if (buttonCount > 3)
+											{
+												break;
+											}
 											for (auto it5 : it4->qStages)
 											{
-												if (it5->getGiver() == CurrentNPC->getName())
+												if (it5->getStageNO() == it3 && it5->getGiver() == CurrentNPC->getName())
 												{
 													NPC_QuestButtons.at(buttonCount)->UI_Text = it4->getName();
 													buttonCount++;
+													break;
+												}
+												if (buttonCount > 3)
+												{
+													break;
 												}
 												else
 												{
 													NPC_QuestButtons.at(buttonCount)->UI_Text = "";
 													buttonCount++;
+													break;
 												}
 											}
 										}
 									}
+									else
+									{
+										break;
+									}
 								}
 								else
 								{
-									NPC_QuestButtons.at(buttonCount)->UI_Text = "";
-									buttonCount++;
+									break;
 								}
 							}
 						}
 					}
 				}
-			}
+			
 			 //Interacting with NPC: Check UI Key Press
 			std::string temp = HandleChatUIInput((float)dt);
 			if (temp == "Exit")
@@ -308,6 +320,19 @@ void SceneTown1::Update(float dt)
 				CurrentNPC->setInteracting(false);
 				Scene_System::accessing().cSS_InputManager->SetMousePosition(CenterPosition);
 				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+			}
+			for (auto it : Scene_System::accessing().QM.allQuests)
+			{
+				if (temp == it->getName())
+				{
+					it->setCurrStage(it->getCurrentStage() + 1);
+					camera->CameraIsLocked = false;
+					if (ChatLayer->LayerTargetPosition.y > -1)
+						ChatLayer->SwapOriginalWithTarget();
+					CurrentNPC->setInteracting(false);
+					Scene_System::accessing().cSS_InputManager->SetMousePosition(CenterPosition);
+					Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+				}
 			}
 		}
 	}

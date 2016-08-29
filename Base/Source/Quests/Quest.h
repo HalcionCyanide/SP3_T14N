@@ -27,6 +27,8 @@ public:
 	void Update(double);
 	QuestStage* theStageAT;
 	std::vector<QuestStage*> qStages;
+	std::string preReq;
+	int preReqVal;
 private:
 	bool active;
 	int qID;
