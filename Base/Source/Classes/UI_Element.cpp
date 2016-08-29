@@ -32,6 +32,7 @@ void UI_Element::Init(const std::string& name, const Vector3& Position, const Ve
 		this->TargetPosition = TargetPosition;
 		this->Dimensions = Dimensions;
 		this->UI_Text = UI_Text;
+		this->TextColor.Set(1, 1, 1);
 		UI_Bounds = new Boundary2D();
 		UI_Bounds->SetPosition(Position);
 		UI_Bounds->SetDimensions(Dimensions);
@@ -139,11 +140,11 @@ void UI_Element::Render(const Vector3& LayerPos)
 		GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 		SceneGraphics->RenderMeshIn2D(*StoredMesh, false, Dimensions.x, Dimensions.y, Position.x + LayerPos.x, Position.y + LayerPos.y);
 		if (!TextWrappingEnabled)
-			SceneGraphics->RenderTextOnScreen(UI_Text, Color(1, 1, 1), Dimensions.y * 0.3f, Position.x + LayerPos.x - (UI_Text.size() * 0.5f * 0.75f * Dimensions.y * 0.3f), Position.y + LayerPos.y - (0.5f * Dimensions.y * 0.3f));
+			SceneGraphics->RenderTextOnScreen(UI_Text, Color(TextColor.x, TextColor.y, TextColor.z), Dimensions.y * 0.3f, Position.x + LayerPos.x - (UI_Text.size() * 0.5f * 0.75f * Dimensions.y * 0.3f), Position.y + LayerPos.y - (0.5f * Dimensions.y * 0.3f));
 		else if (TextWrappingEnabled)
 			for (unsigned int i = 0; i < UI_Text_Container.size(); ++i)
 			{
-				SceneGraphics->RenderTextOnScreen(UI_Text_Container[i], Color(1, 1, 1), Dimensions.y * 0.275f, Position.x - Dimensions.x * 0.5f + (Dimensions.y * 0.25f), Position.y + LayerPos.y + (0.5f * Dimensions.y * 0.25f) - (i * Dimensions.y * 0.25f));
+				SceneGraphics->RenderTextOnScreen(UI_Text_Container[i], Color(TextColor.x, TextColor.y, TextColor.z), Dimensions.y * 0.275f, Position.x - Dimensions.x * 0.5f + (Dimensions.y * 0.25f), Position.y + LayerPos.y + (0.5f * Dimensions.y * 0.25f) - (i * Dimensions.y * 0.25f));
 			}
 		glEnable(GL_CULL_FACE);
 	}

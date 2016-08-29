@@ -20,6 +20,7 @@ public:
 	Vector3 TargetPosition;
 	Vector3 Dimensions;
 	std::string UI_Text;
+	Vector3 TextColor;
 	bool AtTarget = false;
 	bool BoundsActive = true;
 
