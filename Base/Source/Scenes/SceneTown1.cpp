@@ -45,9 +45,9 @@ void SceneTown1::Init()
 
 	// Initiallise Model Specific Meshes Here
 	Mesh* newMesh = MeshBuilder::GenerateTerrain("Town 1", "HeightMapFiles//heightmap_Town1.raw", m_heightMap);
+	newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
 	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
 	newMesh->textureArray[1] = LoadTGA("Image//BrickWall.tga");
-	//newMesh->textureArray[1] = LoadTGA("Image//SekHeng.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera->position.x / TerrainScale.x, camera->position.z / TerrainScale.z) + camera->PlayerHeight;
@@ -95,7 +95,7 @@ void SceneTown1::Init()
 
 void SceneTown1::InitChatUI()
 {
-	Vector3 ButtonScale(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.24f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f, 1);
+	Vector3 ButtonScale(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.20f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.1f, 1);
 	ChatLayer = new UI_Layer();
 	// Name
 	Vector3 DefaultPos(CenterPosition.x  * 0.25f, CenterPosition.y * 0.7f, 0);
@@ -371,6 +371,7 @@ void SceneTown1::Update(float dt)
 			else break;
 		}
 	}
+    Scene_System::accessing().UpdateLoadingStuff(dt);
 }
 
 void SceneTown1::RenderTerrain()
@@ -560,6 +561,8 @@ void SceneTown1::RenderPassMain()
 	{
 		SceneGraphics->RenderMeshIn2D("TFB_Gem", false, 100, 100, Scene_System::accessing().cSS_InputManager->GetMousePosition().x, Scene_System::accessing().cSS_InputManager->GetMousePosition().y);
 	}
+    if (Scene_System::accessing().theLoadingEffect)
+        Scene_System::accessing().theLoadingEffect->Render();
 
 	std::ostringstream ss;
 	ss.str("");

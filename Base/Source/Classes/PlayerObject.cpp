@@ -60,7 +60,7 @@ void PlayerObject::Update(double dt)
         MusicSystem::accessing().playMusic("footstep");
 	}
     else {
-        MusicSystem::accessing().accessTheMusic("footstep")->Stop();
+        MusicSystem::accessing().accessTheMusic("footstep")->Stop(dt);
     }
 	if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
 	{

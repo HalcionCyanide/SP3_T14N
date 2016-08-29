@@ -1,6 +1,7 @@
 #include "BattleSystem.h"
 #include "Scene_System.h"
 #include "..//Scenes//Scene_MainMenu.h"
+#include "../Systems/MusicSystem.h"
 #include <string>
 
 BattleSystem::BattleSystem()
@@ -249,6 +250,10 @@ void BattleSystem::SetEnemy(Enemy& E)
 {
 	QuickInit();
 
+	Scene_System::accessing().gPlayer->SetMaxHealth(Scene_System::accessing().gPlayer->GetSpellPower());
+	if (Scene_System::accessing().gPlayer->GetCurrentHealth() > Scene_System::accessing().gPlayer->GetMaxHealth())
+		Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetMaxHealth());
+
 	float BoxHeightUnits = 12;
 	HealthBarDefaultScale = PlayerScale * 13;
 
@@ -260,6 +265,16 @@ void BattleSystem::SetEnemy(Enemy& E)
 	float cRBarPosition = RBarPosition - (HealthBarDefaultScale - RBarWidth) * 0.5f + HealthBarDefaultScale * 0.25f;
 
 	CurrentEnemy = new Enemy(E);
+
+	if (CurrentEnemy->EnemyType == "Mob")
+	{
+		CurrentEnemy->SpellPower = Scene_System::accessing().gPlayer->GetSpellPower() + (int)Math::RandFloatMinMax(-0.5f * Scene_System::accessing().gPlayer->GetSpellPower(), 0.25f * Scene_System::accessing().gPlayer->GetSpellPower());
+		if (CurrentEnemy->SpellPower <= 0) CurrentEnemy->SpellPower = 1;
+		MusicSystem::accessing().playBackgroundMusic("battle");
+	}
+	else if (CurrentEnemy->EnemyType == "Boss")
+		MusicSystem::accessing().playBackgroundMusic("bossbattle");
+
 	EnemyLayer = new UI_Layer();
 	BattleBox = new UI_Layer();
 	EnemyDefaultPosition.Set(CenterPosition.x * 1.75f, CenterPosition.y * 1.7f, 0);
@@ -280,7 +295,7 @@ void BattleSystem::SetEnemy(Enemy& E)
 	ss << "Spell Power: " << CurrentEnemy->SpellPower;
 	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.2f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.2f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.2f, 0), ss.str());
 	
-	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 2.f, CenterPosition.y * 1.f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.f, 0), "Enemy Stamina");
+	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 2.f, CenterPosition.y * 1.f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.f, 0), "Time Left");
 	EnemyStaminaBar = new UI_Element(UI_Element::UI_BUTTON_R_TO_SCRN, "UI_HP_Red", Vector3(CenterPosition.x * 2.f, CenterPosition.y * 0.85f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 0.85f, 0), Vector3(RBarWidth, PlayerScale * 1.25f, 1), Vector3(cRBarPosition, CenterPosition.y * 0.85f, 0));
 	EnemyLayer->cUI_Layer.push_back(EnemyStaminaBar);
 	
@@ -633,6 +648,9 @@ void BattleSystem::InitSuccessScreen()
 		ss.str("");
 		ss << "New Spell Power: " << Scene_System::accessing().gPlayer->GetSpellPower();
 		EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", CenterPosition - Vector3(0, CenterPosition.y * 0.15f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.06f * AspectRatio, 1), SpawnPos, ss.str());
+	
+		Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetSpellPower());
+		Scene_System::accessing().gPlayer->SetMaxHealth(Scene_System::accessing().gPlayer->GetSpellPower());
 	}
 
 	ExitButton = new UI_Element(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", CenterPosition - Vector3(0, CenterPosition.y * 0.7f), SpawnPos + Vector3(0, CenterPosition.y * 2), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos + Vector3(0, CenterPosition.y * 2), "Click Here To Exit The Battle Screen.");
@@ -787,7 +805,7 @@ void BattleSystem::UpdatePhysics(float dt)
 						PlayerIFrameTimer = 1 * Math::Clamp(SpellPowerRatio, 0.8f, 1.f);
 
 						int HP = Scene_System::accessing().gPlayer->GetCurrentHealth();
-						if (HP == 0)
+						if (HP <= 0)
 							BattleState = BS_EndScreenFail;
 						HP = Math::Clamp(Scene_System::accessing().gPlayer->GetCurrentHealth(), 0, Scene_System::accessing().gPlayer->GetMaxHealth());
 						Scene_System::accessing().gPlayer->SetCurrentHealth(HP);
@@ -892,7 +910,9 @@ bool BattleSystem::CollisionResponse(const BattleScreenObject& BSO1, const Battl
 		}
 		if (P != nullptr)
 		{
-			Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetCurrentHealth() - (int(P->DamagePerAttack * Math::Clamp(EnemySpellPowerRatio, 1.f, 1.5f))));
+			float Multiplier = EnemySpellPowerRatio;
+			if (EnemySpellPowerRatio < 1.f) EnemySpellPowerRatio = 1.f;
+			Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetCurrentHealth() - (int(P->DamagePerAttack * EnemySpellPowerRatio)));
 		}
 		return true;
 		break;

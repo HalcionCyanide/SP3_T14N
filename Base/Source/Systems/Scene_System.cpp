@@ -38,6 +38,7 @@ void Scene_System::Init()
     delayingLoadingTime = m_accumulatedLoadingTime = 0;
     prevLoadingState = BEGIN_LOADING;  
     whatLoadingState = FINISHED_LOADING;
+    hasLoadingEnded = true;
 }
 
 void Scene_System::Update(double dt)
@@ -161,11 +162,11 @@ void Scene_System::clearEverything()
 
 void Scene_System::doingLoadingEffect()
 {
-    theLoadingEffect = new UI_System();
+    theLoadingEffect = new UI_System(); 
     UI_Layer *theLayer = new UI_Layer();
-    Vector3 sizeofSquare(200, 200, 1);
+    Vector3 sizeofSquare(cSS_InputManager->cIM_ScreenWidth * 0.1f, cSS_InputManager->cIM_ScreenWidth * 0.1f, 1);
     //theLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "SmallWhiteSquare", Vector3(400, 300, 0), Vector3(400, 300, 0), sizeofSquare, Vector3(-400, 300, 0));
-    int rowsOfSquares = (int)ceil((int)ceil(cSS_InputManager->cIM_ScreenHeight) / (int)ceil(sizeofSquare.y)) * 2;
+    int rowsOfSquares = ((int)ceil((int)ceil(cSS_InputManager->cIM_ScreenHeight) / (int)ceil(sizeofSquare.y)) * 2) + 1;
     int colsOfSquares = ((int)ceil((int)ceil(cSS_InputManager->cIM_ScreenWidth) / (int)ceil(sizeofSquare.x)) * 2) + 1;
     Vector3 leftSide(-sizeofSquare.x, cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
     Vector3 botSide(cSS_InputManager->cIM_ScreenWidth * 0.5f, -sizeofSquare.y, 0);

@@ -41,6 +41,7 @@ void SceneTown3::Init()
 
 	// Initiallise Model Specific Meshes Here
 	Mesh* newMesh = MeshBuilder::GenerateTerrain("Town 3", "HeightMapFiles//heightmap_Town3.raw", m_heightMap);
+	newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
 	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
@@ -124,6 +125,7 @@ void SceneTown3::Update(float dt)
 
 	camera->position = PlayerPTR->GetPosition();
 	camera->Update(dt);
+    Scene_System::accessing().UpdateLoadingStuff(dt);
 }
 
 void SceneTown3::RenderTerrain()
@@ -302,7 +304,9 @@ void SceneTown3::RenderPassMain()
 	SceneGraphics->RenderMesh("reference", false);
 
 	SceneGraphics->SetHUD(true);
-	std::ostringstream ss;
+    if (Scene_System::accessing().theLoadingEffect)
+        Scene_System::accessing().theLoadingEffect->Render();
+    std::ostringstream ss;
 	ss.str("");
 	ss << "Scene 1 - FPS:" << framerates;
 	ss.precision(3);
