@@ -697,7 +697,8 @@ bool SceneTown1::onNotify(const std::string &theEvent)
     else if (checkWhetherTheWordInThatString("LOADING", theEvent))
     {
         Scene_System::accessing().SetLoadingTime(3.0);
-        return onNotify("TRANSITIONING");
+
+        return true;
     }
     return false;
 }
