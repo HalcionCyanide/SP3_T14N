@@ -99,29 +99,29 @@ void SceneTown1::InitChatUI()
 	ChatLayer = new UI_Layer();
 	// Name
 	Vector3 DefaultPos(CenterPosition.x  * 0.25f, CenterPosition.y * 0.7f, 0);
-	NPC_Name = new UI_Element(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Sek Heng");
+	NPC_Name = new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Sek Heng");
 	ChatLayer->cUI_Layer.push_back(NPC_Name);
 
 	// Text Box
 	DefaultPos.Set(CenterPosition.x, CenterPosition.y * 0.3f, 0);
-	NPC_TextBox = new UI_Element(UI_Element::UI_BUTTON_B_TO_SCRN, "UI_ChatBox", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.95f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 7, 1), DefaultPos, "Text Wrapping Test Text Wrapping Test Text Wrapping Test");
+	NPC_TextBox = new UI_Element("UI_ChatBox", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.95f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 7, 1), DefaultPos, "Text Wrapping Test Text Wrapping Test Text Wrapping Test");
 	ChatLayer->cUI_Layer.push_back(NPC_TextBox);
 
 	// Quest Buttons
 	DefaultPos.Set(CenterPosition.x * 1.75f, CenterPosition.y * 0.7f, 0);
-	NPC_QuestButtons.push_back(new UI_Element(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Exit"));
+	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Exit"));
 	ChatLayer->cUI_Layer.push_back(NPC_QuestButtons.back());
 
 	DefaultPos.Set(CenterPosition.x * 1.75f, CenterPosition.y * 1.3f, 0);
-	NPC_QuestButtons.push_back(new UI_Element(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q1"));
+	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q1"));
 	ChatLayer->cUI_Layer.push_back(NPC_QuestButtons.back());
 
 	DefaultPos.Set(CenterPosition.x * 1.75f, CenterPosition.y * 1.1f, 0);
-	NPC_QuestButtons.push_back(new UI_Element(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q2"));
+	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q2"));
 	ChatLayer->cUI_Layer.push_back(NPC_QuestButtons.back());
 
 	DefaultPos.Set(CenterPosition.x * 1.75f, CenterPosition.y * 0.9f, 0);
-	NPC_QuestButtons.push_back(new UI_Element(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q3"));
+	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q3"));
 	ChatLayer->cUI_Layer.push_back(NPC_QuestButtons.back());
 
 	// Chat Layer Settings
@@ -158,6 +158,9 @@ void SceneTown1::Update(float dt)
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	SceneGraphics->Update(dt);
+
+	Scene_System::accessing().cSS_PlayerUIManager->Update(dt);
+
     MusicSystem::accessing().playBackgroundMusic("town1Alt");
 
 	//Update Camera's Minimum Possible & Current Y Pos
@@ -585,6 +588,8 @@ void SceneTown1::RenderPassMain()
 	}*/
 
 	ChatLayer->Render();
+
+	Scene_System::accessing().cSS_PlayerUIManager->Render();
 
 	if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
 	{

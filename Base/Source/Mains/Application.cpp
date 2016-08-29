@@ -99,10 +99,10 @@ void Application::Init()
 	}
 
 	//Set the GLFW window creation hints - these are optional
-	glfwWindowHint(GLFW_SAMPLES, 8);								//Request 8x antialiasing
+	glfwWindowHint(GLFW_SAMPLES, 4);								//Request 4x antialiasing
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);					//Request a specific OpenGL version
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);					//Request a specific OpenGL version
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);			// To make MacOS happy; should not be needed
+	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);			//To make MacOS happy; should not be needed
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);	//We don't want the old OpenGL 
 	glfwWindowHint(GLFW_DECORATED, GL_FALSE);						//Create the window without a border
 

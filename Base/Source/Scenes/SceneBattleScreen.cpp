@@ -45,6 +45,8 @@ void SceneBattleScreen::Init()
 	Scene_System::accessing().BSys = new BattleSystem();
 	Scene_System::accessing().BSys->Init();
 	Scene_System::accessing().BSys->cBillboardManager.Init();
+
+	Scene_System::accessing().cSS_PlayerUIManager->Init();
 }
 
 void SceneBattleScreen::Update(float dt)

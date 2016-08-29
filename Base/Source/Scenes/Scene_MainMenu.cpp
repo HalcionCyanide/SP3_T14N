@@ -64,53 +64,52 @@ void Scene_MainMenu::Init()
 	CurrentMenuState = S_FIRSTLEVEL;
 	Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
 	InitSceneUIElems();
-
 }
 
 void Scene_MainMenu::InitSceneUIElems()
 {
 	UI_Layer* NewL = new UI_Layer();
 	Vector3 ButtonScale(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.20f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.1f, 1); Vector3 CenterPosition(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
-	NewL->AddUIElement(UI_Element::UI_LOGO, "TFB_Logo", CenterPosition * 3, CenterPosition * 3, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.55f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.9f, 1), CenterPosition * 1.35f);
+	NewL->AddUIElement("TFB_Logo", CenterPosition * 3, CenterPosition * 3, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.55f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.9f, 1), CenterPosition * 1.35f);
 
-	NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", CenterPosition * -2.f, CenterPosition * -2.f, ButtonScale, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), UI_Text[1]);
-	NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", CenterPosition * -2.5f, CenterPosition * -2.5f, ButtonScale, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), UI_Text[2]);
-	NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", CenterPosition * -3.f, CenterPosition * -3.f, ButtonScale, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), UI_Text[3]);
+	NewL->AddUIElement("TFB_Button", CenterPosition * -2.f, CenterPosition * -2.f, ButtonScale, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), UI_Text[1]);
+	NewL->AddUIElement("TFB_Button", CenterPosition * -2.5f, CenterPosition * -2.5f, ButtonScale, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), UI_Text[2]);
+	NewL->AddUIElement("TFB_Button", CenterPosition * -3.f, CenterPosition * -3.f, ButtonScale, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), UI_Text[3]);
 
-	NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[4]);
-	NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[5]);
-	NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[6]);
+	NewL->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[4]);
+	NewL->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[5]);
+	NewL->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(0, CenterPosition.y * 3.f, 0), UI_Text[6]);
 
     //For Setting Stuff
     std::ostringstream ss;
     ss << UI_Text[7] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND];
-    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.8f, 0), Vector3(0, CenterPosition.x * 3.f, 0), ButtonScale, Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
+    NewL->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.8f, 0), Vector3(0, CenterPosition.x * 3.f, 0), ButtonScale, Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
 
     ss.str("");
     ss << UI_Text[8] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND];
-	NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), Vector3(0, CenterPosition.x * 3.f, 0), ButtonScale, Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
+	NewL->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), Vector3(0, CenterPosition.x * 3.f, 0), ButtonScale, Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
 
     ss.str("");
     ss << UI_Text[9] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND];
-	NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), ButtonScale, Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
+	NewL->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.x * 3.f, 0), ButtonScale, Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
 
     ss.str("");
     ss << UI_Text[10] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND];
-	NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(0, CenterPosition.x * 3.f, 0), ButtonScale, Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
+	NewL->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(0, CenterPosition.x * 3.f, 0), ButtonScale, Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
 
     ss.str("");
     ss << UI_Text[11] << ": " << SimpleCommand::m_allTheKeys[SimpleCommand::JUMP_COMMAND];
-	NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
+	NewL->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(0, CenterPosition.y * 3.f, 0), ss.str());
     whatKeyToChange = "";
 
-	NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[12]);
+	NewL->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[12]);
     //For Setting Stuff
 
     //For Loading Save Stuff
-    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[13]);
-    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[14]);
-    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[15]);
-    NewL->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[16]);
+    NewL->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[13]);
+    NewL->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[14]);
+    NewL->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[15]);
+    NewL->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[16]);
     //For Loading Save Stuff
 
 	UI_Sys.cUIS_LayerContainer.push_back(NewL);

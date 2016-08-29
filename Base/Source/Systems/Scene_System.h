@@ -23,6 +23,7 @@ GraphicsEntity resides here.
 #include "questManager.h"
 #include "NPC_Manager.h"
 #include "UI_System.h"
+#include "PlayerUIManager.h"
 
 class GlobalPlayer;
 class InputManager;
@@ -52,6 +53,8 @@ public:
     virtual void clearEverything();
 
 	InputManager *cSS_InputManager;
+
+	PlayerUIManager* cSS_PlayerUIManager;
 
 	BattleSystem *BSys;
 	std::map<std::string, Enemy*> EnemyData;

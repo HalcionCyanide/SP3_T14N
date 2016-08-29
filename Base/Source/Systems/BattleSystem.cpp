@@ -287,30 +287,30 @@ void BattleSystem::SetEnemy(Enemy& E)
 	int EnemyAttack = Math::RandIntMinMax(0, CurrentEnemy->cE_Projectiles.size() - 1);
 	CurrentProjectile = *CurrentEnemy->cE_Projectiles[EnemyAttack];
 
-	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, CurrentEnemy->MeshName, Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(PlayerScale * 5, PlayerScale * 5, 1), EnemyDefaultPosition);
-	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.35f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.35f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.35f, 0), CurrentEnemy->EnemyName);
+	EnemyLayer->AddUIElement(CurrentEnemy->MeshName, Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 4.f, 0), Vector3(PlayerScale * 5, PlayerScale * 5, 1), EnemyDefaultPosition);
+	EnemyLayer->AddUIElement("UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.35f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.35f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.35f, 0), CurrentEnemy->EnemyName);
 	
 	// Spell Power
 	std::stringstream ss;
 	ss << "Spell Power: " << CurrentEnemy->SpellPower;
-	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.2f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.2f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.2f, 0), ss.str());
+	EnemyLayer->AddUIElement("UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.2f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.2f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.2f, 0), ss.str());
 	
-	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 2.f, CenterPosition.y * 1.f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.f, 0), "Time Left");
-	EnemyStaminaBar = new UI_Element(UI_Element::UI_BUTTON_R_TO_SCRN, "UI_HP_Red", Vector3(CenterPosition.x * 2.f, CenterPosition.y * 0.85f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 0.85f, 0), Vector3(RBarWidth, PlayerScale * 1.25f, 1), Vector3(cRBarPosition, CenterPosition.y * 0.85f, 0));
+	EnemyLayer->AddUIElement("UI_ChatBox", Vector3(CenterPosition.x * 2.f, CenterPosition.y * 1.f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.f, 0), "Time Left");
+	EnemyStaminaBar = new UI_Element("UI_HP_Red", Vector3(CenterPosition.x * 2.f, CenterPosition.y * 0.85f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 0.85f, 0), Vector3(RBarWidth, PlayerScale * 1.25f, 1), Vector3(cRBarPosition, CenterPosition.y * 0.85f, 0));
 	EnemyLayer->cUI_Layer.push_back(EnemyStaminaBar);
 	
 	cUI_System.cUIS_LayerContainer.push_back(EnemyLayer);
 
-	BattleBox->AddUIElement(UI_Element::UI_LOGO, "GBox", Vector3(CenterPosition.x * -2.f, CenterPosition.y, 0), Vector3(CenterPosition.x * -2.f, CenterPosition.y, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.6f, 1), Vector3(CenterPosition.x * 0.9f, CenterPosition.y, 0));
+	BattleBox->AddUIElement("GBox", Vector3(CenterPosition.x * -2.f, CenterPosition.y, 0), Vector3(CenterPosition.x * -2.f, CenterPosition.y, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.6f, 1), Vector3(CenterPosition.x * 0.9f, CenterPosition.y, 0));
 	BattleBox->cUI_Layer[0]->UI_Bounds->ResetValues();
 
-	BattleBox->AddUIElement(UI_Element::UI_BUTTON_R_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * -4.f, CenterPosition.y * 0.3f, 0), Vector3(CenterPosition.x * -4.f, CenterPosition.y - PlayerScale *  (1 + BoxHeightUnits * 0.5f), 0), Vector3(PlayerScale * 6, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 0.65f, CenterPosition.y * 0.3f, 0), "Remaining Health: ");
+	BattleBox->AddUIElement("UI_ChatBox", Vector3(CenterPosition.x * -4.f, CenterPosition.y * 0.3f, 0), Vector3(CenterPosition.x * -4.f, CenterPosition.y - PlayerScale *  (1 + BoxHeightUnits * 0.5f), 0), Vector3(PlayerScale * 6, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 0.65f, CenterPosition.y * 0.3f, 0), "Remaining Health: ");
 	
 	float HealthRatio = (float)Scene_System::accessing().gPlayer->GetCurrentHealth() / (float)Scene_System::accessing().gPlayer->GetMaxHealth();
 	float GBarWidth = HealthRatio * HealthBarDefaultScale * 0.5f;
 	float cGBarPosition = GBarPosition - (HealthBarDefaultScale - GBarWidth) * 0.5f;
 
-	HealthBarGreen = new UI_Element(UI_Element::UI_BUTTON_R_TO_SCRN, "UI_HP_Green", Vector3(CenterPosition.x * 8.f, CenterPosition.y * 0.3f, 0), Vector3(CenterPosition.x * 8.f, CenterPosition.y * 0.3f, 0), Vector3(GBarWidth, PlayerScale * 1.f, 1), Vector3(cGBarPosition, CenterPosition.y * 0.3f, 0));
+	HealthBarGreen = new UI_Element("UI_HP_Green", Vector3(CenterPosition.x * 8.f, CenterPosition.y * 0.3f, 0), Vector3(CenterPosition.x * 8.f, CenterPosition.y * 0.3f, 0), Vector3(GBarWidth, PlayerScale * 1.f, 1), Vector3(cGBarPosition, CenterPosition.y * 0.3f, 0));
 	BattleBox->cUI_Layer.push_back(HealthBarGreen);
 
 	cUI_System.cUIS_LayerContainer.push_back(BattleBox);
@@ -348,24 +348,24 @@ void BattleSystem::UpdatePlayerInfoBox(float dt)
 	float AspectRatio = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight;
 
 	// Layer Backing Image
-	PlayerInfoBox->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "BS_LPanel", Target, Target, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 1), Target);
+	PlayerInfoBox->AddUIElement("BS_LPanel", Target, Target, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 1), Target);
 	
 	// Player Name
-	PlayerInfoBox->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "UI_ChatBox", Target + Vector3(0, Target.y * 0.75f), Target + Vector3(0, Target.y * 0.75f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.4f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.05f * AspectRatio, 1), Target + Vector3(0, Target.y * 0.75f), "You");
+	PlayerInfoBox->AddUIElement("UI_ChatBox", Target + Vector3(0, Target.y * 0.75f), Target + Vector3(0, Target.y * 0.75f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.4f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.05f * AspectRatio, 1), Target + Vector3(0, Target.y * 0.75f), "You");
 
 	// Player Image
-	PlayerInfoBox->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, PlayerObj->GetMeshName(), Target + Vector3(0, Target.y * 0.2f), Target + Vector3(0, Target.y * 0.2f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.2f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.2f * AspectRatio, 1), Target + Vector3(0, Target.y * 0.2f));
+	PlayerInfoBox->AddUIElement(PlayerObj->GetMeshName(), Target + Vector3(0, Target.y * 0.2f), Target + Vector3(0, Target.y * 0.2f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.2f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.2f * AspectRatio, 1), Target + Vector3(0, Target.y * 0.2f));
 
 	// Spell Power
 	std::stringstream ss;
 	ss << "Spell Power: " << Scene_System::accessing().gPlayer->GetSpellPower();
-	PlayerInfoBox->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "UI_ChatBox", Target - Vector3(0, Target.y * 0.3f), Target - Vector3(0, Target.y * 0.3f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.4f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.05f * AspectRatio, 1), Target - Vector3(0, Target.y * 0.3f), ss.str());
+	PlayerInfoBox->AddUIElement("UI_ChatBox", Target - Vector3(0, Target.y * 0.3f), Target - Vector3(0, Target.y * 0.3f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.4f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.05f * AspectRatio, 1), Target - Vector3(0, Target.y * 0.3f), ss.str());
 
 	// Health
 	ss.str("");
 	Scene_System::accessing().gPlayer->GetCurrentHealth();
 	ss << "Health: " << Scene_System::accessing().gPlayer->GetCurrentHealth() << " / " << Scene_System::accessing().gPlayer->GetMaxHealth();
-	PlayerInfoBox->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "UI_ChatBox", Target - Vector3(0, Target.y * 0.6f), Target - Vector3(0, Target.y * 0.6f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.4f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.05f * AspectRatio, 1), Target - Vector3(0, Target.y * 0.6f), ss.str());
+	PlayerInfoBox->AddUIElement("UI_ChatBox", Target - Vector3(0, Target.y * 0.6f), Target - Vector3(0, Target.y * 0.6f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.4f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.05f * AspectRatio, 1), Target - Vector3(0, Target.y * 0.6f), ss.str());
 
 	cUI_System.cUIS_LayerContainer.push_back(PlayerInfoBox);
 }
@@ -381,23 +381,23 @@ void BattleSystem::UpdateEnemyInfoBox(float dt)
 	float AspectRatio = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight;
 
 	// Layer Backing Image
-	EnemyInfoBox->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "BS_LPanel", Target, Target, Vector3(-Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 1), Target);
+	EnemyInfoBox->AddUIElement("BS_LPanel", Target, Target, Vector3(-Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 1), Target);
 
 	// Enemy Name
-	EnemyInfoBox->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "UI_ChatBox", Target + Vector3(0, Target.y * 0.75f), Target + Vector3(0, Target.y * 0.75f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.4f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.05f * AspectRatio, 1), Target + Vector3(0, Target.y * 0.75f), CurrentEnemy->EnemyName);
+	EnemyInfoBox->AddUIElement("UI_ChatBox", Target + Vector3(0, Target.y * 0.75f), Target + Vector3(0, Target.y * 0.75f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.4f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.05f * AspectRatio, 1), Target + Vector3(0, Target.y * 0.75f), CurrentEnemy->EnemyName);
 
 	// Enemy Image
-	EnemyInfoBox->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, CurrentEnemy->MeshName, Target + Vector3(0, Target.y * 0.2f), Target + Vector3(0, Target.y * 0.2f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.2f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.2f * AspectRatio, 1), Target + Vector3(0, Target.y * 0.2f));
+	EnemyInfoBox->AddUIElement(CurrentEnemy->MeshName, Target + Vector3(0, Target.y * 0.2f), Target + Vector3(0, Target.y * 0.2f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.2f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.2f * AspectRatio, 1), Target + Vector3(0, Target.y * 0.2f));
 
 	// Spell Power
 	std::stringstream ss;
 	ss << "Spell Power: " << CurrentEnemy->SpellPower;
-	EnemyInfoBox->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "UI_ChatBox", Target - Vector3(0, Target.y * 0.3f), Target - Vector3(0, Target.y * 0.3f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.4f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.05f * AspectRatio, 1), Target - Vector3(0, Target.y * 0.3f), ss.str());
+	EnemyInfoBox->AddUIElement("UI_ChatBox", Target - Vector3(0, Target.y * 0.3f), Target - Vector3(0, Target.y * 0.3f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.4f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.05f * AspectRatio, 1), Target - Vector3(0, Target.y * 0.3f), ss.str());
 
 	// Wave Count
 	ss.str("");
 	ss << "Survive: " << EnemyStaminaTimer << "s";
-	EnemyInfoBox->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "UI_ChatBox", Target - Vector3(0, Target.y * 0.6f), Target - Vector3(0, Target.y * 0.6f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.4f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.05f * AspectRatio, 1), Target - Vector3(0, Target.y * 0.6f), ss.str());
+	EnemyInfoBox->AddUIElement("UI_ChatBox", Target - Vector3(0, Target.y * 0.6f), Target - Vector3(0, Target.y * 0.6f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.4f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.05f * AspectRatio, 1), Target - Vector3(0, Target.y * 0.6f), ss.str());
 
 	cUI_System.cUIS_LayerContainer.push_back(EnemyInfoBox);
 }
@@ -626,35 +626,35 @@ void BattleSystem::InitSuccessScreen()
 	EndScreenSuccess->LayerTargetPosition = 0;
 
 	// Layer Backing Image
-	EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, CurrentEnemy->MeshName, 3 * CenterPosition, 3 * CenterPosition, Vector3(PlayerScale * 5, PlayerScale * 5, 1), CenterPosition);
+	EndScreenSuccess->AddUIElement(CurrentEnemy->MeshName, 3 * CenterPosition, 3 * CenterPosition, Vector3(PlayerScale * 5, PlayerScale * 5, 1), CenterPosition);
 
-	EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "PlayerHeart", CenterPosition * -2.5f, CenterPosition * -2.5f, Vector3(PlayerScale, PlayerScale, 1), CenterPosition);
+	EndScreenSuccess->AddUIElement("PlayerHeart", CenterPosition * -2.5f, CenterPosition * -2.5f, Vector3(PlayerScale, PlayerScale, 1), CenterPosition);
 	
-	EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "BS_FPanel", CenterPosition, SpawnPos, Vector3(-Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 1), SpawnPos);
+	EndScreenSuccess->AddUIElement("BS_FPanel", CenterPosition, SpawnPos, Vector3(-Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 1), SpawnPos);
 
-	EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "UI_ChatBox", CenterPosition + Vector3(0, CenterPosition.y * 0.65f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.8f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "The Monster Has Been Sealed!");
+	EndScreenSuccess->AddUIElement("UI_ChatBox", CenterPosition + Vector3(0, CenterPosition.y * 0.65f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.8f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "The Monster Has Been Sealed!");
 
 	std::stringstream ss;
 	if (CurrentEnemy->SpellPower <= Scene_System::accessing().gPlayer->GetSpellPower())
 	{
 		ss.str("");
 		ss << "Spell Power: No Change [" << Scene_System::accessing().gPlayer->GetSpellPower() << "]";
-		EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", CenterPosition, SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.06f * AspectRatio, 1), SpawnPos, ss.str());
+		EndScreenSuccess->AddUIElement("TFB_Button", CenterPosition, SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.06f * AspectRatio, 1), SpawnPos, ss.str());
 	}
 	else {
 		ss.str("");
 		ss << "Old Spell Power: " << Scene_System::accessing().gPlayer->GetSpellPower();
-		EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.06f * AspectRatio, 1), SpawnPos, ss.str());
+		EndScreenSuccess->AddUIElement("TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.06f * AspectRatio, 1), SpawnPos, ss.str());
 		Scene_System::accessing().gPlayer->SetSpellPower(CurrentEnemy->SpellPower);
 		ss.str("");
 		ss << "New Spell Power: " << Scene_System::accessing().gPlayer->GetSpellPower();
-		EndScreenSuccess->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "TFB_Button", CenterPosition - Vector3(0, CenterPosition.y * 0.15f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.06f * AspectRatio, 1), SpawnPos, ss.str());
+		EndScreenSuccess->AddUIElement("TFB_Button", CenterPosition - Vector3(0, CenterPosition.y * 0.15f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.06f * AspectRatio, 1), SpawnPos, ss.str());
 	
 		Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetSpellPower());
 		Scene_System::accessing().gPlayer->SetMaxHealth(Scene_System::accessing().gPlayer->GetSpellPower());
 	}
 
-	ExitButton = new UI_Element(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", CenterPosition - Vector3(0, CenterPosition.y * 0.7f), SpawnPos + Vector3(0, CenterPosition.y * 2), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos + Vector3(0, CenterPosition.y * 2), "Click Here To Exit The Battle Screen.");
+	ExitButton = new UI_Element("UI_ChatBox", CenterPosition - Vector3(0, CenterPosition.y * 0.7f), SpawnPos + Vector3(0, CenterPosition.y * 2), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos + Vector3(0, CenterPosition.y * 2), "Click Here To Exit The Battle Screen.");
 	
 	EndScreenSuccess->cUI_Layer.push_back(ExitButton);
 
@@ -673,15 +673,15 @@ void BattleSystem::InitFailScreen()
 	EndScreenFail->LayerTargetPosition = 0;
 
 	// Layer Backing Image
-	EndScreenFail->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, CurrentEnemy->MeshName, 3 * CenterPosition, 3 * CenterPosition, Vector3(PlayerScale * 5, PlayerScale * 5, 1), CenterPosition);
+	EndScreenFail->AddUIElement(CurrentEnemy->MeshName, 3 * CenterPosition, 3 * CenterPosition, Vector3(PlayerScale * 5, PlayerScale * 5, 1), CenterPosition);
 
-	EndScreenFail->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "PlayerHeart", CenterPosition * -2.5f, CenterPosition * -2.5f, Vector3(PlayerScale, PlayerScale, 1), CenterPosition);
+	EndScreenFail->AddUIElement("PlayerHeart", CenterPosition * -2.5f, CenterPosition * -2.5f, Vector3(PlayerScale, PlayerScale, 1), CenterPosition);
 
-	EndScreenFail->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "BS_FPanel", CenterPosition, SpawnPos, Vector3(-Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 1), SpawnPos);
+	EndScreenFail->AddUIElement("BS_FPanel", CenterPosition, SpawnPos, Vector3(-Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 1), SpawnPos);
 
-	EndScreenFail->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "UI_ChatBox", CenterPosition + Vector3(0, CenterPosition.y * 0.3f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.8f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "You Have Been Killed By The Monster...");
+	EndScreenFail->AddUIElement("UI_ChatBox", CenterPosition + Vector3(0, CenterPosition.y * 0.3f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.8f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "You Have Been Killed By The Monster...");
 
-	ExitButton = new UI_Element(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", CenterPosition - Vector3(0, CenterPosition.y * 0.3f), SpawnPos + Vector3(0, CenterPosition.y * 4), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos + Vector3(0, CenterPosition.y * 4), "Click Here To Return To The Main Menu.");
+	ExitButton = new UI_Element("UI_ChatBox", CenterPosition - Vector3(0, CenterPosition.y * 0.3f), SpawnPos + Vector3(0, CenterPosition.y * 4), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos + Vector3(0, CenterPosition.y * 4), "Click Here To Return To The Main Menu.");
 
 	EndScreenFail->cUI_Layer.push_back(ExitButton);
 

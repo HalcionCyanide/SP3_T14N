@@ -10,17 +10,7 @@
 class UI_Element : public GenericEntity
 {
 public:
-	enum UI_TYPES
-	{
-		UI_UNASSIGNED,
-		UI_LOGO,
-		UI_BUTTON_L_TO_SCRN,
-		UI_BUTTON_T_TO_SCRN,
-		UI_BUTTON_R_TO_SCRN,
-		UI_BUTTON_B_TO_SCRN,
-	};
-
-	UI_Element(const UI_Element::UI_TYPES& UI_Type, const std::string& name, const Vector3& Position, const Vector3& SpawnPosition, const Vector3& Dimensions, const Vector3& TargetPosition, const std::string& UI_Text = "");
+	UI_Element(const std::string& name, const Vector3& Position, const Vector3& SpawnPosition, const Vector3& Dimensions, const Vector3& TargetPosition, const std::string& UI_Text = "");
 
 	virtual ~UI_Element();
 
@@ -29,7 +19,6 @@ public:
 	Vector3 OriginalPosition;
 	Vector3 TargetPosition;
 	Vector3 Dimensions;
-	UI_TYPES UI_Type = UI_UNASSIGNED;
 	std::string UI_Text;
 	bool AtTarget = false;
 	bool BoundsActive = true;

@@ -8,6 +8,7 @@ void Scene_System::Init()
     //currScene = nullptr;
     graphics_scene = nullptr;
 	cSS_InputManager = new InputManager();
+	cSS_PlayerUIManager = new PlayerUIManager();
 	gPlayer = new GlobalPlayer(1, 100, 100, false);
 
 	QM.readFile("DrivenFiles//questData.csv");
@@ -186,10 +187,10 @@ void Scene_System::doingLoadingEffect()
             else
                 whichTarget = &leftSide;
             Vector3 thePos((sizeofSquare.x * 0.5f) + (numOfCols * sizeofSquare.x * 0.5f), (sizeofSquare.y * 0.5f) + (numOFRows * sizeofSquare.y * 0.5f), 0);
-            theLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "SmallBlackSquare",*whichTarget , thePos, sizeofSquare, thePos);
+            theLayer->AddUIElement("SmallBlackSquare",*whichTarget , thePos, sizeofSquare, thePos);
         }
     }
-    theLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", topSide, Vector3(cSS_InputManager->cIM_ScreenWidth * 0.5f, cSS_InputManager->cIM_ScreenHeight * 0.5f, 5.f), Vector3(600, 100, 1), Vector3(cSS_InputManager->cIM_ScreenWidth * 0.5f, cSS_InputManager->cIM_ScreenHeight * 0.5f, 5.f), "Loading Game");
+    theLayer->AddUIElement("UI_ChatBox", topSide, Vector3(cSS_InputManager->cIM_ScreenWidth * 0.5f, cSS_InputManager->cIM_ScreenHeight * 0.5f, 5.f), Vector3(600, 100, 1), Vector3(cSS_InputManager->cIM_ScreenWidth * 0.5f, cSS_InputManager->cIM_ScreenHeight * 0.5f, 5.f), "Loading Game");
     theLoadingEffect->cUIS_LayerContainer.push_back(theLayer);
 }
 

@@ -65,6 +65,7 @@
     <ClCompile Include="Source\Scenes\Scene_2.cpp" />
     <ClCompile Include="Source\Scenes\Scene_MainMenu.cpp" />
     <ClCompile Include="Source\Systems\NPC_Manager.cpp" />
+    <ClCompile Include="Source\Systems\PlayerUIManager.cpp" />
     <ClCompile Include="Source\Systems\questManager.cpp" />
     <ClCompile Include="Source\Systems\Scene_System.cpp" />
     <ClCompile Include="Source\shader.cpp" />
@@ -143,6 +144,7 @@
     <ClInclude Include="Source\Systems\Item_System.h" />
     <ClInclude Include="Source\Systems\MusicSystem.h" />
     <ClInclude Include="Source\Systems\NPC_Manager.h" />
+    <ClInclude Include="Source\Systems\PlayerUIManager.h" />
     <ClInclude Include="Source\Systems\questManager.h" />
     <ClInclude Include="Source\Systems\Scene_System.h" />
     <ClInclude Include="Source\Systems\UI_System.h" />

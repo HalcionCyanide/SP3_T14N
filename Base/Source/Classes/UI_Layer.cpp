@@ -54,9 +54,9 @@ void UI_Layer::Exit()
 	cUI_Layer.clear();
 }
 
-void UI_Layer::AddUIElement(const UI_Element::UI_TYPES& UI_Type, const std::string& name, const Vector3& Position, const Vector3& SpawnPosition, const Vector3& Dimension, const Vector3& TargetPosition, const std::string& UI_Text)
+void UI_Layer::AddUIElement(const std::string& name, const Vector3& Position, const Vector3& SpawnPosition, const Vector3& Dimension, const Vector3& TargetPosition, const std::string& UI_Text)
 {
-	cUI_Layer.push_back(new UI_Element(UI_Type, name, Position, SpawnPosition, Dimension, TargetPosition, UI_Text));
+	cUI_Layer.push_back(new UI_Element(name, Position, SpawnPosition, Dimension, TargetPosition, UI_Text));
 }
 
 void UI_Layer::SwapOriginalWithTarget()
