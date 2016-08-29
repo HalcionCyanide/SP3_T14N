@@ -44,6 +44,8 @@ public:
 	Vector3 TargetPoint;
 	bool MoveToTarget = false;
 	Vector3 AltTargetPoint;
+	Vector3 PlayerPosition;
+	bool Retarget = false;
 
 private:
 	Vector3 Acceleration;

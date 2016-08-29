@@ -408,13 +408,13 @@ void BattleSystem::UpdateInfoBoxAnimation(float dt)
 	{
 		float Check1 = (PlayerInfoBox->LayerCenterPosition - PlayerInfoBox->LayerTargetPosition).LengthSquared();
 		float Check2 = (EnemyInfoBox->LayerCenterPosition - EnemyInfoBox->LayerTargetPosition).LengthSquared();
-		if (Check1 < 10.f && Check2 < 10.f)
+		if (Check1 < 50.f && Check2 < 50.f)
 		{
 			AnimationPaused = true;
 			int ParticleCount = Math::RandIntMinMax(50, 100);
 			for (int i = 0; i < ParticleCount; ++i)
 			{
-				cBillboardManager.AddParticle("Fire", CenterPosition + Vector3(0, Math::RandFloatMinMax(-Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.5f)), Vector3(PlayerScale* 1.5f, PlayerScale * 1.5f, 1.f), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale)), Vector3(0, 0, 1), 2);
+				cBillboardManager.AddParticle("Smoke", CenterPosition + Vector3(0, Math::RandFloatMinMax(-Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.5f)), Vector3(PlayerScale* 10.f, PlayerScale * 10.f, 1.f), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale)), Vector3(0, 0, 1), 2);
 			}
 		}
 	}
@@ -507,6 +507,7 @@ void BattleSystem::UpdateEnemyLogic(float dt)
 			if ((*it)->Type == BattleScreenObject::BS_Bullet && 
 				(*it)->GetPosition().y - (*it)->GetDimensions().y * 0.5f > BBox->Position.y - BBox->Dimensions.y * 0.5f)
 				{
+					(*it)->PlayerPosition = PlayerObj->GetPosition();
 					(*it)->Update(dt);
 					++ActiveBSOCount;
 				}
@@ -667,7 +668,7 @@ void BattleSystem::InitFailScreen()
 
 	EndScreenFail = new UI_Layer();
 	// Set Spawn and Target
-	Vector3 SpawnPos = Vector3(CenterPosition.x, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 2.f, 0);
+	Vector3 SpawnPos = Vector3(CenterPosition.x, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 1.5f, 0);
 	EndScreenFail->LayerOriginalPosition.y = EndScreenFail->LayerCenterPosition.y = SpawnPos.y;
 	EndScreenFail->LayerTargetPosition = 0;
 
@@ -680,7 +681,7 @@ void BattleSystem::InitFailScreen()
 
 	EndScreenFail->AddUIElement(UI_Element::UI_BUTTON_B_TO_SCRN, "UI_ChatBox", CenterPosition + Vector3(0, CenterPosition.y * 0.3f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.8f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "You Have Been Killed By The Monster...");
 
-	ExitButton = new UI_Element(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", CenterPosition - Vector3(0, CenterPosition.y * 0.3f), SpawnPos + Vector3(0, CenterPosition.y * 2), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos + Vector3(0, CenterPosition.y * 2), "Click Here To Return To The Main Menu.");
+	ExitButton = new UI_Element(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", CenterPosition - Vector3(0, CenterPosition.y * 0.3f), SpawnPos + Vector3(0, CenterPosition.y * 4), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos + Vector3(0, CenterPosition.y * 4), "Click Here To Return To The Main Menu.");
 
 	EndScreenFail->cUI_Layer.push_back(ExitButton);
 
@@ -791,24 +792,24 @@ void BattleSystem::UpdateControls(float dt)
 // Physics Related
 void BattleSystem::UpdatePhysics(float dt)
 {
-	if (!PlayerIsInvincible && cBS_ObjectContainer.size() > 0)
+	if (cBS_ObjectContainer.size() > 0)
 	{
 		for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 		{
-			if ((*it)->Active && (*it)->Visible)
+			if (!PlayerIsInvincible && (*it)->Active && (*it)->Visible)
 				if (CollisionCheck(*PlayerObj, **it, dt))
 				{
 					// HP Decrement Should Be In CRes
 					if (CollisionResponse(*PlayerObj, **it, dt))
 					{
-						PlayerIsInvincible = true;
-						PlayerIFrameTimer = 1 * Math::Clamp(SpellPowerRatio, 0.8f, 1.f);
-
 						int HP = Scene_System::accessing().gPlayer->GetCurrentHealth();
 						if (HP <= 0)
 							BattleState = BS_EndScreenFail;
 						HP = Math::Clamp(Scene_System::accessing().gPlayer->GetCurrentHealth(), 0, Scene_System::accessing().gPlayer->GetMaxHealth());
 						Scene_System::accessing().gPlayer->SetCurrentHealth(HP);
+
+						PlayerIsInvincible = true;
+						PlayerIFrameTimer = 1 * Math::Clamp(SpellPowerRatio, 0.8f, 1.f);
 
 						float HealthRatio = (float)Scene_System::accessing().gPlayer->GetCurrentHealth() / (float)Scene_System::accessing().gPlayer->GetMaxHealth() + 0.001f;
 						float GBarWidth = HealthRatio * HealthBarDefaultScale * 0.5f;
@@ -968,9 +969,9 @@ void BattleSystem::Attack_Bullet(EnemyProjectile& CurrentProjectile)
 	BSO->Type = BattleScreenObject::BS_Bullet;
 	BSO->Active = true;
 	BSO->TargetPoint = TargetPos;
-	BSO->AltTargetPoint = PlayerObj->GetPosition() + 2 * Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0);
+	BSO->AltTargetPoint = PlayerObj->GetPosition() + 1.5f * Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0);
 	BSO->MoveToTarget = true;
-	BSO->SetMass(3.f);
+	BSO->SetMass(2.f);
 }
 
 void BattleSystem::Attack_Trap(EnemyProjectile& CurrentProjectile)

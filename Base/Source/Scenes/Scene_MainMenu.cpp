@@ -64,6 +64,7 @@ void Scene_MainMenu::Init()
 	CurrentMenuState = S_FIRSTLEVEL;
 	Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
 	InitSceneUIElems();
+
 }
 
 void Scene_MainMenu::InitSceneUIElems()
