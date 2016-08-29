@@ -1,4 +1,5 @@
 #include "QuestStage.h"
+#include "..\\Systems\\Scene_System.h"
 
 QuestStage::QuestStage()
 {
@@ -91,6 +92,23 @@ void QuestStage::setGiver(std::string i)
 
 void QuestStage::Update(double dt)
 {
-	if (!complete)
-	condition->Update(dt);
+	for (auto it1 : Scene_System::accessing().QM.allQuests)
+	{
+		for (auto it : Scene_System::accessing().gPlayer->playerCurrQState)
+		{
+			if (it1->getName() == it.first)
+			{
+				if (it.second == stageNO)
+				{
+					if (!complete)
+						condition->Update(dt);
+					else
+					{
+						it.second++;
+					}
+				}
+			}
+		}
+	}
+	
 }
