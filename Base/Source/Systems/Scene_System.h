@@ -80,6 +80,7 @@ private:
     std::map<std::string, SceneEntity*> theSceneList;
     SceneEntity *graphics_scene;
     double delayingLoadingTime, m_accumulatedLoadingTime;
+    bool hasLoadingEnded;
 };
 
 #endif

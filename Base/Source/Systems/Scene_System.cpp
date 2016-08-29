@@ -46,6 +46,7 @@ void Scene_System::Init()
     delayingLoadingTime = m_accumulatedLoadingTime = 0;
     prevLoadingState = BEGIN_LOADING;  
     whatLoadingState = FINISHED_LOADING;
+    hasLoadingEnded = true;
 }
 
 void Scene_System::Update(double dt)

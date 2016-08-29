@@ -121,7 +121,6 @@ void SceneFreeField::Update(float dt)
     else if (MonsterFound && Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
     {
         Scene_System::accessing().whatLoadingState = Scene_System::NOT_LOADING;
-        //Scene_System::accessing().prevLoadingState = Scene_System::NOT_LOADING;
         MonsterFound = false;
         CurrentEncounterRateBoost = 0;
         std::ostringstream ss;

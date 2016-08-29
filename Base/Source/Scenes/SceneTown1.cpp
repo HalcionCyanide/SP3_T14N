@@ -336,6 +336,7 @@ void SceneTown1::Update(float dt)
 			}
 		}
 	}
+    Scene_System::accessing().UpdateLoadingStuff(dt);
 }
 
 void SceneTown1::RenderTerrain()
@@ -525,6 +526,8 @@ void SceneTown1::RenderPassMain()
 	{
 		SceneGraphics->RenderMeshIn2D("TFB_Gem", false, 100, 100, Scene_System::accessing().cSS_InputManager->GetMousePosition().x, Scene_System::accessing().cSS_InputManager->GetMousePosition().y);
 	}
+    if (Scene_System::accessing().theLoadingEffect)
+        Scene_System::accessing().theLoadingEffect->Render();
 
 	std::ostringstream ss;
 	ss.str("");
