@@ -330,51 +330,56 @@ void SceneTown1::Update(float dt)
 	Vector3 Center(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 2, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight / 2, 0);
 
 	framerates = 1 / dt;
-
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
-	{
-		Scene_System::accessing().SwitchScene(SceneTown2::id_);
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('3'))
-	{
-		Scene_System::accessing().SwitchScene(SceneTown3::id_);
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('4'))
-	{
-		Scene_System::accessing().SwitchScene(SceneFreeField::id_);
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('5'))
-	{
-		Scene_System::accessing().SwitchScene(Scene_2::id_);
-	}
-
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('C'))
-	{
-		Scene_System::accessing().QM.allQuests.at(0)->setActive(true);
-		Scene_System::accessing().QM.allQuests.at(0)->setCurrStage(1);
-		std::cout << Scene_System::accessing().QM.allQuests.at(0)->theStageAT->getDesc() << std::endl;
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('V'))
-	{
-		int nextStage = Scene_System::accessing().QM.allQuests.at(0)->getCurrentStage() + 1;
-		Scene_System::accessing().QM.allQuests.at(0)->setCurrStage(nextStage);
-		std::cout << Scene_System::accessing().QM.allQuests.at(0)->theStageAT->getDesc() << std::endl;
-	}
-
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
-	{
-		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-		Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0;
-		Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0;
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('0'))
-	{
-		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
-	}
-
-	BManager.UpdateContainer(dt, camera->position);
-
 	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
+    if (Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)
+    {
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
+        {
+            Scene_System::accessing().SwitchScene(SceneTown2::id_);
+        }
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('3'))
+        {
+            Scene_System::accessing().SwitchScene(SceneTown3::id_);
+        }
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('4'))
+        {
+            Scene_System::accessing().SwitchScene(SceneFreeField::id_);
+        }
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('5'))
+        {
+            Scene_System::accessing().SwitchScene(Scene_2::id_);
+        }
+
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('C'))
+        {
+            Scene_System::accessing().QM.allQuests.at(0)->setActive(true);
+            Scene_System::accessing().QM.allQuests.at(0)->setCurrStage(1);
+            std::cout << Scene_System::accessing().QM.allQuests.at(0)->theStageAT->getDesc() << std::endl;
+        }
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('V'))
+        {
+            int nextStage = Scene_System::accessing().QM.allQuests.at(0)->getCurrentStage() + 1;
+            Scene_System::accessing().QM.allQuests.at(0)->setCurrStage(nextStage);
+            std::cout << Scene_System::accessing().QM.allQuests.at(0)->theStageAT->getDesc() << std::endl;
+        }
+
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
+        {
+            Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+            Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0;
+            Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0;
+        }
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('0'))
+        {
+            Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+        }
+
+        BManager.UpdateContainer(dt, camera->position);
+    }
+    else {
+        camera->CameraIsLocked = true;
+        PlayerPTR->SetVelocity(Vector3(0, 0, 0));
+    }
 	PlayerPTR->Update(dt);
 	PlayerPTR->SetRotationAngle(camera->CurrentCameraRotation.y);
 
@@ -412,7 +417,8 @@ void SceneTown1::Update(float dt)
     Scene_System::accessing().UpdateLoadingStuff(dt);
     if (transitingSceneName != "" && Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
     {
-
+        camera->CameraIsLocked = false;
+        onNotify("TRANSITIONING");
     }
 }
 
