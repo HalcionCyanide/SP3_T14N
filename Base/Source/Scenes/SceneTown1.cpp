@@ -95,6 +95,7 @@ void SceneTown1::Init()
 
 void SceneTown1::InitChatUI()
 {
+	Vector3 ButtonScale(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.24f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f, 1);
 	ChatLayer = new UI_Layer();
 	// Name
 	Vector3 DefaultPos(CenterPosition.x  * 0.25f, CenterPosition.y * 0.7f, 0);

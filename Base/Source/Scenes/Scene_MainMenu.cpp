@@ -68,7 +68,7 @@ void Scene_MainMenu::Init()
 void Scene_MainMenu::InitSceneUIElems()
 {
 	UI_Layer* NewL = new UI_Layer();
-	Vector3 ButtonScale(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.18f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.065f, 1);
+	Vector3 ButtonScale(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.24f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f, 1);
 	Vector3 CenterPosition(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 	NewL->AddUIElement(UI_Element::UI_LOGO, "TFB_Logo", CenterPosition * 3, CenterPosition * 3, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.55f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.9f, 1), CenterPosition * 1.35f);
 
