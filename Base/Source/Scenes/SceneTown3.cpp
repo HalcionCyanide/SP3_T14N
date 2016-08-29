@@ -68,6 +68,7 @@ void SceneTown3::Init()
 	PlayerPTR->setPlayerBoundaries(objVec);
 	camera->position = PlayerPTR->GetPosition();
 	//<!> There can only be 1 Player
+    transitingSceneName = "";
 }
 
 void SceneTown3::Update(float dt)
@@ -305,7 +306,7 @@ void SceneTown3::RenderPassMain()
 
 	SceneGraphics->SetHUD(true);
     if (Scene_System::accessing().theLoadingEffect)
-        Scene_System::accessing().theLoadingEffect->Render();
+        Scene_System::accessing().RenderLoadingStuff();
     std::ostringstream ss;
 	ss.str("");
 	ss << "Scene 1 - FPS:" << framerates;

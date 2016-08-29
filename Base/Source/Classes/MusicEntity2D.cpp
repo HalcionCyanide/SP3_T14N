@@ -9,6 +9,7 @@ MusicEntity2D::MusicEntity2D()
     volume_ = 1.f;
     maxTimeToPlay = 1;
     unlimitedTimes = loopIt = false;
+    m_ElapsedTime = 0;
 }
 
 MusicEntity2D::~MusicEntity2D()
@@ -58,6 +59,7 @@ void MusicEntity2D::Play()
 
 void MusicEntity2D::Update(double dt)
 {
+    m_ElapsedTime = dt;
     if (HistoryOfPlayTimes.size() > 0 && HistoryOfPlayTimes.front()->isFinished())
     {
         ISound *theFront = HistoryOfPlayTimes.front();
@@ -93,32 +95,16 @@ void MusicEntity2D::SetPosition(const Vector3 &pos)
 
 void MusicEntity2D::Stop(double dt)
 {
-    //while (HistoryOfPlayTimes.size() > 0)
-    //{
-    //ISound *theEffect = HistoryOfPlayTimes.front();
-    //if (theEffect)
-    //{
-    //    float decrement = (float)(dt)*10.f;
-    //    if (theEffect->getVolume() - decrement > Math::EPSILON)
-    //    {
-    //        theEffect->setVolume(theEffect->getVolume() - decrement);
-    //    }
-    //    else
-    //    {
-    //        theEffect->stop();
-    //        theEffect->drop();
-    //        theEffect = 0;
-    //        HistoryOfPlayTimes.pop_front();
-    //    }
-    //}
-    //HistoryOfPlayTimes.pop();
-    //}
     for (std::vector<ISound*>::iterator it = HistoryOfPlayTimes.begin(), end = HistoryOfPlayTimes.end(); it != end;)
     {
         ISound * theEffect = (*it);
         if (theEffect)
         {
-            float decrement = (float)(dt)*10.f;
+            float decrement = 0;
+            if (m_ElapsedTime > Math::EPSILON)
+                decrement = (float)m_ElapsedTime;
+            else
+                decrement = (float)dt;
             if (theEffect->getVolume() - decrement > Math::EPSILON)
             {
                 theEffect->setVolume(theEffect->getVolume() - decrement);
@@ -144,25 +130,6 @@ void MusicEntity2D::Stop(double dt)
             }
         }
     }
-    //for (size_t num = 0; num < HistoryOfPlayTimes.size(); ++num)
-    //{
-    //    ISound *theEffect = HistoryOfPlayTimes[num];
-    //    if (theEffect)
-    //    {
-    //        float decrement = (float)(dt)*10.f;
-    //        if (theEffect->getVolume() - decrement > Math::EPSILON)
-    //        {
-    //            theEffect->setVolume(theEffect->getVolume() - decrement);
-    //        }
-    //        else
-    //        {
-    //            theEffect->stop();
-    //            theEffect->drop();
-    //            theEffect = 0;
-    //            HistoryOfPlayTimes.remove(theEffect);
-    //        }
-    //    }
-    //}
 }
 
 float MusicEntity2D::getVolume()

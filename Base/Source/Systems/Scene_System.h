@@ -65,6 +65,7 @@ public:
     void SetLoadingTime(const double &dt);
     void UpdateLoadingStuff(double dt);
     void doingLoadingEffect();
+    void RenderLoadingStuff();
     enum LOADING_STATE {
         BEGIN_LOADING,
         STILL_LOADING,
@@ -80,7 +81,7 @@ private:
     std::map<std::string, SceneEntity*> theSceneList;
     SceneEntity *graphics_scene;
     double delayingLoadingTime, m_accumulatedLoadingTime;
-    bool hasLoadingEnded;
+    bool ShouldRenderLoadingStuff;
 };
 
 #endif

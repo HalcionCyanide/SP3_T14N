@@ -17,6 +17,7 @@ void Item_System::Init()
 
 void Item_System::Update(float dt)
 {
+
 }
 
 void Item_System::Exit()
