@@ -295,7 +295,7 @@ void BattleSystem::SetEnemy(Enemy& E)
 	ss << "Spell Power: " << CurrentEnemy->SpellPower;
 	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.2f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.2f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.2f, 0), ss.str());
 	
-	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 2.f, CenterPosition.y * 1.f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.f, 0), "Enemy Stamina");
+	EnemyLayer->AddUIElement(UI_Element::UI_BUTTON_T_TO_SCRN, "UI_ChatBox", Vector3(CenterPosition.x * 2.f, CenterPosition.y * 1.f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 1.f, 0), Vector3(PlayerScale * 7, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 1.f, 0), "Time Left");
 	EnemyStaminaBar = new UI_Element(UI_Element::UI_BUTTON_R_TO_SCRN, "UI_HP_Red", Vector3(CenterPosition.x * 2.f, CenterPosition.y * 0.85f, 0), Vector3(CenterPosition.x * 4.f, CenterPosition.y * 0.85f, 0), Vector3(RBarWidth, PlayerScale * 1.25f, 1), Vector3(cRBarPosition, CenterPosition.y * 0.85f, 0));
 	EnemyLayer->cUI_Layer.push_back(EnemyStaminaBar);
 	
