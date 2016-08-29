@@ -1,6 +1,7 @@
 #include "BattleSystem.h"
 #include "Scene_System.h"
 #include "..//Scenes//Scene_MainMenu.h"
+#include "../Systems/MusicSystem.h"
 #include <string>
 
 BattleSystem::BattleSystem()
@@ -249,6 +250,10 @@ void BattleSystem::SetEnemy(Enemy& E)
 {
 	QuickInit();
 
+	Scene_System::accessing().gPlayer->SetMaxHealth(Scene_System::accessing().gPlayer->GetSpellPower());
+	if (Scene_System::accessing().gPlayer->GetCurrentHealth() > Scene_System::accessing().gPlayer->GetMaxHealth())
+		Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetMaxHealth());
+
 	float BoxHeightUnits = 12;
 	HealthBarDefaultScale = PlayerScale * 13;
 
@@ -260,6 +265,16 @@ void BattleSystem::SetEnemy(Enemy& E)
 	float cRBarPosition = RBarPosition - (HealthBarDefaultScale - RBarWidth) * 0.5f + HealthBarDefaultScale * 0.25f;
 
 	CurrentEnemy = new Enemy(E);
+
+	if (CurrentEnemy->EnemyType == "Mob")
+	{
+		CurrentEnemy->SpellPower = Math::RandIntMinMax((int)(-0.5f * Scene_System::accessing().gPlayer->GetSpellPower()), (int)(0.25f * Scene_System::accessing().gPlayer->GetSpellPower()));
+		if (CurrentEnemy->SpellPower <= 0) CurrentEnemy->SpellPower = 1;
+		MusicSystem::accessing().playBackgroundMusic("battle");
+	}
+	else if (CurrentEnemy->EnemyType == "Boss")
+		MusicSystem::accessing().playBackgroundMusic("bossbattle");
+
 	EnemyLayer = new UI_Layer();
 	BattleBox = new UI_Layer();
 	EnemyDefaultPosition.Set(CenterPosition.x * 1.75f, CenterPosition.y * 1.7f, 0);
@@ -892,7 +907,9 @@ bool BattleSystem::CollisionResponse(const BattleScreenObject& BSO1, const Battl
 		}
 		if (P != nullptr)
 		{
-			Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetCurrentHealth() - (int(P->DamagePerAttack * Math::Clamp(EnemySpellPowerRatio, 1.f, 1.5f))));
+			float Multiplier = EnemySpellPowerRatio;
+			if (EnemySpellPowerRatio < 1.f) EnemySpellPowerRatio = 1.f;
+			Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetCurrentHealth() - (int(P->DamagePerAttack * EnemySpellPowerRatio)));
 		}
 		return true;
 		break;

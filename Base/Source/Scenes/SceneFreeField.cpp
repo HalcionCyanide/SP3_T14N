@@ -42,6 +42,7 @@ void SceneFreeField::Init()
 
 	// Initiallise Model Specific Meshes Here
 	Mesh* newMesh = MeshBuilder::GenerateTerrain("FreeField", "HeightMapFiles//heightmap_FreeField.raw", m_heightMap);
+	newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
 	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));

@@ -53,8 +53,6 @@ void SceneBattleScreen::Update(float dt)
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	SceneGraphics->Update(dt);
 
-    MusicSystem::accessing().playBackgroundMusic("battle");
-
 	framerates = 1 / dt;
 
 	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))

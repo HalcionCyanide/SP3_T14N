@@ -44,6 +44,7 @@ void Scene_MainMenu::Init()
 
 	// Initiallise Model Specific Meshes Here
 	Mesh* newMesh = MeshBuilder::GenerateTerrain("terrain", "HeightMapFiles//heightmap_MainMenu.raw", m_heightMap);
+	newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
 	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
@@ -68,8 +69,7 @@ void Scene_MainMenu::Init()
 void Scene_MainMenu::InitSceneUIElems()
 {
 	UI_Layer* NewL = new UI_Layer();
-	Vector3 ButtonScale(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.24f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f, 1);
-	Vector3 CenterPosition(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
+	Vector3 ButtonScale(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.20f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.1f, 1); Vector3 CenterPosition(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 	NewL->AddUIElement(UI_Element::UI_LOGO, "TFB_Logo", CenterPosition * 3, CenterPosition * 3, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.55f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.9f, 1), CenterPosition * 1.35f);
 
 	NewL->AddUIElement(UI_Element::UI_BUTTON_L_TO_SCRN, "TFB_Button", CenterPosition * -2.f, CenterPosition * -2.f, ButtonScale, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), UI_Text[1]);
