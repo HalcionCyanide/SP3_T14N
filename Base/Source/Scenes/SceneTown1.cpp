@@ -239,9 +239,7 @@ void SceneTown1::Update(float dt)
 		if (DistanceCheck < CurrentNPC->GetDetectionRadiusSquared() && Scene_System::accessing().cSS_InputManager->GetKeyValue('Q') && !CurrentNPC->getInteracting())
 		{
 			CurrentNPC->setInteracting(true);
-			NPC_Name->UI_Text = CurrentNPC->getName();
-			NPC_TextBox->UI_Text = CurrentNPC->getFText();
-			NPC_TextBox->WrapText();
+
 			if (ChatLayer->LayerTargetPosition.y < 0)
 				ChatLayer->SwapOriginalWithTarget();
 			break;
@@ -249,6 +247,10 @@ void SceneTown1::Update(float dt)
 		// The NPC has interacted with the player successfully.
 		if (CurrentNPC->getInteracting())
 		{
+			NPC_Name->UI_Text = CurrentNPC->getName();
+			NPC_TextBox->UI_Text = CurrentNPC->getFText();
+			NPC_TextBox->WrapText();
+
 			// Enable the mouse.
 			Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
 			camera->CameraIsLocked = true;
@@ -316,6 +318,33 @@ void SceneTown1::Update(float dt)
 				Scene_System::accessing().cSS_InputManager->SetMousePosition(CenterPosition);
 				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
 				temp.clear();
+			}
+			bool changedFText = false;
+			for (std::vector<UI_Element*>::iterator it = NPC_QuestButtons.begin(); it != NPC_QuestButtons.end(); ++it)
+			{
+				UI_Element* dat = *it;
+				dat->UI_Bounds->ResetValues();
+				if (dat->UI_Bounds->CheckCollision(Scene_System::accessing().cSS_InputManager->GetMousePosition()))
+				{
+					for (std::vector<Quest*>::iterator it2 = Scene_System::accessing().QM.allQuests.begin(); it2 != Scene_System::accessing().QM.allQuests.end(); ++it2)
+					{
+						Quest* dis = *it2;
+						if (dis->getName() == dat->UI_Text)
+						{
+							NPC_TextBox->UI_Text = dis->theStageAT->getDesc();
+							NPC_TextBox->WrapText();
+							changedFText = true;
+							break;
+						}
+					}
+				}
+				else if (changedFText == false)
+				{
+					NPC_TextBox->UI_Text = CurrentNPC->getFText();
+					NPC_TextBox->WrapText();
+				}
+				else
+					break;
 			}
 			for (std::vector<Quest*>::iterator it = Scene_System::accessing().QM.allQuests.begin(); it != Scene_System::accessing().QM.allQuests.end(); ++it)
 			{

@@ -36,6 +36,7 @@ void UI_Element::Init(const std::string& name, const Vector3& Position, const Ve
 		UI_Bounds = new Boundary2D();
 		UI_Bounds->SetPosition(Position);
 		UI_Bounds->SetDimensions(Dimensions);
+		UI_Bounds->ResetValues();
 	}
 }
 
