@@ -159,6 +159,7 @@ void Scene_System::clearEverything()
 		delete BSys;
     if (theLoadingEffect)
         delete theLoadingEffect;
+    delete cSS_PlayerUIManager;
 }
 
 void Scene_System::doingLoadingEffect()

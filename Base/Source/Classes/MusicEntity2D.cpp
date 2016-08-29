@@ -10,6 +10,7 @@ MusicEntity2D::MusicEntity2D()
     maxTimeToPlay = 1;
     unlimitedTimes = loopIt = false;
     m_ElapsedTime = 0;
+    justStopPlaying = true;
 }
 
 MusicEntity2D::~MusicEntity2D()
@@ -54,6 +55,7 @@ void MusicEntity2D::Play()
     {
         ISound *thEffect = MusicSystem::accessing().musicEngine->play2D(SoundSource, loopIt, false, true);
         HistoryOfPlayTimes.push_back(thEffect);
+        justStopPlaying = false;
     }
 }
 
@@ -69,6 +71,10 @@ void MusicEntity2D::Update(double dt)
             theFront->drop();
             theFront = 0;
         }
+    }
+    else if (HistoryOfPlayTimes.size() > 0 && justStopPlaying)
+    {
+        Stop(dt);
     }
 }
 
@@ -101,10 +107,10 @@ void MusicEntity2D::Stop(double dt)
         if (theEffect)
         {
             float decrement = 0;
-            if (m_ElapsedTime > Math::EPSILON)
-                decrement = (float)m_ElapsedTime;
-            else
+            if (dt > Math::EPSILON)
                 decrement = (float)dt;
+            else
+                decrement = (float)m_ElapsedTime;
             if (theEffect->getVolume() - decrement > Math::EPSILON)
             {
                 theEffect->setVolume(theEffect->getVolume() - decrement);

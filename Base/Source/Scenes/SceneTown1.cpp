@@ -155,89 +155,15 @@ std::string SceneTown1::HandleChatUIInput(float dt)
 	return "";
 }
 
-void SceneTown1::Update(float dt)
+void SceneTown1::NPC_chat(float dt)
 {
-	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
-	SceneGraphics->Update(dt);
-
-	Scene_System::accessing().cSS_PlayerUIManager->Update(dt);
-
-    MusicSystem::accessing().playBackgroundMusic("town1Alt");
-
-	//Update Camera's Minimum Possible & Current Y Pos
-	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera->position.x / TerrainScale.x, camera->position.z / TerrainScale.z) + camera->PlayerHeight;
-
-	if (!(Application::cA_CurrentTerrainY - Application::cA_MinimumTerrainY <= Math::EPSILON && Application::cA_MinimumTerrainY - Application::cA_CurrentTerrainY <= Math::EPSILON))
-	{
-		float RateofChangeY = (Application::cA_CurrentTerrainY - Application::cA_MinimumTerrainY) * (float)dt * (camera->CameraCurrentWalkSpeed / 3);
-		if (Application::cA_CurrentTerrainY - RateofChangeY >= Application::cA_MinimumTerrainY || Application::cA_CurrentTerrainY - RateofChangeY <= Application::cA_MinimumTerrainY)
-		{
-			Application::cA_CurrentTerrainY -= RateofChangeY;
-		}
-	}
-	Vector3 Center(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 2, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight / 2, 0);
-
-	framerates = 1 / dt;
-
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
-	{
-		Scene_System::accessing().SwitchScene(SceneTown2::id_);
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('3'))
-	{
-		Scene_System::accessing().SwitchScene(SceneTown3::id_);
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('4'))
-	{
-		Scene_System::accessing().SwitchScene(SceneFreeField::id_);
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('5'))
-	{
-		Scene_System::accessing().SwitchScene(Scene_2::id_);
-	}
-
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('C'))
-	{
-		Scene_System::accessing().QM.allQuests.at(0)->setActive(true);
-		Scene_System::accessing().QM.allQuests.at(0)->setCurrStage(1);
-		std::cout << Scene_System::accessing().QM.allQuests.at(0)->theStageAT->getDesc() << std::endl;
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('V'))
-	{
-		int nextStage = Scene_System::accessing().QM.allQuests.at(0)->getCurrentStage() + 1;
-		Scene_System::accessing().QM.allQuests.at(0)->setCurrStage(nextStage);
-		std::cout << Scene_System::accessing().QM.allQuests.at(0)->theStageAT->getDesc() << std::endl;
-	}
-
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
-	{
-		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-		Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0;
-		Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0;
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('0'))
-	{
-		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
-	}
-
-	BManager.UpdateContainer(dt, camera->position);
-
-	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
-	PlayerPTR->Update(dt);
-	PlayerPTR->SetRotationAngle(camera->CurrentCameraRotation.y);
-
-	camera->position = PlayerPTR->GetPosition();
-	camera->Update(dt);
-
-	ChatLayer->Update((float)dt);
-
 	for (std::vector<NPC*>::iterator it = Scene_System::accessing().NM.allNPCs.begin(); it != Scene_System::accessing().NM.allNPCs.end(); ++it)
 	{
 		NPC* CurrentNPC = *it;
 
 		// Update and rotate the NPC in accordance to the player[camera]'s position.
 		CurrentNPC->setTarget(camera->position);
-					
+
 		CurrentNPC->Update((float)dt);
 		float DistanceCheck = (camera->position - CurrentNPC->GetPosition()).LengthSquared();
 		if (DistanceCheck < CurrentNPC->GetDetectionRadiusSquared() && Scene_System::accessing().cSS_InputManager->GetKeyValue('Q') && !CurrentNPC->getInteracting())
@@ -258,7 +184,7 @@ void SceneTown1::Update(float dt)
 			// Enable the mouse.
 			Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
 			camera->CameraIsLocked = true;
-			
+
 			// Set the player's target to face the NPC
 			camera->target = Vector3(CurrentNPC->GetPosition().x, Application::cA_CurrentTerrainY + (CurrentNPC->GetPosition().y - Application::cA_CurrentTerrainY) + (CurrentNPC->GetDimensions().y * 0.5f), CurrentNPC->GetPosition().z);
 			camera->CurrentCameraRotation.x = 0;
@@ -379,6 +305,84 @@ void SceneTown1::Update(float dt)
 			}
 		}
 	}
+}
+
+void SceneTown1::Update(float dt)
+{
+	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
+	SceneGraphics->Update(dt);
+
+	Scene_System::accessing().cSS_PlayerUIManager->Update(dt);
+
+    MusicSystem::accessing().playBackgroundMusic("town1Alt");
+
+	//Update Camera's Minimum Possible & Current Y Pos
+	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera->position.x / TerrainScale.x, camera->position.z / TerrainScale.z) + camera->PlayerHeight;
+
+	if (!(Application::cA_CurrentTerrainY - Application::cA_MinimumTerrainY <= Math::EPSILON && Application::cA_MinimumTerrainY - Application::cA_CurrentTerrainY <= Math::EPSILON))
+	{
+		float RateofChangeY = (Application::cA_CurrentTerrainY - Application::cA_MinimumTerrainY) * (float)dt * (camera->CameraCurrentWalkSpeed / 3);
+		if (Application::cA_CurrentTerrainY - RateofChangeY >= Application::cA_MinimumTerrainY || Application::cA_CurrentTerrainY - RateofChangeY <= Application::cA_MinimumTerrainY)
+		{
+			Application::cA_CurrentTerrainY -= RateofChangeY;
+		}
+	}
+	Vector3 Center(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 2, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight / 2, 0);
+
+	framerates = 1 / dt;
+
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
+	{
+		Scene_System::accessing().SwitchScene(SceneTown2::id_);
+	}
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('3'))
+	{
+		Scene_System::accessing().SwitchScene(SceneTown3::id_);
+	}
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('4'))
+	{
+		Scene_System::accessing().SwitchScene(SceneFreeField::id_);
+	}
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('5'))
+	{
+		Scene_System::accessing().SwitchScene(Scene_2::id_);
+	}
+
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('C'))
+	{
+		Scene_System::accessing().QM.allQuests.at(0)->setActive(true);
+		Scene_System::accessing().QM.allQuests.at(0)->setCurrStage(1);
+		std::cout << Scene_System::accessing().QM.allQuests.at(0)->theStageAT->getDesc() << std::endl;
+	}
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('V'))
+	{
+		int nextStage = Scene_System::accessing().QM.allQuests.at(0)->getCurrentStage() + 1;
+		Scene_System::accessing().QM.allQuests.at(0)->setCurrStage(nextStage);
+		std::cout << Scene_System::accessing().QM.allQuests.at(0)->theStageAT->getDesc() << std::endl;
+	}
+
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
+	{
+		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+		Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0;
+		Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0;
+	}
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('0'))
+	{
+		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+	}
+
+	BManager.UpdateContainer(dt, camera->position);
+
+	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
+	PlayerPTR->Update(dt);
+	PlayerPTR->SetRotationAngle(camera->CurrentCameraRotation.y);
+
+	camera->position = PlayerPTR->GetPosition();
+	camera->Update(dt);
+
+	ChatLayer->Update((float)dt);
+	NPC_chat((float)dt);
 	for (auto it : Scene_System::accessing().QM.allQuests)
 	{
 		for (auto it2 : Scene_System::accessing().gPlayer->playerCurrQState)
@@ -388,6 +392,7 @@ void SceneTown1::Update(float dt)
 				if (it->getActive())
 				{
 					it->Update(dt);
+					std::cout << it->theStageAT->getDesc() << std::endl;
 				}
 			}
 		}
@@ -697,7 +702,8 @@ bool SceneTown1::onNotify(const std::string &theEvent)
     else if (checkWhetherTheWordInThatString("LOADING", theEvent))
     {
         Scene_System::accessing().SetLoadingTime(3.0);
-        return onNotify("TRANSITIONING");
+
+        return true;
     }
     return false;
 }

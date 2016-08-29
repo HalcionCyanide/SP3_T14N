@@ -40,7 +40,7 @@ protected:
     //std::queue<ISound*> HistoryOfPlayTimes;
     std::vector<ISound*> HistoryOfPlayTimes;
     unsigned maxTimeToPlay;
-    bool unlimitedTimes, loopIt;
+    bool unlimitedTimes, loopIt, justStopPlaying;
     std::string fileName;
     double m_ElapsedTime;
 };
