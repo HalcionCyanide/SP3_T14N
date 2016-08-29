@@ -691,7 +691,6 @@ void BattleSystem::InitFailScreen()
 
 void BattleSystem::ShiftBattleUI()
 {
-	//PlayerInventoryUI.x = 3 * CenterPosition.x;
 	EnemyLayer->LayerTargetPosition = CenterPosition * 3.f;
 	BattleBox->LayerTargetPosition.x = -3 * CenterPosition.x;
 }

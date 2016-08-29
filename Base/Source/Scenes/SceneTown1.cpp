@@ -76,7 +76,7 @@ void SceneTown1::Init()
 	int temp = 1;
 	for (auto it : Scene_System::accessing().NM.allNPCs)
 	{
-		it->Init(it->getName(), 1, Vector3(temp * 20.f, 0, temp * 20.f), Vector3(10, 10, 10), Vector3(0, 0, 0), 0.f, Vector3(0, 1, 0));
+		it->Init(it->getName(), 1, Vector3(temp * 30.f - 100.f, 0, -80.f), Vector3(10, 10, 10), Vector3(0, 0, 0), 0.f, Vector3(0, 1, 0));
 
 		it->SetPosition(
 			Vector3(it->GetPosition().x,
