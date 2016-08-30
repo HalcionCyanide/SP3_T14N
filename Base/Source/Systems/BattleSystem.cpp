@@ -220,6 +220,7 @@ void BattleSystem::QuickExit()
 
 	Scene_System::accessing().SwitchToPreviousScene();
 	Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+	Scene_System::accessing().cSS_InputManager->SetMouseToScreenCenter();
 }
 
 BattleScreenObject* BattleSystem::GetInactiveBSO()

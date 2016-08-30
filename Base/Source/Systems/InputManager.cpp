@@ -82,3 +82,8 @@ void InputManager::UpdateMouse()
 	}
 	SetMousePosition(Vector3((float)mousePosition.x, cIM_ScreenHeight - (float)mousePosition.y, 0.f));
 }
+
+void InputManager::SetMouseToScreenCenter()
+{
+	SetCursorPos((int)cIM_ScreenWidth / 2, (int)cIM_ScreenHeight / 2);
+}
