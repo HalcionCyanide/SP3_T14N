@@ -10,6 +10,7 @@ struct SimpleCommand
 		RIGHT_COMMAND,
 		LEFT_COMMAND,
 		JUMP_COMMAND,
+        INTERACT_COMMAND,
 		TOTAL_COMMANDS,
 	};
 	static unsigned char m_allTheKeys[TOTAL_COMMANDS];

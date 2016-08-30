@@ -3,5 +3,5 @@ EnemyID,MeshName,EnemyName,EnemyType,SpellPower,MaxEnemyWave,P1MeshName,P1Type,P
 2,Boss_Manticore,Manticore,Boss,600,5,Fire,Bullet,0.2,20,3,100,3,Fire,Trap,0.2,15,3,5,2,Fire,HRay,0.2,5,5,2500,2,Fire,VRay,0.2,5,5,2500,2
 3,Mob_Skeletondrake,Skeletal Drake,Mob,1,3,Proj_Bone,Bullet,0.52,10,2,300,3,Smoke,Trap,0.5,10,2,5,3,,,,,,,,,,,,,,
 4,Mob_Balrog,Balrog,Mob,1,3,Fire,Bullet,0.3,30,5,100,3,,,,,,,,,,,,,,,,,,,,,
-5,Mob_BoneFish,BoneFish,Mob,1,3,Proj_FishBone,Bullet,0.5,20,3,100,2,Proj_FishBone,HRay,0.3,3,5,2000,2,,,,,,,,,,,,,,
+5,Mob_BoneFish,BoneFish,Mob,1,3,Proj_FishBone,Bullet,0.5,15,3,100,2,Proj_FishBone,HRay,0.3,3,5,2000,2,,,,,,,,,,,,,,
 6,Mob_ChiefSkeleton,Skeleton Chief,Mob,1,4,Proj_SkullBomb,Trap,0.45,20,3,3,3,,,,,,,,,,,,,,,,,,,,,

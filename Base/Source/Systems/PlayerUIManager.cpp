@@ -124,7 +124,14 @@ void PlayerUIManager::InitMenu()
 	NewE = new UI_Element("TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), Vector3(CenterPosition.x * 1.9f, CenterPosition.y * 1.7f, 1), CenterPosition + Vector3(0, CenterPosition.y * 0.15f));
 	Menu_Save->cUI_Layer.push_back(NewE);
 
-
+    NewE = new UI_Element("TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), Vector3(CenterPosition.x * 1.9f, CenterPosition.y * 1.7f, 1), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), "Save Load 1");
+    Menu_Save->cUI_Layer.push_back(NewE);
+    NewE = new UI_Element("TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), Vector3(CenterPosition.x * 1.9f, CenterPosition.y * 1.7f, 1), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), "Save Load 2");
+    Menu_Save->cUI_Layer.push_back(NewE);
+    NewE = new UI_Element("TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), Vector3(CenterPosition.x * 1.9f, CenterPosition.y * 1.7f, 1), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), "Save Load 3");
+    Menu_Save->cUI_Layer.push_back(NewE);
+    NewE = new UI_Element("TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), Vector3(CenterPosition.x * 1.9f, CenterPosition.y * 1.7f, 1), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), "Quit Game");
+    Menu_Save->cUI_Layer.push_back(NewE);
 
 	UI_Menu.cUIS_LayerContainer.push_back(Menu_Save);
 }
