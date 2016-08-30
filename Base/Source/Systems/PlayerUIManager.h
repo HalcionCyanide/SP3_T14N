@@ -28,6 +28,9 @@ public:
 	virtual void Exit();
 
 private:
+	float ButtonTimer;
+	float WaitTime;
+
 	Vector3 CenterPosition;
 	const static std::string UI_Text[];
 
