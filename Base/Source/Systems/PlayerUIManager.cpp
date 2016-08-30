@@ -1,21 +1,24 @@
 #include "PlayerUIManager.h"
 #include "Scene_System.h"
 
+const std::string PlayerUIManager::UI_Text[10] = { "", "Statistics", "Inventory", "Quests", "Save Menu"};
+
 PlayerUIManager::PlayerUIManager()
 {
-	HUD_Stats= nullptr;
-	HUD_AddInfo= nullptr;
-	HUD_Quests= nullptr;
-	
-	Menu_Stats= nullptr;
-	Menu_Inventory= nullptr;
-	Menu_Quests= nullptr; 
+	HUD_Stats = nullptr;
+	HUD_AddInfo = nullptr;
+	HUD_Quests = nullptr;
+
+	Menu_Base = nullptr;
+	Menu_Stats = nullptr;
+	Menu_Inventory = nullptr;
+	Menu_Quests = nullptr;
 	Menu_Save = nullptr;
-	
-	Tab_StatsButton= nullptr;
-	Tab_InventoryButton= nullptr;
-	Tab_QuestsButton= nullptr;
-	Tab_SaveButton= nullptr;
+
+	Tab_StatsButton = nullptr;
+	Tab_InventoryButton = nullptr;
+	Tab_QuestsButton = nullptr;
+	Tab_SaveButton = nullptr;
 }
 
 PlayerUIManager::~PlayerUIManager()
@@ -76,11 +79,80 @@ void PlayerUIManager::InitHUD()
 
 void PlayerUIManager::InitMenu()
 {
+	// Menu Backing
+	Menu_Base = new UI_Layer();
+	Menu_Base->LayerOriginalPosition.y = 4.f * CenterPosition.y;
+	Menu_Base->LayerCenterPosition.y = 4.f * CenterPosition.y;
+	Menu_Base->LayerTargetPosition.y = 0;
 
+	UI_Element* NewE = new UI_Element("Menu_Backing", CenterPosition, CenterPosition, Vector3(CenterPosition.x * 2.f, CenterPosition.y * 2.f, 1), CenterPosition);
+	Menu_Base->cUI_Layer.push_back(NewE);
+
+	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 1), 0, "Statistics");
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x * 0.25f, NewE->Dimensions.y*0.5f);
+	Menu_Base->cUI_Layer.push_back(NewE);
+	Menu_BaseButtons.push_back(NewE);
+
+	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 1), 0, "Inventory");
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x * 0.75f, NewE->Dimensions.y*0.5f);
+	Menu_Base->cUI_Layer.push_back(NewE);
+	Menu_BaseButtons.push_back(NewE);
+
+	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 1), 0, "Quests"); 
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x * 1.25f, NewE->Dimensions.y*0.5f);
+	Menu_Base->cUI_Layer.push_back(NewE);
+	Menu_BaseButtons.push_back(NewE);
+
+	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 1), 0, "Save Menu");
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x * 1.75f, NewE->Dimensions.y*0.5f);
+	Menu_Base->cUI_Layer.push_back(NewE);
+	Menu_BaseButtons.push_back(NewE);
+
+	UI_Menu.cUIS_LayerContainer.push_back(Menu_Base);
+
+	// Menu Stats
+	Menu_Stats = new UI_Layer();
+
+	NewE = new UI_Element("TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), Vector3(CenterPosition.x * 1.9f, CenterPosition.y * 1.7f, 1), CenterPosition + Vector3(0, CenterPosition.y * 0.15f));
+	Menu_Stats->cUI_Layer.push_back(NewE);
+
+	UI_Menu.cUIS_LayerContainer.push_back(Menu_Stats);
+
+	// Menu Save Screen
+	Menu_Save = new UI_Layer();
+
+	NewE = new UI_Element("TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), Vector3(CenterPosition.x * 1.9f, CenterPosition.y * 1.7f, 1), CenterPosition + Vector3(0, CenterPosition.y * 0.15f));
+	Menu_Save->cUI_Layer.push_back(NewE);
+
+
+
+	UI_Menu.cUIS_LayerContainer.push_back(Menu_Save);
 }
 
 void PlayerUIManager::Update(double dt)
 {
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('E'))
+	{
+		//if (CurrentState == UIS_HUD)
+		//{
+			CurrentState = UIS_Menu_Stats;
+		/*}
+		else CurrentState = UIS_HUD;*/
+	}
+	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('R'))
+	{
+		//if (CurrentState == UIS_HUD)
+		//{
+		CurrentState = UIS_HUD;
+		/*}
+		else CurrentState = UIS_HUD;*/
+	}
+
+	if (CurrentState != UIS_HUD)
+	{
+		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+	}
+	float DistMultiplier = 2.5f;
 	switch (CurrentState)
 	{
 	case UIS_HUD:
@@ -90,29 +162,100 @@ void PlayerUIManager::Update(double dt)
 		}
 		for (std::vector<UI_Layer*>::iterator it = UI_Menu.cUIS_LayerContainer.begin(); it != UI_Menu.cUIS_LayerContainer.end(); ++it)
 		{
-			(*it)->LayerTargetPosition.y = -CenterPosition.y;
+			(*it)->LayerTargetPosition.y = DistMultiplier * CenterPosition.y;
 		}
 		break;
 	case UIS_Menu_Stats:
 		for (std::vector<UI_Layer*>::iterator it = UI_HUD.cUIS_LayerContainer.begin(); it != UI_HUD.cUIS_LayerContainer.end(); ++it)
 		{
-			(*it)->LayerTargetPosition.y = -CenterPosition.y;
+			(*it)->LayerTargetPosition.y = -DistMultiplier * CenterPosition.y;
 		}
 		for (std::vector<UI_Layer*>::iterator it = UI_Menu.cUIS_LayerContainer.begin(); it != UI_Menu.cUIS_LayerContainer.end(); ++it)
 		{
-			(*it)->LayerTargetPosition.y = 0;
+			if ((*it) == Menu_Base || (*it) == Menu_Stats)
+				(*it)->LayerTargetPosition.y = 0;
+			else (*it)->LayerTargetPosition.y = DistMultiplier * CenterPosition.y;
+		}
+		break;
+	case UIS_Menu_Inventory:
+		for (std::vector<UI_Layer*>::iterator it = UI_HUD.cUIS_LayerContainer.begin(); it != UI_HUD.cUIS_LayerContainer.end(); ++it)
+		{
+			(*it)->LayerTargetPosition.y = -DistMultiplier * CenterPosition.y;
+		}
+		for (std::vector<UI_Layer*>::iterator it = UI_Menu.cUIS_LayerContainer.begin(); it != UI_Menu.cUIS_LayerContainer.end(); ++it)
+		{
+			if ((*it) == Menu_Base || (*it) == Menu_Inventory)
+				(*it)->LayerTargetPosition.y = 0;
+			else (*it)->LayerTargetPosition.y = DistMultiplier * CenterPosition.y;
+		}
+		break;
+	case UIS_Menu_Quests:
+		for (std::vector<UI_Layer*>::iterator it = UI_HUD.cUIS_LayerContainer.begin(); it != UI_HUD.cUIS_LayerContainer.end(); ++it)
+		{
+			(*it)->LayerTargetPosition.y = -DistMultiplier * CenterPosition.y;
+		}
+		for (std::vector<UI_Layer*>::iterator it = UI_Menu.cUIS_LayerContainer.begin(); it != UI_Menu.cUIS_LayerContainer.end(); ++it)
+		{
+			if ((*it) == Menu_Base || (*it) == Menu_Quests)
+				(*it)->LayerTargetPosition.y = 0;
+			else (*it)->LayerTargetPosition.y = DistMultiplier * CenterPosition.y;
+		}
+		break;
+	case UIS_Menu_Save:
+		for (std::vector<UI_Layer*>::iterator it = UI_HUD.cUIS_LayerContainer.begin(); it != UI_HUD.cUIS_LayerContainer.end(); ++it)
+		{
+			(*it)->LayerTargetPosition.y = -DistMultiplier * CenterPosition.y;
+		}
+		for (std::vector<UI_Layer*>::iterator it = UI_Menu.cUIS_LayerContainer.begin(); it != UI_Menu.cUIS_LayerContainer.end(); ++it)
+		{
+			if ((*it) == Menu_Base || (*it) == Menu_Save)
+				(*it)->LayerTargetPosition.y = 0;
+			else (*it)->LayerTargetPosition.y = DistMultiplier * CenterPosition.y;
 		}
 		break;
 	case UIS_NO_UI:
 		for (std::vector<UI_Layer*>::iterator it = UI_HUD.cUIS_LayerContainer.begin(); it != UI_HUD.cUIS_LayerContainer.end(); ++it)
 		{
-			(*it)->LayerTargetPosition.y = -CenterPosition.y;
+			(*it)->LayerTargetPosition.y = -DistMultiplier * CenterPosition.y;
 		}
 		for (std::vector<UI_Layer*>::iterator it = UI_Menu.cUIS_LayerContainer.begin(); it != UI_Menu.cUIS_LayerContainer.end(); ++it)
 		{
-			(*it)->LayerTargetPosition.y = -CenterPosition.y;
+			(*it)->LayerTargetPosition.y = DistMultiplier * CenterPosition.y;
 		}
 		break;
+	}
+	if (CurrentState != UIS_HUD)
+	{
+		for (std::vector<UI_Element*>::iterator it = Menu_BaseButtons.begin(); it != Menu_BaseButtons.end(); ++it)
+		{
+			(*it)->BoundsActive = true;
+			bool CheckSucceeded = false;
+			(*it)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), CheckSucceeded);
+			if (CheckSucceeded)
+			{
+				if ((*it)->UI_Text == UI_Text[1])
+				{
+					// Statistics
+					CurrentState = UIS_Menu_Stats;
+				}
+				else if ((*it)->UI_Text == UI_Text[2])
+				{
+					// Inventory
+					CurrentState = UIS_Menu_Inventory;
+				}
+				else if ((*it)->UI_Text == UI_Text[3])
+				{
+					// Quests
+					CurrentState = UIS_Menu_Quests;
+				}
+				else if ((*it)->UI_Text == UI_Text[4])
+				{
+					// Save Menu
+					CurrentState = UIS_Menu_Save;
+				}
+				break;
+			}
+		}
 	}
 	UI_HUD.Update((float)dt);
 	UI_Menu.Update((float)dt);
@@ -148,6 +291,7 @@ void PlayerUIManager::UpdateStatsHUD(float dt)
 void PlayerUIManager::Render()
 {
 	UI_HUD.Render();
+	UI_Menu.Render();
 }
 
 void PlayerUIManager::Exit()
