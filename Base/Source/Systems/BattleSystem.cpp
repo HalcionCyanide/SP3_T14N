@@ -888,34 +888,24 @@ bool BattleSystem::CollisionCheck(const BattleScreenObject& BSO1, const BattleSc
 	return false;
 }
 
-bool BattleSystem::CollisionResponse(const BattleScreenObject& BSO1, const BattleScreenObject& BSO2, float dt)
+bool BattleSystem::CollisionResponse(BattleScreenObject& BSO1, BattleScreenObject& BSO2, float dt)
 {
 	// Do stuff like hp decrement
-	switch (BSO2.Type)
+	EnemyProjectile* P = nullptr;
+	for (std::vector<EnemyProjectile*>::iterator it = CurrentEnemy->cE_Projectiles.begin(); it != CurrentEnemy->cE_Projectiles.end(); ++it)
 	{
-	case BattleScreenObject::BS_Null:
+		if ((*it)->getName() == BSO2.GetMeshName())
+			P = *it;
+	}
+	if (P != nullptr)
 	{
-		break;
+		float Multiplier = EnemySpellPowerRatio;
+		if (EnemySpellPowerRatio < 1.f) EnemySpellPowerRatio = 1.f;
+		Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetCurrentHealth() - (int)(P->DamagePerAttack * EnemySpellPowerRatio));
 	}
-	default:
-	{
-		EnemyProjectile* P = nullptr;
-		for (std::vector<EnemyProjectile*>::iterator it = CurrentEnemy->cE_Projectiles.begin(); it != CurrentEnemy->cE_Projectiles.end(); ++it)
-		{
-			if ((*it)->getName() == BSO2.GetMeshName())
-				P = *it;
-		}
-		if (P != nullptr)
-		{
-			float Multiplier = EnemySpellPowerRatio;
-			if (EnemySpellPowerRatio < 1.f) EnemySpellPowerRatio = 1.f;
-			Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetCurrentHealth() - (int(P->DamagePerAttack * EnemySpellPowerRatio)));
-		}
-		return true;
-		break;
-	}
-	}
-	return false;
+	Vector3 VelShift = 0.25f * BSO2.GetVelocity();
+	BSO1.SetVelocity(BSO1.GetVelocity() + VelShift);
+	return true;
 }
 
 
