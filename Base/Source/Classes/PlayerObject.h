@@ -3,6 +3,7 @@
 
 #include "Camera3.h"
 #include "GameObject.h"
+#include "Item.h"
 #include <vector>
 
 class PlayerObject : public GameObject
@@ -21,6 +22,8 @@ public:
     virtual void setPlayerBoundaries(std::vector<GameObject*> &Playerboundary);
 	virtual bool CheckCollision(Boundary &object, const Vector3 &Prediction);
 	virtual bool CheckCollision(Boundary &object, Boundary &Prediction);
+	virtual void LockMovement();
+	virtual void UnlockMovement();
 
 private:
 	void DecomposePlayerInertia(float dt);
@@ -41,6 +44,7 @@ protected:
 	float BaseWalkSpeed = 16.0f;
 	float MaxWalkSpeed = 32.0f;
 
+	bool Movable = true;
     Vector3 accel_, MovementValues;
     float JumpVel;
 	float GRAVITY;
@@ -48,6 +52,7 @@ protected:
     bool m_bJumping = false;
     double m_ElapsedTime;
     std::vector<GameObject*> *theBoundaries;
+	//std::map<Item, int> ItemNo;
 };
 
 
