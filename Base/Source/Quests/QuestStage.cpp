@@ -92,23 +92,9 @@ void QuestStage::setGiver(std::string i)
 
 void QuestStage::Update(double dt)
 {
-	for (auto it1 : Scene_System::accessing().QM.allQuests)
+	if (!complete)
 	{
-		for (auto it : Scene_System::accessing().gPlayer->playerCurrQState)
-		{
-			if (it1->getName() == it.first)
-			{
-				if (it.second == stageNO)
-				{
-					if (!complete)
-						condition->Update(dt);
-					else
-					{
-						it.second++;
-					}
-				}
-			}
-		}
+		complete = condition->complete;
+		condition->Update(dt);
 	}
-	
 }
