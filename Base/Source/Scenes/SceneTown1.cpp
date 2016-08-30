@@ -259,13 +259,13 @@ void SceneTown1::NPC_chat(float dt)
 			std::string temp = HandleChatUIInput((float)dt);
 			if (temp == "Exit")
 			{
-				Scene_System::accessing().cSS_PlayerUIManager->CurrentState = PlayerUIManager::UIS_HUD;
 				camera->CameraIsLocked = false;
 				if (ChatLayer->LayerTargetPosition.y > -1)
 					ChatLayer->SwapOriginalWithTarget();
 				CurrentNPC->setInteracting(false);
 				Scene_System::accessing().cSS_InputManager->SetMouseToScreenCenter();
 				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+				Scene_System::accessing().cSS_PlayerUIManager->CurrentState = PlayerUIManager::UIS_HUD;
 				temp.clear();
 			}
 			bool changedFText = false;
@@ -322,6 +322,7 @@ void SceneTown1::NPC_chat(float dt)
 					CurrentNPC->setInteracting(false);
 					Scene_System::accessing().cSS_InputManager->SetMouseToScreenCenter();
 					Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+					Scene_System::accessing().cSS_PlayerUIManager->CurrentState = PlayerUIManager::UIS_HUD;
 					temp.clear();
 				}
 			}

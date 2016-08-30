@@ -939,9 +939,11 @@ bool BattleSystem::CollisionResponse(BattleScreenObject& BSO1, BattleScreenObjec
 	{
 		float Multiplier = EnemySpellPowerRatio;
 		if (EnemySpellPowerRatio < 1.f) EnemySpellPowerRatio = 1.f;
-        int Damage = (int)(CurrentProjectile.DamagePerAttack * EnemySpellPowerRatio);
-		if (Damage > 0)
-			Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetCurrentHealth() - Damage);
+        int BaseDamageMultiplier = (int)(CurrentEnemy->SpellPower * 0.1f);
+		if (BaseDamageMultiplier <= 0)
+			BaseDamageMultiplier = 1;
+		int Damage = BaseDamageMultiplier * (int)(EnemySpellPowerRatio * CurrentProjectile.DamagePerAttack);
+		Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetCurrentHealth() - Damage);
 	}
 	Vector3 VelShift = 0.1f * BSO2.GetVelocity();
 	BSO1.SetVelocity(BSO1.GetVelocity() + VelShift);

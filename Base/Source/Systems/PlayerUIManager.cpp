@@ -1,7 +1,9 @@
 #include "PlayerUIManager.h"
 #include "Scene_System.h"
+#include "..\Misc\SimpleCommand.h"
+#include "../Mains/Application.h"
 
-const std::string PlayerUIManager::UI_Text[10] = { "", "Statistics", "Inventory", "Quests", "Save Menu"};
+const std::string PlayerUIManager::UI_Text[10] = { "", "Statistics", "Inventory", "Quests", "Save Menu", "Save To Slot 1", "Save To Slot 2", "Save To Slot 3", "Exit To Main Menu", "Quit Game"};
 
 PlayerUIManager::PlayerUIManager()
 {
@@ -14,11 +16,6 @@ PlayerUIManager::PlayerUIManager()
 	Menu_Inventory = nullptr;
 	Menu_Quests = nullptr;
 	Menu_Save = nullptr;
-
-	Tab_StatsButton = nullptr;
-	Tab_InventoryButton = nullptr;
-	Tab_QuestsButton = nullptr;
-	Tab_SaveButton = nullptr;
 }
 
 PlayerUIManager::~PlayerUIManager()
@@ -91,22 +88,22 @@ void PlayerUIManager::InitMenu()
 	UI_Element* NewE = new UI_Element("Menu_Backing", CenterPosition, CenterPosition, Vector3(CenterPosition.x * 2.f, CenterPosition.y * 2.f, 1), CenterPosition);
 	Menu_Base->cUI_Layer.push_back(NewE);
 
-	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 1), 0, "Statistics");
+	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 1), 0, UI_Text[1]);
 	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x * 0.25f, NewE->Dimensions.y*0.5f);
 	Menu_Base->cUI_Layer.push_back(NewE);
 	Menu_BaseButtons.push_back(NewE);
 
-	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 1), 0, "Inventory");
+	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 1), 0, UI_Text[2]);
 	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x * 0.75f, NewE->Dimensions.y*0.5f);
 	Menu_Base->cUI_Layer.push_back(NewE);
 	Menu_BaseButtons.push_back(NewE);
 
-	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 1), 0, "Quests"); 
+	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 1), 0, UI_Text[3]);
 	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x * 1.25f, NewE->Dimensions.y*0.5f);
 	Menu_Base->cUI_Layer.push_back(NewE);
 	Menu_BaseButtons.push_back(NewE);
 
-	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 1), 0, "Save Menu");
+	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 1), 0, UI_Text[4]);
 	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x * 1.75f, NewE->Dimensions.y*0.5f);
 	Menu_Base->cUI_Layer.push_back(NewE);
 	Menu_BaseButtons.push_back(NewE);
@@ -116,7 +113,7 @@ void PlayerUIManager::InitMenu()
 	// Menu Stats
 	Menu_Stats = new UI_Layer();
 
-	NewE = new UI_Element("TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), Vector3(CenterPosition.x * 1.9f, CenterPosition.y * 1.7f, 1), CenterPosition + Vector3(0, CenterPosition.y * 0.15f));
+	NewE = new UI_Element("Menu_Backing2", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), Vector3(CenterPosition.x * 1.9f, CenterPosition.y * 1.7f, 1), CenterPosition + Vector3(0, CenterPosition.y * 0.15f));
 	Menu_Stats->cUI_Layer.push_back(NewE);
 
 	UI_Menu.cUIS_LayerContainer.push_back(Menu_Stats);
@@ -124,10 +121,32 @@ void PlayerUIManager::InitMenu()
 	// Menu Save Screen
 	Menu_Save = new UI_Layer();
 
-	NewE = new UI_Element("TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), Vector3(CenterPosition.x * 1.9f, CenterPosition.y * 1.7f, 1), CenterPosition + Vector3(0, CenterPosition.y * 0.15f));
+	// Backing
+	NewE = new UI_Element("Menu_Backing2", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), Vector3(CenterPosition.x * 1.9f, CenterPosition.y * 1.7f, 1), CenterPosition + Vector3(0, CenterPosition.y * 0.15f));
 	Menu_Save->cUI_Layer.push_back(NewE);
 
+	// Header
+	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.4f, CenterPosition.y * 0.25f, 1), 0, UI_Text[4]);
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x * 0.32f, CenterPosition.y * 1.775f);
+	Menu_Save->cUI_Layer.push_back(NewE);
 
+	// Buttons
+    NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.2f, 1), 0, UI_Text[5]);
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(-CenterPosition.x * 0.4f, CenterPosition.y * 0.45f);
+	Menu_Save->cUI_Layer.push_back(NewE);	
+	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.2f, 1), 0, UI_Text[6]);
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(-CenterPosition.x * 0.4f, CenterPosition.y * 0.1f);
+	Menu_Save->cUI_Layer.push_back(NewE);
+	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.2f, 1), 0, UI_Text[7]);
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(-CenterPosition.x * 0.4f, CenterPosition.y * -0.25f);
+	Menu_Save->cUI_Layer.push_back(NewE);
+
+	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.2f, 1), 0, UI_Text[8]);
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(CenterPosition.x * 0.4f, CenterPosition.y * 0.3f);
+	Menu_Save->cUI_Layer.push_back(NewE);
+	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.2f, 1), 0, UI_Text[9]);
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(CenterPosition.x * 0.4f, CenterPosition.y * -0.1f);
+	Menu_Save->cUI_Layer.push_back(NewE);
 
 	UI_Menu.cUIS_LayerContainer.push_back(Menu_Save);
 }
@@ -135,7 +154,7 @@ void PlayerUIManager::InitMenu()
 void PlayerUIManager::Update(double dt)
 {
 	ButtonTimer += (float)dt;
-	if (ButtonTimer > WaitTime && Scene_System::accessing().cSS_InputManager->GetKeyValue('E'))
+	if (ButtonTimer > WaitTime && Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::PAUSE_MENU_COMMAND]))
 	{
 		ButtonTimer = 0;
 		if (CurrentState == UIS_HUD)
@@ -190,7 +209,7 @@ void PlayerUIManager::Update(double dt)
 			if ((*it) == Menu_Base || (*it) == Menu_Inventory)
 				(*it)->LayerTargetPosition.y = 0;
 			else (*it)->LayerTargetPosition.y = DistMultiplier * CenterPosition.y;
-		}
+        }
 		break;
 	case UIS_Menu_Quests:
 		for (std::vector<UI_Layer*>::iterator it = UI_HUD.cUIS_LayerContainer.begin(); it != UI_HUD.cUIS_LayerContainer.end(); ++it)
@@ -214,7 +233,50 @@ void PlayerUIManager::Update(double dt)
 			if ((*it) == Menu_Base || (*it) == Menu_Save)
 				(*it)->LayerTargetPosition.y = 0;
 			else (*it)->LayerTargetPosition.y = DistMultiplier * CenterPosition.y;
-		}
+            //Updating of the Keys
+            if ((*it) == Menu_Save) {
+                for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(), end2 = (*it)->cUI_Layer.end(); it2 != end2; ++it2)
+                {
+                    if ((*it2)->UI_Text == "")
+                        continue;
+                    (*it2)->BoundsActive = true;
+                    bool CheckSucceeded = false;
+                    (*it2)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), CheckSucceeded);
+                    if (CheckSucceeded) {
+                        if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
+                            Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+						if ((*it2)->UI_Text == UI_Text[5])
+                        {
+                            Scene_System::accessing().gPlayer->settingTheFileToSave(1);
+                            Scene_System::accessing().gPlayer->automaticallySaveFile();
+                        }
+						else if ((*it2)->UI_Text == UI_Text[6])
+                        {
+                            Scene_System::accessing().gPlayer->settingTheFileToSave(2);
+                            Scene_System::accessing().gPlayer->automaticallySaveFile();
+                        }
+						else if ((*it2)->UI_Text == UI_Text[7])
+                        {
+                            Scene_System::accessing().gPlayer->settingTheFileToSave(3);
+                            Scene_System::accessing().gPlayer->automaticallySaveFile();
+                        }
+						else if ((*it2)->UI_Text == UI_Text[8])
+                        {
+                            Scene_System::accessing().getCurrScene().onNotify("LOADING_M_Scene");
+                            Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+                        }
+						else if ((*it2)->UI_Text == UI_Text[9])
+						{
+							Application::ExitGame = true;
+						}
+                        CurrentState = UIS_HUD;
+                        Scene_System::accessing().cSS_InputManager->SetMouseToScreenCenter();
+                        break;
+                    }
+                }
+            }
+            //Updating of the Keys
+        }
 		break;
 	case UIS_NO_UI:
 		for (std::vector<UI_Layer*>::iterator it = UI_HUD.cUIS_LayerContainer.begin(); it != UI_HUD.cUIS_LayerContainer.end(); ++it)
@@ -271,11 +333,17 @@ void PlayerUIManager::UpdateStats(float dt)
 
 void PlayerUIManager::UpdateStatsHUD(float dt)
 {
+	std::stringstream ss;
+
+	// Open Menu
+	ss << "<" << SimpleCommand::m_allTheKeys[SimpleCommand::PAUSE_MENU_COMMAND] << "> - Menu | " << "<" << SimpleCommand::m_allTheKeys[SimpleCommand::INTERACT_COMMAND] << "> - Interact";
+	HUD_Stats->cUI_Layer[1]->UI_Text = ss.str();
+
 	// Name
 	HUD_Stats->cUI_Layer[2]->UI_Text = Scene_System::accessing().gPlayer->getName();
 
 	// SP
-	std::stringstream ss;
+	ss.str("");
 	ss << "SP: " << Scene_System::accessing().gPlayer->GetSpellPower();
 	HUD_Stats->cUI_Layer[3]->UI_Text = ss.str();
 
