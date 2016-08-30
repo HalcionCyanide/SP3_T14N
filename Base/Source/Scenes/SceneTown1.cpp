@@ -74,19 +74,22 @@ void SceneTown1::Init()
 	camera->position = PlayerPTR->GetPosition();
 	//<!> There can only be 1 Player
 
-	int temp = 1;
 	for (auto it : Scene_System::accessing().NM.allNPCs)
 	{
-		it->Init(it->getName(), 1, Vector3(temp * 30.f - 100.f, 0, -80.f), Vector3(10, 10, 10), Vector3(0, 0, 0), 0.f, Vector3(0, 1, 0));
+		if (it->getName() == "Guard Captain")
+		{
+			it->Init(it->getName(), 1, Vector3(15.f, 0, -80.f), Vector3(10, 10, 10), Vector3(0, 0, 0), 0.f, Vector3(0, 1, 0));
 
-		it->SetPosition(
-			Vector3(it->GetPosition().x,
-			TerrainScale.y * ReadHeightMap(m_heightMap, (it->GetPosition().x / TerrainScale.x), (it->GetPosition().z / TerrainScale.x)) + it->GetDimensions().y * 0.5f, it->GetPosition().z
-			));
+			it->SetPosition(
+				Vector3(it->GetPosition().x,
+				TerrainScale.y * ReadHeightMap(m_heightMap, (it->GetPosition().x / TerrainScale.x), (it->GetPosition().z / TerrainScale.x)) + it->GetDimensions().y * 0.5f, it->GetPosition().z
+				));
 
-		it->SetBounds();
-		objVec.push_back(it);
-		temp++;
+			it->SetBounds();
+			objVec.push_back(it);
+		}
+		else
+			break;
 	}
 
 	UI_Sys = new UI_System();
