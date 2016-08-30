@@ -9,6 +9,7 @@
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\PlayerObject.h"
 #include "../Misc/LoadEnemyData.h"
+#include "../Systems/MusicSystem.h"
 
 std::string SceneTown3::id_ = "3_Scene";
 
@@ -75,6 +76,7 @@ void SceneTown3::Update(float dt)
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	SceneGraphics->Update(dt);
+    MusicSystem::accessing().playBackgroundMusic("town3");
 
 	//Update Camera's Minimum Possible & Current Y Pos
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera->position.x / TerrainScale.x, camera->position.z / TerrainScale.z) + camera->PlayerHeight;
