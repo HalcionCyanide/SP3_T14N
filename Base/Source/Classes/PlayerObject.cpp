@@ -7,6 +7,7 @@
 PlayerObject::PlayerObject()
 	: GameObject()
 {
+	Movable = true;
 	m_bJumping = false;
 	JumpVel = JUMPMAXSPEED = JUMPACCEL = 0;
 	m_ElapsedTime = 0;
@@ -28,73 +29,80 @@ void PlayerObject::Update(double dt)
 {
 	m_ElapsedTime = (float)dt;
 
-	if (Application::IsKeyPressed(VK_SHIFT) &&
-        !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND])
-		&& !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND])
-		&& !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND])
-		)
+	if (Movable)
 	{
-		MaxWalkSpeed = BaseWalkSpeed * 2;
-	}
-	else if (MaxWalkSpeed > BaseWalkSpeed)
-	{
-		MaxWalkSpeed -= BaseWalkSpeed * (float)dt;
-	}
-	
-	if (MovementValues.IsZero() == false)
-	{
-		if (theBoundaries)
+		if (Application::IsKeyPressed(VK_SHIFT) &&
+			!Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND])
+			&& !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND])
+			&& !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND])
+			)
 		{
-			for (std::vector<GameObject*>::iterator it = theBoundaries->begin(); it != theBoundaries->end(); ++it)
+			MaxWalkSpeed = BaseWalkSpeed * 2;
+		}
+		else if (MaxWalkSpeed > BaseWalkSpeed)
+		{
+			MaxWalkSpeed -= BaseWalkSpeed * (float)dt;
+		}
+
+		if (MovementValues.IsZero() == false)
+		{
+			if (theBoundaries)
 			{
-				if (CheckCollision(*(*it)->GetBoundary(), BaseObject::GetPosition()))
+				for (std::vector<GameObject*>::iterator it = theBoundaries->begin(); it != theBoundaries->end(); ++it)
 				{
-					SetPosition(this->GetPosition() - ((*it)->GetBoundary()->GetOverlappingDistance() * (*it)->GetBoundary()->GetOverlappingAxis()));
+					if (CheckCollision(*(*it)->GetBoundary(), BaseObject::GetPosition()))
+					{
+						SetPosition(this->GetPosition() - ((*it)->GetBoundary()->GetOverlappingDistance() * (*it)->GetBoundary()->GetOverlappingAxis()));
+					}
+					if (MovementValues.IsZero())
+						break;
 				}
-				if (MovementValues.IsZero())
-					break;
 			}
+			SetPosition(GetPosition() + MovementValues);
+			MovementValues.SetZero();
+			MusicSystem::accessing().playMusic("footstep");
 		}
-		SetPosition(GetPosition() + MovementValues);
-		MovementValues.SetZero();
-        MusicSystem::accessing().playMusic("footstep");
+		else {
+			MusicSystem::accessing().accessTheMusic("footstep")->Stop(dt);
+		}
+		if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
+		{
+			if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]) && !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]))
+			{
+				Walk((float)dt);
+			}
+			if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]) && !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]))
+			{
+				Walk(-(float)dt);
+			}
+			if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]) && !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]))
+			{
+				Strafe(-(float)dt);
+			}
+			if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]) && !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]))
+			{
+				Strafe((float)dt);
+			}
+			if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::JUMP_COMMAND]))
+			{
+				Jump((float)dt);
+			}
+			if (m_bJumping == false)
+			{
+				Vector3 Pos = GetPosition();
+				Pos.y = Application::cA_CurrentTerrainY;
+				SetPosition(Pos);
+			}
+			if (!GetVelocity().IsZero())
+			{
+				DecomposePlayerInertia((float)dt);
+			}
+			UpdateJump((float)dt);
+		}
 	}
-    else {
-        MusicSystem::accessing().accessTheMusic("footstep")->Stop(dt);
-    }
-	if (!Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
+	else
 	{
-		if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]) && !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]))
-		{
-			Walk((float)dt);
-		}
-		if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]) && !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]))
-		{
-			Walk(-(float)dt);
-		}
-		if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]) && !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]))
-		{
-			Strafe(-(float)dt);
-		}
-		if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]) && !Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]))
-		{
-			Strafe((float)dt);
-		}
-		if (Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::JUMP_COMMAND]))
-		{
-			Jump((float)dt);
-		}
-		if (m_bJumping == false)
-		{
-			Vector3 Pos = GetPosition();
-			Pos.y = Application::cA_CurrentTerrainY;
-			SetPosition(Pos);
-		}
-		if (!GetVelocity().IsZero())
-		{
-			DecomposePlayerInertia((float)dt);	
-		}
-		UpdateJump((float)dt);
+		SetVelocity(Vector3(0, 0, 0));
 	}
 }
 
@@ -129,6 +137,16 @@ bool PlayerObject::CheckCollision(Boundary &object, const Vector3 &Prediction)
 bool PlayerObject::CheckCollision(Boundary &object, Boundary &Prediction)
 {
 	return object.CheckCollision(Prediction);
+}
+
+void PlayerObject::LockMovement()
+{
+	Movable = false;
+}
+
+void PlayerObject::UnlockMovement()
+{
+	Movable = true;
 }
 
 void PlayerObject::DecomposePlayerInertia(float dt)

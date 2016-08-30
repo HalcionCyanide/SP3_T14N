@@ -5,6 +5,8 @@
 #include "SceneTown1.h"
 #include "SceneTown2.h"
 #include "SceneTown3.h"
+#include "SceneFreeField2.h"
+
 #include "SceneBattleScreen.h"
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\PlayerObject.h"
@@ -23,7 +25,6 @@ SceneFreeField::SceneFreeField()
 
 SceneFreeField::~SceneFreeField()
 {
-
 }
 
 void SceneFreeField::Init()
@@ -145,7 +146,7 @@ void SceneFreeField::Update(float dt)
         }
         if (Scene_System::accessing().cSS_InputManager->GetKeyValue('5'))
         {
-            Scene_System::accessing().SwitchScene(Scene_2::id_);
+			Scene_System::accessing().SwitchScene(SceneFreeField2::id_);
         }
         if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
         {
