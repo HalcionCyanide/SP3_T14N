@@ -23,7 +23,6 @@ SceneFreeField::SceneFreeField()
 
 SceneFreeField::~SceneFreeField()
 {
-
 }
 
 void SceneFreeField::Init()

@@ -252,6 +252,9 @@
     <ClCompile Include="Source\Systems\PlayerUIManager.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scenes\SceneFreeField2.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Classes\Billboard.h">
@@ -469,6 +472,9 @@
     </ClInclude>
     <ClInclude Include="Source\Systems\PlayerUIManager.h">
       <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\SceneFreeField2.h">
+      <Filter>Header Files\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

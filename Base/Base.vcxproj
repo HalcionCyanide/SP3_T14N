@@ -31,6 +31,7 @@
     <ClCompile Include="Source\NPCs\NPC.cpp" />
     <ClCompile Include="Source\Quests\Quest.cpp" />
     <ClCompile Include="Source\Quests\QuestStage.cpp" />
+    <ClCompile Include="Source\Scenes\SceneFreeField2.cpp" />
     <ClCompile Include="Source\Scenes\SceneLoading.cpp" />
     <ClCompile Include="Source\Systems\BattleSystem.cpp" />
     <ClCompile Include="Source\Systems\BillboardManager.cpp" />
@@ -131,6 +132,7 @@
     <ClInclude Include="Source\Scenes\GraphicsEntity.h" />
     <ClInclude Include="Source\Scenes\SceneBattleScreen.h" />
     <ClInclude Include="Source\Scenes\SceneFreeField.h" />
+    <ClInclude Include="Source\Scenes\SceneFreeField2.h" />
     <ClInclude Include="Source\Scenes\SceneLoading.h" />
     <ClInclude Include="Source\Scenes\SceneTown1.h" />
     <ClInclude Include="Source\Scenes\SceneTown2.h" />

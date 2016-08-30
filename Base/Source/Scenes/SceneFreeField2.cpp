@@ -1,49 +1,50 @@
-#include "SceneTown3.h"
+#include "SceneFreeField2.h"
 #include <sstream>
 
 #include "Scene_2.h"
 #include "SceneTown1.h"
 #include "SceneTown2.h"
+#include "SceneTown3.h"
 #include "SceneFreeField.h"
-#include "SceneFreeField2.h"
 
+#include "SceneBattleScreen.h"
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\PlayerObject.h"
 #include "../Misc/LoadEnemyData.h"
 
-std::string SceneTown3::id_ = "3_Scene";
+std::string SceneFreeField2::id_ = "F1_Scene";
 
-SceneTown3::SceneTown3()
+SceneFreeField2::SceneFreeField2()
 	: SceneEntity()
 {
 	framerates = 0;
 	setName(id_);
 	theInteractiveMap = nullptr;
+	Player = nullptr;
 }
 
-SceneTown3::~SceneTown3()
+SceneFreeField2::~SceneFreeField2()
 {
-
 }
 
-void SceneTown3::Init()
+void SceneFreeField2::Init()
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 
 	// Set Terrain Size
-	TerrainScale.Set(350.f, 50.f, 350.f);
+	TerrainScale.Set(400.f, 50.f, 400.f);
 
 	Mtx44 perspective;
 	perspective.SetToPerspective(45.0f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 0.1f, 10000.0f);
 	projectionStack->LoadMatrix(perspective);
 
-    camera = new Camera3();
+	camera = new Camera3();
 	camera->Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
 
 	// Initiallise Model Specific Meshes Here
-	Mesh* newMesh = MeshBuilder::GenerateTerrain("Town 3", "HeightMapFiles//heightmap_Town3.raw", m_heightMap);
+	Mesh* newMesh = MeshBuilder::GenerateTerrain("FreeField2", "HeightMapFiles//heightmap_FreeField2.raw", m_heightMap);
 	newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
-	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
+	newMesh->textureArray[0] = LoadTGA("Image//BrickWall.tga");
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
@@ -52,8 +53,8 @@ void SceneTown3::Init()
 
 	theInteractiveMap = new GameMap();
 	GameMap *theMap = dynamic_cast<GameMap*>(theInteractiveMap);
-	theMap->setName("scene town 3 logic map");
-	theMap->LoadMap("DrivenFiles//Town3Layout.csv", m_heightMap, TerrainScale, objVec, BManager);
+	theMap->setName("scene open field 2 logic map");
+	theMap->LoadMap("DrivenFiles//FreeField_2_Layout.csv", m_heightMap, TerrainScale, objVec, BManager);
 
 	//<!> There can only be 1 Player
 	Player = new PlayerObject();
@@ -69,10 +70,20 @@ void SceneTown3::Init()
 	PlayerPTR->setPlayerBoundaries(objVec);
 	camera->position = PlayerPTR->GetPosition();
 	//<!> There can only be 1 Player
-    transitingSceneName = "";
+
+	CurrentEncounterRateBoost = 0;
+	PreviousPosition = camera->position;
+	PreviousPosition.y = Application::cA_MinimumTerrainY;
+	MonsterFound = false;
+
+	// Codes to swap to bs
+	/*std::map<std::string, Enemy*>::iterator it2 = Scene_System::accessing().EnemyData.begin();
+	Scene_System::accessing().BSys->SetEnemy(*it2->second);
+	Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);*/
+	transitingSceneName = "";
 }
 
-void SceneTown3::Update(float dt)
+void SceneFreeField2::Update(float dt)
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	SceneGraphics->Update(dt);
@@ -90,56 +101,121 @@ void SceneTown3::Update(float dt)
 	}
 	Vector3 Center(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 2, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight / 2, 0);
 
+	if ((camera->position - PreviousPosition).LengthSquared() > 25.f) // 5 Units
+	{
+		if (CurrentEncounterRateBoost < MaxEncounterRate)
+			CurrentEncounterRateBoost += 10;
+		PreviousPosition = camera->position;
+		PreviousPosition.y = Application::cA_MinimumTerrainY;
+	}
+	if (MonsterFound == false && EncounterTimer < EncounterTimeCheck)
+	{
+		EncounterTimer += (float)dt;
+	}
+	else if (MonsterFound == false && (camera->position - PreviousPosition).LengthSquared() > 4.f) // 2 Units
+	{
+		EncounterTimer = 0;
+		if (Math::RandIntMinMax(0, MaxEncounterRate - CurrentEncounterRateBoost) < MaxEncounterRate * EncounterRatio)
+		{
+			MonsterFound = true;
+			Scene_System::accessing().SetLoadingTime(3.f);
+		}
+	}
+	else if (MonsterFound && Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
+	{
+		Scene_System::accessing().whatLoadingState = Scene_System::NOT_LOADING;
+		MonsterFound = false;
+		CurrentEncounterRateBoost = 0;
+		std::ostringstream ss;
+		ss << Math::RandIntMinMax(1, Scene_System::accessing().EnemyData.size());
+		std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find(ss.str());
+		Scene_System::accessing().BSys->SetEnemy(*it->second);
+		Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
+	}
+
 	framerates = 1 / dt;
-
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('1'))
-	{
-		Scene_System::accessing().SwitchScene(SceneTown1::id_);
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
-	{
-		Scene_System::accessing().SwitchScene(SceneTown2::id_);
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('4'))
-	{
-		Scene_System::accessing().SwitchScene(SceneFreeField::id_);
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('5'))
-	{
-		Scene_System::accessing().SwitchScene(SceneFreeField2::id_);
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
-	{
-		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-		Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0;
-		Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0;
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('0'))
-	{
-		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
-	}
-
-	BManager.UpdateContainer(dt, camera->position);
-
 	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
+	if (Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)
+	{
+		if (Scene_System::accessing().cSS_InputManager->GetKeyValue('1'))
+		{
+			Scene_System::accessing().SwitchScene(SceneTown1::id_);
+		}
+		if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
+		{
+			Scene_System::accessing().SwitchScene(SceneTown2::id_);
+		}
+		if (Scene_System::accessing().cSS_InputManager->GetKeyValue('3'))
+		{
+			Scene_System::accessing().SwitchScene(SceneTown3::id_);
+		}
+		if (Scene_System::accessing().cSS_InputManager->GetKeyValue('4'))
+		{
+			Scene_System::accessing().SwitchScene(SceneFreeField::id_);
+		}
+		if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
+		{
+			Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+			Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0;
+			Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0;
+		}
+		if (Scene_System::accessing().cSS_InputManager->GetKeyValue('0'))
+		{
+			Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+		}
+
+		BManager.UpdateContainer(dt, camera->position);
+		camera->CameraIsLocked = false;
+	}
+	else
+	{
+		camera->CameraIsLocked = true;
+		PlayerPTR->SetVelocity(Vector3(0, 0, 0));
+	}
 	PlayerPTR->Update(dt);
 	PlayerPTR->SetRotationAngle(camera->CurrentCameraRotation.y);
 
 	camera->position = PlayerPTR->GetPosition();
 	camera->Update(dt);
-    Scene_System::accessing().UpdateLoadingStuff(dt);
+	for (auto it : Scene_System::accessing().QM.allQuests)
+	{
+		for (auto it2 : Scene_System::accessing().gPlayer->playerCurrQState)
+		{
+			if (it2.first == it->getName())
+			{
+				if (it->getActive())
+				{
+					it->Update(dt);
+					std::cout << it->theStageAT->getDesc() << std::endl;
+				}
+			}
+		}
+		for (auto it3 : it->qStages)
+		{
+			if (it3->getGiver() == "NONE")
+			{
+				if (it3->getComplete())
+				{
+					it3->setStageNO(it3->getStageNO() + 1);
+				}
+				else break;
+			}
+			else break;
+		}
+	}
+	Scene_System::accessing().UpdateLoadingStuff(dt);
 }
 
-void SceneTown3::RenderTerrain()
+void SceneFreeField2::RenderTerrain()
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	modelStack->PushMatrix();
 	modelStack->Scale(TerrainScale.x, TerrainScale.y, TerrainScale.z);
-	SceneGraphics->RenderMesh("Town 3", true);
+	SceneGraphics->RenderMesh("FreeField", true);
 	modelStack->PopMatrix();
 }
 
-void SceneTown3::RenderShadowCasters()
+void SceneFreeField2::RenderShadowCasters()
 {
 	RenderTerrain();
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
@@ -173,12 +249,10 @@ void SceneTown3::RenderShadowCasters()
 
 }
 
-void SceneTown3::RenderSkybox()
+void SceneFreeField2::RenderSkybox()
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	//left
-	modelStack->PushMatrix();
-	modelStack->Rotate(90, 0, 1, 0);
 	modelStack->PushMatrix();
 	modelStack->Rotate(90, 0, 1, 0);
 	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
@@ -221,11 +295,9 @@ void SceneTown3::RenderSkybox()
 	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
 	SceneGraphics->RenderMesh("SB_Bottom", false);
 	modelStack->PopMatrix();
-	modelStack->PopMatrix();
-
 }
 
-void SceneTown3::RenderPassGPass()
+void SceneFreeField2::RenderPassGPass()
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	SceneGraphics->m_renderPass = GraphicsEntity::RENDER_PASS::RENDER_PASS_PRE;
@@ -249,7 +321,7 @@ void SceneTown3::RenderPassGPass()
 	RenderShadowCasters();
 }
 
-void SceneTown3::RenderPassMain()
+void SceneFreeField2::RenderPassMain()
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	SceneGraphics->m_renderPass = GraphicsEntity::RENDER_PASS::RENDER_PASS_MAIN;
@@ -309,9 +381,9 @@ void SceneTown3::RenderPassMain()
 
 	Scene_System::accessing().cSS_PlayerUIManager->Render();
 
-    if (Scene_System::accessing().theLoadingEffect)
-        Scene_System::accessing().RenderLoadingStuff();
-    std::ostringstream ss;
+	if (Scene_System::accessing().theLoadingEffect)
+		Scene_System::accessing().RenderLoadingStuff();
+	std::ostringstream ss;
 	ss.str("");
 	ss << "Scene 1 - FPS:" << framerates;
 	ss.precision(3);
@@ -340,7 +412,7 @@ void SceneTown3::RenderPassMain()
 	SceneGraphics->SetHUD(false);
 }
 
-void SceneTown3::Render()
+void SceneFreeField2::Render()
 {
 	//*********************************
 	//		PRE RENDER PASS
@@ -352,7 +424,7 @@ void SceneTown3::Render()
 	RenderPassMain();
 }
 
-void SceneTown3::Exit()
+void SceneFreeField2::Exit()
 {
 	if (theInteractiveMap)
 		delete theInteractiveMap;
@@ -363,47 +435,47 @@ void SceneTown3::Exit()
 	}
 	if (Player)
 		delete Player;
-    if (camera)
-        delete camera;
+	if (camera)
+		delete camera;
 }
 
-bool SceneTown3::onNotify(const std::string &theEvent)
+bool SceneFreeField2::onNotify(const std::string &theEvent)
 {
-    if (checkWhetherTheWordInThatString("PLAYER_INFO", theEvent))
-    {
-        if (Scene_System::accessing().gPlayer->CurrCamera)
-        {
-            delete camera;
-            camera = Scene_System::accessing().gPlayer->CurrCamera;
-        }
-        if (Scene_System::accessing().gPlayer->PlayerObj)
-        {
-            delete Player;
-            Player = Scene_System::accessing().gPlayer->PlayerObj;
-            PlayerObject *PlayerPTR = dynamic_cast<PlayerObject*>(Player);
-            PlayerPTR->SetPosition(Vector3(Player->GetPosition().x, camera->PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPosition().x / TerrainScale.x), (Player->GetPosition().z / TerrainScale.z)), Player->GetPosition().z));
-            PlayerPTR->setPlayerBoundaries(objVec);
-        }
-        return true;
-    }
-    else if (checkWhetherTheWordInThatString("TRANSITIONING", theEvent))
-    {
-        PlayerObject *PlayerPTR = Scene_System::accessing().gPlayer->PlayerObj = dynamic_cast<PlayerObject*>(Player);
-        PlayerPTR->SetVelocity(Vector3(0, 0, 0));
-        Scene_System::accessing().gPlayer->CurrCamera = camera;
-        for (std::vector<GameObject*>::iterator it = objVec.begin(), end = objVec.end(); it != end; ++it)
-        {
-            if (checkWhetherTheWordInThatString(Scene_System::accessing().gPlayer->currSceneID, (*it)->getName()))
-            {
-                Vector3 theGatePos = (*it)->GetPosition();
-                Vector3 theDirectionalPosBetweenPlayerGate = (PlayerPTR->GetPosition() - theGatePos).Normalize();
-                theDirectionalPosBetweenPlayerGate *= (((*it)->GetDimensions().x + (*it)->GetDimensions().y) * 0.5f);
-                PlayerPTR->SetPosition(theGatePos + theDirectionalPosBetweenPlayerGate);
-                break;
-            }
-        }
-        Scene_System::accessing().gPlayer->currSceneID = id_;
-        return true;
-    }
-    return false;
+	if (checkWhetherTheWordInThatString("PLAYER_INFO", theEvent))
+	{
+		if (Scene_System::accessing().gPlayer->CurrCamera)
+		{
+			delete camera;
+			camera = Scene_System::accessing().gPlayer->CurrCamera;
+		}
+		if (Scene_System::accessing().gPlayer->PlayerObj)
+		{
+			delete Player;
+			Player = Scene_System::accessing().gPlayer->PlayerObj;
+			PlayerObject *PlayerPTR = dynamic_cast<PlayerObject*>(Player);
+			PlayerPTR->SetPosition(Vector3(Player->GetPosition().x, camera->PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPosition().x / TerrainScale.x), (Player->GetPosition().z / TerrainScale.z)), Player->GetPosition().z));
+			PlayerPTR->setPlayerBoundaries(objVec);
+		}
+		return true;
+	}
+	else if (checkWhetherTheWordInThatString("TRANSITIONING", theEvent))
+	{
+		PlayerObject *PlayerPTR = Scene_System::accessing().gPlayer->PlayerObj = dynamic_cast<PlayerObject*>(Player);
+		PlayerPTR->SetVelocity(Vector3(0, 0, 0));
+		Scene_System::accessing().gPlayer->CurrCamera = camera;
+		for (std::vector<GameObject*>::iterator it = objVec.begin(), end = objVec.end(); it != end; ++it)
+		{
+			if (checkWhetherTheWordInThatString(Scene_System::accessing().gPlayer->currSceneID, (*it)->getName()))
+			{
+				Vector3 theGatePos = (*it)->GetPosition();
+				Vector3 theDirectionalPosBetweenPlayerGate = (PlayerPTR->GetPosition() - theGatePos).Normalize();
+				theDirectionalPosBetweenPlayerGate *= (((*it)->GetDimensions().x + (*it)->GetDimensions().y) * 0.5f);
+				PlayerPTR->SetPosition(theGatePos + theDirectionalPosBetweenPlayerGate);
+				break;
+			}
+		}
+		Scene_System::accessing().gPlayer->currSceneID = id_;
+		return true;
+	}
+	return false;
 }
