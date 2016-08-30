@@ -145,9 +145,6 @@ void Application::Init()
 
 	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
-	float ScreenHeight = 100; // <!>
-	float ScreenWidth = ScreenHeight * ((float)cA_WindowWidth / (float)cA_WindowHeight);
-	
 	GraphicsEntity* SceneGraphics = new GraphicsEntity();
 	SceneGraphics->Init();
 	Scene_System::accessing().setGraphics_Scene(*SceneGraphics);
@@ -233,16 +230,18 @@ void Application::Update()
 	if (m_dAccumulatedTime_ThreadOne > 1 / frameTime)
 	{
 		Scene_System::accessing().cSS_InputManager->UpdateMouse();
+		Scene_System::accessing().cSS_InputManager->HandleUserInput();
+		Scene_System::accessing().cSS_PlayerUIManager->Update((float)m_dElaspedTime);
 		Scene_System::accessing().getCurrScene().Update((float)m_dElaspedTime);
 		m_dAccumulatedTime_ThreadOne = 0.0;
 	}
 
 	//<!> This is a huge problem even if you made it to be 2 threaded
 	m_dAccumulatedTime_ThreadTwo += m_dElaspedTime;
-	if (m_dAccumulatedTime_ThreadTwo > 1 / frameTime)
+	if (m_dAccumulatedTime_ThreadTwo > 1 / frameTime * 5)
 	{
-		Scene_System::accessing().cSS_InputManager->HandleUserInput();
-        MusicSystem::accessing().Update(m_dElaspedTime);
+		Scene_System::accessing().cSS_PlayerUIManager->UpdateStats((float)m_dElaspedTime);
+		MusicSystem::accessing().Update((float)m_dElaspedTime);
 		m_dAccumulatedTime_ThreadTwo = 0.0;
 	}
 	//<!> This is a huge problem even if you made it to be 2 threaded

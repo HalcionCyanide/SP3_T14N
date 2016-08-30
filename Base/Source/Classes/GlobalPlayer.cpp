@@ -112,6 +112,11 @@ bool GlobalPlayer::LoadPlayerSave(const std::string &fileName)
             size_t posOfComman = data.find_first_of(',');
             std::string key = data.substr(0, posOfComman);
             std::string value = data.substr(posOfComman + 1);
+            if (checkWhetherTheWordInThatString("QUESTS", key) == false)
+            {
+                size_t OtherposOf_Comma = value.find_first_of(',');
+                value = value.substr(0, OtherposOf_Comma);
+            }
             convertStringToUpperCaps(key);
             if (checkWhetherTheWordInThatString("SPELLPOWER", key))
             {
@@ -174,9 +179,21 @@ bool GlobalPlayer::LoadPlayerSave(const std::string &fileName)
             {
                 PlayerObj->SetRotationAngle(stof(value));
             }
+            else if (checkWhetherTheWordInThatString("QUESTS", key))
+            {
+                std::map<std::string, int>::iterator it = playerCurrQState.begin();
+                std::istringstream iss(value);
+                std::string valuesOfQuests = "";
+                while (getline(iss, valuesOfQuests, ','))
+                {
+                    it->second = stoi(valuesOfQuests);
+                    ++it;
+                }
+            }
         }
         file.close();
         Scene_System::accessing().getCurrScene().onNotify("PLAYER_INFO");
+        Scene_System::accessing().cSS_PlayerUIManager->UpdateStats(0);
         return true;
     }
     return false;
@@ -281,6 +298,18 @@ bool GlobalPlayer::RewritePlayerSave(const std::string &fileName)
                     ss << key << PlayerObj->GetRotationAngle();
                     writeFile << ss.str() << std::endl;
                 }
+            }
+            else if (checkWhetherTheWordInThatString("QUESTS", thatSpecificLine))
+            {
+                ss << key;
+                for (std::map<std::string, int>::iterator it = playerCurrQState.begin(), end = playerCurrQState.end(); it != end; ++it)
+                {
+                    ss << it->second << ',';
+                }
+                std::string theEntireLine = ss.str();
+                if (theEntireLine[theEntireLine.size() - 1] == ',')
+                    theEntireLine.erase(theEntireLine.end() - 1);
+                writeFile << theEntireLine << std::endl;
             }
             else
                 writeFile << (*it) << std::endl;

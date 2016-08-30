@@ -58,7 +58,7 @@
     <Filter Include="Header Files\Quests">
       <UniqueIdentifier>{a468e6d2-7938-475f-a16c-38bf5bd36323}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Conditions\Quests">
+    <Filter Include="Source Files\Quests">
       <UniqueIdentifier>{1ecb6cc2-f790-4a5d-a911-79b2e1af7119}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -232,10 +232,10 @@
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="Source\Quests\Quest.cpp">
-      <Filter>Source Files\Conditions\Quests</Filter>
+      <Filter>Source Files\Quests</Filter>
     </ClCompile>
     <ClCompile Include="Source\Quests\QuestStage.cpp">
-      <Filter>Source Files\Conditions\Quests</Filter>
+      <Filter>Source Files\Quests</Filter>
     </ClCompile>
     <ClCompile Include="Source\Classes\GateBoundary.cpp">
       <Filter>Source Files\Classes</Filter>

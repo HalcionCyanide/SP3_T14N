@@ -1,6 +1,7 @@
 SoundFileName,SoundType,volume //Set it between 0.1 and 1,TimesToPlay,unlimitedtimes,loop //Only for background music,SoundID
-Sounds//Step_Grass.mp3,2D,0.3,1,,,footstep
-Sounds//Battle1.mp3,2D,0.2,1,,1,battle
-Sounds//BattleBoss.mp3,2D,0.2,1,,1,bossbattle
-Sounds//Town1.mp3,2D,0.2,1,,1,town1
-Sounds//521537_Rainworld.mp3,2D,0.2,1,,1,town1Alt
+Sounds//Step_Grass.ogg,2D,0.3,1,,,footstep
+Sounds//Battle1.ogg,2D,0.2,1,,1,battle
+Sounds//BattleBoss.ogg,2D,0.2,1,,1,bossbattle
+Sounds//Hey_boy.ogg,2D,0.2,1,,1,town1
+Sounds//521537_Rainworld.ogg,2D,0.2,1,,1,town1Alt
+Sounds//spun_Fragments.ogg,2D,0.2,1,,1,town3

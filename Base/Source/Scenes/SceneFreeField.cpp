@@ -75,11 +75,6 @@ void SceneFreeField::Init()
 	PreviousPosition = camera->position;
 	PreviousPosition.y = Application::cA_MinimumTerrainY;
     MonsterFound = false;
-
-	// Codes to swap to bs
-	/*std::map<std::string, Enemy*>::iterator it2 = Scene_System::accessing().EnemyData.begin();
-	Scene_System::accessing().BSys->SetEnemy(*it2->second);
-	Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);*/
     transitingSceneName = "";
 }
 
@@ -186,7 +181,11 @@ void SceneFreeField::Update(float dt)
 				if (it->getActive())
 				{
 					it->Update(dt);
-					std::cout << it->theStageAT->getDesc() << std::endl;
+					std::cout << it->qStages.at(it2.second - 1)->getDesc() << std::endl;
+					if (it->qStages.at(it2.second - 1)->getComplete())
+					{
+						std::cout << "COMPLETE" << std::endl;
+					}
 				}
 			}
 		}

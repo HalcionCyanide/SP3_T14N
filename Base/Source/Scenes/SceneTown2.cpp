@@ -10,6 +10,7 @@
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\PlayerObject.h"
 #include "../Misc/LoadEnemyData.h"
+#include "../Systems/MusicSystem.h"
 
 std::string SceneTown2::id_ = "2_Scene";
 

@@ -174,18 +174,17 @@ void SceneBattleScreen::RenderPassMain()
 	ss.precision(3);
 	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
 
-	/*if (Scene_System::accessing().BSys->CurrentEnemy)
-	{
-		ss.str("");
-		ss << "EnemyMWaves" << Scene_System::accessing().BSys->CurrentEnemy->MaxEnemyWave;
-		ss.precision(3);
-		SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
+	
+	ss.str("");
+	ss << "EnemyMWaves" << Scene_System::accessing().BSys->PlayerIFrameTimer;
+	ss.precision(3);
+	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
 
-		ss.str("");
-		ss << "EnemyCWaves" << Scene_System::accessing().BSys->CurrentEnemy->CurrentEnemyWave;
-		ss.precision(3);
-		SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 100);
-	}*/
+	ss.str("");
+	ss << "EnemyCWaves" << Scene_System::accessing().BSys->PlayerIsInvincible;
+	ss.precision(3);
+	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 100);
+
 	
 	SceneGraphics->SetHUD(false);
 }

@@ -233,7 +233,8 @@ void PlayerObject::UpdateJump(const float dt)
 			JumpVel = 0.0f;
 			m_bJumping = false;
 		}
-	}
+        MusicSystem::accessing().accessTheMusic("footstep")->Stop(1.5);
+    }
 }
 
 void PlayerObject::P_ForwardMovement(const float dt)
