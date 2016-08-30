@@ -446,8 +446,8 @@ void BattleSystem::UpdateBattlePhase(float dt)
 {
 	UpdateEnemyLogic(dt);
 	EnemyLayer->Update(dt);
-	UpdatePhysics(dt);
 	UpdatePlayer(dt);
+	UpdatePhysics(dt);
 }
 
 void BattleSystem::UpdateEnemyLogic(float dt)
@@ -570,25 +570,28 @@ void BattleSystem::UpdateEndScreenSuccess(float dt)
 			(*it)->SwapOriginalWithTarget();
 		}
 	}
-	ExitButton->UI_Bounds->SetPosition(ExitButton->Position);
-	ExitButton->UI_Bounds->SetDimensions(ExitButton->Dimensions);
-	ExitButton->UI_Bounds->ResetValues();
-	ExitButton->BoundsActive = true;
-	bool ClickSucceeded = false;
-	ExitButton->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
-    if (ClickSucceeded && ((Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)))
+
+	if (SealAnimationOver && UISwapped)
 	{
-        Scene_System::accessing().SetLoadingTime(3.0);
-        //QuickExit();
+		ExitButton->UI_Bounds->SetPosition(ExitButton->Position);
+		ExitButton->UI_Bounds->SetDimensions(ExitButton->Dimensions);
+		ExitButton->UI_Bounds->ResetValues();
+		bool ClickSucceeded = false;
+		ExitButton->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+		if (ExitButton->BoundsActive && ClickSucceeded && ((Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)))
+		{
+			ExitButton->BoundsActive = false;
+			Scene_System::accessing().SetLoadingTime(3.0);
+		}
+		else if (!ExitButton->BoundsActive)
+		{
+			Scene_System::accessing().UpdateLoadingStuff(dt);
+			if (Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)
+			{
+				QuickExit();
+			}
+		}
 	}
-    else if (Scene_System::accessing().whatLoadingState == Scene_System::BEGIN_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::STILL_LOADING)
-    {
-        Scene_System::accessing().UpdateLoadingStuff(dt);
-        if (Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)
-        {
-            QuickExit();
-        }
-    }
 }
 
 void BattleSystem::UpdateEndScreenFail(float dt)
@@ -607,29 +610,29 @@ void BattleSystem::UpdateEndScreenFail(float dt)
 			(*it)->SwapOriginalWithTarget();
 		}
 	}
-	ExitButton->UI_Bounds->SetPosition(ExitButton->Position);
-	ExitButton->UI_Bounds->SetDimensions(ExitButton->Dimensions);
-	ExitButton->UI_Bounds->ResetValues();
-	ExitButton->BoundsActive = true;
-	bool ClickSucceeded = false;
-	ExitButton->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
-    if (ClickSucceeded && ((Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)))
-    {
-        Scene_System::accessing().SetLoadingTime(3.0);
-  //      Exit();
-		//Scene_System::accessing().SwitchScene(Scene_MainMenu::id_);
-		//Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+	if (UISwapped)
+	{
+		ExitButton->UI_Bounds->SetPosition(ExitButton->Position);
+		ExitButton->UI_Bounds->SetDimensions(ExitButton->Dimensions);
+		ExitButton->UI_Bounds->ResetValues();
+		bool ClickSucceeded = false;
+		ExitButton->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+		if (ExitButton->BoundsActive && ClickSucceeded && ((Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)))
+		{
+			ExitButton->BoundsActive = false;
+			Scene_System::accessing().SetLoadingTime(3.0);
+		}
+		else if (!ExitButton->BoundsActive)
+		{
+			Scene_System::accessing().UpdateLoadingStuff(dt);
+			if (Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)
+			{
+				Exit();
+				Scene_System::accessing().SwitchScene(Scene_MainMenu::id_);
+				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+			}
+		}
 	}
-    else if (Scene_System::accessing().whatLoadingState == Scene_System::BEGIN_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::STILL_LOADING)
-    {
-        Scene_System::accessing().UpdateLoadingStuff(dt);
-        if (Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)
-        {
-            Exit();
-            Scene_System::accessing().SwitchScene(Scene_MainMenu::id_);
-            Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
-        }
-    }
 }
 
 void BattleSystem::InitSuccessScreen()
@@ -638,42 +641,45 @@ void BattleSystem::InitSuccessScreen()
 
 	EndScreenSuccess = new UI_Layer();
 	// Set Spawn and Target
-	Vector3 SpawnPos = Vector3(CenterPosition.x, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 2.f, 0);
+	Vector3 SpawnPos = Vector3(CenterPosition.x, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 4.f, 0);
 	EndScreenSuccess->LayerOriginalPosition.y = EndScreenSuccess->LayerCenterPosition.y = SpawnPos.y;
 	EndScreenSuccess->LayerTargetPosition = 0;
 
 	// Layer Backing Image
-	EndScreenSuccess->AddUIElement(CurrentEnemy->MeshName, 3 * CenterPosition, 3 * CenterPosition, Vector3(PlayerScale * 5, PlayerScale * 5, 1), CenterPosition);
+	EndScreenSuccess->AddUIElement(CurrentEnemy->MeshName, 3 * CenterPosition, 3 * CenterPosition, 2 *  Vector3(PlayerScale * 5, PlayerScale * 5, 1), CenterPosition);
 
-	EndScreenSuccess->AddUIElement("PlayerHeart", CenterPosition * -2.5f, CenterPosition * -2.5f, Vector3(PlayerScale, PlayerScale, 1), CenterPosition);
+	EndScreenSuccess->AddUIElement("PlayerHeart", CenterPosition * -2.5f, CenterPosition * -2.5f, 2 * Vector3(PlayerScale, PlayerScale, 1), CenterPosition);
 	
 	EndScreenSuccess->AddUIElement("BS_FPanel", CenterPosition, SpawnPos, Vector3(-Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 1), SpawnPos);
 
-	EndScreenSuccess->AddUIElement("UI_ChatBox", CenterPosition + Vector3(0, CenterPosition.y * 0.65f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.8f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "The Monster Has Been Sealed!");
+	EndScreenSuccess->AddUIElement("UI_ChatBox", CenterPosition, SpawnPos, Vector3(-Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.9f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.9f, 1), SpawnPos);
+
+	EndScreenSuccess->AddUIElement("TFB_Button", Vector3(CenterPosition.x, CenterPosition.y * 1.45f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.8f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "The Monster Has Been Sealed!");
+
+	ExitButton = new UI_Element("TFB_Button", Vector3(CenterPosition.x, CenterPosition.y * 0.55f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "Click Here To Exit The Battle Screen.");
+	ExitButton->BoundsActive = true;
+
+	EndScreenSuccess->cUI_Layer.push_back(ExitButton);
 
 	std::stringstream ss;
 	if (CurrentEnemy->SpellPower <= Scene_System::accessing().gPlayer->GetSpellPower())
 	{
 		ss.str("");
 		ss << "Spell Power: No Change [" << Scene_System::accessing().gPlayer->GetSpellPower() << "]";
-		EndScreenSuccess->AddUIElement("TFB_Button", CenterPosition, SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.06f * AspectRatio, 1), SpawnPos, ss.str());
+		EndScreenSuccess->AddUIElement("TFB_Button", CenterPosition, SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.055f * AspectRatio, 1), SpawnPos, ss.str());
 	}
 	else {
 		ss.str("");
 		ss << "Old Spell Power: " << Scene_System::accessing().gPlayer->GetSpellPower();
-		EndScreenSuccess->AddUIElement("TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.06f * AspectRatio, 1), SpawnPos, ss.str());
+		EndScreenSuccess->AddUIElement("TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.1f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.055f * AspectRatio, 1), SpawnPos, ss.str());
 		Scene_System::accessing().gPlayer->SetSpellPower(CurrentEnemy->SpellPower);
 		ss.str("");
 		ss << "New Spell Power: " << Scene_System::accessing().gPlayer->GetSpellPower();
-		EndScreenSuccess->AddUIElement("TFB_Button", CenterPosition - Vector3(0, CenterPosition.y * 0.15f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.06f * AspectRatio, 1), SpawnPos, ss.str());
+		EndScreenSuccess->AddUIElement("TFB_Button", CenterPosition - Vector3(0, CenterPosition.y * 0.1f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.055f * AspectRatio, 1), SpawnPos, ss.str());
 	
 		Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetSpellPower());
 		Scene_System::accessing().gPlayer->SetMaxHealth(Scene_System::accessing().gPlayer->GetSpellPower());
 	}
-
-	ExitButton = new UI_Element("UI_ChatBox", CenterPosition - Vector3(0, CenterPosition.y * 0.7f), SpawnPos + Vector3(CenterPosition.x * 4.f, CenterPosition.y * 0.7f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos + Vector3(CenterPosition.x * 4.f, CenterPosition.y * 0.7f), "Click Here To Exit The Battle Screen.");
-	
-	EndScreenSuccess->cUI_Layer.push_back(ExitButton);
 
 	cUI_System.cUIS_LayerContainer.push_back(EndScreenSuccess);
 	ShiftBattleUI();
@@ -696,11 +702,15 @@ void BattleSystem::InitFailScreen()
 
 	EndScreenFail->AddUIElement("BS_FPanel", CenterPosition, SpawnPos, Vector3(-Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 1), SpawnPos);
 
-	EndScreenFail->AddUIElement("UI_ChatBox", CenterPosition + Vector3(0, CenterPosition.y * 0.3f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.8f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "You Have Been Killed By The Monster...");
+	EndScreenFail->AddUIElement("UI_ChatBox", CenterPosition, SpawnPos, Vector3(-Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.9f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.9f, 1), SpawnPos);
 
-	ExitButton = new UI_Element("UI_ChatBox", CenterPosition - Vector3(0, CenterPosition.y * 0.3f), SpawnPos + Vector3(CenterPosition.x * 4.f, CenterPosition.y * 0.3f), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos + Vector3(CenterPosition.x * 4.f, CenterPosition.y * 0.3f), "Click Here To Return To The Main Menu.");
+	EndScreenFail->AddUIElement("TFB_Button", Vector3(CenterPosition.x, CenterPosition.y * 1.3f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.8f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "You Have Been Killed By The Monster...");
+
+	ExitButton = new UI_Element("TFB_Button", Vector3(CenterPosition.x, CenterPosition.y * 0.7f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "Click Here To Return To The Main Menu.");
+	ExitButton->BoundsActive = true;
 
 	EndScreenFail->cUI_Layer.push_back(ExitButton);
+
 
 	cUI_System.cUIS_LayerContainer.push_back(EndScreenFail);
 	ShiftBattleUI();
@@ -717,6 +727,12 @@ void BattleSystem::UpdatePlayer(float dt)
 {
 	UpdateControls(dt);
 	UpdateITimer(dt);
+	if (Application::IsKeyPressed(VK_LBUTTON))
+	{
+		int RPcount = Math::RandIntMinMax(1, 2);
+		for (int i = 0; i < RPcount; ++i)
+			cBillboardManager.AddParticle("WhiteParticle", Scene_System::accessing().cSS_InputManager->GetMousePosition(), Vector3(PlayerScale * 0.5f, PlayerScale * 0.5f, 1), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0), Vector3(0, 0, 1), 2);
+	}
 }
 
 void BattleSystem::UpdateITimer(float dt)
@@ -734,7 +750,11 @@ void BattleSystem::UpdateITimer(float dt)
 			PlayerIFrameTimer = 0.f;
 		}
 	}
-	else PlayerIsInvincible = false;
+	else
+	{
+		PlayerIFrameTimer = 0.f;
+		PlayerIsInvincible = false;
+	}
 }
 
 void BattleSystem::UpdateControls(float dt)
@@ -812,27 +832,30 @@ void BattleSystem::UpdatePhysics(float dt)
 	{
 		for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 		{
-			if (!PlayerIsInvincible && (*it)->Active && (*it)->Visible)
-				if (CollisionCheck(*PlayerObj, **it, dt))
+			if (PlayerIFrameTimer < Math::EPSILON)
+				PlayerIsInvincible = false;
+
+			if ((*it)->Active && (*it)->Visible)
+				if (!PlayerIsInvincible && PlayerIFrameTimer < Math::EPSILON && CollisionCheck(*PlayerObj, **it, dt))
 				{
-					// HP Decrement Should Be In CRes
-					if (CollisionResponse(*PlayerObj, **it, dt))
-					{
-						int HP = Scene_System::accessing().gPlayer->GetCurrentHealth();
-						if (HP <= 0)
-							BattleState = BS_EndScreenFail;
-						HP = Math::Clamp(Scene_System::accessing().gPlayer->GetCurrentHealth(), 0, Scene_System::accessing().gPlayer->GetMaxHealth());
-						Scene_System::accessing().gPlayer->SetCurrentHealth(HP);
+					CollisionResponse(*PlayerObj, **it, dt);
 
-						PlayerIsInvincible = true;
-						PlayerIFrameTimer = 1 * Math::Clamp(SpellPowerRatio, 0.8f, 1.f);
+					int HP = Scene_System::accessing().gPlayer->GetCurrentHealth();
+					if (HP <= 0)
+						BattleState = BS_EndScreenFail;
+					HP = Math::Clamp(Scene_System::accessing().gPlayer->GetCurrentHealth(), 0, Scene_System::accessing().gPlayer->GetMaxHealth());
+					Scene_System::accessing().gPlayer->SetCurrentHealth(HP);
 
-						float HealthRatio = (float)Scene_System::accessing().gPlayer->GetCurrentHealth() / (float)Scene_System::accessing().gPlayer->GetMaxHealth() + 0.001f;
-						float GBarWidth = HealthRatio * HealthBarDefaultScale * 0.5f;
-						float BarPosition = GBarPosition - (HealthBarDefaultScale - GBarWidth) * 0.5f + HealthBarDefaultScale * 0.25f;
-						HealthBarGreen->Dimensions.x = GBarWidth;
-						HealthBarGreen->Position.x = BarPosition;
-					}
+					PlayerIsInvincible = true;
+					PlayerIFrameTimer = 1 * Math::Clamp(SpellPowerRatio, 0.8f, 1.f);
+
+					float HealthRatio = (float)Scene_System::accessing().gPlayer->GetCurrentHealth() / (float)Scene_System::accessing().gPlayer->GetMaxHealth() + 0.001f;
+					float GBarWidth = HealthRatio * HealthBarDefaultScale * 0.5f;
+					float BarPosition = GBarPosition - (HealthBarDefaultScale - GBarWidth) * 0.5f + HealthBarDefaultScale * 0.25f;
+					HealthBarGreen->Dimensions.x = GBarWidth;
+					HealthBarGreen->Position.x = BarPosition;
+
+					break;
 				}
 		}
 	}
@@ -921,9 +944,11 @@ bool BattleSystem::CollisionResponse(BattleScreenObject& BSO1, BattleScreenObjec
 	{
 		float Multiplier = EnemySpellPowerRatio;
 		if (EnemySpellPowerRatio < 1.f) EnemySpellPowerRatio = 1.f;
-		Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetCurrentHealth() - (int)(P->DamagePerAttack * EnemySpellPowerRatio));
+		int Damage = (int)(P->DamagePerAttack * EnemySpellPowerRatio);
+		if (Damage > 0)
+			Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetCurrentHealth() - Damage);
 	}
-	Vector3 VelShift = 0.25f * BSO2.GetVelocity();
+	Vector3 VelShift = 0.1f * BSO2.GetVelocity();
 	BSO1.SetVelocity(BSO1.GetVelocity() + VelShift);
 	return true;
 }

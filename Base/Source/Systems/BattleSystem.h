@@ -38,6 +38,9 @@ public:
 	BattleSystem();
 	virtual ~BattleSystem();
 
+	bool PlayerIsInvincible = false;
+	float PlayerIFrameTimer;
+
 	//Public Variables
 	BS_State BattleState = BS_IntroScreen;
 
@@ -111,8 +114,8 @@ private:
 	float PlayerBaseMovementSpeed;
 	float PlayerCurrentMovementSpeed;
 	UI_Layer* PlayerInventoryUI;
-	bool PlayerIsInvincible = false;
-	float PlayerIFrameTimer;
+	//bool PlayerIsInvincible = false;
+	//float PlayerIFrameTimer;
 	float FrictionDecrementMultiplier;
 	BattleScreenObject* PlayerObj;
 	// Enemy Variables

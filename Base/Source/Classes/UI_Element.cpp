@@ -105,19 +105,8 @@ void UI_Element::Update(float dt)
 	}
 }
 
-void UI_Element::Update(float dt, const Vector3& MousePosition, bool& ClickSuccess)
+void UI_Element::CheckInput(const Vector3& MousePosition, bool& ClickSuccess)
 {
-	float Check = (TargetPosition - Position).LengthSquared();
-	if (!AtTarget && Active && Check > 1.f)
-	{
-		UI_Bounds->SetPosition(Position);
-		UI_Bounds->SetDimensions(Dimensions);
-		UI_Bounds->ResetValues();
-		Vector3 DirVec = TargetPosition - Position;
-		Position += DirVec * 3 * dt;
-		if (Check < 1.f)
-			AtTarget = true;
-	}
 	if (Active)
 	{
 		if (BoundsActive && UI_Bounds->CheckCollision(MousePosition))

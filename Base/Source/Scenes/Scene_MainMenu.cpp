@@ -133,8 +133,8 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                     (*it2)->BoundsActive = true;
                     if (((*it2)->UI_Text == UI_Text[1] || (*it2)->UI_Text == UI_Text[2] || (*it2)->UI_Text == UI_Text[3]))
                     {
-                        (*it2)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
-                        if (ClickSucceeded)
+						(*it2)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+						if (ClickSucceeded)
                         {
                             if (((*it2)->UI_Text == UI_Text[1]))
                             {
@@ -172,17 +172,16 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                                 // Exit2
                                 Application::ExitGame = true;
                             }
+							break;
                         }
                     }
-                    else if ((*it2)->Active)
-                        (*it2)->Update((float)dt);
                 }
                 else if (CurrentMenuState == S_SECONDLEVEL)
                 {
                     if (((*it2)->UI_Text == UI_Text[4] || (*it2)->UI_Text == UI_Text[5] || (*it2)->UI_Text == UI_Text[6]))
                     {
                         (*it2)->BoundsActive = true;
-                        (*it2)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+						(*it2)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
                         if (ClickSucceeded)
                         {
                             if (((*it2)->UI_Text == UI_Text[4]))
@@ -221,17 +220,16 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                                     }
                                 }
                             }
+							break;
                         }
                     }
-                    else if ((*it2)->Active)
-                        (*it2)->Update((float)dt);
                 }
                 //Updating of Settings
                 else if (CurrentMenuState == S_SETTING)
                 {
                     if ((*it2)->UI_Text == UI_Text[6] || checkWhetherTheWordInThatString(UI_Text[7], (*it2)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[8], (*it2)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[9], (*it2)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[10], (*it2)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[11], (*it2)->UI_Text))   //Setting Stuff
                     {
-                        (*it2)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+						(*it2)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
                         if (ClickSucceeded)
                         {
                             if ((*it2)->UI_Text == UI_Text[6])
@@ -247,7 +245,8 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                                     }
                                 }
                             }
-                            else {
+                            else 
+							{
                                 for (unsigned num = 7; num <= 11; ++num)
                                 {
                                     if (checkWhetherTheWordInThatString(UI_Text[num], (*it2)->UI_Text))
@@ -264,19 +263,14 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                                     }
                                 }
                             }
+
+							break;
                         }
                     }
-                    //Updating of Settings
-					else if ((*it2)->Active)
-						(*it2)->Update((float)dt);
                 }
                 //Updating of the keys
                 else if (CurrentMenuState == S_UPDATING_KEYS)
-                {
-                    if ((*it2)->Active)
-                    {
-                        (*it2)->Update((float)dt);
-                    }
+				{
                     for (unsigned char theChar = 0; theChar < UCHAR_MAX; ++theChar)
                     {
                         if (Application::IsKeyPressed(theChar) && !Application::IsKeyPressed(VK_LBUTTON))
@@ -308,7 +302,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                 {
                     if (checkWhetherTheWordInThatString(UI_Text[13], (*it2)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[14], (*it2)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[15], (*it2)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[16], (*it2)->UI_Text))   //Loading Saves Stuff
                     {
-                        (*it2)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+						(*it2)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
                         if (ClickSucceeded)
                         {
                             if ((*it2)->UI_Text == UI_Text[16])
@@ -336,10 +330,9 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                                     }
                                 }
                             }
+							break;
                         }
                     }
-                    else if ((*it2)->Active)
-                        (*it2)->Update((float)dt);
                 }
                 //Loading of Save Stuff
      }
@@ -411,6 +404,7 @@ void Scene_MainMenu::Update(float dt)
 	}
 
 	UpdateUILogic(dt, CurrentMenuState);
+	UI_Sys.Update(dt);
 	BManager.UpdateContainer(dt, camera.position);
 	camera.Update(dt);
     Scene_System::accessing().UpdateLoadingStuff(dt);
