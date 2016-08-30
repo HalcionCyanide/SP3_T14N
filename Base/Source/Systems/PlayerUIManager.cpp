@@ -154,6 +154,7 @@ void PlayerUIManager::Update(double dt)
 			if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
 				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
 			CurrentState = UIS_HUD;
+			Scene_System::accessing().cSS_InputManager->SetMouseToScreenCenter();
 		}
 	}
 

@@ -14,6 +14,7 @@ public:
 	bool GetKeyValue(char);
 	Vector3 GetMousePosition();
 	void SetMousePosition(Vector3);
+	void SetMouseToScreenCenter();
 	void UpdateMouse();
 
 	void SetScreenSize(float, float);
