@@ -13,18 +13,21 @@ public:
 		UIS_Menu_Inventory,
 		UIS_Menu_Quests,
 		UIS_Menu_Save,
+		UIS_NO_UI,
 	};
+
+	UI_State CurrentState = UIS_HUD;
 
 	PlayerUIManager();
 	~PlayerUIManager();
 
 	virtual void Init();
 	virtual void Update(double dt);
+	void UpdateStats(float dt);
 	virtual void Render();
 	virtual void Exit();
 
 private:
-	UI_State CurrentState = UIS_HUD;
 	Vector3 CenterPosition;
 
 	// Unclickable HUD
@@ -52,6 +55,7 @@ private:
 
 	void InitMenu();
 	void RenderMenu();
+	void UpdateStatsHUD(float dt);
 };
 
 #endif // _PLAYER_UI_MANAGER_H

@@ -81,8 +81,68 @@ void PlayerUIManager::InitMenu()
 
 void PlayerUIManager::Update(double dt)
 {
+	switch (CurrentState)
+	{
+	case UIS_HUD:
+		for (std::vector<UI_Layer*>::iterator it = UI_HUD.cUIS_LayerContainer.begin(); it != UI_HUD.cUIS_LayerContainer.end(); ++it)
+		{
+			(*it)->LayerTargetPosition.y = 0;
+		}
+		for (std::vector<UI_Layer*>::iterator it = UI_Menu.cUIS_LayerContainer.begin(); it != UI_Menu.cUIS_LayerContainer.end(); ++it)
+		{
+			(*it)->LayerTargetPosition.y = -CenterPosition.y;
+		}
+		break;
+	case UIS_Menu_Stats:
+		for (std::vector<UI_Layer*>::iterator it = UI_HUD.cUIS_LayerContainer.begin(); it != UI_HUD.cUIS_LayerContainer.end(); ++it)
+		{
+			(*it)->LayerTargetPosition.y = -CenterPosition.y;
+		}
+		for (std::vector<UI_Layer*>::iterator it = UI_Menu.cUIS_LayerContainer.begin(); it != UI_Menu.cUIS_LayerContainer.end(); ++it)
+		{
+			(*it)->LayerTargetPosition.y = 0;
+		}
+		break;
+	case UIS_NO_UI:
+		for (std::vector<UI_Layer*>::iterator it = UI_HUD.cUIS_LayerContainer.begin(); it != UI_HUD.cUIS_LayerContainer.end(); ++it)
+		{
+			(*it)->LayerTargetPosition.y = -CenterPosition.y;
+		}
+		for (std::vector<UI_Layer*>::iterator it = UI_Menu.cUIS_LayerContainer.begin(); it != UI_Menu.cUIS_LayerContainer.end(); ++it)
+		{
+			(*it)->LayerTargetPosition.y = -CenterPosition.y;
+		}
+		break;
+	}
 	UI_HUD.Update((float)dt);
 	UI_Menu.Update((float)dt);
+}
+
+void PlayerUIManager::UpdateStats(float dt)
+{
+	UpdateStatsHUD((float)dt);
+}
+
+void PlayerUIManager::UpdateStatsHUD(float dt)
+{
+	// Name
+	HUD_Stats->cUI_Layer[2]->UI_Text = Scene_System::accessing().gPlayer->getName();
+
+	// SP
+	std::stringstream ss;
+	ss << "SP: " << Scene_System::accessing().gPlayer->GetSpellPower();
+	HUD_Stats->cUI_Layer[3]->UI_Text = ss.str();
+
+	// HP
+	if (Scene_System::accessing().gPlayer->GetMaxHealth() < Scene_System::accessing().gPlayer->GetSpellPower())
+		Scene_System::accessing().gPlayer->SetMaxHealth(Scene_System::accessing().gPlayer->GetMaxHealth());
+
+	if (Scene_System::accessing().gPlayer->GetCurrentHealth() > Scene_System::accessing().gPlayer->GetMaxHealth())
+		Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetMaxHealth());
+	
+	ss.str("");
+	ss << "HP: " << Scene_System::accessing().gPlayer->GetCurrentHealth() << " / " << Scene_System::accessing().gPlayer->GetMaxHealth();
+	HUD_Stats->cUI_Layer[4]->UI_Text = ss.str();
 }
 
 void PlayerUIManager::Render()

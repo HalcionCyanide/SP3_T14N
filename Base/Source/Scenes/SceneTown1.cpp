@@ -99,8 +99,8 @@ void SceneTown1::InitChatUI()
 	Vector3 ButtonScale(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.20f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.1f, 1);
 	ChatLayer = new UI_Layer();
 	// Name
-	Vector3 DefaultPos(CenterPosition.x  * 0.25f, CenterPosition.y * 0.7f, 0);
-	NPC_Name = new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Sek Heng");
+	Vector3 DefaultPos(CenterPosition.x  * 0.3f, CenterPosition.y * 0.65f, 0);
+	NPC_Name = new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.25, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Sek Heng");
 	ChatLayer->cUI_Layer.push_back(NPC_Name);
 
 	// Text Box
@@ -143,7 +143,7 @@ std::string SceneTown1::HandleChatUIInput(float dt)
 			bool ClickDetection = false;
 			if ((*it)->BoundsActive)
 			{
-				(*it)->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickDetection);
+				(*it)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickDetection);
 				if (ClickDetection)
 				{
 					(*it)->BoundsActive = false;
@@ -169,6 +169,7 @@ void SceneTown1::NPC_chat(float dt)
 		if (DistanceCheck < CurrentNPC->GetDetectionRadiusSquared() && Scene_System::accessing().cSS_InputManager->GetKeyValue('Q') && !CurrentNPC->getInteracting())
 		{
 			CurrentNPC->setInteracting(true);
+			Scene_System::accessing().cSS_PlayerUIManager->CurrentState = PlayerUIManager::UIS_NO_UI;
 
 			if (ChatLayer->LayerTargetPosition.y < 0)
 				ChatLayer->SwapOriginalWithTarget();
@@ -241,6 +242,7 @@ void SceneTown1::NPC_chat(float dt)
 			std::string temp = HandleChatUIInput((float)dt);
 			if (temp == "Exit")
 			{
+				Scene_System::accessing().cSS_PlayerUIManager->CurrentState = PlayerUIManager::UIS_HUD;
 				camera->CameraIsLocked = false;
 				if (ChatLayer->LayerTargetPosition.y > -1)
 					ChatLayer->SwapOriginalWithTarget();
