@@ -13,6 +13,7 @@
 #include "..\\Scenes\\Scene_2.h"
 #include "..\\Scenes\\SceneBattleScreen.h"
 #include "..\\Scenes\\SceneFreeField.h"
+#include "..\\Scenes\\SceneFreeField2.h"
 #include "..\\Scenes\\SceneTown1.h"
 #include "..\\Scenes\\SceneTown2.h"
 #include "..\\Scenes\\SceneTown3.h"
@@ -184,6 +185,10 @@ void Application::Init()
 	SceneFreeField* freefield = new SceneFreeField();
 	freefield->Init();
 	Scene_System::accessing().AddScene(*freefield);
+
+	SceneFreeField2* freefield2 = new SceneFreeField2();
+	freefield2->Init();
+	Scene_System::accessing().AddScene(*freefield2);
 
 	SceneBattleScreen* battlescreen = new SceneBattleScreen();
 	battlescreen->Init();

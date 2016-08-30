@@ -12,7 +12,7 @@
 #include "..\\Classes\\PlayerObject.h"
 #include "../Misc/LoadEnemyData.h"
 
-std::string SceneFreeField2::id_ = "F1_Scene";
+std::string SceneFreeField2::id_ = "F2_Scene";
 
 SceneFreeField2::SceneFreeField2()
 	: SceneEntity()
@@ -44,8 +44,8 @@ void SceneFreeField2::Init()
 	// Initiallise Model Specific Meshes Here
 	Mesh* newMesh = MeshBuilder::GenerateTerrain("FreeField2", "HeightMapFiles//heightmap_FreeField2.raw", m_heightMap);
 	newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
-	newMesh->textureArray[0] = LoadTGA("Image//BrickWall.tga");
-	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
+	newMesh->textureArray[0] = LoadTGA("Image//GrassStoneTex.tga");
+	newMesh->textureArray[1] = LoadTGA("Image//BrickWall.tga"); 
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera->position.x / TerrainScale.x, camera->position.z / TerrainScale.z) + camera->PlayerHeight;
@@ -108,30 +108,30 @@ void SceneFreeField2::Update(float dt)
 		PreviousPosition = camera->position;
 		PreviousPosition.y = Application::cA_MinimumTerrainY;
 	}
-	if (MonsterFound == false && EncounterTimer < EncounterTimeCheck)
-	{
-		EncounterTimer += (float)dt;
-	}
-	else if (MonsterFound == false && (camera->position - PreviousPosition).LengthSquared() > 4.f) // 2 Units
-	{
-		EncounterTimer = 0;
-		if (Math::RandIntMinMax(0, MaxEncounterRate - CurrentEncounterRateBoost) < MaxEncounterRate * EncounterRatio)
-		{
-			MonsterFound = true;
-			Scene_System::accessing().SetLoadingTime(3.f);
-		}
-	}
-	else if (MonsterFound && Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
-	{
-		Scene_System::accessing().whatLoadingState = Scene_System::NOT_LOADING;
-		MonsterFound = false;
-		CurrentEncounterRateBoost = 0;
-		std::ostringstream ss;
-		ss << Math::RandIntMinMax(1, Scene_System::accessing().EnemyData.size());
-		std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find(ss.str());
-		Scene_System::accessing().BSys->SetEnemy(*it->second);
-		Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
-	}
+	//if (MonsterFound == false && EncounterTimer < EncounterTimeCheck)
+	//{
+	//	EncounterTimer += (float)dt;
+	//}
+	//else if (MonsterFound == false && (camera->position - PreviousPosition).LengthSquared() > 4.f) // 2 Units
+	//{
+	//	EncounterTimer = 0;
+	//	if (Math::RandIntMinMax(0, MaxEncounterRate - CurrentEncounterRateBoost) < MaxEncounterRate * EncounterRatio)
+	//	{
+	//		MonsterFound = true;
+	//		Scene_System::accessing().SetLoadingTime(3.f);
+	//	}
+	//}
+	//else if (MonsterFound && Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
+	//{
+	//	Scene_System::accessing().whatLoadingState = Scene_System::NOT_LOADING;
+	//	MonsterFound = false;
+	//	CurrentEncounterRateBoost = 0;
+	//	std::ostringstream ss;
+	//	ss << Math::RandIntMinMax(1, Scene_System::accessing().EnemyData.size());
+	//	std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find(ss.str());
+	//	Scene_System::accessing().BSys->SetEnemy(*it->second);
+	//	Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
+	//}
 
 	framerates = 1 / dt;
 	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
@@ -211,7 +211,7 @@ void SceneFreeField2::RenderTerrain()
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	modelStack->PushMatrix();
 	modelStack->Scale(TerrainScale.x, TerrainScale.y, TerrainScale.z);
-	SceneGraphics->RenderMesh("FreeField", true);
+	SceneGraphics->RenderMesh("FreeField2", true);
 	modelStack->PopMatrix();
 }
 
