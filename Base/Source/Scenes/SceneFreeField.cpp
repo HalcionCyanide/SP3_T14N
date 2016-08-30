@@ -181,11 +181,12 @@ void SceneFreeField::Update(float dt)
 				if (it->getActive())
 				{
 					it->Update(dt);
-					std::cout << it->qStages.at(it2.second - 1)->getDesc() << std::endl;
-					if (it->qStages.at(it2.second - 1)->getComplete())
-					{
-						std::cout << "COMPLETE" << std::endl;
-					}
+					//<!>DEBUGGING, WILL REMOVE
+					//std::cout << it->qStages.at(it2.second - 1)->getDesc() << std::endl;
+					//if (it->qStages.at(it2.second - 1)->getComplete())
+					//{
+					//	std::cout << "COMPLETE" << std::endl;
+					//}
 				}
 			}
 		}

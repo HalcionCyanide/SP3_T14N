@@ -401,6 +401,10 @@ void SceneTown1::Update(float dt)
 				if (it->getActive())
 				{
 					it->qStages.at(it2.second - 1)->Update(dt);
+					if (it->getCurrentStage() >= it->qStages.size())
+					{
+						it->setActive(false);
+					}
 				}
 			}
 		}
