@@ -90,36 +90,42 @@ void SceneTown2::Update(float dt)
 
 	framerates = 1 / dt;
 
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('1'))
-	{
-		Scene_System::accessing().SwitchScene(SceneTown1::id_);
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('3'))
-	{
-		Scene_System::accessing().SwitchScene(SceneTown3::id_);
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('4'))
-	{
-		Scene_System::accessing().SwitchScene(SceneFreeField::id_);
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('4'))
-	{
-		Scene_System::accessing().SwitchScene(Scene_2::id_);
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
-	{
-		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-		Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0;
-		Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0;
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('0'))
-	{
-		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
-	}
-
-	BManager.UpdateContainer(dt, camera->position);
-
 	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
+    if (Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)
+    {
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('1'))
+        {
+            Scene_System::accessing().SwitchScene(SceneTown1::id_);
+        }
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('3'))
+        {
+            Scene_System::accessing().SwitchScene(SceneTown3::id_);
+        }
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('4'))
+        {
+            Scene_System::accessing().SwitchScene(SceneFreeField::id_);
+        }
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('4'))
+        {
+            Scene_System::accessing().SwitchScene(Scene_2::id_);
+        }
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
+        {
+            Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+            Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0;
+            Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0;
+        }
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('0'))
+        {
+            Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+        }
+	    BManager.UpdateContainer(dt, camera->position);
+    }
+    else {
+        camera->CameraIsLocked = true;
+        PlayerPTR->SetVelocity(Vector3(0, 0, 0));
+    }
+
 	PlayerPTR->Update(dt);
 	PlayerPTR->SetRotationAngle(camera->CurrentCameraRotation.y);
 	PlayerPTR->GetBoundary()->ResetValues();
@@ -132,6 +138,11 @@ void SceneTown2::Update(float dt)
 		PlayerPTR->SetPosition(camera->defaultPosition);
 	}
     Scene_System::accessing().UpdateLoadingStuff(dt);
+    if (transitingSceneName != "" && Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
+    {
+        camera->CameraIsLocked = false;
+        onNotify("TRANSITIONING");
+    }
 }
 
 void SceneTown2::RenderTerrain()
@@ -391,12 +402,30 @@ bool SceneTown2::onNotify(const std::string &theEvent)
     }
     else if (checkWhetherTheWordInThatString("TRANSITIONING", theEvent))
     {
+        Scene_System::accessing().SwitchScene(transitingSceneName);
+        std::ostringstream ss;
+        ss << "SWITCHING_" << id_;
+        transitingSceneName = "";
+        Scene_System::accessing().getCurrScene().onNotify(ss.str());
+        return true;
+    }
+    else if (checkWhetherTheWordInThatString("LOADING", theEvent))
+    {
+        Scene_System::accessing().SetLoadingTime(3.0);
+        size_t posOfUnderScore = theEvent.find_first_of('_');
+        transitingSceneName = theEvent.substr(posOfUnderScore + 1);
+        return true;
+    }
+    else if (checkWhetherTheWordInThatString("SWITCHING", theEvent))
+    {
         PlayerObject *PlayerPTR = Scene_System::accessing().gPlayer->PlayerObj = dynamic_cast<PlayerObject*>(Player);
         PlayerPTR->SetVelocity(Vector3(0, 0, 0));
         Scene_System::accessing().gPlayer->CurrCamera = camera;
+        size_t posOfUnderScore = theEvent.find_first_of('_');
+        std::string preSceneId = theEvent.substr(posOfUnderScore + 1);
         for (std::vector<GameObject*>::iterator it = objVec.begin(), end = objVec.end(); it != end; ++it)
         {
-            if (checkWhetherTheWordInThatString(Scene_System::accessing().gPlayer->currSceneID, (*it)->getName()))
+            if (checkWhetherTheWordInThatString(preSceneId, (*it)->getName()))
             {
                 Vector3 theGatePos = (*it)->GetPosition();
                 Vector3 theDirectionalPosBetweenPlayerGate = (PlayerPTR->GetPosition() - theGatePos).Normalize();
