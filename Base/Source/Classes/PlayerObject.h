@@ -3,6 +3,7 @@
 
 #include "Camera3.h"
 #include "GameObject.h"
+#include "Item.h"
 #include <vector>
 
 class PlayerObject : public GameObject
@@ -51,6 +52,7 @@ protected:
     bool m_bJumping = false;
     double m_ElapsedTime;
     std::vector<GameObject*> *theBoundaries;
+	//std::map<Item, int> ItemNo;
 };
 
 
