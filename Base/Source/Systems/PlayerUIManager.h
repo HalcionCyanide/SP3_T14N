@@ -29,6 +29,7 @@ public:
 
 private:
 	Vector3 CenterPosition;
+	const static std::string UI_Text[];
 
 	// Unclickable HUD
 	UI_System UI_HUD;
@@ -42,6 +43,8 @@ private:
 	// Clickable Menu
 	UI_System UI_Menu;
 	
+	UI_Layer* Menu_Base;
+	std::vector<UI_Element*> Menu_BaseButtons;
 	UI_Layer* Menu_Stats;
 	UI_Layer* Menu_Inventory;
 	UI_Layer* Menu_Quests;

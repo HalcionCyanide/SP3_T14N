@@ -109,6 +109,10 @@ void UI_Element::CheckInput(const Vector3& MousePosition, bool& ClickSuccess)
 {
 	if (Active)
 	{
+		UI_Bounds->SetPosition(Position);
+		UI_Bounds->SetDimensions(Dimensions);
+		UI_Bounds->ResetValues();
+
 		if (BoundsActive && UI_Bounds->CheckCollision(MousePosition))
 		{
 			// Do Upscale
