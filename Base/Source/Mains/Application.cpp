@@ -202,7 +202,7 @@ void Application::Run()
 	HWND hwnd = GetActiveWindow();
 
 	//Main Loop
-	while (!ExitGame && !glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE))
+	while (!ExitGame && !glfwWindowShouldClose(m_window))
 	{
         // Get the elapsed time
         m_dElaspedTime = m_timer.getElapsedTime();
@@ -210,7 +210,6 @@ void Application::Run()
 		{
 			Update();
 			Scene_System::accessing().getCurrScene().Render();
-			//MusicSystem::accessing().playBackgroundMusic("footstep");
         }
 		//Swap buffers
 		glfwSwapBuffers(m_window);
