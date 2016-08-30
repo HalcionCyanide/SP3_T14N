@@ -215,12 +215,17 @@ void SceneTown1::NPC_chat(float dt)
 													for (std::vector<QuestStage*>::iterator it6 = test->qStages.begin(); it6 != test->qStages.end(); ++it6)
 													{
 														QuestStage* temp2 = *it6;
-														if ((temp2->getGiver() == CurrentNPC->getName()) && (buttonCount <= 3))
+														if (((temp2->getGiver() == CurrentNPC->getName()) && (buttonCount <= 3)))
 														{
-															NPC_QuestButtons.at(buttonCount)->UI_Text = it->first;
-															buttonCount++;
-															break;
+															if (test->qStages.at(it5->second)->getComplete() || it2->second == 0)
+															{
+																NPC_QuestButtons.at(buttonCount)->UI_Text = it->first;
+																buttonCount++;
+																break;
+															}
 														}
+														else
+															break;
 													}
 												}
 											}
@@ -261,12 +266,15 @@ void SceneTown1::NPC_chat(float dt)
 					for (std::vector<Quest*>::iterator it2 = Scene_System::accessing().QM.allQuests.begin(); it2 != Scene_System::accessing().QM.allQuests.end(); ++it2)
 					{
 						Quest* dis = *it2;
-						if (dis->getName() == dat->UI_Text)
+						for (std::map<std::string, int>::iterator it3 = Scene_System::accessing().gPlayer->playerCurrQState.begin(); it3 != Scene_System::accessing().gPlayer->playerCurrQState.end(); ++it3)
 						{
-							NPC_TextBox->UI_Text = dis->theStageAT->getDesc();
-							NPC_TextBox->WrapText();
-							changedFText = true;
-							break;
+							if (it3->first == dat->UI_Text && dis->getName() == it3->first)
+							{
+								NPC_TextBox->UI_Text = dis->qStages.at(it3->second)->getDesc();
+								NPC_TextBox->WrapText();
+								changedFText = true;
+								break;
+							}
 						}
 					}
 				}
@@ -351,20 +359,6 @@ void SceneTown1::Update(float dt)
         {
             Scene_System::accessing().SwitchScene(Scene_2::id_);
         }
-
-        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('C'))
-        {
-            Scene_System::accessing().QM.allQuests.at(0)->setActive(true);
-            Scene_System::accessing().QM.allQuests.at(0)->setCurrStage(1);
-            std::cout << Scene_System::accessing().QM.allQuests.at(0)->theStageAT->getDesc() << std::endl;
-        }
-        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('V'))
-        {
-            int nextStage = Scene_System::accessing().QM.allQuests.at(0)->getCurrentStage() + 1;
-            Scene_System::accessing().QM.allQuests.at(0)->setCurrStage(nextStage);
-            std::cout << Scene_System::accessing().QM.allQuests.at(0)->theStageAT->getDesc() << std::endl;
-        }
-
         if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
         {
             Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
@@ -387,9 +381,6 @@ void SceneTown1::Update(float dt)
 
 	camera->position = PlayerPTR->GetPosition();
 	camera->Update(dt);
-
-	ChatLayer->Update((float)dt);
-	NPC_chat((float)dt);
 	for (auto it : Scene_System::accessing().QM.allQuests)
 	{
 		for (auto it2 : Scene_System::accessing().gPlayer->playerCurrQState)
@@ -398,8 +389,7 @@ void SceneTown1::Update(float dt)
 			{
 				if (it->getActive())
 				{
-					it->Update(dt);
-					std::cout << it->theStageAT->getDesc() << std::endl;
+					it->qStages.at(it2.second - 1)->Update(dt);
 				}
 			}
 		}
@@ -416,6 +406,8 @@ void SceneTown1::Update(float dt)
 			else break;
 		}
 	}
+	ChatLayer->Update((float)dt);
+	NPC_chat((float)dt);
     Scene_System::accessing().UpdateLoadingStuff(dt);
     if (transitingSceneName != "" && Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
     {
