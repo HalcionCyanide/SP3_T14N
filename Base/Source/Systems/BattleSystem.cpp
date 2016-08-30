@@ -576,10 +576,19 @@ void BattleSystem::UpdateEndScreenSuccess(float dt)
 	ExitButton->BoundsActive = true;
 	bool ClickSucceeded = false;
 	ExitButton->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
-	if (ClickSucceeded)
+    if (ClickSucceeded && ((Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)))
 	{
-		QuickExit();
+        Scene_System::accessing().SetLoadingTime(3.0);
+        //QuickExit();
 	}
+    else if (Scene_System::accessing().whatLoadingState == Scene_System::BEGIN_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::STILL_LOADING)
+    {
+        Scene_System::accessing().UpdateLoadingStuff(dt);
+        if (Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)
+        {
+            QuickExit();
+        }
+    }
 }
 
 void BattleSystem::UpdateEndScreenFail(float dt)
@@ -604,12 +613,23 @@ void BattleSystem::UpdateEndScreenFail(float dt)
 	ExitButton->BoundsActive = true;
 	bool ClickSucceeded = false;
 	ExitButton->Update(dt, Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
-	if (ClickSucceeded)
-	{
-		Exit();
-		Scene_System::accessing().SwitchScene(Scene_MainMenu::id_);
-		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+    if (ClickSucceeded && ((Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)))
+    {
+        Scene_System::accessing().SetLoadingTime(3.0);
+  //      Exit();
+		//Scene_System::accessing().SwitchScene(Scene_MainMenu::id_);
+		//Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
 	}
+    else if (Scene_System::accessing().whatLoadingState == Scene_System::BEGIN_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::STILL_LOADING)
+    {
+        Scene_System::accessing().UpdateLoadingStuff(dt);
+        if (Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)
+        {
+            Exit();
+            Scene_System::accessing().SwitchScene(Scene_MainMenu::id_);
+            Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+        }
+    }
 }
 
 void BattleSystem::InitSuccessScreen()
