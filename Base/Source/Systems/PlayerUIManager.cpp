@@ -225,10 +225,14 @@ void PlayerUIManager::Update(double dt)
             if ((*it) == Menu_Save) {
                 for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(), end2 = (*it)->cUI_Layer.end(); it2 != end2; ++it2)
                 {
+                    if ((*it2)->UI_Text == "")
+                        continue;
                     (*it2)->BoundsActive = true;
                     bool CheckSucceeded = false;
                     (*it2)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), CheckSucceeded);
                     if (CheckSucceeded) {
+                        if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
+                            Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
                         if ((*it2)->UI_Text == "Save Load 1")
                         {
                             Scene_System::accessing().gPlayer->settingTheFileToSave(1);
@@ -236,20 +240,19 @@ void PlayerUIManager::Update(double dt)
                         }
                         else if ((*it2)->UI_Text == "Save Load 2")
                         {
-                            Scene_System::accessing().gPlayer->settingTheFileToSave(1);
+                            Scene_System::accessing().gPlayer->settingTheFileToSave(2);
                             Scene_System::accessing().gPlayer->automaticallySaveFile();
                         }
                         else if ((*it2)->UI_Text == "Save Load 3")
                         {
-                            Scene_System::accessing().gPlayer->settingTheFileToSave(1);
+                            Scene_System::accessing().gPlayer->settingTheFileToSave(3);
                             Scene_System::accessing().gPlayer->automaticallySaveFile();
                         }
                         else if ((*it2)->UI_Text == "Quit Game")
                         {
                             Scene_System::accessing().getCurrScene().onNotify("LOADING_M_Scene");
+                            Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
                         }
-                        if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
-                            Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
                         CurrentState = UIS_HUD;
                         Scene_System::accessing().cSS_InputManager->SetMouseToScreenCenter();
                         break;
