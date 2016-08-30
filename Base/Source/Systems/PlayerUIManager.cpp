@@ -197,8 +197,32 @@ void PlayerUIManager::Update(double dt)
 			if ((*it) == Menu_Base || (*it) == Menu_Inventory)
 				(*it)->LayerTargetPosition.y = 0;
 			else (*it)->LayerTargetPosition.y = DistMultiplier * CenterPosition.y;
+        }
+		break;
+	case UIS_Menu_Quests:
+		for (std::vector<UI_Layer*>::iterator it = UI_HUD.cUIS_LayerContainer.begin(); it != UI_HUD.cUIS_LayerContainer.end(); ++it)
+		{
+			(*it)->LayerTargetPosition.y = -DistMultiplier * CenterPosition.y;
+		}
+		for (std::vector<UI_Layer*>::iterator it = UI_Menu.cUIS_LayerContainer.begin(); it != UI_Menu.cUIS_LayerContainer.end(); ++it)
+		{
+			if ((*it) == Menu_Base || (*it) == Menu_Quests)
+				(*it)->LayerTargetPosition.y = 0;
+			else (*it)->LayerTargetPosition.y = DistMultiplier * CenterPosition.y;
+		}
+		break;
+	case UIS_Menu_Save:
+		for (std::vector<UI_Layer*>::iterator it = UI_HUD.cUIS_LayerContainer.begin(); it != UI_HUD.cUIS_LayerContainer.end(); ++it)
+		{
+			(*it)->LayerTargetPosition.y = -DistMultiplier * CenterPosition.y;
+		}
+		for (std::vector<UI_Layer*>::iterator it = UI_Menu.cUIS_LayerContainer.begin(); it != UI_Menu.cUIS_LayerContainer.end(); ++it)
+		{
+			if ((*it) == Menu_Base || (*it) == Menu_Save)
+				(*it)->LayerTargetPosition.y = 0;
+			else (*it)->LayerTargetPosition.y = DistMultiplier * CenterPosition.y;
             //Updating of the Keys
-            if ((*it) == Menu_Inventory) {
+            if ((*it) == Menu_Save) {
                 for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(), end2 = (*it)->cUI_Layer.end(); it2 != end2; ++it2)
                 {
                     (*it2)->BoundsActive = true;
@@ -234,30 +258,6 @@ void PlayerUIManager::Update(double dt)
             }
             //Updating of the Keys
         }
-		break;
-	case UIS_Menu_Quests:
-		for (std::vector<UI_Layer*>::iterator it = UI_HUD.cUIS_LayerContainer.begin(); it != UI_HUD.cUIS_LayerContainer.end(); ++it)
-		{
-			(*it)->LayerTargetPosition.y = -DistMultiplier * CenterPosition.y;
-		}
-		for (std::vector<UI_Layer*>::iterator it = UI_Menu.cUIS_LayerContainer.begin(); it != UI_Menu.cUIS_LayerContainer.end(); ++it)
-		{
-			if ((*it) == Menu_Base || (*it) == Menu_Quests)
-				(*it)->LayerTargetPosition.y = 0;
-			else (*it)->LayerTargetPosition.y = DistMultiplier * CenterPosition.y;
-		}
-		break;
-	case UIS_Menu_Save:
-		for (std::vector<UI_Layer*>::iterator it = UI_HUD.cUIS_LayerContainer.begin(); it != UI_HUD.cUIS_LayerContainer.end(); ++it)
-		{
-			(*it)->LayerTargetPosition.y = -DistMultiplier * CenterPosition.y;
-		}
-		for (std::vector<UI_Layer*>::iterator it = UI_Menu.cUIS_LayerContainer.begin(); it != UI_Menu.cUIS_LayerContainer.end(); ++it)
-		{
-			if ((*it) == Menu_Base || (*it) == Menu_Save)
-				(*it)->LayerTargetPosition.y = 0;
-			else (*it)->LayerTargetPosition.y = DistMultiplier * CenterPosition.y;
-		}
 		break;
 	case UIS_NO_UI:
 		for (std::vector<UI_Layer*>::iterator it = UI_HUD.cUIS_LayerContainer.begin(); it != UI_HUD.cUIS_LayerContainer.end(); ++it)

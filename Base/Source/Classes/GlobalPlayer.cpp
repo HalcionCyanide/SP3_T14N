@@ -41,14 +41,14 @@ void GlobalPlayer::Update(float dt)
 void GlobalPlayer::Exit()
 {
 	// SAVE STATS
-    if (whatSave > 0)
-    {
-        std::ostringstream ss;
-        ss << "DrivenFiles//PlayerSave" << whatSave << ".csv";
-        RewritePlayerSave(ss.str());
-    }
-    else
-        RewritePlayerSave("DrivenFiles//PlayerSave1.csv");
+    //if (whatSave > 0)
+    //{
+    //    std::ostringstream ss;
+    //    ss << "DrivenFiles//PlayerSave" << whatSave << ".csv";
+    //    RewritePlayerSave(ss.str());
+    //}
+    //else
+    //    RewritePlayerSave("DrivenFiles//PlayerSave1.csv");
 	// CLEAN UP
 
 }
