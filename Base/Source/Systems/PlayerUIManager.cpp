@@ -142,7 +142,12 @@ void PlayerUIManager::Update(double dt)
 		{
 			CurrentState = UIS_Menu_Stats;
 		}
-		else CurrentState = UIS_HUD;
+		else
+		{
+			if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
+				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+			CurrentState = UIS_HUD;
+		}
 	}
 
 	if (CurrentState != UIS_HUD)
