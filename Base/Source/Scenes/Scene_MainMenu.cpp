@@ -134,7 +134,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                     if (((*it2)->UI_Text == UI_Text[1] || (*it2)->UI_Text == UI_Text[2] || (*it2)->UI_Text == UI_Text[3]))
                     {
 						(*it2)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
-                        if (ClickSucceeded)
+						if (ClickSucceeded)
                         {
                             if (((*it2)->UI_Text == UI_Text[1]))
                             {
@@ -172,10 +172,9 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                                 // Exit2
                                 Application::ExitGame = true;
                             }
+							break;
                         }
                     }
-                    else if ((*it2)->Active)
-                        (*it2)->Update((float)dt);
                 }
                 else if (CurrentMenuState == S_SECONDLEVEL)
                 {
@@ -221,10 +220,9 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                                     }
                                 }
                             }
+							break;
                         }
                     }
-                    else if ((*it2)->Active)
-                        (*it2)->Update((float)dt);
                 }
                 //Updating of Settings
                 else if (CurrentMenuState == S_SETTING)
@@ -247,7 +245,8 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                                     }
                                 }
                             }
-                            else {
+                            else 
+							{
                                 for (unsigned num = 7; num <= 11; ++num)
                                 {
                                     if (checkWhetherTheWordInThatString(UI_Text[num], (*it2)->UI_Text))
@@ -264,19 +263,14 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                                     }
                                 }
                             }
+
+							break;
                         }
                     }
-                    //Updating of Settings
-					else if ((*it2)->Active)
-						(*it2)->Update((float)dt);
                 }
                 //Updating of the keys
                 else if (CurrentMenuState == S_UPDATING_KEYS)
-                {
-                    if ((*it2)->Active)
-                    {
-                        (*it2)->Update((float)dt);
-                    }
+				{
                     for (unsigned char theChar = 0; theChar < UCHAR_MAX; ++theChar)
                     {
                         if (Application::IsKeyPressed(theChar) && !Application::IsKeyPressed(VK_LBUTTON))
@@ -336,10 +330,9 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                                     }
                                 }
                             }
+							break;
                         }
                     }
-                    else if ((*it2)->Active)
-                        (*it2)->Update((float)dt);
                 }
                 //Loading of Save Stuff
      }
@@ -411,6 +404,7 @@ void Scene_MainMenu::Update(float dt)
 	}
 
 	UpdateUILogic(dt, CurrentMenuState);
+	UI_Sys.Update(dt);
 	BManager.UpdateContainer(dt, camera.position);
 	camera.Update(dt);
     Scene_System::accessing().UpdateLoadingStuff(dt);

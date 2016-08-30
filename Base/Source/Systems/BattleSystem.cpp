@@ -576,12 +576,21 @@ void BattleSystem::UpdateEndScreenSuccess(float dt)
 		ExitButton->UI_Bounds->SetPosition(ExitButton->Position);
 		ExitButton->UI_Bounds->SetDimensions(ExitButton->Dimensions);
 		ExitButton->UI_Bounds->ResetValues();
-		ExitButton->BoundsActive = true;
 		bool ClickSucceeded = false;
 		ExitButton->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
-		if (ClickSucceeded)
+		if (ExitButton->BoundsActive && ClickSucceeded && ((Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)))
 		{
-			QuickExit();
+			ExitButton->BoundsActive = false;
+			Scene_System::accessing().SetLoadingTime(3.0);
+			//QuickExit();
+		}
+		else if (!ExitButton->BoundsActive && Scene_System::accessing().whatLoadingState == Scene_System::BEGIN_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::STILL_LOADING)
+		{
+			Scene_System::accessing().UpdateLoadingStuff(dt);
+			if (Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)
+			{
+				QuickExit();
+			}
 		}
 	}
 }
@@ -610,11 +619,20 @@ void BattleSystem::UpdateEndScreenFail(float dt)
 		ExitButton->BoundsActive = true;
 		bool ClickSucceeded = false;
 		ExitButton->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
-		if (ClickSucceeded)
+		if (ExitButton->BoundsActive && ClickSucceeded && ((Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)))
 		{
-			Exit();
-			Scene_System::accessing().SwitchScene(Scene_MainMenu::id_);
-			Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+			ExitButton->BoundsActive = false;
+			Scene_System::accessing().SetLoadingTime(3.0);
+		}
+		else if (!ExitButton->BoundsActive && Scene_System::accessing().whatLoadingState == Scene_System::BEGIN_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::STILL_LOADING)
+		{
+			Scene_System::accessing().UpdateLoadingStuff(dt);
+			if (Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)
+			{
+				Exit();
+				Scene_System::accessing().SwitchScene(Scene_MainMenu::id_);
+				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+			}
 		}
 	}
 }
@@ -641,6 +659,7 @@ void BattleSystem::InitSuccessScreen()
 	EndScreenSuccess->AddUIElement("TFB_Button", Vector3(CenterPosition.x, CenterPosition.y * 1.45f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.8f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "The Monster Has Been Sealed!");
 
 	ExitButton = new UI_Element("TFB_Button", Vector3(CenterPosition.x, CenterPosition.y * 0.55f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "Click Here To Exit The Battle Screen.");
+	ExitButton->BoundsActive = true;
 
 	EndScreenSuccess->cUI_Layer.push_back(ExitButton);
 
@@ -690,6 +709,7 @@ void BattleSystem::InitFailScreen()
 	EndScreenFail->AddUIElement("TFB_Button", Vector3(CenterPosition.x, CenterPosition.y * 1.3f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.8f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "You Have Been Killed By The Monster...");
 
 	ExitButton = new UI_Element("TFB_Button", Vector3(CenterPosition.x, CenterPosition.y * 0.7f), SpawnPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.7f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.07f * AspectRatio, 1), SpawnPos, "Click Here To Return To The Main Menu.");
+	ExitButton->BoundsActive = true;
 
 	EndScreenFail->cUI_Layer.push_back(ExitButton);
 
