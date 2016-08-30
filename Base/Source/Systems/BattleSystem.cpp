@@ -446,8 +446,8 @@ void BattleSystem::UpdateBattlePhase(float dt)
 {
 	UpdateEnemyLogic(dt);
 	EnemyLayer->Update(dt);
-	UpdatePhysics(dt);
 	UpdatePlayer(dt);
+	UpdatePhysics(dt);
 }
 
 void BattleSystem::UpdateEnemyLogic(float dt)
@@ -582,9 +582,8 @@ void BattleSystem::UpdateEndScreenSuccess(float dt)
 		{
 			ExitButton->BoundsActive = false;
 			Scene_System::accessing().SetLoadingTime(3.0);
-			//QuickExit();
 		}
-		else if (!ExitButton->BoundsActive && Scene_System::accessing().whatLoadingState == Scene_System::BEGIN_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::STILL_LOADING)
+		else if (!ExitButton->BoundsActive)
 		{
 			Scene_System::accessing().UpdateLoadingStuff(dt);
 			if (Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)
@@ -616,7 +615,6 @@ void BattleSystem::UpdateEndScreenFail(float dt)
 		ExitButton->UI_Bounds->SetPosition(ExitButton->Position);
 		ExitButton->UI_Bounds->SetDimensions(ExitButton->Dimensions);
 		ExitButton->UI_Bounds->ResetValues();
-		ExitButton->BoundsActive = true;
 		bool ClickSucceeded = false;
 		ExitButton->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
 		if (ExitButton->BoundsActive && ClickSucceeded && ((Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)))
@@ -624,7 +622,7 @@ void BattleSystem::UpdateEndScreenFail(float dt)
 			ExitButton->BoundsActive = false;
 			Scene_System::accessing().SetLoadingTime(3.0);
 		}
-		else if (!ExitButton->BoundsActive && Scene_System::accessing().whatLoadingState == Scene_System::BEGIN_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::STILL_LOADING)
+		else if (!ExitButton->BoundsActive)
 		{
 			Scene_System::accessing().UpdateLoadingStuff(dt);
 			if (Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)
@@ -834,29 +832,30 @@ void BattleSystem::UpdatePhysics(float dt)
 	{
 		for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
 		{
+			if (PlayerIFrameTimer < Math::EPSILON)
+				PlayerIsInvincible = false;
+
 			if ((*it)->Active && (*it)->Visible)
-				if (CollisionCheck(*PlayerObj, **it, dt))
+				if (!PlayerIsInvincible && PlayerIFrameTimer < Math::EPSILON && CollisionCheck(*PlayerObj, **it, dt))
 				{
-					// HP Decrement Should Be In CRes
-					if (!PlayerIsInvincible && CollisionResponse(*PlayerObj, **it, dt))
-					{
-						int HP = Scene_System::accessing().gPlayer->GetCurrentHealth();
-						if (HP <= 0)
-							BattleState = BS_EndScreenFail;
-						HP = Math::Clamp(Scene_System::accessing().gPlayer->GetCurrentHealth(), 0, Scene_System::accessing().gPlayer->GetMaxHealth());
-						Scene_System::accessing().gPlayer->SetCurrentHealth(HP);
+					CollisionResponse(*PlayerObj, **it, dt);
 
-						PlayerIsInvincible = true;
-						PlayerIFrameTimer = 1 * Math::Clamp(SpellPowerRatio, 0.8f, 1.f);
+					int HP = Scene_System::accessing().gPlayer->GetCurrentHealth();
+					if (HP <= 0)
+						BattleState = BS_EndScreenFail;
+					HP = Math::Clamp(Scene_System::accessing().gPlayer->GetCurrentHealth(), 0, Scene_System::accessing().gPlayer->GetMaxHealth());
+					Scene_System::accessing().gPlayer->SetCurrentHealth(HP);
 
-						float HealthRatio = (float)Scene_System::accessing().gPlayer->GetCurrentHealth() / (float)Scene_System::accessing().gPlayer->GetMaxHealth() + 0.001f;
-						float GBarWidth = HealthRatio * HealthBarDefaultScale * 0.5f;
-						float BarPosition = GBarPosition - (HealthBarDefaultScale - GBarWidth) * 0.5f + HealthBarDefaultScale * 0.25f;
-						HealthBarGreen->Dimensions.x = GBarWidth;
-						HealthBarGreen->Position.x = BarPosition;
+					PlayerIsInvincible = true;
+					PlayerIFrameTimer = 1 * Math::Clamp(SpellPowerRatio, 0.8f, 1.f);
 
-						break;
-					}
+					float HealthRatio = (float)Scene_System::accessing().gPlayer->GetCurrentHealth() / (float)Scene_System::accessing().gPlayer->GetMaxHealth() + 0.001f;
+					float GBarWidth = HealthRatio * HealthBarDefaultScale * 0.5f;
+					float BarPosition = GBarPosition - (HealthBarDefaultScale - GBarWidth) * 0.5f + HealthBarDefaultScale * 0.25f;
+					HealthBarGreen->Dimensions.x = GBarWidth;
+					HealthBarGreen->Position.x = BarPosition;
+
+					break;
 				}
 		}
 	}
@@ -941,13 +940,15 @@ bool BattleSystem::CollisionResponse(BattleScreenObject& BSO1, BattleScreenObjec
 		if ((*it)->getName() == BSO2.GetMeshName())
 			P = *it;
 	}
-	if (!PlayerIsInvincible && P != nullptr)
+	if (P != nullptr)
 	{
 		float Multiplier = EnemySpellPowerRatio;
 		if (EnemySpellPowerRatio < 1.f) EnemySpellPowerRatio = 1.f;
-		Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetCurrentHealth() - (int)(P->DamagePerAttack * EnemySpellPowerRatio));
+		int Damage = (int)(P->DamagePerAttack * EnemySpellPowerRatio);
+		if (Damage > 0)
+			Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetCurrentHealth() - Damage);
 	}
-	Vector3 VelShift = 0.25f * BSO2.GetVelocity();
+	Vector3 VelShift = 0.1f * BSO2.GetVelocity();
 	BSO1.SetVelocity(BSO1.GetVelocity() + VelShift);
 	return true;
 }
