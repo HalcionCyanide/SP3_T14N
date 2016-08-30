@@ -340,3 +340,14 @@ bool GlobalPlayer::automaticallyLoadFile()
     }
     return false;
 }
+
+bool GlobalPlayer::automaticallySaveFile()
+{
+    if (whatSave > 0)
+    {
+        std::ostringstream ss;
+        ss << "DrivenFiles//PlayerSave" << whatSave << ".csv";
+        return RewritePlayerSave(ss.str());
+    }
+    return false;
+}

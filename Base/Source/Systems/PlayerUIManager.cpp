@@ -127,13 +127,13 @@ void PlayerUIManager::InitMenu()
 	NewE = new UI_Element("TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), Vector3(CenterPosition.x * 1.9f, CenterPosition.y * 1.7f, 1), CenterPosition + Vector3(0, CenterPosition.y * 0.15f));
 	Menu_Save->cUI_Layer.push_back(NewE);
 
-    NewE = new UI_Element("TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), Vector3(CenterPosition.x * 1.9f, CenterPosition.y * 1.7f, 1), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), "Save Load 1");
+    NewE = new UI_Element("TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.6f), CenterPosition + Vector3(0, CenterPosition.y * 0.6f), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 1), CenterPosition + Vector3(0, CenterPosition.y * 0.6f), "Save Load 1");
     Menu_Save->cUI_Layer.push_back(NewE);
-    NewE = new UI_Element("TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), Vector3(CenterPosition.x * 1.9f, CenterPosition.y * 1.7f, 1), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), "Save Load 2");
+    NewE = new UI_Element("TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.3f), CenterPosition + Vector3(0, CenterPosition.y * 0.3f), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 1), CenterPosition + Vector3(0, CenterPosition.y * 0.3f), "Save Load 2");
     Menu_Save->cUI_Layer.push_back(NewE);
-    NewE = new UI_Element("TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), Vector3(CenterPosition.x * 1.9f, CenterPosition.y * 1.7f, 1), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), "Save Load 3");
+    NewE = new UI_Element("TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.0f), CenterPosition + Vector3(0, CenterPosition.y * 0.0f), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 1), CenterPosition + Vector3(0, CenterPosition.y * 0.0f), "Save Load 3");
     Menu_Save->cUI_Layer.push_back(NewE);
-    NewE = new UI_Element("TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), Vector3(CenterPosition.x * 1.9f, CenterPosition.y * 1.7f, 1), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), "Quit Game");
+    NewE = new UI_Element("TFB_Button", CenterPosition + Vector3(0, CenterPosition.y * -0.3f), CenterPosition + Vector3(0, CenterPosition.y * -0.3f), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 1), CenterPosition + Vector3(0, CenterPosition.y * -0.3f), "Quit Game");
     Menu_Save->cUI_Layer.push_back(NewE);
 
 	UI_Menu.cUIS_LayerContainer.push_back(Menu_Save);
@@ -197,7 +197,43 @@ void PlayerUIManager::Update(double dt)
 			if ((*it) == Menu_Base || (*it) == Menu_Inventory)
 				(*it)->LayerTargetPosition.y = 0;
 			else (*it)->LayerTargetPosition.y = DistMultiplier * CenterPosition.y;
-		}
+            //Updating of the Keys
+            if ((*it) == Menu_Inventory) {
+                for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(), end2 = (*it)->cUI_Layer.end(); it2 != end2; ++it2)
+                {
+                    (*it2)->BoundsActive = true;
+                    bool CheckSucceeded = false;
+                    (*it2)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), CheckSucceeded);
+                    if (CheckSucceeded) {
+                        if ((*it2)->UI_Text == "Save Load 1")
+                        {
+                            Scene_System::accessing().gPlayer->settingTheFileToSave(1);
+                            Scene_System::accessing().gPlayer->automaticallySaveFile();
+                        }
+                        else if ((*it2)->UI_Text == "Save Load 2")
+                        {
+                            Scene_System::accessing().gPlayer->settingTheFileToSave(1);
+                            Scene_System::accessing().gPlayer->automaticallySaveFile();
+                        }
+                        else if ((*it2)->UI_Text == "Save Load 3")
+                        {
+                            Scene_System::accessing().gPlayer->settingTheFileToSave(1);
+                            Scene_System::accessing().gPlayer->automaticallySaveFile();
+                        }
+                        else if ((*it2)->UI_Text == "Quit Game")
+                        {
+                            Scene_System::accessing().getCurrScene().onNotify("LOADING_M_Scene");
+                        }
+                        if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
+                            Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+                        CurrentState = UIS_HUD;
+                        Scene_System::accessing().cSS_InputManager->SetMouseToScreenCenter();
+                        break;
+                    }
+                }
+            }
+            //Updating of the Keys
+        }
 		break;
 	case UIS_Menu_Quests:
 		for (std::vector<UI_Layer*>::iterator it = UI_HUD.cUIS_LayerContainer.begin(); it != UI_HUD.cUIS_LayerContainer.end(); ++it)
