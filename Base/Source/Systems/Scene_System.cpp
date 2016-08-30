@@ -9,7 +9,7 @@ void Scene_System::Init()
     graphics_scene = nullptr;
 	cSS_InputManager = new InputManager();
 	cSS_PlayerUIManager = new PlayerUIManager();
-	gPlayer = new GlobalPlayer(1, 100, 100, false);
+	gPlayer = new GlobalPlayer(10, 100, 100, false);
 
 	QM.readFile("DrivenFiles//questData.csv");
 	NM.LoadFile("DrivenFiles//NPC_FILES.csv");

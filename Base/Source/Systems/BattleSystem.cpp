@@ -888,7 +888,7 @@ bool BattleSystem::CollisionCheck(const BattleScreenObject& BSO1, const BattleSc
 	return false;
 }
 
-bool BattleSystem::CollisionResponse(BattleScreenObject& BSO1, const BattleScreenObject& BSO2, float dt)
+bool BattleSystem::CollisionResponse(BattleScreenObject& BSO1, BattleScreenObject& BSO2, float dt)
 {
 	// Do stuff like hp decrement
 	EnemyProjectile* P = nullptr;
@@ -903,7 +903,8 @@ bool BattleSystem::CollisionResponse(BattleScreenObject& BSO1, const BattleScree
 		if (EnemySpellPowerRatio < 1.f) EnemySpellPowerRatio = 1.f;
 		Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetCurrentHealth() - (int)(P->DamagePerAttack * EnemySpellPowerRatio));
 	}
-	BSO1.SetVelocity(BSO1.GetVelocity() + 0.25f * BSO2.GetVelocity());
+	Vector3 VelShift = 0.25f * BSO2.GetVelocity();
+	BSO1.SetVelocity(BSO1.GetVelocity() + VelShift);
 	return true;
 }
 

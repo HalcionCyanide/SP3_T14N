@@ -99,7 +99,7 @@ private:
 	// Battle Physics Calls
 	void UpdatePhysics(float dt);
 	bool CollisionCheck(const BattleScreenObject&, const BattleScreenObject&, float dt);
-	bool CollisionResponse(BattleScreenObject&, const BattleScreenObject&, float dt);
+	bool CollisionResponse(BattleScreenObject&, BattleScreenObject&, float dt);
 	// Battle Variables
 	UI_Layer* BattleBox;
 	UI_Element* HealthBarGreen;
