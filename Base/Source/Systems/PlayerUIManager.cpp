@@ -30,6 +30,9 @@ void PlayerUIManager::Init()
 {
 	CenterPosition.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
+	ButtonTimer = 0.f;
+	WaitTime = 0.5f;
+
 	UI_HUD.Init();
 	UI_Menu.Init();
 	InitHUD();
@@ -131,21 +134,15 @@ void PlayerUIManager::InitMenu()
 
 void PlayerUIManager::Update(double dt)
 {
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('E'))
+	ButtonTimer += (float)dt;
+	if (ButtonTimer > WaitTime && Scene_System::accessing().cSS_InputManager->GetKeyValue('E'))
 	{
-		//if (CurrentState == UIS_HUD)
-		//{
+		ButtonTimer = 0;
+		if (CurrentState == UIS_HUD)
+		{
 			CurrentState = UIS_Menu_Stats;
-		/*}
-		else CurrentState = UIS_HUD;*/
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('R'))
-	{
-		//if (CurrentState == UIS_HUD)
-		//{
-		CurrentState = UIS_HUD;
-		/*}
-		else CurrentState = UIS_HUD;*/
+		}
+		else CurrentState = UIS_HUD;
 	}
 
 	if (CurrentState != UIS_HUD)
