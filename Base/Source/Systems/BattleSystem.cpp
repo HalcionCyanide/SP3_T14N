@@ -934,17 +934,11 @@ bool BattleSystem::CollisionCheck(const BattleScreenObject& BSO1, const BattleSc
 bool BattleSystem::CollisionResponse(BattleScreenObject& BSO1, BattleScreenObject& BSO2, float dt)
 {
 	// Do stuff like hp decrement
-	EnemyProjectile* P = nullptr;
-	for (std::vector<EnemyProjectile*>::iterator it = CurrentEnemy->cE_Projectiles.begin(); it != CurrentEnemy->cE_Projectiles.end(); ++it)
-	{
-		if ((*it)->getName() == BSO2.GetMeshName())
-			P = *it;
-	}
-	if (P != nullptr)
+    if (CurrentProjectile.DamagePerAttack > 0)
 	{
 		float Multiplier = EnemySpellPowerRatio;
 		if (EnemySpellPowerRatio < 1.f) EnemySpellPowerRatio = 1.f;
-		int Damage = (int)(P->DamagePerAttack * EnemySpellPowerRatio);
+        int Damage = (int)(CurrentProjectile.DamagePerAttack * EnemySpellPowerRatio);
 		if (Damage > 0)
 			Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetCurrentHealth() - Damage);
 	}

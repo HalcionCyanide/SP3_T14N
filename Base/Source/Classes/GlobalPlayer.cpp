@@ -193,6 +193,7 @@ bool GlobalPlayer::LoadPlayerSave(const std::string &fileName)
         }
         file.close();
         Scene_System::accessing().getCurrScene().onNotify("PLAYER_INFO");
+        Scene_System::accessing().cSS_PlayerUIManager->UpdateStats(0);
         return true;
     }
     return false;
