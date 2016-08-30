@@ -300,6 +300,14 @@ bool Application::loadThoseKeyCommandsStuff()
             {
                 SimpleCommand::m_allTheKeys[SimpleCommand::JUMP_COMMAND] = KeyAndToken[1][0];
             }
+            else if (KeyAndToken[0] == "INTERACT_BUTTON")
+            {
+                SimpleCommand::m_allTheKeys[SimpleCommand::INTERACT_COMMAND] = KeyAndToken[1][0];
+            }
+            else if (KeyAndToken[0] == "PAUSE_MENU_BUTTON")
+            {
+                SimpleCommand::m_allTheKeys[SimpleCommand::PAUSE_MENU_COMMAND] = KeyAndToken[1][0];
+            }
         }
         file.close();
         return true;
