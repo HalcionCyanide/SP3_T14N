@@ -43,6 +43,7 @@ int Quest::getCurrentStage()
 
 void Quest::setCurrStage(int i)
 {
+	i = Math::Clamp(i, 0, (int)qStages.size() - 1);
 	theStageAT = qStages.at(i);
 }
 

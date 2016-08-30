@@ -24,3 +24,7 @@ CastlePillar,w,Castle_Pillar,40,70,40,,,,1,0
 Fence,Q,Fence,10,10,1,,,,1,0
 Castle_House,q,Castle_House,30,40,75,,,,1,0
 Ruin_House,R,Ruin_House,30,30,30,,,,1,0
+Ruin_Wall1,z,Ruin_Wall1,15,25,1,,,,1,0
+Ruin_Wall2,Z,Ruin_Wall2,15,25,1,,,,1,0
+Ruin_CornerWall1,x,Ruin_CornerWall1,15,25,15,,,,1,0
+Ruin_CornerWall2,X,Ruin_CornerWall2,15,25,15,,,,1,0

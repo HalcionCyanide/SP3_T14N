@@ -5,6 +5,7 @@
 #include "SceneTown2.h"
 #include "SceneTown3.h"
 #include "SceneFreeField.h"
+#include "SceneFreeField2.h"
 
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\PlayerObject.h"
@@ -73,19 +74,22 @@ void SceneTown1::Init()
 	camera->position = PlayerPTR->GetPosition();
 	//<!> There can only be 1 Player
 
-	int temp = 1;
 	for (auto it : Scene_System::accessing().NM.allNPCs)
 	{
-		it->Init(it->getName(), 1, Vector3(temp * 30.f - 100.f, 0, -80.f), Vector3(10, 10, 10), Vector3(0, 0, 0), 0.f, Vector3(0, 1, 0));
+		if (it->getName() == "Guard Captain")
+		{
+			it->Init(it->getName(), 1, Vector3(15.f, 0, -80.f), Vector3(10, 10, 10), Vector3(0, 0, 0), 0.f, Vector3(0, 1, 0));
 
-		it->SetPosition(
-			Vector3(it->GetPosition().x,
-			TerrainScale.y * ReadHeightMap(m_heightMap, (it->GetPosition().x / TerrainScale.x), (it->GetPosition().z / TerrainScale.x)) + it->GetDimensions().y * 0.5f, it->GetPosition().z
-			));
+			it->SetPosition(
+				Vector3(it->GetPosition().x,
+				TerrainScale.y * ReadHeightMap(m_heightMap, (it->GetPosition().x / TerrainScale.x), (it->GetPosition().z / TerrainScale.x)) + it->GetDimensions().y * 0.5f, it->GetPosition().z
+				));
 
-		it->SetBounds();
-		objVec.push_back(it);
-		temp++;
+			it->SetBounds();
+			objVec.push_back(it);
+		}
+		else
+			break;
 	}
 
 	UI_Sys = new UI_System();
@@ -100,7 +104,7 @@ void SceneTown1::InitChatUI()
 	ChatLayer = new UI_Layer();
 	// Name
 	Vector3 DefaultPos(CenterPosition.x  * 0.3f, CenterPosition.y * 0.65f, 0);
-	NPC_Name = new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.25, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Sek Heng");
+	NPC_Name = new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.25f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Sek Heng");
 	ChatLayer->cUI_Layer.push_back(NPC_Name);
 
 	// Text Box
@@ -190,6 +194,7 @@ void SceneTown1::NPC_chat(float dt)
 			camera->target = Vector3(CurrentNPC->GetPosition().x, Application::cA_CurrentTerrainY + (CurrentNPC->GetPosition().y - Application::cA_CurrentTerrainY) + (CurrentNPC->GetDimensions().y * 0.5f), CurrentNPC->GetPosition().z);
 			camera->CurrentCameraRotation.x = 0;
 			int buttonCount = 1;
+			bool imdone = false;
 			for (std::map<std::string, std::vector<int>>::iterator it = CurrentNPC->NPCcurrQstate.begin(); it != CurrentNPC->NPCcurrQstate.end(); ++it) // go thru the NPC's states
 			{
 				for (std::map<std::string, int>::iterator it2 = Scene_System::accessing().gPlayer->playerCurrQState.begin(); it2 != Scene_System::accessing().gPlayer->playerCurrQState.end(); ++it2) // go thru the player's states
@@ -208,25 +213,32 @@ void SceneTown1::NPC_chat(float dt)
 									{
 										for (std::map<std::string, int>::iterator it5 = Scene_System::accessing().gPlayer->playerCurrQState.begin(); it5 != Scene_System::accessing().gPlayer->playerCurrQState.end(); ++it5)
 										{
-											if (it5->first == test->preReq)
+											if (it5->first == test->getName())
 											{
-												if (it5->second >= test->preReqVal && !test->getActive())
+												if (test->getActive())
 												{
-													for (std::vector<QuestStage*>::iterator it6 = test->qStages.begin(); it6 != test->qStages.end(); ++it6)
+													if (test->qStages.at(it5->second - 1)->getComplete())
 													{
-														QuestStage* temp2 = *it6;
-														if (((temp2->getGiver() == CurrentNPC->getName()) && (buttonCount <= 3)))
-														{
-															if (test->qStages.at(it5->second)->getComplete() || it2->second == 0)
-															{
-																NPC_QuestButtons.at(buttonCount)->UI_Text = it->first;
-																buttonCount++;
-																break;
-															}
-														}
-														else
-															break;
+														imdone = true;
 													}
+												}
+											}
+											if (it5->first == test->preReq && it5->second >= test->preReqVal)
+											{
+												for (std::vector<QuestStage*>::iterator it6 = test->qStages.begin(); it6 != test->qStages.end(); ++it6)
+												{
+													QuestStage* temp2 = *it6;
+													if (((temp2->getGiver() == CurrentNPC->getName()) && (buttonCount <= 3)))
+													{
+														if (imdone || it2->second == 0)
+														{
+															NPC_QuestButtons.at(buttonCount)->UI_Text = it->first;
+															buttonCount++;
+															break;
+														}
+													}
+													else
+														break;
 												}
 											}
 										}
@@ -357,7 +369,7 @@ void SceneTown1::Update(float dt)
         }
         if (Scene_System::accessing().cSS_InputManager->GetKeyValue('5'))
         {
-            Scene_System::accessing().SwitchScene(Scene_2::id_);
+			Scene_System::accessing().SwitchScene(SceneFreeField2::id_);
         }
         if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
         {
