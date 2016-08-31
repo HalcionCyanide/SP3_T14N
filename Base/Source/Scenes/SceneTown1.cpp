@@ -115,20 +115,20 @@ void SceneTown1::InitChatUI()
 	ChatLayer->cUI_Layer.push_back(NPC_TextBox);
 
 	// Quest Buttons
-	DefaultPos.Set(CenterPosition.x * 1.75f, CenterPosition.y * 0.7f, 0);
-	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Exit"));
+	DefaultPos.Set(CenterPosition.x * 1.7f, CenterPosition.y * 0.7f, 0);
+	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 4.f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Exit"));
 	ChatLayer->cUI_Layer.push_back(NPC_QuestButtons.back());
 
-	DefaultPos.Set(CenterPosition.x * 1.75f, CenterPosition.y * 1.3f, 0);
-	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q1"));
+	DefaultPos.Set(CenterPosition.x * 1.7f, CenterPosition.y * 1.3f, 0);
+	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 4.f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q1"));
 	ChatLayer->cUI_Layer.push_back(NPC_QuestButtons.back());
 
-	DefaultPos.Set(CenterPosition.x * 1.75f, CenterPosition.y * 1.1f, 0);
-	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q2"));
+	DefaultPos.Set(CenterPosition.x * 1.7f, CenterPosition.y * 1.1f, 0);
+	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 4.f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q2"));
 	ChatLayer->cUI_Layer.push_back(NPC_QuestButtons.back());
 
-	DefaultPos.Set(CenterPosition.x * 1.75f, CenterPosition.y * 0.9f, 0);
-	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q3"));
+	DefaultPos.Set(CenterPosition.x * 1.7f, CenterPosition.y * 0.9f, 0);
+	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 4.f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q3"));
 	ChatLayer->cUI_Layer.push_back(NPC_QuestButtons.back());
 
 	// Chat Layer Settings
