@@ -20,6 +20,7 @@ Defines the battle system within the 2D battle screen
 #include "../Classes/Boundary2D.h"
 #include "../Systems/BillboardManager.h"
 #include "..\\Systems\\UI_System.h"
+#include "../Classes/Item.h"
 
 // Version 2, Complete Overhaul - Ryan
 
@@ -156,6 +157,10 @@ private:
 	bool PlayerWon;
 	int SpellPowerIncrement;
 	// End State End
+
+	// Item Pointers
+	Item* I_Heal; 
+	Item* I_Accel;
 
 	bool RoundOver = false;
 

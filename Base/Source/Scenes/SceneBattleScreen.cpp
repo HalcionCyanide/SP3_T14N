@@ -32,14 +32,6 @@ void SceneBattleScreen::Init()
 	perspective.SetToPerspective(45.0f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 0.1f, 10000.0f);
 	projectionStack->LoadMatrix(perspective);
 
-	//Mesh* newMesh = MeshBuilder::GenerateQuad("Player", Color(1, 1, 1));
-	//newMesh->textureArray[0] = LoadTGA("Image//TFB_GEM.tga");
-	//SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-
-	//newMesh = MeshBuilder::GenerateQuad("GBox", Color(1, 1, 1));
-	//newMesh->textureArray[0] = LoadTGA("Image//GBox.tga");
-	//SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-
 	camera.Init(Vector3(0, 0, 1), 0, Vector3(0, 1, 0));
 
 	Scene_System::accessing().BSys = new BattleSystem();
@@ -58,17 +50,6 @@ void SceneBattleScreen::Update(float dt)
 	SceneGraphics->Update(dt);
 
 	framerates = 1 / dt;
-
-	//if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
-	//{
-	//	Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-	//	Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0;
-	//	Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0;
-	//}
-	//if (Scene_System::accessing().cSS_InputManager->GetKeyValue('0'))
-	//{
-	//	Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
-	//}
 
 	Scene_System::accessing().BSys->cBillboardManager.UpdateContainer(dt, camera.position);
 

@@ -26,6 +26,7 @@ public:
 	virtual void Init();
 	virtual void Update(double dt);
 	void UpdateStats(float dt);
+	void UpdateQuestsMenu(float dt);
 	virtual void Render();
 	virtual void Exit();
 
@@ -67,8 +68,7 @@ private:
 
 	void InitMenu();
 	void RenderMenu();
-	void UpdateStatsHUD(float dt);
-	void UpdateQuestsMenu(float dt);
+	void UpdateStatsHUD(float dt)
 };
 
 #endif // _PLAYER_UI_MANAGER_H
