@@ -243,9 +243,6 @@
     <ClCompile Include="Source\Classes\Item.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneLoading.cpp">
-      <Filter>Source Files\Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Systems\PlayerUIManager.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
@@ -460,9 +457,6 @@
     </ClInclude>
     <ClInclude Include="Source\Classes\Item.h">
       <Filter>Header Files\Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneLoading.h">
-      <Filter>Header Files\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Source\Systems\PlayerUIManager.h">
       <Filter>Header Files\Systems</Filter>
