@@ -71,7 +71,7 @@ void BattleSystem::QuickInit()
 	ActiveBSOCount = 0;
 
 	// UIs
-	//PlayerInventoryUI = new UI_Layer();
+	PlayerInventoryUI = new UI_Layer();
 	PlayerInfoBox = new UI_Layer();
 	EnemyInfoBox = new UI_Layer();
 }
@@ -151,6 +151,8 @@ void BattleSystem::RenderBattleScreen()
 	}
 	if (EnemyLayer)
 		EnemyLayer->Render();
+	if (PlayerInventoryUI)
+		PlayerInventoryUI->Render();
 	if (BattleBox)
 		BattleBox->Render();
 	for (std::vector<BattleScreenObject*>::iterator it = cBS_ObjectContainer.begin(); it != cBS_ObjectContainer.end(); ++it)
@@ -315,6 +317,23 @@ void BattleSystem::SetEnemy(Enemy& E)
 	BattleBox->cUI_Layer.push_back(HealthBarGreen);
 
 	cUI_System.cUIS_LayerContainer.push_back(BattleBox);
+
+	PlayerInventoryUI->AddUIElement("UI_ChatBox", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 7.f, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 0.625f, 0), "Inventory");
+	PlayerInventoryUI->AddUIElement("TextBacking", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 7.f, PlayerScale * 1.f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 0.58f, 0), "Click to use.");
+
+	// Buttons
+	// TL
+	UI_Element* NewE = new UI_Element("Item_Heal", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 2.f, PlayerScale * 2.f, 1), Vector3(CenterPosition.x * 1.675f, CenterPosition.y * 0.4f, 0), "Heal");
+	InventoryButtons.push_back(NewE);
+	PlayerInventoryUI->cUI_Layer.push_back(NewE);
+
+	// BL
+	NewE = new UI_Element("Item_Accel", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 2.f, PlayerScale * 2.f, 1), Vector3(CenterPosition.x * 1.675f, CenterPosition.y * 0.15f, 0), "Speed");
+	InventoryButtons.push_back(NewE);
+	PlayerInventoryUI->cUI_Layer.push_back(NewE);
+
+	cUI_System.cUIS_LayerContainer.push_back(PlayerInventoryUI);
+
 	PlayerObj->SetPosition(BattleBox->cUI_Layer[0]->TargetPosition);
 }
 
@@ -447,8 +466,85 @@ void BattleSystem::UpdateBattlePhase(float dt)
 {
 	UpdateEnemyLogic(dt);
 	EnemyLayer->Update(dt);
+	PlayerInventoryUI->Update(dt);
 	UpdatePlayer(dt);
 	UpdatePhysics(dt);
+	UpdateInventory(dt);
+}
+
+void BattleSystem::UpdateInventory(float dt)
+{
+	for (std::vector<UI_Element*>::iterator it = PlayerInventoryUI->cUI_Layer.begin(); it != PlayerInventoryUI->cUI_Layer.end(); ++it)
+	{
+		(*it)->BoundsActive = true;
+		bool CheckSucceeded = false;
+		(*it)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), CheckSucceeded);
+		if (CheckSucceeded)
+		{
+			if ((*it)->MeshName == "Item_Heal")
+			{
+				// Heal
+				for (std::map<Item*, bool>::iterator it = Scene_System::accessing().cSS_PlayerInventory->ActiveItemMap.begin(); it != Scene_System::accessing().cSS_PlayerInventory->ActiveItemMap.end(); ++it)
+				{
+					if ((*it).first->GetItemType() == Item::IT_INSTANT_HEAL)
+					{
+						(*it).second = true; 
+						break;
+					}
+				}
+				break;
+			}
+			else if ((*it)->MeshName == "Item_Accel")
+			{
+				// Heal
+				for (std::map<Item*, bool>::iterator it = Scene_System::accessing().cSS_PlayerInventory->ActiveItemMap.begin(); it != Scene_System::accessing().cSS_PlayerInventory->ActiveItemMap.end(); ++it)
+				{
+					if ((*it).first->GetItemType() == Item::IT_BOOST_INERTIA)
+					{
+						(*it).second = true;
+						break;
+					}
+				}
+				break;
+			}
+		}
+	}
+	for (std::map<Item*, bool>::iterator it = Scene_System::accessing().cSS_PlayerInventory->ActiveItemMap.begin(); it != Scene_System::accessing().cSS_PlayerInventory->ActiveItemMap.end(); ++it)
+	{
+		if ((*it).second)
+		{
+			Item* cItem = (*it).first;
+			if (cItem->InternalTimer < cItem->GetDuration() || cItem->GetDuration() == -1)
+			{
+				Item::ItemType IT = cItem->GetItemType();
+				if (cItem->GetItemType() == Item::IT_INSTANT_HEAL)
+				{
+					int HP = (float)(Scene_System::accessing().gPlayer->GetCurrentHealth() + Scene_System::accessing().gPlayer->GetCurrentHealth() * cItem->GetEffectiveValue() * 0.01f);
+					HP = Math::Clamp(HP, 0, Scene_System::accessing().gPlayer->GetMaxHealth());
+					Scene_System::accessing().gPlayer->SetCurrentHealth(HP);
+
+					float HealthRatio = (float)Scene_System::accessing().gPlayer->GetCurrentHealth() / (float)Scene_System::accessing().gPlayer->GetMaxHealth() + 0.001f;
+					float GBarWidth = HealthRatio * HealthBarDefaultScale * 0.5f;
+					float BarPosition = GBarPosition - (HealthBarDefaultScale - GBarWidth) * 0.5f + HealthBarDefaultScale * 0.25f;
+					HealthBarGreen->Dimensions.x = GBarWidth;
+					HealthBarGreen->Position.x = BarPosition;
+				}
+				if (cItem->GetItemType() == Item::IT_BOOST_INERTIA)
+				{
+					PlayerObj->SetMass(1 * cItem->GetEffectiveValue() * 0.01f);
+				}
+			}
+		}
+		if ((*it).first->GetItemType() == Item::IT_BOOST_INERTIA)
+		{
+			if (!(*it).first->GetActive() || (*it).first->GetCoolDown())
+				PlayerObj->SetMass(1);
+			else
+			{
+				cBillboardManager.AddParticle("Item_Accel", PlayerObj->GetPosition(), Vector3(PlayerScale * 0.75f, PlayerScale * 0.75f, 1), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0), Vector3(0, 0, 1), 2);
+			}
+		}
+	}
 }
 
 void BattleSystem::UpdateEnemyLogic(float dt)
@@ -722,6 +818,7 @@ void BattleSystem::ShiftBattleUI()
 {
 	EnemyLayer->LayerTargetPosition = CenterPosition * 3.f;
 	BattleBox->LayerTargetPosition.x = -3 * CenterPosition.x;
+	PlayerInventoryUI->LayerTargetPosition.x = 3 * CenterPosition.x;
 }
 
 // Player Calls
@@ -744,7 +841,7 @@ void BattleSystem::UpdateITimer(float dt)
 		PlayerIFrameTimer -= dt;
 		int RPcount = Math::RandIntMinMax(1, 2);
 		for (int i = 0; i < RPcount; ++i)
-			cBillboardManager.AddParticle("WhiteParticle", PlayerObj->GetPosition(), Vector3(PlayerScale * 0.75f, PlayerScale * 0.75f, 1), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0), Vector3(0, 0, 1), 2);
+			cBillboardManager.AddParticle("Spark_Red", PlayerObj->GetPosition(), Vector3(PlayerScale * 0.75f, PlayerScale * 0.75f, 1), Vector3(Math::RandFloatMinMax(-PlayerScale, PlayerScale), Math::RandFloatMinMax(-PlayerScale, PlayerScale), 0), Vector3(0, 0, 1), 2);
 
 		if (PlayerIsInvincible && PlayerIFrameTimer < Math::EPSILON)
 		{

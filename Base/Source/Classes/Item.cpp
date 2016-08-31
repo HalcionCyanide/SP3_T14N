@@ -90,10 +90,17 @@ void Item::Use(float dt)
 	if (!Active)
 	{
 		float MaxWaitTime = Duration + CoolDown;
+		if (InternalTimer < Duration)
+		{
+			Active = true;
+			CoolDown = false;
+		}
+		else CoolDown = true;
 		if (InternalTimer > MaxWaitTime)
 		{
+			CoolDown = false;
 			InternalTimer = 0;
-			Active = true;
+			Active = false;
 		}
 	}
 }

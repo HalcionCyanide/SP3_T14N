@@ -53,6 +53,8 @@ void SceneBattleScreen::Update(float dt)
 {
 	Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
+	Scene_System::accessing().cSS_PlayerInventory->Update((float)dt);
+	
 	SceneGraphics->Update(dt);
 
 	framerates = 1 / dt;
@@ -162,6 +164,17 @@ void SceneBattleScreen::RenderPassMain()
 	}
     if (Scene_System::accessing().theLoadingEffect)
         Scene_System::accessing().RenderLoadingStuff();
+
+	std::ostringstream ss;
+	ss.str("");
+	ss << "FPS:" << framerates;
+	ss.precision(3);
+	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(1, 1, 1), 25, 25, 25);
+
+	ss.str("");
+	ss << "HP" << Scene_System::accessing().gPlayer->GetCurrentHealth();
+	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(1, 1, 1), 25, 25, 50);
+
 	SceneGraphics->SetHUD(false);
 }
 

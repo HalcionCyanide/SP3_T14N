@@ -22,6 +22,7 @@ void UI_Element::Init(const std::string& name, const Vector3& Position, const Ve
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find(name);
+	MeshName = name;
 	if (it != SceneGraphics->meshList.end())
 	{
 		StoredMesh = it->second;
