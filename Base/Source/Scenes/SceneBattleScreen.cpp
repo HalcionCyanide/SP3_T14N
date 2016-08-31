@@ -32,13 +32,13 @@ void SceneBattleScreen::Init()
 	perspective.SetToPerspective(45.0f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 0.1f, 10000.0f);
 	projectionStack->LoadMatrix(perspective);
 
-	Mesh* newMesh = MeshBuilder::GenerateQuad("Player", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//TFB_GEM.tga");
-	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+	//Mesh* newMesh = MeshBuilder::GenerateQuad("Player", Color(1, 1, 1));
+	//newMesh->textureArray[0] = LoadTGA("Image//TFB_GEM.tga");
+	//SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
-	newMesh = MeshBuilder::GenerateQuad("GBox", Color(1, 1, 1));
-	newMesh->textureArray[0] = LoadTGA("Image//GBox.tga");
-	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
+	//newMesh = MeshBuilder::GenerateQuad("GBox", Color(1, 1, 1));
+	//newMesh->textureArray[0] = LoadTGA("Image//GBox.tga");
+	//SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	camera.Init(Vector3(0, 0, 1), 0, Vector3(0, 1, 0));
 

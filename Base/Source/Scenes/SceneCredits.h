@@ -2,7 +2,7 @@
 #define SCENE_CREDITS_H
 
 #include "../Classes/SceneEntity.h"
-#include "../Classes/Camera3.h"
+#include "..\\Classes\\CameraBS.h"
 #include "../Systems/UI_System.h"
 
 class SceneCredits : public SceneEntity {
@@ -18,7 +18,7 @@ public:
 
     virtual bool onNotify(const std::string &theEvent);
 
-    Camera3 camera;
+    CameraBS camera;
 
 private:
     // Shadow GPass

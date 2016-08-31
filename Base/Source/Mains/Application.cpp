@@ -17,6 +17,7 @@
 #include "..\\Scenes\\SceneTown1.h"
 #include "..\\Scenes\\SceneTown2.h"
 #include "..\\Scenes\\SceneTown3.h"
+#include "../Scenes/SceneCredits.h"
 #include "../Misc/LoadEnemyData.h"
 //<!> Removing soon due to testing
 #include "../Systems/MusicSystem.h"
@@ -155,6 +156,10 @@ void Application::Init()
     loadThoseKeyCommandsStuff();
 #endif
     Scene_System::accessing().doingLoadingEffect();
+
+    //SceneCredits *CreditScene = new SceneCredits();
+    //CreditScene->Init();
+    //Scene_System::accessing().AddScene(*CreditScene);
 
 	Scene_MainMenu *MainMenuScene = new Scene_MainMenu();
 	MainMenuScene->Init();

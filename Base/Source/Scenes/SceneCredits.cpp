@@ -71,7 +71,6 @@ void SceneCredits::Update(float dt)
     Scene_System::accessing().BSys->Update((float)dt);
     if (Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
     {
-        camera.CameraIsLocked = false;
         onNotify("TRANSITIONING");
     }
 }
@@ -188,7 +187,7 @@ bool SceneCredits::onNotify(const std::string &theEvent)
 {
     if (checkWhetherTheWordInThatString("TRANSITIONING", theEvent))
     {
-        Scene_System::accessing().SwitchToPreviousScene();
+        Scene_System::accessing().SwitchScene("M_Scene");
         return true;
     }
     else if (checkWhetherTheWordInThatString("LOADING", theEvent))
