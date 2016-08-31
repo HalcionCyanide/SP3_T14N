@@ -164,25 +164,25 @@ void PlayerUIManager::InitMenu()
 	Menu_Quests->cUI_Layer.push_back(NewE);
 
 	// Title
-	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 0.75f, CenterPosition.y * 0.225f, 1), 0, "Title");
+	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 0.75f, CenterPosition.y * 0.225f, 1), 0);
 	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x, CenterPosition.y * 1.6f);
 	Menu_Quests->cUI_Layer.push_back(NewE);
 	Menu_QuestTextElements.push_back(NewE);
 
 	// Description
-	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 1.2f, CenterPosition.y * 0.35f, 1), 0, "Description");
+	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 1.2f, CenterPosition.y * 0.35f, 1), 0);
 	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x, CenterPosition.y * 1.2f);
 	Menu_Quests->cUI_Layer.push_back(NewE);
 	Menu_QuestTextElements.push_back(NewE);
 
 	// Rewards
-	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 1.2f, CenterPosition.y * 0.35f, 1), 0, "Rewards");
+	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 1.2f, CenterPosition.y * 0.35f, 1), 0);
 	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x, CenterPosition.y * 0.8f);
 	Menu_Quests->cUI_Layer.push_back(NewE);
 	Menu_QuestTextElements.push_back(NewE);
 
 	// Giver
-	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x, CenterPosition.y * 0.175f, 1), 0, "Giver");
+	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x, CenterPosition.y * 0.175f, 1), 0);
 	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x, CenterPosition.y * 0.455f);
 	Menu_Quests->cUI_Layer.push_back(NewE);
 	Menu_QuestTextElements.push_back(NewE);
@@ -211,20 +211,20 @@ void PlayerUIManager::InitMenu()
 	Menu_Save->cUI_Layer.push_back(NewE);
 
 	// Buttons
-    NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.2f, 1), 0, UI_Text[5]);
+    NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.6f, CenterPosition.y * 0.2f, 1), 0, UI_Text[5]);
 	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(-CenterPosition.x * 0.4f, CenterPosition.y * 0.35f);
 	Menu_Save->cUI_Layer.push_back(NewE);	
-	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.2f, 1), 0, UI_Text[6]);
+	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.6f, CenterPosition.y * 0.2f, 1), 0, UI_Text[6]);
 	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(-CenterPosition.x * 0.4f);
 	Menu_Save->cUI_Layer.push_back(NewE);
-	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.2f, 1), 0, UI_Text[7]);
+	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.6f, CenterPosition.y * 0.2f, 1), 0, UI_Text[7]);
 	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(-CenterPosition.x * 0.4f, CenterPosition.y * -0.35f);
 	Menu_Save->cUI_Layer.push_back(NewE);
 
-	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.2f, 1), 0, UI_Text[8]);
+	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.6f, CenterPosition.y * 0.2f, 1), 0, UI_Text[8]);
 	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(CenterPosition.x * 0.4f, CenterPosition.y * 0.2f);
 	Menu_Save->cUI_Layer.push_back(NewE);
-	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.2f, 1), 0, UI_Text[9]);
+	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.6f, CenterPosition.y * 0.2f, 1), 0, UI_Text[9]);
 	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(CenterPosition.x * 0.4f, CenterPosition.y * -0.2f);
 	Menu_Save->cUI_Layer.push_back(NewE);
 
@@ -235,7 +235,7 @@ void PlayerUIManager::Update(double dt)
 {
 	bool CheckSucceeded;
 	ButtonTimer += (float)dt;
-	if (ButtonTimer > WaitTime && Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::PAUSE_MENU_COMMAND]))
+	if (CurrentState != UIS_NO_UI && ButtonTimer > WaitTime && Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::PAUSE_MENU_COMMAND]))
 	{
 		ButtonTimer = 0;
 		if (CurrentState == UIS_HUD)
@@ -495,13 +495,13 @@ void PlayerUIManager::UpdateQuestsMenu(float dt)
 					Check = true;
 					break;
 				}
-				else
-				{
-					Menu_QuestTextElements[0]->UI_Text = "< No Quests >";
-					Menu_QuestTextElements[1]->UI_Text = "Description: -";
-					Menu_QuestTextElements[1]->UI_Text = "Reward: -";
-					Menu_QuestTextElements[3]->UI_Text = "Given By: -";
-				}
+			}
+			else
+			{
+				Menu_QuestTextElements[0]->UI_Text = "< No Quests >";
+				Menu_QuestTextElements[1]->UI_Text = "Description: -";
+				Menu_QuestTextElements[2]->UI_Text = "Reward: -";
+				Menu_QuestTextElements[3]->UI_Text = "Given By: -";
 			}
 		}
 		if (!Check)
