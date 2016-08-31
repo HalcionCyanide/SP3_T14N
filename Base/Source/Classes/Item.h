@@ -1,24 +1,37 @@
+/****************************************************************************/
+/*!
+\file Item.h
+\author Tan Teck Ling
+\par email: 
+\brief
+Defines a container that represents an item in game
+*/
+/****************************************************************************/
+
 #ifndef ITEM_H
 #define ITEM_H
 
 #include "GenericEntity.h"
-#include "..//Systems/Scene_System.h"
 
 class Item: public GenericEntity
 {
 public:
 	enum ItemType
 	{
-		INSTANT_HEAL = 0,
-		HEAL_OVER_TIME,
-		BOOST_SPEED,
-		BOOST_INERTIA,
-		ITEMTYPE_NUM
+		IT_INSTANT_HEAL = 0,
+		IT_HEAL_OVER_TIME,
+		IT_BOOST_SPEED,
+		IT_BOOST_INERTIA,
+		IT_ITEMTYPE_NUM
 	};
 
 	Item();
 	virtual ~Item();
 
+	// Update function to handle timers/cooldown
+	virtual void Update(double dt);
+
+	// Setters
 	virtual void SetItemType(const Item::ItemType &type);
 	virtual void SetActive(const bool &active);
 	virtual void SetCoolingDown(const bool &coolingdown);
@@ -26,6 +39,7 @@ public:
 	virtual void SetCoolDown(const float &cooldown);
 	virtual void SetEffectiveValue(const float &value);
 
+	// Getters
 	Item::ItemType GetItemType()const;
 	bool GetActive()const;
 	bool GetCoolingDown()const;
@@ -33,7 +47,8 @@ public:
 	float GetCoolDown()const;
 	float GetEffectiveValue()const;
 
-	virtual float Use(float dt, const float &);
+	// Use call, resets Timer if valid
+	void Use(float dt);
 
 private:
 	ItemType TypeOfItem;	//Type of item
@@ -42,6 +57,7 @@ private:
 	float Duration;			//Duration of the item
 	float CoolDown;			//Time before Item can be used again(After the effect is over)
 	float EffectiveValue;	//Value change
+	float InternalTimer;
 };
 
 #endif
