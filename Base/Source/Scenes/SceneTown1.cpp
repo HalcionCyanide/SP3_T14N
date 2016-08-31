@@ -115,20 +115,20 @@ void SceneTown1::InitChatUI()
 	ChatLayer->cUI_Layer.push_back(NPC_TextBox);
 
 	// Quest Buttons
-	DefaultPos.Set(CenterPosition.x * 1.75f, CenterPosition.y * 0.7f, 0);
-	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Exit"));
+	DefaultPos.Set(CenterPosition.x * 1.7f, CenterPosition.y * 0.7f, 0);
+	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 4.f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Exit"));
 	ChatLayer->cUI_Layer.push_back(NPC_QuestButtons.back());
 
-	DefaultPos.Set(CenterPosition.x * 1.75f, CenterPosition.y * 1.3f, 0);
-	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q1"));
+	DefaultPos.Set(CenterPosition.x * 1.7f, CenterPosition.y * 1.3f, 0);
+	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 4.f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q1"));
 	ChatLayer->cUI_Layer.push_back(NPC_QuestButtons.back());
 
-	DefaultPos.Set(CenterPosition.x * 1.75f, CenterPosition.y * 1.1f, 0);
-	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q2"));
+	DefaultPos.Set(CenterPosition.x * 1.7f, CenterPosition.y * 1.1f, 0);
+	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 4.f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q2"));
 	ChatLayer->cUI_Layer.push_back(NPC_QuestButtons.back());
 
-	DefaultPos.Set(CenterPosition.x * 1.75f, CenterPosition.y * 0.9f, 0);
-	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q3"));
+	DefaultPos.Set(CenterPosition.x * 1.7f, CenterPosition.y * 0.9f, 0);
+	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 4.f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q3"));
 	ChatLayer->cUI_Layer.push_back(NPC_QuestButtons.back());
 
 	// Chat Layer Settings
@@ -336,6 +336,8 @@ void SceneTown1::Update(float dt)
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	SceneGraphics->Update(dt);
+
+	Scene_System::accessing().cSS_PlayerInventory->Update((float)dt);
 
 	Scene_System::accessing().cSS_PlayerUIManager->Update(dt);
 
@@ -627,31 +629,6 @@ void SceneTown1::RenderPassMain()
 	}
     if (Scene_System::accessing().theLoadingEffect)
         Scene_System::accessing().RenderLoadingStuff();
-
-	std::ostringstream ss;
-	ss.str("");
-	ss << "Scene 1 - FPS:" << framerates;
-	ss.precision(3);
-	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 25);
-
-	ss.str("");
-	ss << "CVel:" << camera->CameraVelocity;
-	ss.precision(3);
-	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
-
-	if (Player)
-	{
-		ss.str("");
-		ss << "PVel:" << Player->GetVelocity();
-		ss.precision(3);
-		SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
-	}
-	
-	ss.str("");
-	ss << "CPos:" << camera->position;
-	ss.precision(3);
-	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 125);
-	//<!> Removing soon
 
 	SceneGraphics->SetHUD(false);
 }

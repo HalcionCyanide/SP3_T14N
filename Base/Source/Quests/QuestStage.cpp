@@ -46,27 +46,15 @@ void QuestStage::setCondition(std::string c, std::string value)
 {
 	if (c.find("collection") != std::string::npos)
 	{
-		condition = new collectionCondition(std::stoi(value));
+		condition = new collectionCondition(value);
 	}
 	else if (c.find("rating") != std::string::npos)
 	{
-		condition = new ratingCondition(std::stoi(value));
-	}
-	else if (c.find("interact") != std::string::npos)
-	{
-	//PASS IN NPC NAME
-		condition = new interactCondition(value);
+		condition = new ratingCondition(value);
 	}
 	else if (c.find("goto") != std::string::npos)
 	{
-		//SPLIT THE STRING FROM X:X:X to a VECTOR3
-		//SET THE CONDITION.
 		condition = new gotoCondition(value);
-	}
-	else if (c.find("capture") != std::string::npos)
-	{
-	//PASS IN MONSTER NAME
-	//condition = new captureCondition(value);
 	}
 }
 

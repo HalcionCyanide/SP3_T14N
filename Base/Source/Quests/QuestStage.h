@@ -2,10 +2,8 @@
 #define QUESTSTAGE_H_
 #include "..\\Conditions\\genericCondition.h"
 
-#include "..\\Conditions\\captureCondition.h"
 #include "..\\Conditions\\collectionCondition.h"
 #include "..\\Conditions\\gotoCondition.h"
-#include "..\\Conditions\\interactCondition.h"
 #include "..\\Conditions\\ratingCondition.h"
 class QuestStage
 {

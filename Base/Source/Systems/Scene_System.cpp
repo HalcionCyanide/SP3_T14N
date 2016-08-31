@@ -7,6 +7,7 @@ void Scene_System::Init()
 {
     //currScene = nullptr;
     graphics_scene = nullptr;
+	cSS_PlayerInventory = new Item_System();
 	cSS_InputManager = new InputManager();
 	cSS_PlayerUIManager = new PlayerUIManager();
 	gPlayer = new GlobalPlayer(10, 100, 100, false);

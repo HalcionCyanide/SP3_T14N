@@ -6,14 +6,14 @@ class ratingCondition : public genericCondition
 {
 public:
 	ratingCondition();
-	ratingCondition(int);
+	ratingCondition(std::string);
 	virtual ~ratingCondition();
 
 	virtual void Update(double dt);
 	virtual void setValue(std::string);
 private:
 	int counter;
-	Data<int> theRequirement;
+	std::string theRequirement;
 };
 
 #endif //RATING_CONDITION_H_

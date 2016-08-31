@@ -282,24 +282,6 @@ void Scene_2::RenderPassMain()
 	SceneGraphics->RenderMesh("reference", false);
 
 	SceneGraphics->SetHUD(true);
-
-	std::ostringstream ss;
-	ss.str("");
-	ss << "Scene 2 - FPS:" << framerates;
-	ss.precision(3);
-	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 25);
-
-	ss.str("");
-	ss << "Speed:" << camera.CameraVelocity;
-	ss.precision(3);
-	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
-	
-
-	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
-	ss.str("");
-	ss << "Player Speed:" << PlayerPTR->GetVelocity();
-	ss.precision(3);
-	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
 	SceneGraphics->SetHUD(false);
 }
 
