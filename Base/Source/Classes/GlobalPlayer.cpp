@@ -204,6 +204,7 @@ bool GlobalPlayer::LoadPlayerSave(const std::string &fileName)
                     ++it;
 					++it2;
                 }
+				Scene_System::accessing().cSS_PlayerUIManager->CurrentQuestDisplayNumber = -1;
 				Scene_System::accessing().cSS_PlayerUIManager->UpdateQuestsMenu(0);
             }
         }
