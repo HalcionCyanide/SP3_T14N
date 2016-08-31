@@ -51,11 +51,11 @@ void GameObject::SetBounds()
 			TempBound->SetQuestData("The Fractal Binding", 5);
 		}
     }
-	else if (checkWhetherTheWordInThatString("Boss", getName()))
-	{
-		delete Bounds;
+	//else if (checkWhetherTheWordInThatString("Boss", getName()))
+	//{
+	//	delete Bounds;
 
-	}
+	//}
 
 	Bounds->SetPosition(this->GetPosition());
 	Bounds->SetDimensions(this->GetDimensions());
