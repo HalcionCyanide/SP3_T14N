@@ -13,11 +13,11 @@ carpenter,c,NPC_carpenter,10,10,3.33333333,,,,1,0
 mapguy,m,NPC_mapguy,10,10,10,,,,1,0
 priest,p,NPC_priest,10,10,10,,,,1,0
 princess,P,NPC_noblelady,14.13427562,10,10,,,,1,0
-1_Scene,1,Entrance_City,10,10,10,,,,1,0
-2_Scene,2,Entrance_Village,10,10,10,,,,1,0
-3_Scene,3,Entrance_Forest,10,10,10,,,,1,0
-F1_Scene,f,door,50,40,10,,,,1,0
-F2_Scene,F,door,10,10,10,,,,1,0
+1_Scene,1,Entrance_City,1,10,10,,,,1,0
+2_Scene,2,Entrance_Village,1,10,10,,,,1,0
+3_Scene,3,Entrance_TownRemains,1,10,10,,,,1,0
+F1_Scene,f,Entrance_Forest,1,10,10,,,,1,0
+F2_Scene,F,Entrance_Ruins,1,10,10,,,,1,0
 CastleWall,W,Castle_Wall,30,60,15,,,,1,0
 CastleWall2,o,Castle_Wall2,29.9,60,15,,,,1,0
 CastlePillar,w,Castle_Pillar,40,70,40,,,,1,0
@@ -28,3 +28,4 @@ Ruin_Wall1,z,Ruin_Wall1,15,25,1,,,,1,0
 Ruin_Wall2,Z,Ruin_Wall2,15,25,1,,,,1,0
 Ruin_CornerWall1,x,Ruin_CornerWall1,15,25,15,,,,1,0
 Ruin_CornerWall2,X,Ruin_CornerWall2,15,25,15,,,,1,0
+Gate,G,door,50,40,10,,,,1,0
