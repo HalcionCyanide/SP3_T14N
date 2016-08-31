@@ -2,6 +2,8 @@
 
 GateBoundary::GateBoundary()
 {
+	questToCheck = nullptr;
+	stageToCheck = nullptr;
 }
 
 GateBoundary::~GateBoundary()
@@ -37,10 +39,22 @@ bool GateBoundary::CheckCollision(const Vector3 &point)
 	}
 	SetOverlappingDistance(overlap);
 	SetOverlappingAxis(overlappedAxis);
-    std::ostringstream ss;
-    ss << "LOADING_" << name_;
-    Scene_System::accessing().getCurrScene().onNotify(ss.str());
-    //TransitScene(name_);
+	if (questToCheck && stageToCheck)
+	{
+		if (questToCheck->getActive() && stageToCheck->getComplete())
+		{
+			std::ostringstream ss;
+			ss << "LOADING_" << name_;
+			Scene_System::accessing().getCurrScene().onNotify(ss.str());
+		}
+	}
+	else
+	{
+		std::ostringstream ss;
+		ss << "LOADING_" << name_;
+		Scene_System::accessing().getCurrScene().onNotify(ss.str());
+
+	}
 	return true;
 }
 
@@ -48,4 +62,31 @@ void GateBoundary::TransitScene(const std::string &ID)
 {
 	Scene_System::accessing().SwitchScene(ID);
     Scene_System::accessing().getCurrScene().onNotify("TRANSITIONING");
+}
+
+void GateBoundary::SetQuestData(const std::string &name, const int &stage)
+{
+	questStage = stage;
+	questName = name;
+	InitQuest();
+}
+
+void GateBoundary::InitQuest()
+{
+	for (std::vector<Quest*>::iterator CurrQuest = Scene_System::accessing().QM.allQuests.begin(); CurrQuest != Scene_System::accessing().QM.allQuests.end(); ++CurrQuest)
+	{
+		if ((*CurrQuest)->getName() == questName)
+		{
+			questToCheck = *CurrQuest;
+			break;
+		}
+	}
+	for (std::vector<QuestStage*>::iterator CurrQuestStage = questToCheck->qStages.begin(); CurrQuestStage != questToCheck->qStages.end(); ++CurrQuestStage)
+	{
+		if ((*CurrQuestStage)->getStageNO() == questStage)
+		{
+			stageToCheck = *CurrQuestStage;
+			break;
+		}
+	}
 }

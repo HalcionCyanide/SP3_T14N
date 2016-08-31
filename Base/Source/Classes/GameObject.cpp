@@ -40,6 +40,16 @@ void GameObject::SetBounds()
         delete Bounds;
 		Bounds = new GateBoundary();
 		Bounds->setName(getName());
+		if (Bounds->getName() == "2_Scene")
+		{
+			GateBoundary* TempBound = dynamic_cast<GateBoundary*>(Bounds);
+			TempBound->SetQuestData("Rating up", 1);
+		}
+		if (Bounds->getName() == "3_Scene")
+		{
+			GateBoundary* TempBound = dynamic_cast<GateBoundary*>(Bounds);
+			TempBound->SetQuestData("Rating up", 2);
+		}
     }
 
 	Bounds->SetPosition(this->GetPosition());
