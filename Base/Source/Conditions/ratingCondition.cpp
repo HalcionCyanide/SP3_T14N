@@ -2,14 +2,12 @@
 #include "..\\Systems\\Scene_System.h"
 
 ratingCondition::ratingCondition()
-	: theRequirement(0)
-	, counter(0)
+	: theRequirement("")
 {
 }
 
-ratingCondition::ratingCondition(int i)
+ratingCondition::ratingCondition(std::string i)
 	: theRequirement(i)
-	, counter(0)
 {
 }
 
@@ -30,7 +28,7 @@ void ratingCondition::Update(double dt)
 	if(!complete)
 	{
 		counter = Scene_System::accessing().gPlayer->GetSpellPower();
-		if (theRequirement <= counter)
+		if (counter >= stoi(theRequirement))
 		{
 			complete = true;
 		}

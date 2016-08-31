@@ -6,14 +6,14 @@ class collectionCondition : public genericCondition
 {
 public:
 	collectionCondition();
-	collectionCondition(int);
+	collectionCondition(std::string);
 	virtual ~collectionCondition();
 
 	virtual void setValue(std::string);
 	virtual void Update(double dt);
 private:
 	int counter;
-    Data<int> theRequirement;
+    std::string theRequirement;
 };
 
 #endif

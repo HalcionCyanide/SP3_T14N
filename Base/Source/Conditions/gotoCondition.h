@@ -13,8 +13,7 @@ public:
 	virtual void setValue(std::string);
 	virtual void Update(double dt);
 private:
-	int dist;
-	Data<Vector3> theRequirement;
+	std::string theRequirement;
 };
 
 #endif
