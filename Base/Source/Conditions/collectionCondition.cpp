@@ -2,17 +2,16 @@
 #include "..\\Systems\\Scene_System.h"
 
 collectionCondition::collectionCondition()
-    : theRequirement(0)
+    : theRequirement("")
 	, counter(0)
 {
 	//target = nullptr;
 }
 
-collectionCondition::collectionCondition(int i)
-	: theRequirement(0)
+collectionCondition::collectionCondition(std::string i)
+	: theRequirement(i)
 	, counter(0)
 {
-	theRequirement = i;
 }
 
 collectionCondition::~collectionCondition()
@@ -30,7 +29,7 @@ void collectionCondition::Update(double dt)
 	if(!complete)
 	{
 		counter = Scene_System::accessing().gPlayer->getMonsterCount();
-		if(theRequirement <= counter)
+		if (counter >= stoi(theRequirement))
 			complete = true;
 	}
 	else

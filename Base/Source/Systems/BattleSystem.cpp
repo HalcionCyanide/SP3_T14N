@@ -566,6 +566,7 @@ void BattleSystem::UpdateEndScreenSuccess(float dt)
 	if (SealAnimationOver && !UISwapped)
 	{
 		UISwapped = true;
+		Scene_System::accessing().gPlayer->setMonsterCount(Scene_System::accessing().gPlayer->getMonsterCount() + 1);
 		for (std::vector<UI_Element*>::iterator it = EndScreenSuccess->cUI_Layer.begin(); it != EndScreenSuccess->cUI_Layer.end(); ++it)
 		{
 			(*it)->SwapOriginalWithTarget();

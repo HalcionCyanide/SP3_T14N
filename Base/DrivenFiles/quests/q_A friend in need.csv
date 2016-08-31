@@ -1,6 +1,0 @@
-stage,ConditionName,Value,Description,qOrigin
-0,interact,NPC_guardcaptain,Speak to the Guard Captain.,NONE
-1,interact,NPC_noblelady,Speak to the Noble Lady,Guard Captain
-2,interact,NPC_guardcaptain,Speak to the Guard Captain.,Noble Lady
-3,interact,NPC_fakeflower,Get a Fresh Flower.,Guard Captain
-4,interact,NPC_noblelady,Give the Fresh Flower to the Noble Lady.,NONE
