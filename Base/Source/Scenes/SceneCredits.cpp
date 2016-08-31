@@ -43,7 +43,11 @@ void SceneCredits::Init()
 
     camera.Init(Vector3(0, 0, 1), 0, Vector3(0, 1, 0));
 
-
+    TheLoadScreenStuff = new UI_System();
+    UI_Layer *ComicLayer = new UI_Layer();
+    TheLoadScreenStuff->cUIS_LayerContainer.push_back(ComicLayer);
+    UI_Layer *CreditsLayer = new UI_Layer();
+    TheLoadScreenStuff->cUIS_LayerContainer.push_back(CreditsLayer);
 }
 
 void SceneCredits::Update(float dt)
@@ -59,6 +63,7 @@ void SceneCredits::Update(float dt)
     {
         onNotify("TRANSITIONING");
     }
+    
 }
 
 void SceneCredits::RenderPassGPass()
@@ -143,12 +148,14 @@ void SceneCredits::RenderPassMain()
         SceneGraphics->RenderMesh("TFB_Gem", false);
         modelStack->PopMatrix();
     }
+    TheLoadScreenStuff->Render();
+
     if (Scene_System::accessing().theLoadingEffect)
         Scene_System::accessing().RenderLoadingStuff();
 
     std::ostringstream ss;
     ss.str("");
-    ss << "Scene BS - FPS:" << framerates;
+    ss << "FPS:" << framerates;
     ss.precision(3);
     SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 25);
 
