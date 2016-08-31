@@ -204,8 +204,13 @@ bool GlobalPlayer::LoadPlayerSave(const std::string &fileName)
                     ++it;
 					++it2;
                 }
+				Scene_System::accessing().cSS_PlayerUIManager->CurrentQuestDisplayNumber = -1;
 				Scene_System::accessing().cSS_PlayerUIManager->UpdateQuestsMenu(0);
             }
+			else if (checkWhetherTheWordInThatString("MCOUNT", key))
+			{
+				Scene_System::accessing().gPlayer->setMonsterCount(stoi(value));
+			}
         }
         file.close();
         Scene_System::accessing().getCurrScene().onNotify("PLAYER_INFO");
@@ -327,6 +332,11 @@ bool GlobalPlayer::RewritePlayerSave(const std::string &fileName)
                     theEntireLine.erase(theEntireLine.end() - 1);
                 writeFile << theEntireLine << std::endl;
             }
+			else if (checkWhetherTheWordInThatString("MCOUNT", thatSpecificLine))
+			{
+				ss << key << Scene_System::accessing().gPlayer->getMonsterCount();
+				writeFile << ss.str() << std::endl;
+			}
             else
                 writeFile << (*it) << std::endl;
         }

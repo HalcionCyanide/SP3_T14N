@@ -30,6 +30,8 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
+	int CurrentQuestDisplayNumber = -1;
+
 private:
 	float ButtonTimer;
 	float WaitTime;
@@ -62,7 +64,6 @@ private:
 	UI_Layer* Menu_Save;
 
 	int QuestDisplayNumber = 0;
-	int CurrentQuestDisplayNumber = -1;
 
 	std::map<int, Quest*> ActiveQuestList;
 

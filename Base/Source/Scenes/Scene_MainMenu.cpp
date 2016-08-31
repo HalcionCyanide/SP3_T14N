@@ -344,6 +344,10 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
     {
         if (CurrentMenuState == S_LOADING_SAVE)
         {
+			std::stringstream ss;
+			ss << "Player <Save " << transitingSceneName << ">";
+			Scene_System::accessing().gPlayer->setName(ss.str());
+
             Scene_System::accessing().gPlayer->settingTheFileToSave(stoi(transitingSceneName));
             Scene_System::accessing().gPlayer->automaticallyLoadFile();
         }

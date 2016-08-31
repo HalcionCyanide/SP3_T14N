@@ -332,15 +332,18 @@ void BattleSystem::SetEnemy(Enemy& E)
 
 	PlayerInventoryUI->AddUIElement("UI_ChatBox", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 7.f, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 0.625f, 0), "Inventory");
 	PlayerInventoryUI->AddUIElement("TextBacking", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 7.f, PlayerScale * 1.f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 0.58f, 0), "Click to use.");
+	PlayerInventoryUI->AddUIElement("TextBacking", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 2.f, PlayerScale * 2.f, 1), Vector3(CenterPosition.x * 1.65f, CenterPosition.y * 0.4f), "Heal  - ");
+	PlayerInventoryUI->AddUIElement("TextBacking", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 2.f, PlayerScale * 2.f, 1), Vector3(CenterPosition.x * 1.65f, CenterPosition.y * 0.15f), "Speed - ");
+
 
 	// Buttons
 	// TL
-	UI_Element* NewE = new UI_Element("Item_Heal", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 2.f, PlayerScale * 2.f, 1), Vector3(CenterPosition.x * 1.675f, CenterPosition.y * 0.4f, 0));
+	UI_Element* NewE = new UI_Element("Item_Heal", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 2.f, PlayerScale * 2.f, 1), Vector3(CenterPosition.x * 1.8f, CenterPosition.y * 0.4f, 0));
 	InventoryButtons.push_back(NewE);
 	PlayerInventoryUI->cUI_Layer.push_back(NewE);
 
 	// BL
-	NewE = new UI_Element("Item_Accel", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 2.f, PlayerScale * 2.f, 1), Vector3(CenterPosition.x * 1.675f, CenterPosition.y * 0.15f, 0));
+	NewE = new UI_Element("Item_Accel", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 2.f, PlayerScale * 2.f, 1), Vector3(CenterPosition.x * 1.8f, CenterPosition.y * 0.15f, 0));
 	InventoryButtons.push_back(NewE);
 	PlayerInventoryUI->cUI_Layer.push_back(NewE);
 
