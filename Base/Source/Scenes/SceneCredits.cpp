@@ -213,9 +213,9 @@ void SceneCredits::RenderPassMain()
     ss.precision(3);
     SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 25);
 
-    ss.str("");
-    ss << "LayerPos" << TheLoadScreenStuff->cUIS_LayerContainer[0]->LayerCenterPosition.y;
-    SceneGraphics->RenderTextOnScreen(ss.str(), Color(0, 1, 0), 25, 25, 50);
+    //ss.str("");
+    //ss << "LayerPos" << TheLoadScreenStuff->cUIS_LayerContainer[0]->LayerCenterPosition.y;
+    //SceneGraphics->RenderTextOnScreen(ss.str(), Color(0, 1, 0), 25, 25, 50);
 
     SceneGraphics->SetHUD(false);
 }
