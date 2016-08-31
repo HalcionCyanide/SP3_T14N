@@ -134,6 +134,21 @@ void PlayerUIManager::InitMenu()
 	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x * 0.32f, CenterPosition.y * 1.775f);
 	Menu_Stats->cUI_Layer.push_back(NewE);
 
+	// Name
+	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 0.6f, CenterPosition.y * 0.25f, 1), 0, Scene_System::accessing().gPlayer->getName());
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x, CenterPosition.y * 1.6f);
+	Menu_Stats->cUI_Layer.push_back(NewE);
+
+	// HP
+	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 0.75f, CenterPosition.y * 0.25f, 1), 0, "HP");
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x * 0.55f, CenterPosition.y * 1.2f);
+	Menu_Stats->cUI_Layer.push_back(NewE);
+
+	// SP
+	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 0.75f, CenterPosition.y * 0.25f, 1), 0, "SP");
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x * 1.45f, CenterPosition.y * 1.2f);
+	Menu_Stats->cUI_Layer.push_back(NewE);
+
 	UI_Menu.cUIS_LayerContainer.push_back(Menu_Stats);
 
 	//// Menu Quests
@@ -197,20 +212,20 @@ void PlayerUIManager::InitMenu()
 
 	// Buttons
     NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.2f, 1), 0, UI_Text[5]);
-	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(-CenterPosition.x * 0.4f, CenterPosition.y * 0.45f);
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(-CenterPosition.x * 0.4f, CenterPosition.y * 0.35f);
 	Menu_Save->cUI_Layer.push_back(NewE);	
 	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.2f, 1), 0, UI_Text[6]);
-	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(-CenterPosition.x * 0.4f, CenterPosition.y * 0.1f);
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(-CenterPosition.x * 0.4f);
 	Menu_Save->cUI_Layer.push_back(NewE);
 	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.2f, 1), 0, UI_Text[7]);
-	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(-CenterPosition.x * 0.4f, CenterPosition.y * -0.25f);
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(-CenterPosition.x * 0.4f, CenterPosition.y * -0.35f);
 	Menu_Save->cUI_Layer.push_back(NewE);
 
 	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.2f, 1), 0, UI_Text[8]);
-	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(CenterPosition.x * 0.4f, CenterPosition.y * 0.3f);
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(CenterPosition.x * 0.4f, CenterPosition.y * 0.2f);
 	Menu_Save->cUI_Layer.push_back(NewE);
 	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.2f, 1), 0, UI_Text[9]);
-	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(CenterPosition.x * 0.4f, CenterPosition.y * -0.1f);
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(CenterPosition.x * 0.4f, CenterPosition.y * -0.2f);
 	Menu_Save->cUI_Layer.push_back(NewE);
 
 	UI_Menu.cUIS_LayerContainer.push_back(Menu_Save);
@@ -241,6 +256,8 @@ void PlayerUIManager::Update(double dt)
 		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
 	}
 	float DistMultiplier = 2.5f;
+	std::stringstream ss;
+
 	switch (CurrentState)
 	{
 	case UIS_HUD:
@@ -252,6 +269,7 @@ void PlayerUIManager::Update(double dt)
 		{
 			(*it)->LayerTargetPosition.y = DistMultiplier * CenterPosition.y;
 		}
+		UpdateStatsHUD((float)dt);
 		break;
 	case UIS_Menu_Stats:
 		for (std::vector<UI_Layer*>::iterator it = UI_HUD.cUIS_LayerContainer.begin(); it != UI_HUD.cUIS_LayerContainer.end(); ++it)
@@ -264,6 +282,11 @@ void PlayerUIManager::Update(double dt)
 				(*it)->LayerTargetPosition.y = 0;
 			else (*it)->LayerTargetPosition.y = DistMultiplier * CenterPosition.y;
 		}
+		ss << "HP: " << Scene_System::accessing().gPlayer->GetCurrentHealth() << " / " << Scene_System::accessing().gPlayer->GetMaxHealth();
+		Menu_Stats->cUI_Layer[3]->UI_Text = ss.str();
+		ss.str("");
+		ss << "SP: " << Scene_System::accessing().gPlayer->GetSpellPower();
+		Menu_Stats->cUI_Layer[4]->UI_Text = ss.str();
 		break;
 	case UIS_Menu_Inventory:
 		for (std::vector<UI_Layer*>::iterator it = UI_HUD.cUIS_LayerContainer.begin(); it != UI_HUD.cUIS_LayerContainer.end(); ++it)
@@ -434,8 +457,8 @@ void PlayerUIManager::UpdateStatsHUD(float dt)
 	HUD_Stats->cUI_Layer[3]->UI_Text = ss.str();
 
 	// HP
-	if (Scene_System::accessing().gPlayer->GetMaxHealth() < Scene_System::accessing().gPlayer->GetSpellPower())
-		Scene_System::accessing().gPlayer->SetMaxHealth(Scene_System::accessing().gPlayer->GetMaxHealth());
+	if (Scene_System::accessing().gPlayer->GetMaxHealth() > Scene_System::accessing().gPlayer->GetSpellPower())
+		Scene_System::accessing().gPlayer->SetMaxHealth(Scene_System::accessing().gPlayer->GetSpellPower());
 
 	if (Scene_System::accessing().gPlayer->GetCurrentHealth() > Scene_System::accessing().gPlayer->GetMaxHealth())
 		Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetMaxHealth());
