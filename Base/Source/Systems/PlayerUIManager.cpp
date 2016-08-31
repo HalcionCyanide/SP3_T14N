@@ -134,6 +134,21 @@ void PlayerUIManager::InitMenu()
 	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x * 0.32f, CenterPosition.y * 1.775f);
 	Menu_Stats->cUI_Layer.push_back(NewE);
 
+	// Name
+	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 0.6f, CenterPosition.y * 0.25f, 1), 0, Scene_System::accessing().gPlayer->getName());
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x, CenterPosition.y * 1.6f);
+	Menu_Stats->cUI_Layer.push_back(NewE);
+
+	// HP
+	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 0.75f, CenterPosition.y * 0.25f, 1), 0, "HP");
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x * 0.55f, CenterPosition.y * 1.2f);
+	Menu_Stats->cUI_Layer.push_back(NewE);
+
+	// SP
+	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 0.75f, CenterPosition.y * 0.25f, 1), 0, "SP");
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x * 1.45f, CenterPosition.y * 1.2f);
+	Menu_Stats->cUI_Layer.push_back(NewE);
+
 	UI_Menu.cUIS_LayerContainer.push_back(Menu_Stats);
 
 	//// Menu Quests
@@ -155,14 +170,20 @@ void PlayerUIManager::InitMenu()
 	Menu_QuestTextElements.push_back(NewE);
 
 	// Description
-	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 1.2f, CenterPosition.y * 0.9f, 1), 0, "Description");
-	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x, CenterPosition.y);
+	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 1.2f, CenterPosition.y * 0.35f, 1), 0, "Description");
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x, CenterPosition.y * 1.2f);
+	Menu_Quests->cUI_Layer.push_back(NewE);
+	Menu_QuestTextElements.push_back(NewE);
+
+	// Rewards
+	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 1.2f, CenterPosition.y * 0.35f, 1), 0, "Rewards");
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x, CenterPosition.y * 0.8f);
 	Menu_Quests->cUI_Layer.push_back(NewE);
 	Menu_QuestTextElements.push_back(NewE);
 
 	// Giver
 	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x, CenterPosition.y * 0.175f, 1), 0, "Giver");
-	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x, CenterPosition.y * 0.425f);
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x, CenterPosition.y * 0.455f);
 	Menu_Quests->cUI_Layer.push_back(NewE);
 	Menu_QuestTextElements.push_back(NewE);
 
@@ -191,20 +212,20 @@ void PlayerUIManager::InitMenu()
 
 	// Buttons
     NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.2f, 1), 0, UI_Text[5]);
-	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(-CenterPosition.x * 0.4f, CenterPosition.y * 0.45f);
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(-CenterPosition.x * 0.4f, CenterPosition.y * 0.35f);
 	Menu_Save->cUI_Layer.push_back(NewE);	
 	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.2f, 1), 0, UI_Text[6]);
-	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(-CenterPosition.x * 0.4f, CenterPosition.y * 0.1f);
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(-CenterPosition.x * 0.4f);
 	Menu_Save->cUI_Layer.push_back(NewE);
 	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.2f, 1), 0, UI_Text[7]);
-	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(-CenterPosition.x * 0.4f, CenterPosition.y * -0.25f);
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(-CenterPosition.x * 0.4f, CenterPosition.y * -0.35f);
 	Menu_Save->cUI_Layer.push_back(NewE);
 
 	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.2f, 1), 0, UI_Text[8]);
-	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(CenterPosition.x * 0.4f, CenterPosition.y * 0.3f);
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(CenterPosition.x * 0.4f, CenterPosition.y * 0.2f);
 	Menu_Save->cUI_Layer.push_back(NewE);
 	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.2f, 1), 0, UI_Text[9]);
-	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(CenterPosition.x * 0.4f, CenterPosition.y * -0.1f);
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = CenterPosition + Vector3(CenterPosition.x * 0.4f, CenterPosition.y * -0.2f);
 	Menu_Save->cUI_Layer.push_back(NewE);
 
 	UI_Menu.cUIS_LayerContainer.push_back(Menu_Save);
@@ -235,6 +256,8 @@ void PlayerUIManager::Update(double dt)
 		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
 	}
 	float DistMultiplier = 2.5f;
+	std::stringstream ss;
+
 	switch (CurrentState)
 	{
 	case UIS_HUD:
@@ -246,6 +269,7 @@ void PlayerUIManager::Update(double dt)
 		{
 			(*it)->LayerTargetPosition.y = DistMultiplier * CenterPosition.y;
 		}
+		UpdateStatsHUD((float)dt);
 		break;
 	case UIS_Menu_Stats:
 		for (std::vector<UI_Layer*>::iterator it = UI_HUD.cUIS_LayerContainer.begin(); it != UI_HUD.cUIS_LayerContainer.end(); ++it)
@@ -258,6 +282,11 @@ void PlayerUIManager::Update(double dt)
 				(*it)->LayerTargetPosition.y = 0;
 			else (*it)->LayerTargetPosition.y = DistMultiplier * CenterPosition.y;
 		}
+		ss << "HP: " << Scene_System::accessing().gPlayer->GetCurrentHealth() << " / " << Scene_System::accessing().gPlayer->GetMaxHealth();
+		Menu_Stats->cUI_Layer[3]->UI_Text = ss.str();
+		ss.str("");
+		ss << "SP: " << Scene_System::accessing().gPlayer->GetSpellPower();
+		Menu_Stats->cUI_Layer[4]->UI_Text = ss.str();
 		break;
 	case UIS_Menu_Inventory:
 		for (std::vector<UI_Layer*>::iterator it = UI_HUD.cUIS_LayerContainer.begin(); it != UI_HUD.cUIS_LayerContainer.end(); ++it)
@@ -428,8 +457,8 @@ void PlayerUIManager::UpdateStatsHUD(float dt)
 	HUD_Stats->cUI_Layer[3]->UI_Text = ss.str();
 
 	// HP
-	if (Scene_System::accessing().gPlayer->GetMaxHealth() < Scene_System::accessing().gPlayer->GetSpellPower())
-		Scene_System::accessing().gPlayer->SetMaxHealth(Scene_System::accessing().gPlayer->GetMaxHealth());
+	if (Scene_System::accessing().gPlayer->GetMaxHealth() > Scene_System::accessing().gPlayer->GetSpellPower())
+		Scene_System::accessing().gPlayer->SetMaxHealth(Scene_System::accessing().gPlayer->GetSpellPower());
 
 	if (Scene_System::accessing().gPlayer->GetCurrentHealth() > Scene_System::accessing().gPlayer->GetMaxHealth())
 		Scene_System::accessing().gPlayer->SetCurrentHealth(Scene_System::accessing().gPlayer->GetMaxHealth());
@@ -442,7 +471,7 @@ void PlayerUIManager::UpdateStatsHUD(float dt)
 void PlayerUIManager::UpdateQuestsMenu(float dt)
 {
 	std::map<std::string, int> PlayerStates = Scene_System::accessing().gPlayer->playerCurrQState;
-	if (QuestDisplayNumber > PlayerStates.size() - 1)
+	if (QuestDisplayNumber > (int)PlayerStates.size() - 1)
 	{
 		QuestDisplayNumber = 0;
 	}
@@ -462,16 +491,23 @@ void PlayerUIManager::UpdateQuestsMenu(float dt)
 					Menu_QuestTextElements[0]->UI_Text = Quest->second->getName();
 					Menu_QuestTextElements[1]->UI_Text = (*it)->getDesc();
 					Menu_QuestTextElements[1]->WrapText();
-					Menu_QuestTextElements[2]->UI_Text = (*it)->getGiver();
+					Menu_QuestTextElements[3]->UI_Text = "Given By: " + (*it)->getGiver();
 					Check = true;
 					break;
+				}
+				else
+				{
+					Menu_QuestTextElements[0]->UI_Text = "< No Quests >";
+					Menu_QuestTextElements[1]->UI_Text = "Description: -";
+					Menu_QuestTextElements[1]->UI_Text = "Reward: -";
+					Menu_QuestTextElements[3]->UI_Text = "Given By: -";
 				}
 			}
 		}
 		if (!Check)
 		{
 			++QuestDisplayNumber;
-			if (QuestDisplayNumber > PlayerStates.size() -1)
+			if (QuestDisplayNumber > (int)PlayerStates.size() -1)
 			{
 				QuestDisplayNumber = 0;
 			}
