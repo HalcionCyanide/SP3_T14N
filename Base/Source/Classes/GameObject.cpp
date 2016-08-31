@@ -3,6 +3,7 @@
 #include "..\\Scenes\\GraphicsEntity.h"
 #include "../Misc/LoadEnemyData.h"
 #include "GateBoundary.h"
+#include "BossBoundary.h"
 
 GameObject::GameObject()
 	//: BaseObject()
@@ -51,11 +52,12 @@ void GameObject::SetBounds()
 			TempBound->SetQuestData("The Fractal Binding", 5);
 		}
     }
-	//else if (checkWhetherTheWordInThatString("Boss", getName()))
-	//{
-	//	delete Bounds;
-
-	//}
+	else if (checkWhetherTheWordInThatString("Boss", getName()))
+	{
+		delete Bounds;
+		Bounds = new BossBoundary();
+		Bounds->setName(getName());
+	}
 
 	Bounds->SetPosition(this->GetPosition());
 	Bounds->SetDimensions(this->GetDimensions());

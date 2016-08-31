@@ -39,15 +39,12 @@ bool GateBoundary::CheckCollision(const Vector3 &point)
 	}
 	SetOverlappingDistance(overlap);
 	SetOverlappingAxis(overlappedAxis);
-	if (questToCheck && stageToCheck)
+	
+	if (CheckQuest())
 	{
-		if (stageToCheck->getComplete()
-			&& stageToCheck->getStageNO() < questToCheck->getCurrentStage())
-		{
-			std::ostringstream ss;
-			ss << "LOADING_" << name_;
-			Scene_System::accessing().getCurrScene().onNotify(ss.str());
-		}
+		std::ostringstream ss;
+		ss << "LOADING_" << name_;
+		Scene_System::accessing().getCurrScene().onNotify(ss.str());
 	}
 	else
 	{
@@ -91,4 +88,13 @@ void GateBoundary::InitQuest()
 			break;
 		}
 	}
+}
+
+bool GateBoundary::CheckQuest()
+{
+	if (questToCheck && stageToCheck)
+	{
+		return (stageToCheck->getComplete() && stageToCheck->getStageNO() < questToCheck->getCurrentStage());
+	}
+	return false;
 }

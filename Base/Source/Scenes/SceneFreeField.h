@@ -26,10 +26,10 @@ public:
 private:
 	// Private Variables
 	int CurrentEncounterRateBoost = 0;
-	const float EncounterRatio = 0.01f;
+	const float EncounterRatio = 0.000000001f;
 	Vector3 PreviousPosition;
 	float EncounterTimer = 0;
-	float EncounterTimeCheck = 1.;
+	float EncounterTimeCheck = 100.;
 	int MaxEncounterRate = 1000;
     bool MonsterFound;
 

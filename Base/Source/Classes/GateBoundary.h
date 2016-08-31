@@ -15,7 +15,8 @@ public:
 	virtual void TransitScene(const std::string &ID);
 
 	void SetQuestData(const std::string &,const int &);
-	
+	bool CheckQuest();
+
 private:
 	void InitQuest();
 

@@ -10,6 +10,7 @@
 #include "SceneBattleScreen.h"
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\PlayerObject.h"
+#include "..\\Classes\\GateBoundary.h"
 #include "../Misc/LoadEnemyData.h"
 
 std::string SceneFreeField::id_ = "F1_Scene";
@@ -227,8 +228,20 @@ void SceneFreeField::RenderShadowCasters()
 	for (auto it : objVec)
 	{
 		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
-		if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
-			the3DObject->Render();
+		if (it->getName() == "Boss_Manticore")
+		{
+			GateBoundary *temp = dynamic_cast<GateBoundary*>(it->GetBoundary());
+			if (temp->CheckQuest())
+			{
+				if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
+					the3DObject->Render();
+			}
+		}
+		else
+		{
+			if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
+				the3DObject->Render();
+		}
 	}
 	//<!> will remove soon <!>
 
@@ -479,7 +492,7 @@ bool SceneFreeField::onNotify(const std::string &theEvent)
 	{
 		size_t posOfUnderScore = theEvent.find_first_of('_');
 		std::string preMonsterName = theEvent.substr(posOfUnderScore + 1);
-		std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find(preMonsterName);
+		std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find("2");
 		Scene_System::accessing().BSys->SetEnemy(*it->second);
 		Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
 	}

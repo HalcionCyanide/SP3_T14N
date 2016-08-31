@@ -1,8 +1,8 @@
 EnemyID,MeshName,EnemyName,EnemyType,SpellPower,MaxEnemyWave,P1MeshName,P1Type,P1AttackSpeed,P1AttacksPerWave,P1DamagePerAttack,P1ScalarAcceleration,P1BatchCreateCount,P2MeshName,P2Type,P2AttackSpeed,P2AttacksPerWave,P2DamagePerAttack,P2ScalarAcceleration,P2BatchCreateCount,P3MeshName,P3Type,P3AttackSpeed,P3AttacksPerWave,P3DamagePerAttack,P3ScalarAcceleration,P3BatchCreateCount,P4MeshName,P4Type,P4AttackSpeed,P4AttacksPerWave,P4DamagePerAttack,P4ScalarAcceleration,P4BatchCreateCount
-1,Boss_Manticore,Manticore,Boss,600,5,Fire,Bullet,0.2,20,3,100,3,Fire,Trap,0.2,15,3,5,2,Fire,HRay,0.2,5,5,2500,2,Fire,VRay,0.2,5,5,2500,2
-2,Mob_Scrub,Skeleton Grunt,Mob,1,1,Proj_Bone,Bullet,0.42,10,1,200,1,,,,,,,,,,,,,,,,,,,,,
-3,Mob_Skeletondrake,Skeletal Drake,Mob,1,3,Proj_Bone,Bullet,0.52,10,2,300,3,Smoke,Trap,0.5,10,2,5,3,,,,,,,,,,,,,,
-4,Boss_Balrog,Balrog,Mob,1,3,Fire,Bullet,0.3,30,3,100,1,,,,,,,,,,,,,,,,,,,,,
+1,Boss_Balrog,Balrog,Mob,1,3,Fire,Bullet,0.3,30,3,100,1,,,,,,,,,,,,,,,,,,,,,
+2,Boss_Manticore,Manticore,Boss,600,5,Fire,Bullet,0.2,20,3,100,3,Fire,Trap,0.2,15,3,5,2,Fire,HRay,0.2,5,5,2500,2,Fire,VRay,0.2,5,5,2500,2
+3,Mob_Scrub,Skeleton Grunt,Mob,1,1,Proj_Bone,Bullet,0.42,10,1,200,1,,,,,,,,,,,,,,,,,,,,,
+4,Mob_Skeletondrake,Skeletal Drake,Mob,1,3,Proj_Bone,Bullet,0.52,10,2,300,3,Smoke,Trap,0.5,10,2,5,3,,,,,,,,,,,,,,
 5,Mob_BoneFish,BoneFish,Mob,1,3,Proj_FishBone,Bullet,0.5,15,1,100,2,Proj_FishBone,HRay,0.3,1,5,2000,2,,,,,,,,,,,,,,
 6,Mob_ChiefSkeleton,Skeleton Chief,Mob,1,1,Proj_SkullBomb,Trap,0.45,20,1,5,3,,,,,,,,,,,,,,,,,,,,,
 7,Mob_DarkUnicorn,Dark Unicorn,Mob,1,1,Dark_Fire,Bullet,0.45,10,2,100,2,,,,,,,,,,,,,,,,,,,,,
