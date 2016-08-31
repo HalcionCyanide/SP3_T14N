@@ -337,6 +337,8 @@ void SceneTown1::Update(float dt)
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	SceneGraphics->Update(dt);
 
+	Scene_System::accessing().cSS_PlayerInventory->Update((float)dt);
+
 	Scene_System::accessing().cSS_PlayerUIManager->Update(dt);
 
     MusicSystem::accessing().playBackgroundMusic("town1Alt");

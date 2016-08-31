@@ -181,7 +181,7 @@ void SceneFreeField::Update(float dt)
 				if (it->getActive())
 				{
 					it->qStages.at(it2.second - 1)->Update(dt);
-					if (it->getCurrentStage() >= it->qStages.size())
+					if (it->getCurrentStage() >= (int)it->qStages.size())
 					{
 						it->setActive(false);
 					}

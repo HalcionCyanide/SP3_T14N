@@ -23,10 +23,13 @@ GraphicsEntity resides here.
 #include "questManager.h"
 #include "NPC_Manager.h"
 #include "UI_System.h"
+#include "Item_System.h"
 #include "PlayerUIManager.h"
 
 class GlobalPlayer;
 class InputManager;
+class Item_System;
+
 /******************************************************************************/
 /*!
 Class Scene_System:
@@ -55,6 +58,8 @@ public:
 	InputManager *cSS_InputManager;
 
 	PlayerUIManager* cSS_PlayerUIManager;
+
+	Item_System* cSS_PlayerInventory;
 
 	BattleSystem *BSys;
 	std::map<std::string, Enemy*> EnemyData;

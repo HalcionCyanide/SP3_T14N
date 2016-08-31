@@ -1,7 +1,10 @@
 #include "Item.h"
 
+#include "..//Systems/Scene_System.h"
+
 Item::Item()
 {
+	InternalTimer = 0;
 }
 
 
@@ -9,6 +12,18 @@ Item::~Item()
 {
 }
 
+void Item::Update(double dt)
+{
+	if (Active)
+	{
+		InternalTimer += (float)dt;
+	}
+	float MaxWaitTime = Duration + CoolDown;
+	if (InternalTimer > MaxWaitTime)
+	{
+		Active = false;
+	}
+}
 
 void Item::SetItemType(const Item::ItemType &type)
 {
@@ -70,19 +85,15 @@ float Item::GetEffectiveValue()const
 	return this->EffectiveValue;
 }
 
-float Item::Use(float dt, const float &value)
+void Item::Use(float dt)
 {
-	float finalValue;
-	switch (TypeOfItem)
+	if (!Active)
 	{
-	case HEAL_OVER_TIME:
-		finalValue = EffectiveValue * dt;
-		break;
-	case BOOST_INERTIA:
-	case INSTANT_HEAL:
-	case BOOST_SPEED:
-		finalValue = EffectiveValue;
-		break;
+		float MaxWaitTime = Duration + CoolDown;
+		if (InternalTimer > MaxWaitTime)
+		{
+			InternalTimer = 0;
+			Active = true;
+		}
 	}
-	return finalValue;
 }
