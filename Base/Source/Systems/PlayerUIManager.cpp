@@ -16,6 +16,9 @@ PlayerUIManager::PlayerUIManager()
 	Menu_Inventory = nullptr;
 	Menu_Quests = nullptr;
 	Menu_Save = nullptr;
+
+	QuestLeftPointer = nullptr;
+	QuestRightPointer = nullptr;
 }
 
 PlayerUIManager::~PlayerUIManager()
@@ -29,6 +32,15 @@ void PlayerUIManager::Init()
 
 	ButtonTimer = 0.f;
 	WaitTime = 0.5f;
+	QuestDisplayNumber = 0;
+	CurrentQuestDisplayNumber = -1;
+
+	int Counter = 0;
+	for (std::vector<Quest*>::iterator it = Scene_System::accessing().QM.allQuests.begin(); it != Scene_System::accessing().QM.allQuests.end(); ++it)
+	{
+		ActiveQuestList.insert(std::pair<int, Quest*>(Counter, *it));
+		++Counter;
+	}
 
 	UI_HUD.Init();
 	UI_Menu.Init();
@@ -110,15 +122,62 @@ void PlayerUIManager::InitMenu()
 
 	UI_Menu.cUIS_LayerContainer.push_back(Menu_Base);
 
-	// Menu Stats
+	//// Menu Stats
 	Menu_Stats = new UI_Layer();
 
+	// Backing
 	NewE = new UI_Element("Menu_Backing2", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), Vector3(CenterPosition.x * 1.9f, CenterPosition.y * 1.7f, 1), CenterPosition + Vector3(0, CenterPosition.y * 0.15f));
+	Menu_Stats->cUI_Layer.push_back(NewE);
+
+	// Header
+	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.4f, CenterPosition.y * 0.25f, 1), 0, UI_Text[1]);
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x * 0.32f, CenterPosition.y * 1.775f);
 	Menu_Stats->cUI_Layer.push_back(NewE);
 
 	UI_Menu.cUIS_LayerContainer.push_back(Menu_Stats);
 
-	// Menu Save Screen
+	//// Menu Quests
+	Menu_Quests = new UI_Layer();
+
+	// Backing
+	NewE = new UI_Element("Menu_Backing2", CenterPosition + Vector3(0, CenterPosition.y * 0.15f), CenterPosition + Vector3(0, CenterPosition.y * 0.15f), Vector3(CenterPosition.x * 1.9f, CenterPosition.y * 1.7f, 1), CenterPosition + Vector3(0, CenterPosition.y * 0.15f));
+	Menu_Quests->cUI_Layer.push_back(NewE);
+
+	// Header
+	NewE = new UI_Element("TFB_Button", 0, 0, Vector3(CenterPosition.x * 0.4f, CenterPosition.y * 0.25f, 1), 0, UI_Text[3]);
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x * 0.32f, CenterPosition.y * 1.775f);
+	Menu_Quests->cUI_Layer.push_back(NewE);
+
+	// Title
+	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 0.75f, CenterPosition.y * 0.225f, 1), 0, "Title");
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x, CenterPosition.y * 1.6f);
+	Menu_Quests->cUI_Layer.push_back(NewE);
+	Menu_QuestTextElements.push_back(NewE);
+
+	// Description
+	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 1.2f, CenterPosition.y * 0.9f, 1), 0, "Description");
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x, CenterPosition.y);
+	Menu_Quests->cUI_Layer.push_back(NewE);
+	Menu_QuestTextElements.push_back(NewE);
+
+	// Giver
+	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x, CenterPosition.y * 0.175f, 1), 0, "Giver");
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x, CenterPosition.y * 0.425f);
+	Menu_Quests->cUI_Layer.push_back(NewE);
+	Menu_QuestTextElements.push_back(NewE);
+
+	// Quest Pointers
+	QuestLeftPointer = new UI_Element("Menu_LeftPointer", 0, 0, Vector3(CenterPosition.x * 0.2f, CenterPosition.y * 0.2f, 1), 0);
+	QuestLeftPointer->Position = QuestLeftPointer->OriginalPosition = QuestLeftPointer->TargetPosition = Vector3(CenterPosition.x * 0.25f, CenterPosition.y);
+	Menu_Quests->cUI_Layer.push_back(QuestLeftPointer);
+
+	QuestRightPointer = new UI_Element("Menu_RightPointer", 0, 0, Vector3(CenterPosition.x * 0.2f, CenterPosition.y * 0.2f, 1), 0);
+	QuestRightPointer->Position = QuestRightPointer->OriginalPosition = QuestRightPointer->TargetPosition = Vector3(CenterPosition.x * 1.75f, CenterPosition.y);
+	Menu_Quests->cUI_Layer.push_back(QuestRightPointer);
+
+	UI_Menu.cUIS_LayerContainer.push_back(Menu_Quests);
+
+	//// Menu Save Screen
 	Menu_Save = new UI_Layer();
 
 	// Backing
@@ -153,6 +212,7 @@ void PlayerUIManager::InitMenu()
 
 void PlayerUIManager::Update(double dt)
 {
+	bool CheckSucceeded;
 	ButtonTimer += (float)dt;
 	if (ButtonTimer > WaitTime && Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::PAUSE_MENU_COMMAND]))
 	{
@@ -222,6 +282,26 @@ void PlayerUIManager::Update(double dt)
 				(*it)->LayerTargetPosition.y = 0;
 			else (*it)->LayerTargetPosition.y = DistMultiplier * CenterPosition.y;
 		}
+		CheckSucceeded = false;
+		QuestLeftPointer->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), CheckSucceeded);
+		if (ButtonTimer > WaitTime && CheckSucceeded) {
+			ButtonTimer = 0;
+			QuestDisplayNumber++;
+		}
+		CheckSucceeded = false;
+		QuestRightPointer->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), CheckSucceeded);
+		if (ButtonTimer > WaitTime && CheckSucceeded) {
+			ButtonTimer = 0;
+			QuestDisplayNumber++;
+		}
+		if (CurrentQuestDisplayNumber != QuestDisplayNumber)
+		{
+			if (CurrentQuestDisplayNumber < 0)
+				CurrentQuestDisplayNumber = ActiveQuestList.size();
+			CurrentQuestDisplayNumber = QuestDisplayNumber;
+			UpdateQuestsMenu((float)dt);
+		}
+
 		break;
 	case UIS_Menu_Save:
 		for (std::vector<UI_Layer*>::iterator it = UI_HUD.cUIS_LayerContainer.begin(); it != UI_HUD.cUIS_LayerContainer.end(); ++it)
@@ -357,6 +437,46 @@ void PlayerUIManager::UpdateStatsHUD(float dt)
 	ss.str("");
 	ss << "HP: " << Scene_System::accessing().gPlayer->GetCurrentHealth() << " / " << Scene_System::accessing().gPlayer->GetMaxHealth();
 	HUD_Stats->cUI_Layer[4]->UI_Text = ss.str();
+}
+
+void PlayerUIManager::UpdateQuestsMenu(float dt)
+{
+	std::map<std::string, int> PlayerStates = Scene_System::accessing().gPlayer->playerCurrQState;
+	if (QuestDisplayNumber > PlayerStates.size() - 1)
+	{
+		QuestDisplayNumber = 0;
+	}
+	std::map<int, Quest*>::iterator Quest = ActiveQuestList.find(QuestDisplayNumber);
+	if (Quest->second != nullptr)
+	{
+		CurrentQuest = Quest->second;
+		bool Check = false;
+		for (std::vector<QuestStage*>::iterator it = CurrentQuest->qStages.begin(); it != CurrentQuest->qStages.end(); ++it)
+		{
+			std::map<std::string, int>::iterator StateCheck = PlayerStates.find(CurrentQuest->getName());
+			if (Quest->second->getCurrentStage() > 0)
+			{
+				if (!(*it)->getComplete() && CurrentQuest->getActive() && (*it)->getStageNO() < StateCheck->second)
+				{
+					CurrentStage = *it;
+					Menu_QuestTextElements[0]->UI_Text = Quest->second->getName();
+					Menu_QuestTextElements[1]->UI_Text = (*it)->getDesc();
+					Menu_QuestTextElements[1]->WrapText();
+					Menu_QuestTextElements[2]->UI_Text = (*it)->getGiver();
+					Check = true;
+					break;
+				}
+			}
+		}
+		if (!Check)
+		{
+			++QuestDisplayNumber;
+			if (QuestDisplayNumber > PlayerStates.size() -1)
+			{
+				QuestDisplayNumber = 0;
+			}
+		}
+	}
 }
 
 void PlayerUIManager::Render()

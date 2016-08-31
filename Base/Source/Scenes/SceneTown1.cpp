@@ -7,6 +7,8 @@
 #include "SceneFreeField.h"
 #include "SceneFreeField2.h"
 
+
+#include "..\Misc\SimpleCommand.h"
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\PlayerObject.h"
 #include "..\\Systems\\UI_System.h"
@@ -170,7 +172,7 @@ void SceneTown1::NPC_chat(float dt)
 
 		CurrentNPC->Update((float)dt);
 		float DistanceCheck = (camera->position - CurrentNPC->GetPosition()).LengthSquared();
-		if (DistanceCheck < CurrentNPC->GetDetectionRadiusSquared() && Scene_System::accessing().cSS_InputManager->GetKeyValue('Q') && !CurrentNPC->getInteracting())
+		if (DistanceCheck < CurrentNPC->GetDetectionRadiusSquared() && Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::INTERACT_COMMAND]) && !CurrentNPC->getInteracting())
 		{
 			CurrentNPC->setInteracting(true);
 			Scene_System::accessing().cSS_PlayerUIManager->CurrentState = PlayerUIManager::UIS_NO_UI;
@@ -606,7 +608,11 @@ void SceneTown1::RenderPassMain()
 
 	Scene_System::accessing().cSS_PlayerUIManager->Render();
 
-	ChatLayer->Render();
+	for (std::vector<UI_Element*>::iterator it = ChatLayer->cUI_Layer.begin(); it != ChatLayer->cUI_Layer.end(); ++it)
+	{
+		if ((*it)->UI_Text != "" || (*it)->UI_Text_Container.size() > 0)
+			(*it)->Render(ChatLayer->LayerCenterPosition);
+	}
 
 	if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
 	{
