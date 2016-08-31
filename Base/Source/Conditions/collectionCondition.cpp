@@ -1,5 +1,5 @@
 #include "collectionCondition.h"
-
+#include "..\\Systems\\Scene_System.h"
 
 collectionCondition::collectionCondition()
     : theRequirement(0)
@@ -29,7 +29,7 @@ void collectionCondition::Update(double dt)
 	//stuff to increase the number, please remember to increase the counter as you go along.
 	if(!complete)
 	{
-		/*counter = capturedMonsters.size(); //eventually a vector for captured monsters. <?>*/
+		counter = Scene_System::accessing().gPlayer->getMonsterCount();
 		if(theRequirement <= counter)
 			complete = true;
 	}

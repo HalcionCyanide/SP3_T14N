@@ -18,6 +18,11 @@ struct to_upper
 	}
 };
 
+bool sortByName(Quest* first, Quest* second)
+{
+	return (first->getName() < second->getName());
+}
+
 void questManager::readFile(const std::string fileName)
 {
 	std::string temp = "";
@@ -79,6 +84,7 @@ void questManager::readFile(const std::string fileName)
 			}
         }
 	}
+	std::sort(allQuests.begin(), allQuests.end(), sortByName);
 }
 
 void questManager::Update(double dt)
