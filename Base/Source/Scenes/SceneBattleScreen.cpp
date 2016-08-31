@@ -57,16 +57,16 @@ void SceneBattleScreen::Update(float dt)
 
 	framerates = 1 / dt;
 
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
-	{
-		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-		Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0;
-		Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0;
-	}
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('0'))
-	{
-		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
-	}
+	//if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
+	//{
+	//	Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+	//	Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0;
+	//	Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0;
+	//}
+	//if (Scene_System::accessing().cSS_InputManager->GetKeyValue('0'))
+	//{
+	//	Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+	//}
 
 	Scene_System::accessing().BSys->cBillboardManager.UpdateContainer(dt, camera.position);
 
