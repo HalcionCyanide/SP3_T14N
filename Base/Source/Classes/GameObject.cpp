@@ -43,12 +43,12 @@ void GameObject::SetBounds()
 		if (Bounds->getName() == "2_Scene")
 		{
 			GateBoundary* TempBound = dynamic_cast<GateBoundary*>(Bounds);
-			TempBound->SetQuestData("Rating up", 1);
+			TempBound->SetQuestData("The Fractal Binding", 1);
 		}
 		if (Bounds->getName() == "3_Scene")
 		{
 			GateBoundary* TempBound = dynamic_cast<GateBoundary*>(Bounds);
-			TempBound->SetQuestData("Rating up", 2);
+			TempBound->SetQuestData("The Fractal Binding", 5);
 		}
     }
 

@@ -41,7 +41,8 @@ bool GateBoundary::CheckCollision(const Vector3 &point)
 	SetOverlappingAxis(overlappedAxis);
 	if (questToCheck && stageToCheck)
 	{
-		if (questToCheck->getActive() && stageToCheck->getComplete())
+		if (stageToCheck->getComplete()
+			&& stageToCheck->getStageNO() < questToCheck->getCurrentStage())
 		{
 			std::ostringstream ss;
 			ss << "LOADING_" << name_;
@@ -75,7 +76,8 @@ void GateBoundary::InitQuest()
 {
 	for (std::vector<Quest*>::iterator CurrQuest = Scene_System::accessing().QM.allQuests.begin(); CurrQuest != Scene_System::accessing().QM.allQuests.end(); ++CurrQuest)
 	{
-		if ((*CurrQuest)->getName() == questName)
+		std::string Text = (*CurrQuest)->getName();
+		if (Text == questName)
 		{
 			questToCheck = *CurrQuest;
 			break;
@@ -83,7 +85,8 @@ void GateBoundary::InitQuest()
 	}
 	for (std::vector<QuestStage*>::iterator CurrQuestStage = questToCheck->qStages.begin(); CurrQuestStage != questToCheck->qStages.end(); ++CurrQuestStage)
 	{
-		if ((*CurrQuestStage)->getStageNO() == questStage)
+		int stage = (*CurrQuestStage)->getStageNO();
+		if (stage == questStage)
 		{
 			stageToCheck = *CurrQuestStage;
 			break;

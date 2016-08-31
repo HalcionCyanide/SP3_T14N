@@ -26,7 +26,7 @@ public:
 private:
 	// Private Variables
 	int CurrentEncounterRateBoost = 0;
-	const float EncounterRatio = 0.00000001f;
+	const float EncounterRatio = 0.01f;
 	Vector3 PreviousPosition;
 	float EncounterTimer = 0;
 	float EncounterTimeCheck = 1.;
