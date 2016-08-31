@@ -37,15 +37,27 @@ private:
     void RenderTerrain();
     void RenderSkybox();
 
-    const float SkyboxSize = 1000;
+	// CHAT UI STUFFS <!>
+	void InitChatUI();
+	void NPC_chat(float);
+	std::string HandleChatUIInput(float dt);
+	UI_Layer* ChatLayer;
+	UI_Element* NPC_Name;
+	UI_Element* NPC_TextBox;
+	std::vector<UI_Element*> NPC_QuestButtons;
+	// CHAT UI END
 
-    BillboardManager BManager;
-    GameObject* Player;
+	const float SkyboxSize = 1000;
 
-    double framerates;
-    GenericEntity *theInteractiveMap;
-    std::vector<GameObject*> objVec;
-    std::string transitingSceneName;
+	BillboardManager BManager;
+	GameObject* Player;
+
+	double framerates;
+	GenericEntity *theInteractiveMap;
+	std::vector<GameObject*> objVec;
+	Vector3 CenterPosition;
+	UI_System* UI_Sys;
+	std::string transitingSceneName;
 };
 
 #endif // _SCENE_TOWN_2_H

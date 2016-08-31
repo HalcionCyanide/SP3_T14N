@@ -54,7 +54,6 @@ bool GateBoundary::CheckCollision(const Vector3 &point)
 		std::ostringstream ss;
 		ss << "LOADING_" << name_;
 		Scene_System::accessing().getCurrScene().onNotify(ss.str());
-
 	}
 	return true;
 }

@@ -383,7 +383,10 @@ void SceneFreeField::RenderPassMain()
 	SceneGraphics->SetHUD(true);
 
 	Scene_System::accessing().cSS_PlayerUIManager->Render();
-
+	if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
+	{
+		SceneGraphics->RenderMeshIn2D("TFB_Gem", false, 100, 100, Scene_System::accessing().cSS_InputManager->GetMousePosition().x, Scene_System::accessing().cSS_InputManager->GetMousePosition().y);
+	}
     if (Scene_System::accessing().theLoadingEffect)
         Scene_System::accessing().RenderLoadingStuff();
 	SceneGraphics->SetHUD(false);
@@ -472,5 +475,13 @@ bool SceneFreeField::onNotify(const std::string &theEvent)
         Scene_System::accessing().gPlayer->currSceneID = id_;
         return true;
     }
+	else if (checkWhetherTheWordInThatString("BOSSMONSTER", theEvent))
+	{
+		size_t posOfUnderScore = theEvent.find_first_of('_');
+		std::string preMonsterName = theEvent.substr(posOfUnderScore + 1);
+		std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find(preMonsterName);
+		Scene_System::accessing().BSys->SetEnemy(*it->second);
+		Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
+	}
     return false;
 }

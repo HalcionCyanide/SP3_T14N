@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Classes\BaseObject.cpp" />
     <ClCompile Include="Source\Classes\BattleScreenObject.cpp" />
+    <ClCompile Include="Source\Classes\BossBoundary.cpp" />
     <ClCompile Include="Source\Classes\CameraBS.cpp" />
     <ClCompile Include="Source\Classes\GateBoundary.cpp" />
     <ClCompile Include="Source\Classes\GlobalPlayer.cpp" />
@@ -76,6 +77,7 @@
   <ItemGroup>
     <ClInclude Include="Source\Classes\BaseObject.h" />
     <ClInclude Include="Source\Classes\Billboard.h" />
+    <ClInclude Include="Source\Classes\BossBoundary.h" />
     <ClInclude Include="Source\Classes\Boundary.h" />
     <ClInclude Include="Source\Classes\Boundary2D.h" />
     <ClInclude Include="Source\Classes\Camera.h" />

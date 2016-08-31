@@ -54,7 +54,9 @@ void SceneCredits::Init()
     TheLoadScreenStuff->cUIS_LayerContainer.push_back(CreditsLayer);
 
     SkipCreditStuff = new UI_Layer();
-    SkipCreditStuff->AddUIElement("TFB_Button", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(400, 300, 1), Vector3(0, 0, 0), "Left Click Here to skip");
+    UI_Element *theClickButton = new UI_Element("TFB_Button", Vector3(700, 100, 0), Vector3(700, 100, 0), Vector3(1200, 150, 1), Vector3(700, 100, 0), "Left Click Here to skip");
+    theClickButton->WrapText();
+    SkipCreditStuff->cUI_Layer.push_back(theClickButton);
     TheLoadScreenStuff->cUIS_LayerContainer.push_back(SkipCreditStuff);
 }
 
@@ -68,11 +70,26 @@ void SceneCredits::Update(float dt)
 
     camera.Update(dt);
     Scene_System::accessing().UpdateLoadingStuff(dt);
-    //if (Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
-    //{
-    //    onNotify("TRANSITIONING");
-    //}
-    
+    static bool changeToOtherScene = false;
+    if (changeToOtherScene && Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
+    {
+        onNotify("TRANSITIONING");
+        changeToOtherScene = false;
+    }
+    else {
+        for (std::vector<UI_Element*>::iterator it = SkipCreditStuff->cUI_Layer.begin(), end = SkipCreditStuff->cUI_Layer.end(); it != end; ++it)
+        {
+            (*it)->BoundsActive = true;
+            bool CheckSucceeded = false;
+            (*it)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), CheckSucceeded);
+            if (CheckSucceeded)
+            {
+                onNotify("LOADING");
+                changeToOtherScene = true;
+                break;
+            }
+        }
+    }
 }
 
 void SceneCredits::RenderPassGPass()

@@ -243,8 +243,8 @@
     <ClCompile Include="Source\Scenes\SceneFreeField2.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneCredits.cpp">
-      <Filter>Source Files\Scenes</Filter>
+    <ClCompile Include="Source\Classes\BossBoundary.cpp">
+      <Filter>Source Files\Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -455,8 +455,8 @@
     <ClInclude Include="Source\Scenes\SceneFreeField2.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneCredits.h">
-      <Filter>Header Files\Scenes</Filter>
+    <ClInclude Include="Source\Classes\BossBoundary.h">
+      <Filter>Header Files\Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
