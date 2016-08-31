@@ -28,6 +28,9 @@ public:
 	virtual void Exit();
 
 private:
+	float ButtonTimer;
+	float WaitTime;
+
 	Vector3 CenterPosition;
 	const static std::string UI_Text[];
 
@@ -49,12 +52,6 @@ private:
 	UI_Layer* Menu_Inventory;
 	UI_Layer* Menu_Quests;
 	UI_Layer* Menu_Save;
-
-	// UI Elems for menu
-	UI_Element* Tab_StatsButton;
-	UI_Element* Tab_InventoryButton;
-	UI_Element* Tab_QuestsButton;
-	UI_Element* Tab_SaveButton;
 
 	void InitMenu();
 	void RenderMenu();

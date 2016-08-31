@@ -6,6 +6,8 @@ unsigned char SimpleCommand::m_allTheKeys[SimpleCommand::TOTAL_COMMANDS] = {
     , 'A'
     , 'D'
     , ' '
+    , 'Q'
+    , 'E'
 };
 
 SimpleCommand::SimpleCommand()

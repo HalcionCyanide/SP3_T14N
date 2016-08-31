@@ -96,9 +96,6 @@
     <ClCompile Include="Source\Conditions\collectionCondition.cpp">
       <Filter>Source Files\Conditions</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Classes\Commands.cpp">
-      <Filter>Source Files\Classes</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Misc\DepthFBO.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
@@ -276,9 +273,6 @@
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
     <ClInclude Include="Source\Classes\CItem.h">
-      <Filter>Header Files\Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Classes\Commands.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
     <ClInclude Include="Source\Classes\GameMap.h">

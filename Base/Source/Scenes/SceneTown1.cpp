@@ -259,13 +259,13 @@ void SceneTown1::NPC_chat(float dt)
 			std::string temp = HandleChatUIInput((float)dt);
 			if (temp == "Exit")
 			{
-				Scene_System::accessing().cSS_PlayerUIManager->CurrentState = PlayerUIManager::UIS_HUD;
 				camera->CameraIsLocked = false;
 				if (ChatLayer->LayerTargetPosition.y > -1)
 					ChatLayer->SwapOriginalWithTarget();
 				CurrentNPC->setInteracting(false);
-				Scene_System::accessing().cSS_InputManager->SetMousePosition(CenterPosition);
+				Scene_System::accessing().cSS_InputManager->SetMouseToScreenCenter();
 				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+				Scene_System::accessing().cSS_PlayerUIManager->CurrentState = PlayerUIManager::UIS_HUD;
 				temp.clear();
 			}
 			bool changedFText = false;
@@ -320,8 +320,9 @@ void SceneTown1::NPC_chat(float dt)
 					if (ChatLayer->LayerTargetPosition.y > -1)
 						ChatLayer->SwapOriginalWithTarget();
 					CurrentNPC->setInteracting(false);
-					Scene_System::accessing().cSS_InputManager->SetMousePosition(CenterPosition);
+					Scene_System::accessing().cSS_InputManager->SetMouseToScreenCenter();
 					Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+					Scene_System::accessing().cSS_PlayerUIManager->CurrentState = PlayerUIManager::UIS_HUD;
 					temp.clear();
 				}
 			}
@@ -374,8 +375,7 @@ void SceneTown1::Update(float dt)
         if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
         {
             Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-            Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0;
-            Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0;
+			Scene_System::accessing().cSS_InputManager->SetMouseToScreenCenter();
         }
         if (Scene_System::accessing().cSS_InputManager->GetKeyValue('0'))
         {
@@ -402,6 +402,10 @@ void SceneTown1::Update(float dt)
 				if (it->getActive())
 				{
 					it->qStages.at(it2.second - 1)->Update(dt);
+					if (it->getCurrentStage() >= it->qStages.size())
+					{
+						it->setActive(false);
+					}
 				}
 			}
 		}

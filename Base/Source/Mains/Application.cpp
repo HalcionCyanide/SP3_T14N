@@ -202,7 +202,7 @@ void Application::Run()
 	HWND hwnd = GetActiveWindow();
 
 	//Main Loop
-	while (!ExitGame && !glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE))
+	while (!ExitGame && !glfwWindowShouldClose(m_window))
 	{
         // Get the elapsed time
         m_dElaspedTime = m_timer.getElapsedTime();
@@ -210,7 +210,6 @@ void Application::Run()
 		{
 			Update();
 			Scene_System::accessing().getCurrScene().Render();
-			//MusicSystem::accessing().playBackgroundMusic("footstep");
         }
 		//Swap buffers
 		glfwSwapBuffers(m_window);
@@ -299,6 +298,14 @@ bool Application::loadThoseKeyCommandsStuff()
             else if (KeyAndToken[0] == "JUMP_BUTTON")
             {
                 SimpleCommand::m_allTheKeys[SimpleCommand::JUMP_COMMAND] = KeyAndToken[1][0];
+            }
+            else if (KeyAndToken[0] == "INTERACT_BUTTON")
+            {
+                SimpleCommand::m_allTheKeys[SimpleCommand::INTERACT_COMMAND] = KeyAndToken[1][0];
+            }
+            else if (KeyAndToken[0] == "PAUSE_MENU_BUTTON")
+            {
+                SimpleCommand::m_allTheKeys[SimpleCommand::PAUSE_MENU_COMMAND] = KeyAndToken[1][0];
             }
         }
         file.close();
