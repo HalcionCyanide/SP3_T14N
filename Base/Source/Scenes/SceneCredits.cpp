@@ -16,6 +16,7 @@ SceneCredits::SceneCredits()
     framerates = 0;
     setName(id_);
     TheLoadScreenStuff = nullptr;
+    SkipCreditStuff = ComicLayer = CreditsLayer = nullptr;
 }
 
 SceneCredits::~SceneCredits()
@@ -54,6 +55,8 @@ void SceneCredits::Init()
     CreditsLayer->LayerCenterPosition.y = 0;
     UI_Element *TheCredits = new UI_Element("TextBacking", Vector3(1200, 600, 0), Vector3(1200, 600, 0), Vector3(300, 200, 1), Vector3(1200, 600, 0));
     TheCredits->TextWrappingEnabled = true;
+    TheCredits->UI_Text_Container.push_back("Credits");
+    TheCredits->UI_Text_Container.push_back("");
     TheCredits->UI_Text_Container.push_back("Director:");
     TheCredits->UI_Text_Container.push_back("Ryan Lim Rui An");
     TheCredits->UI_Text_Container.push_back("Co-Director:");
@@ -76,6 +79,8 @@ void SceneCredits::Init()
     theClickButton->WrapText();
     SkipCreditStuff->cUI_Layer.push_back(theClickButton);
     TheLoadScreenStuff->cUIS_LayerContainer.push_back(SkipCreditStuff);
+
+    ComicVel.Set(0, 50, 0);
 }
 
 void SceneCredits::Update(float dt)
@@ -94,7 +99,7 @@ void SceneCredits::Update(float dt)
         onNotify("TRANSITIONING");
         changeToOtherScene = false;
     }
-    else {
+    else if (changeToOtherScene == false) {
         for (std::vector<UI_Element*>::iterator it = SkipCreditStuff->cUI_Layer.begin(), end = SkipCreditStuff->cUI_Layer.end(); it != end; ++it)
         {
             (*it)->BoundsActive = true;
@@ -106,6 +111,15 @@ void SceneCredits::Update(float dt)
                 changeToOtherScene = true;
                 break;
             }
+        }
+        ComicLayer->LayerTargetPosition += ComicVel * (float)(dt);
+        ComicLayer->Update(dt);
+        CreditsLayer->LayerTargetPosition += ComicVel * (float)(dt);
+        CreditsLayer->Update(dt);
+        if (ComicLayer->LayerCenterPosition.y > 1700.f)
+        {
+            onNotify("LOADING");
+            changeToOtherScene = true;
         }
     }
 }

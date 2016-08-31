@@ -29,6 +29,7 @@ private:
 
     UI_System *TheLoadScreenStuff;
     UI_Layer *SkipCreditStuff, *ComicLayer, *CreditsLayer;
+    Vector3 ComicVel, CreditVel;
 };
 
 #endif
