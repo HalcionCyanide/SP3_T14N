@@ -42,15 +42,33 @@ void SceneCredits::Init()
     camera.Init(Vector3(0, 0, 1), 0, Vector3(0, 1, 0));
 
     TheLoadScreenStuff = new UI_System();
-    UI_Layer *ComicLayer = new UI_Layer();
+    ComicLayer = new UI_Layer();
     ComicLayer->LayerTargetPosition.y = 0;
     ComicLayer->LayerCenterPosition.y = 0;
     ComicLayer->AddUIElement("page1_comic", Vector3(600, 600, 0), Vector3(600, 600, 0), Vector3(1000, 800, 1), Vector3(600, 600, 0));
     ComicLayer->AddUIElement("page2_comic", Vector3(600, -200, 0), Vector3(600, -200, 0), Vector3(1000, 800, 1), Vector3(600, -200, 0));
     TheLoadScreenStuff->cUIS_LayerContainer.push_back(ComicLayer);
 
-    UI_Layer *CreditsLayer = new UI_Layer();
-
+    CreditsLayer = new UI_Layer();
+    CreditsLayer->LayerTargetPosition.y = 0;
+    CreditsLayer->LayerCenterPosition.y = 0;
+    UI_Element *TheCredits = new UI_Element("TextBacking", Vector3(1200, 600, 0), Vector3(1200, 600, 0), Vector3(300, 200, 1), Vector3(1200, 600, 0));
+    TheCredits->TextWrappingEnabled = true;
+    TheCredits->UI_Text_Container.push_back("Director:");
+    TheCredits->UI_Text_Container.push_back("Ryan Lim Rui An");
+    TheCredits->UI_Text_Container.push_back("Co-Director:");
+    TheCredits->UI_Text_Container.push_back("Lee Sek Heng");
+    TheCredits->UI_Text_Container.push_back("Secretary:");
+    TheCredits->UI_Text_Container.push_back("Tan Teck Ling");
+    TheCredits->UI_Text_Container.push_back("Office Manager:");
+    TheCredits->UI_Text_Container.push_back("Zheng Qing Ping");
+    TheCredits->UI_Text_Container.push_back("");
+    TheCredits->UI_Text_Container.push_back("Music Taken From:");
+    TheCredits->UI_Text_Container.push_back("<NewGrounds>");
+    TheCredits->UI_Text_Container.push_back("NemesisTheory");
+    TheCredits->UI_Text_Container.push_back("OcularNebula");
+    TheCredits->UI_Text_Container.push_back("bensound.com");
+    CreditsLayer->cUI_Layer.push_back(TheCredits);
     TheLoadScreenStuff->cUIS_LayerContainer.push_back(CreditsLayer);
 
     SkipCreditStuff = new UI_Layer();
@@ -180,6 +198,10 @@ void SceneCredits::RenderPassMain()
     ss << "FPS:" << framerates;
     ss.precision(3);
     SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 25);
+
+    ss.str("");
+    ss << "LayerPos" << TheLoadScreenStuff->cUIS_LayerContainer[0]->LayerCenterPosition.y;
+    SceneGraphics->RenderTextOnScreen(ss.str(), Color(0, 1, 0), 25, 25, 50);
 
     SceneGraphics->SetHUD(false);
 }
