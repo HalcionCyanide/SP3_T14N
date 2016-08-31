@@ -40,12 +40,14 @@ public:
 	int GetCurrentHealth();
 	int GetMaxHealth();
 	bool GetIsInteracting();
+	int getMonsterCount();
 
 	// Setters
 	void SetSpellPower(const int&);
 	void SetCurrentHealth(const int&);
 	void SetMaxHealth(const int&);
 	void SetIsInteracting(const bool&);
+	void setMonsterCount(const int&);
 
     bool LoadPlayerSave(const std::string &fileName);
     bool RewritePlayerSave(const std::string &fileName);
@@ -68,7 +70,7 @@ private:
 	int CurrentHealth;
 	int MaxHealth;
 	bool IsInteracting;
-
+	int MonsterCount;
     int whatSave;
 
 	// Quest Container
