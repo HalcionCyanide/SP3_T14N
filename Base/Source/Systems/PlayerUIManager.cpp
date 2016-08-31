@@ -471,7 +471,7 @@ void PlayerUIManager::UpdateStatsHUD(float dt)
 void PlayerUIManager::UpdateQuestsMenu(float dt)
 {
 	std::map<std::string, int> PlayerStates = Scene_System::accessing().gPlayer->playerCurrQState;
-	if (QuestDisplayNumber > PlayerStates.size() - 1)
+	if (QuestDisplayNumber > (int)PlayerStates.size() - 1)
 	{
 		QuestDisplayNumber = 0;
 	}
@@ -507,7 +507,7 @@ void PlayerUIManager::UpdateQuestsMenu(float dt)
 		if (!Check)
 		{
 			++QuestDisplayNumber;
-			if (QuestDisplayNumber > PlayerStates.size() -1)
+			if (QuestDisplayNumber > (int)PlayerStates.size() -1)
 			{
 				QuestDisplayNumber = 0;
 			}
