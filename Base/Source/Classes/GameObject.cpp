@@ -54,7 +54,6 @@ void GameObject::SetBounds()
 	//else if (checkWhetherTheWordInThatString("Boss", getName()))
 	//{
 	//	delete Bounds;
-
 	//}
 
 	Bounds->SetPosition(this->GetPosition());
