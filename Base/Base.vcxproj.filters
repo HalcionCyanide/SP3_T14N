@@ -249,6 +249,9 @@
     <ClCompile Include="Source\Scenes\SceneFreeField2.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scenes\SceneCredits.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Classes\Billboard.h">
@@ -462,6 +465,9 @@
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scenes\SceneFreeField2.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\SceneCredits.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
