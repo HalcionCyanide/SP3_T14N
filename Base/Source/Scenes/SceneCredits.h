@@ -28,6 +28,7 @@ private:
     double framerates;
 
     UI_System *TheLoadScreenStuff;
+    UI_Layer *SkipCreditStuff;
 };
 
 #endif

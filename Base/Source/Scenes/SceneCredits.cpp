@@ -43,12 +43,19 @@ void SceneCredits::Init()
 
     TheLoadScreenStuff = new UI_System();
     UI_Layer *ComicLayer = new UI_Layer();
-
+    ComicLayer->LayerTargetPosition.y = 0;
+    ComicLayer->LayerCenterPosition.y = 0;
+    ComicLayer->AddUIElement("page1_comic", Vector3(600, 600, 0), Vector3(600, 600, 0), Vector3(1000, 800, 1), Vector3(600, 600, 0));
+    ComicLayer->AddUIElement("page2_comic", Vector3(600, -200, 0), Vector3(600, -200, 0), Vector3(1000, 800, 1), Vector3(600, -200, 0));
     TheLoadScreenStuff->cUIS_LayerContainer.push_back(ComicLayer);
 
     UI_Layer *CreditsLayer = new UI_Layer();
 
     TheLoadScreenStuff->cUIS_LayerContainer.push_back(CreditsLayer);
+
+    SkipCreditStuff = new UI_Layer();
+    SkipCreditStuff->AddUIElement("TFB_Button", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(400, 300, 1), Vector3(0, 0, 0), "Left Click Here to skip");
+    TheLoadScreenStuff->cUIS_LayerContainer.push_back(SkipCreditStuff);
 }
 
 void SceneCredits::Update(float dt)
@@ -60,6 +67,7 @@ void SceneCredits::Update(float dt)
     framerates = 1 / dt;
 
     camera.Update(dt);
+    Scene_System::accessing().UpdateLoadingStuff(dt);
     //if (Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
     //{
     //    onNotify("TRANSITIONING");
@@ -141,15 +149,11 @@ void SceneCredits::RenderPassMain()
     //SceneGraphics->RenderMesh("reference", false);
 
     SceneGraphics->SetHUD(true);
+    TheLoadScreenStuff->Render();
     if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
     {
-        modelStack->PushMatrix();
-        modelStack->Translate(Scene_System::accessing().cSS_InputManager->GetMousePosition().x, Scene_System::accessing().cSS_InputManager->GetMousePosition().y, 0);
-        modelStack->Rotate(0, 0, 1, 0);
-        SceneGraphics->RenderMesh("TFB_Gem", false);
-        modelStack->PopMatrix();
+        SceneGraphics->RenderMeshIn2D("TFB_Gem", false, 100, 100, Scene_System::accessing().cSS_InputManager->GetMousePosition().x, Scene_System::accessing  ().cSS_InputManager->GetMousePosition().y);
     }
-    TheLoadScreenStuff->Render();
 
     if (Scene_System::accessing().theLoadingEffect)
         Scene_System::accessing().RenderLoadingStuff();
