@@ -2,6 +2,8 @@
 #define _PLAYER_UI_MANAGER_H
 
 #include "UI_System.h"
+#include "../Quests/Quest.h"
+#include <map>
 
 class PlayerUIManager : public GenericSystem
 {
@@ -51,11 +53,22 @@ private:
 	UI_Layer* Menu_Stats;
 	UI_Layer* Menu_Inventory;
 	UI_Layer* Menu_Quests;
+	UI_Element* QuestLeftPointer;
+	UI_Element* QuestRightPointer;
+	Quest* CurrentQuest;
+	QuestStage* CurrentStage;
+	std::vector<UI_Element*> Menu_QuestTextElements;
 	UI_Layer* Menu_Save;
+
+	int QuestDisplayNumber = 0;
+	int CurrentQuestDisplayNumber = -1;
+
+	std::map<int, Quest*> ActiveQuestList;
 
 	void InitMenu();
 	void RenderMenu();
 	void UpdateStatsHUD(float dt);
+	void UpdateQuestsMenu(float dt);
 };
 
 #endif // _PLAYER_UI_MANAGER_H
