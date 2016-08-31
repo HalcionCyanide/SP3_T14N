@@ -11,6 +11,10 @@ void Scene_System::Init()
 	cSS_InputManager = new InputManager();
 	cSS_PlayerUIManager = new PlayerUIManager();
 	gPlayer = new GlobalPlayer(10, 100, 100, false);
+	for (std::map<Item*, bool>::iterator it = cSS_PlayerInventory->ActiveItemMap.begin(); it != cSS_PlayerInventory->ActiveItemMap.end(); ++it)
+	{
+		gPlayer->PlayerInventory.insert(std::pair<Item*, int>((*it).first,10));
+	}
 
 	QM.readFile("DrivenFiles//questData.csv");
 	NM.LoadFile("DrivenFiles//NPC_FILES.csv");

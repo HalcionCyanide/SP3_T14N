@@ -14,9 +14,7 @@ void Item_System::Init()
 {
 	// Default Item Params
 	CreateNewItem(Item::IT_INSTANT_HEAL, -1.f, 3.f, 20);
-	CreateNewItem(Item::IT_HEAL_OVER_TIME, 10.f, 5.f, 5);
-	CreateNewItem(Item::IT_BOOST_SPEED, 10.f, 7.f, 25);
-	CreateNewItem(Item::IT_BOOST_INERTIA, 10.f, 7.f, 50);
+	CreateNewItem(Item::IT_BOOST_INERTIA, 5.f, 5.f, 50);
 }
 
 void Item_System::Update(double dt)
@@ -27,11 +25,11 @@ void Item_System::Update(double dt)
 		// Item is in use
 		if ((*it).second)
 		{
-			if (!(*it).first->GetActive())
-				(*it).first->Use((float)dt);
-			// Update items if they are active
-			(*it).first->Update((float)dt);
+			(*it).first->Use((float)dt);
 		}
+		(*it).first->Update((float)dt);
+		if (!(*it).first->GetActive())
+			(*it).second = false; 
 	}
 }
 

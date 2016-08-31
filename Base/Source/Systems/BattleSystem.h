@@ -99,6 +99,7 @@ private:
 	void UpdateControls(float dt);
 	void UpdateEnemyLogic(float dt);
 	void RenderBattleScreen();
+	void UpdateInventory(float dt);
 	// Battle Physics Calls
 	void UpdatePhysics(float dt);
 	bool CollisionCheck(const BattleScreenObject&, const BattleScreenObject&, float dt);
@@ -114,6 +115,7 @@ private:
 	float PlayerBaseMovementSpeed;
 	float PlayerCurrentMovementSpeed;
 	UI_Layer* PlayerInventoryUI;
+	std::vector<UI_Element*> InventoryButtons;
 	//bool PlayerIsInvincible = false;
 	//float PlayerIFrameTimer;
 	float FrictionDecrementMultiplier;

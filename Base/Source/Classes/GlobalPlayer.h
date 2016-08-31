@@ -13,6 +13,7 @@ Defines the global player
 
 #include "PlayerObject.h"
 #include "Camera3.h"
+#include "Item.h"
 
 
 class PlayerObject;
@@ -57,6 +58,7 @@ public:
 	Camera3 *CurrCamera;
     std::string currSceneID;
 
+	std::map<Item*, int> PlayerInventory;
 	std::map<std::string, int> playerCurrQState;
 
     void settingTheFileToSave(const int&);

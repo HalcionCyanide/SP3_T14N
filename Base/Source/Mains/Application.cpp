@@ -38,9 +38,6 @@ const unsigned int frameTime = 1000 / FPS; // time for each frame
 
 float Application::cA_MinimumTerrainY = 0, Application::cA_CurrentTerrainY = 0;
 
-//ISoundEngine* Application::theSoundEngine = NULL;
-//ISound* Application::Sound_Footstep = NULL;
-
 bool Application::ExitGame = false;
 
 //Define an error callback
@@ -60,6 +57,8 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 void resize_callback(GLFWwindow* window, int w, int h)
 {
 	glViewport(0, 0, w, h);
+	Scene_System::accessing().cSS_InputManager->SetScreenSize((float)w, (float)h);
+
 }
 
 bool Application::IsKeyPressed(unsigned short key)
@@ -69,16 +68,10 @@ bool Application::IsKeyPressed(unsigned short key)
 
 Application::Application()
 {
-	//Application::theSoundEngine = NULL;
-	//Application::Sound_Footstep = NULL;
 }
 
 Application::~Application()
 {
-	//if (theSoundEngine != NULL)
-	//{
-		//theSoundEngine->drop();
-	//}
 }
 
 void Application::Init()

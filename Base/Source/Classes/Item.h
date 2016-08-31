@@ -19,8 +19,6 @@ public:
 	enum ItemType
 	{
 		IT_INSTANT_HEAL = 0,
-		IT_HEAL_OVER_TIME,
-		IT_BOOST_SPEED,
 		IT_BOOST_INERTIA,
 		IT_ITEMTYPE_NUM
 	};
@@ -50,6 +48,8 @@ public:
 	// Use call, resets Timer if valid
 	void Use(float dt);
 
+	float InternalTimer;
+
 private:
 	ItemType TypeOfItem;	//Type of item
 	bool Active;			//If item is currently in use
@@ -57,7 +57,6 @@ private:
 	float Duration;			//Duration of the item
 	float CoolDown;			//Time before Item can be used again(After the effect is over)
 	float EffectiveValue;	//Value change
-	float InternalTimer;
 };
 
 #endif
