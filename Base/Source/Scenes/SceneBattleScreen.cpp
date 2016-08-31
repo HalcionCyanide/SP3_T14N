@@ -162,13 +162,6 @@ void SceneBattleScreen::RenderPassMain()
 	}
     if (Scene_System::accessing().theLoadingEffect)
         Scene_System::accessing().RenderLoadingStuff();
-
-	std::ostringstream ss;
-	ss.str("");
-	ss << "Scene BS - FPS:" << framerates;
-	ss.precision(3);
-	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 25);
-
 	SceneGraphics->SetHUD(false);
 }
 
