@@ -27,8 +27,6 @@ void SceneCredits::Init()
 {
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 
-    LoadEnemyData("DrivenFiles//EnemyData.csv", Scene_System::accessing().EnemyData);
-
     Mtx44 perspective;
     perspective.SetToPerspective(45.0f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 0.1f, 10000.0f);
     projectionStack->LoadMatrix(perspective);
