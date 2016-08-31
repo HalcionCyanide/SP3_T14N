@@ -45,8 +45,11 @@ void SceneCredits::Init()
 
     TheLoadScreenStuff = new UI_System();
     UI_Layer *ComicLayer = new UI_Layer();
+
     TheLoadScreenStuff->cUIS_LayerContainer.push_back(ComicLayer);
+
     UI_Layer *CreditsLayer = new UI_Layer();
+
     TheLoadScreenStuff->cUIS_LayerContainer.push_back(CreditsLayer);
 }
 
@@ -59,10 +62,10 @@ void SceneCredits::Update(float dt)
     framerates = 1 / dt;
 
     camera.Update(dt);
-    if (Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
-    {
-        onNotify("TRANSITIONING");
-    }
+    //if (Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
+    //{
+    //    onNotify("TRANSITIONING");
+    //}
     
 }
 
