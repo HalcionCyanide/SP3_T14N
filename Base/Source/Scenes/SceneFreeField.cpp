@@ -383,7 +383,10 @@ void SceneFreeField::RenderPassMain()
 	SceneGraphics->SetHUD(true);
 
 	Scene_System::accessing().cSS_PlayerUIManager->Render();
-
+	if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
+	{
+		SceneGraphics->RenderMeshIn2D("TFB_Gem", false, 100, 100, Scene_System::accessing().cSS_InputManager->GetMousePosition().x, Scene_System::accessing().cSS_InputManager->GetMousePosition().y);
+	}
     if (Scene_System::accessing().theLoadingEffect)
         Scene_System::accessing().RenderLoadingStuff();
 	SceneGraphics->SetHUD(false);

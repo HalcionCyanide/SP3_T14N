@@ -7,7 +7,6 @@
 #include "SceneFreeField.h"
 #include "SceneFreeField2.h"
 
-
 #include "..\Misc\SimpleCommand.h"
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\PlayerObject.h"
@@ -452,7 +451,7 @@ void SceneTown1::RenderShadowCasters()
 {
 	RenderTerrain();
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
-	//<!> will remove soon <!>
+
 	for (auto it : objVec)
 	{
 		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
