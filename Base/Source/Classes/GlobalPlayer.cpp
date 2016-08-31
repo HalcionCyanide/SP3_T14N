@@ -31,6 +31,7 @@ void GlobalPlayer::Init(const int& Spell_Power, const int& CurrentHealth, const 
 	this->MaxHealth = MaxHealth;
 	this->IsInteracting = IsInteracting;
     whatSave = 0;
+	this->MonsterCount = 0;
 }
 
 void GlobalPlayer::Update(float dt)
@@ -73,6 +74,10 @@ bool GlobalPlayer::GetIsInteracting()
 {
 	return IsInteracting;
 }
+int GlobalPlayer::getMonsterCount()
+{
+	return MonsterCount;
+}
 
 // Setters
 void GlobalPlayer::SetSpellPower(const int& Spell_Power)
@@ -95,6 +100,11 @@ void GlobalPlayer::SetIsInteracting(const bool& IsInteracting)
 	this->IsInteracting = IsInteracting;
 }
 
+void GlobalPlayer::setMonsterCount(const int& i)
+{
+	this->MonsterCount = i;
+}
+
 bool GlobalPlayer::LoadPlayerSave(const std::string &fileName)
 {
     std::ifstream file(fileName.c_str());
@@ -111,13 +121,13 @@ bool GlobalPlayer::LoadPlayerSave(const std::string &fileName)
                 continue;
             size_t posOfComman = data.find_first_of(',');
             std::string key = data.substr(0, posOfComman);
+            convertStringToUpperCaps(key);
             std::string value = data.substr(posOfComman + 1);
             if (checkWhetherTheWordInThatString("QUESTS", key) == false)
             {
                 size_t OtherposOf_Comma = value.find_first_of(',');
                 value = value.substr(0, OtherposOf_Comma);
             }
-            convertStringToUpperCaps(key);
             if (checkWhetherTheWordInThatString("SPELLPOWER", key))
             {
                 SetSpellPower(stoi(value));
@@ -184,10 +194,15 @@ bool GlobalPlayer::LoadPlayerSave(const std::string &fileName)
                 std::map<std::string, int>::iterator it = playerCurrQState.begin();
                 std::istringstream iss(value);
                 std::string valuesOfQuests = "";
-                while (getline(iss, valuesOfQuests, ','))
+
+				std::vector<Quest*>::iterator it2 = Scene_System::accessing().QM.allQuests.begin();
+				while (getline(iss, valuesOfQuests, ','))
                 {
+					Quest* temp = (Quest*)*it2;
+					temp->setCurrStage(stoi(valuesOfQuests));
                     it->second = stoi(valuesOfQuests);
                     ++it;
+					++it2;
                 }
             }
         }

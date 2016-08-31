@@ -20,7 +20,6 @@ void captureCondition::Update(double dt)
 
 	if(!complete)
 	{
-		//if (theRequirement.value_-> win ? )
 		complete = true;
 	}
 	else
