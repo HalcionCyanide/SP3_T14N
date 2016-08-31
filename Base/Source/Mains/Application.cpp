@@ -157,9 +157,9 @@ void Application::Init()
 #endif
     Scene_System::accessing().doingLoadingEffect();
 
-    //SceneCredits *CreditScene = new SceneCredits();
-    //CreditScene->Init();
-    //Scene_System::accessing().AddScene(*CreditScene);
+    SceneCredits *CreditScene = new SceneCredits();
+    CreditScene->Init();
+    Scene_System::accessing().AddScene(*CreditScene);
 
 	Scene_MainMenu *MainMenuScene = new Scene_MainMenu();
 	MainMenuScene->Init();

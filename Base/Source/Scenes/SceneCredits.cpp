@@ -65,10 +65,7 @@ void SceneCredits::Update(float dt)
         Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
     }
 
-    Scene_System::accessing().BSys->cBillboardManager.UpdateContainer(dt, camera.position);
-
     camera.Update(dt);
-    Scene_System::accessing().BSys->Update((float)dt);
     if (Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
     {
         onNotify("TRANSITIONING");
@@ -149,14 +146,11 @@ void SceneCredits::RenderPassMain()
     //SceneGraphics->RenderMesh("reference", false);
 
     SceneGraphics->SetHUD(true);
-    Scene_System::accessing().BSys->Render();
-
     if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
     {
         modelStack->PushMatrix();
         modelStack->Translate(Scene_System::accessing().cSS_InputManager->GetMousePosition().x, Scene_System::accessing().cSS_InputManager->GetMousePosition().y, 0);
         modelStack->Rotate(0, 0, 1, 0);
-        modelStack->Scale(Scene_System::accessing().BSys->PlayerScale * 0.75f, Scene_System::accessing().BSys->PlayerScale * 0.75f, 1);
         SceneGraphics->RenderMesh("TFB_Gem", false);
         modelStack->PopMatrix();
     }
