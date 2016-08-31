@@ -24,15 +24,6 @@ public:
 	Camera3 *camera;
 
 private:
-	// Private Variables
-	int CurrentEncounterRateBoost = 0;
-	const float EncounterRatio = 0.1f;
-	Vector3 PreviousPosition;
-	float EncounterTimer = 0;
-	float EncounterTimeCheck = 1.;
-	int MaxEncounterRate = 1000;
-	bool MonsterFound;
-
 	// Shadow GPass
 	void RenderPassGPass();
 	void RenderPassMain();
@@ -46,6 +37,16 @@ private:
 	void RenderTerrain();
 	void RenderSkybox();
 
+	// CHAT UI STUFFS <!>
+	void InitChatUI();
+	void NPC_chat(float);
+	std::string HandleChatUIInput(float dt);
+	UI_Layer* ChatLayer;
+	UI_Element* NPC_Name;
+	UI_Element* NPC_TextBox;
+	std::vector<UI_Element*> NPC_QuestButtons;
+	// CHAT UI END
+
 	const float SkyboxSize = 1000;
 
 	BillboardManager BManager;
@@ -54,7 +55,10 @@ private:
 	double framerates;
 	GenericEntity *theInteractiveMap;
 	std::vector<GameObject*> objVec;
+	Vector3 CenterPosition;
+	UI_System* UI_Sys;
 	std::string transitingSceneName;
+	std::vector<NPC*> npcInThisScene;
 };
 
 #endif // _SCENE_FREE_FIELD2_H
