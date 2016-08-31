@@ -155,14 +155,20 @@ void PlayerUIManager::InitMenu()
 	Menu_QuestTextElements.push_back(NewE);
 
 	// Description
-	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 1.2f, CenterPosition.y * 0.9f, 1), 0, "Description");
-	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x, CenterPosition.y);
+	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 1.2f, CenterPosition.y * 0.35f, 1), 0, "Description");
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x, CenterPosition.y * 1.2f);
+	Menu_Quests->cUI_Layer.push_back(NewE);
+	Menu_QuestTextElements.push_back(NewE);
+
+	// Rewards
+	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 1.2f, CenterPosition.y * 0.35f, 1), 0, "Rewards");
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x, CenterPosition.y * 0.8f);
 	Menu_Quests->cUI_Layer.push_back(NewE);
 	Menu_QuestTextElements.push_back(NewE);
 
 	// Giver
 	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x, CenterPosition.y * 0.175f, 1), 0, "Giver");
-	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x, CenterPosition.y * 0.425f);
+	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x, CenterPosition.y * 0.455f);
 	Menu_Quests->cUI_Layer.push_back(NewE);
 	Menu_QuestTextElements.push_back(NewE);
 
@@ -462,9 +468,16 @@ void PlayerUIManager::UpdateQuestsMenu(float dt)
 					Menu_QuestTextElements[0]->UI_Text = Quest->second->getName();
 					Menu_QuestTextElements[1]->UI_Text = (*it)->getDesc();
 					Menu_QuestTextElements[1]->WrapText();
-					Menu_QuestTextElements[2]->UI_Text = (*it)->getGiver();
+					Menu_QuestTextElements[3]->UI_Text = "Given By: " + (*it)->getGiver();
 					Check = true;
 					break;
+				}
+				else
+				{
+					Menu_QuestTextElements[0]->UI_Text = "< No Quests >";
+					Menu_QuestTextElements[1]->UI_Text = "Description: -";
+					Menu_QuestTextElements[1]->UI_Text = "Reward: -";
+					Menu_QuestTextElements[3]->UI_Text = "Given By: -";
 				}
 			}
 		}
