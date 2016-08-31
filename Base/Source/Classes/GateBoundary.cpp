@@ -42,11 +42,12 @@ bool GateBoundary::CheckCollision(const Vector3 &point)
 	
 	if (CheckQuest())
 	{
+		CheckQuest();
 		std::ostringstream ss;
 		ss << "LOADING_" << name_;
 		Scene_System::accessing().getCurrScene().onNotify(ss.str());
 	}
-	else
+	else if (!questToCheck && !stageToCheck)
 	{
 		std::ostringstream ss;
 		ss << "LOADING_" << name_;

@@ -68,7 +68,7 @@ private:
 
 	void InitMenu();
 	void RenderMenu();
-	void UpdateStatsHUD(float dt)
+	void UpdateStatsHUD(float dt);
 };
 
 #endif // _PLAYER_UI_MANAGER_H

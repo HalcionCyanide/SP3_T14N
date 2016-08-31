@@ -57,6 +57,8 @@ void GameObject::SetBounds()
 		delete Bounds;
 		Bounds = new BossBoundary();
 		Bounds->setName(getName());
+		BossBoundary* TempBound = dynamic_cast<BossBoundary*>(Bounds);
+		TempBound->SetQuestData("Rating up", 1);
 	}
 
 	Bounds->SetPosition(this->GetPosition());

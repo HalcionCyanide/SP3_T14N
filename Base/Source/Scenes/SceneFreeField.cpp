@@ -10,7 +10,7 @@
 #include "SceneBattleScreen.h"
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\PlayerObject.h"
-#include "..\\Classes\\GateBoundary.h"
+#include "..\\Classes\\BossBoundary.h"
 #include "../Misc/LoadEnemyData.h"
 
 std::string SceneFreeField::id_ = "F1_Scene";
@@ -230,18 +230,20 @@ void SceneFreeField::RenderShadowCasters()
 		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
 		if (it->getName() == "Boss_Manticore")
 		{
-			GateBoundary *temp = dynamic_cast<GateBoundary*>(it->GetBoundary());
+			BossBoundary *temp = dynamic_cast<BossBoundary*>(it->GetBoundary());
 			if (temp->CheckQuest())
 			{
-				if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
-					the3DObject->Render();
+				//To be continued
+				objVec.erase(std::find(objVec.begin(), objVec.end(), it));
+				the3DObject = nullptr;
+				//if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
+				//	the3DObject->Render();
 			}
+			else
+				temp->CheckQuest();
 		}
-		else
-		{
-			if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
+		if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
 				the3DObject->Render();
-		}
 	}
 	//<!> will remove soon <!>
 
@@ -490,6 +492,8 @@ bool SceneFreeField::onNotify(const std::string &theEvent)
     }
 	else if (checkWhetherTheWordInThatString("BOSSMONSTER", theEvent))
 	{
+		PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
+		PlayerPTR->LockMovement();
 		size_t posOfUnderScore = theEvent.find_first_of('_');
 		std::string preMonsterName = theEvent.substr(posOfUnderScore + 1);
 		std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find("2");
