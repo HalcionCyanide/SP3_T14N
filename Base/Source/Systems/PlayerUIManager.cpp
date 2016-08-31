@@ -140,12 +140,12 @@ void PlayerUIManager::InitMenu()
 	Menu_Stats->cUI_Layer.push_back(NewE);
 
 	// HP
-	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 0.75f, CenterPosition.y * 0.25f, 1), 0, "HP");
+	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 0.8f, CenterPosition.y * 0.25f, 1), 0, "Hit Points");
 	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x * 0.55f, CenterPosition.y * 1.2f);
 	Menu_Stats->cUI_Layer.push_back(NewE);
 
 	// SP
-	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 0.75f, CenterPosition.y * 0.25f, 1), 0, "SP");
+	NewE = new UI_Element("Menu_Backing3", 0, 0, Vector3(CenterPosition.x * 0.8f, CenterPosition.y * 0.25f, 1), 0, "Spell Power");
 	NewE->Position = NewE->OriginalPosition = NewE->TargetPosition = Vector3(CenterPosition.x * 1.45f, CenterPosition.y * 1.2f);
 	Menu_Stats->cUI_Layer.push_back(NewE);
 

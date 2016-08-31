@@ -74,6 +74,18 @@ void BattleSystem::QuickInit()
 	PlayerInventoryUI = new UI_Layer();
 	PlayerInfoBox = new UI_Layer();
 	EnemyInfoBox = new UI_Layer();
+
+	for (std::map<Item*, bool>::iterator it = Scene_System::accessing().cSS_PlayerInventory->ActiveItemMap.begin(); it != Scene_System::accessing().cSS_PlayerInventory->ActiveItemMap.end(); ++it)
+	{
+		if ((*it).first->GetItemType() == Item::IT_INSTANT_HEAL)
+		{
+			I_Heal = (*it).first;
+		}
+		else if ((*it).first->GetItemType() == Item::IT_BOOST_INERTIA)
+		{
+			I_Accel = (*it).first;
+		}
+	}
 }
 
 void BattleSystem::Update(double dt)
@@ -323,12 +335,12 @@ void BattleSystem::SetEnemy(Enemy& E)
 
 	// Buttons
 	// TL
-	UI_Element* NewE = new UI_Element("Item_Heal", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 2.f, PlayerScale * 2.f, 1), Vector3(CenterPosition.x * 1.675f, CenterPosition.y * 0.4f, 0), "Heal");
+	UI_Element* NewE = new UI_Element("Item_Heal", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 2.f, PlayerScale * 2.f, 1), Vector3(CenterPosition.x * 1.675f, CenterPosition.y * 0.4f, 0));
 	InventoryButtons.push_back(NewE);
 	PlayerInventoryUI->cUI_Layer.push_back(NewE);
 
 	// BL
-	NewE = new UI_Element("Item_Accel", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 2.f, PlayerScale * 2.f, 1), Vector3(CenterPosition.x * 1.675f, CenterPosition.y * 0.15f, 0), "Speed");
+	NewE = new UI_Element("Item_Accel", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 2.f, PlayerScale * 2.f, 1), Vector3(CenterPosition.x * 1.675f, CenterPosition.y * 0.15f, 0));
 	InventoryButtons.push_back(NewE);
 	PlayerInventoryUI->cUI_Layer.push_back(NewE);
 
@@ -545,6 +557,25 @@ void BattleSystem::UpdateInventory(float dt)
 			}
 		}
 	}
+	/*std::stringstream ss;
+	if (I_Heal)
+	{
+		if (I_Heal->InternalTimer > I_Heal->GetDuration())
+		{
+			ss.str("");
+			ss << I_Heal->GetCoolDown() + I_Heal->GetDuration() - I_Heal->InternalTimer;
+			InventoryButtons[0]->UI_Text = ss.str();
+		}
+	}
+	if (I_Accel)
+	{
+		if (I_Accel->InternalTimer > I_Accel->GetDuration())
+		{
+			ss.str("");
+			ss << I_Accel->GetCoolDown() + I_Accel->GetDuration() - I_Accel->InternalTimer;
+			InventoryButtons[1]->UI_Text = ss.str();
+		}
+	}*/
 }
 
 void BattleSystem::UpdateEnemyLogic(float dt)
