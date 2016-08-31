@@ -88,9 +88,9 @@ void SceneTown1::Init()
 
 			it->SetBounds();
 			objVec.push_back(it);
-		}
-		else
+			npcInThisScene.push_back(it);
 			break;
+		}
 	}
 
 	UI_Sys = new UI_System();
@@ -162,7 +162,7 @@ std::string SceneTown1::HandleChatUIInput(float dt)
 
 void SceneTown1::NPC_chat(float dt)
 {
-	for (std::vector<NPC*>::iterator it = Scene_System::accessing().NM.allNPCs.begin(); it != Scene_System::accessing().NM.allNPCs.end(); ++it)
+	for (std::vector<NPC*>::iterator it = npcInThisScene.begin(); it != npcInThisScene.end(); ++it)
 	{
 		NPC* CurrentNPC = *it;
 

@@ -15,10 +15,10 @@ public:
 	virtual void Update(double dt);
 	virtual void Exit();
 
-private:
 	// Represents the items and whether they are active
 	std::map<Item*, bool> ActiveItemMap;
 
+private:
 	// Creation Functions
 	void Item_System::CreateNewItem(const Item::ItemType& TypeOfItem, const float& Duration = -1, const float& CoolDown = -1, const float& EffectiveValue = 1);
 

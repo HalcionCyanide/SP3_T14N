@@ -204,6 +204,7 @@ bool GlobalPlayer::LoadPlayerSave(const std::string &fileName)
                     ++it;
 					++it2;
                 }
+				Scene_System::accessing().cSS_PlayerUIManager->UpdateQuestsMenu(0);
             }
         }
         file.close();
@@ -322,7 +323,7 @@ bool GlobalPlayer::RewritePlayerSave(const std::string &fileName)
                     ss << it->second << ',';
                 }
                 std::string theEntireLine = ss.str();
-                if (theEntireLine[theEntireLine.size() - 1] == ',')
+                if (theEntireLine[theEntireLine.size()] == ',')
                     theEntireLine.erase(theEntireLine.end() - 1);
                 writeFile << theEntireLine << std::endl;
             }

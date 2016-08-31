@@ -376,33 +376,33 @@ void Scene_MainMenu::Update(float dt)
 
 	framerates = 1 / dt;
 
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('1'))
-	{
-		Scene_System::accessing().SwitchScene(SceneTown1::id_);
-	}
-	else if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
-	{
-		Scene_System::accessing().SwitchScene(SceneTown2::id_);
-	}
-	else if (Scene_System::accessing().cSS_InputManager->GetKeyValue('3'))
-	{
-		Scene_System::accessing().SwitchScene(SceneTown3::id_);
-	}
-	else if (Scene_System::accessing().cSS_InputManager->GetKeyValue('4'))
-	{
-		Scene_System::accessing().SwitchScene(Scene_2::id_);
-	}
+	//if (Scene_System::accessing().cSS_InputManager->GetKeyValue('1'))
+	//{
+	//	Scene_System::accessing().SwitchScene(SceneTown1::id_);
+	//}
+	//else if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
+	//{
+	//	Scene_System::accessing().SwitchScene(SceneTown2::id_);
+	//}
+	//else if (Scene_System::accessing().cSS_InputManager->GetKeyValue('3'))
+	//{
+	//	Scene_System::accessing().SwitchScene(SceneTown3::id_);
+	//}
+	//else if (Scene_System::accessing().cSS_InputManager->GetKeyValue('4'))
+	//{
+	//	Scene_System::accessing().SwitchScene(Scene_2::id_);
+	//}
 
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
-	{
-		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-		Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0;
-		Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0;
-	}
-	else if (Scene_System::accessing().cSS_InputManager->GetKeyValue('0'))
-	{
-		Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
-	}
+	//if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
+	//{
+	//	Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+	//	Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0;
+	//	Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0;
+	//}
+	//else if (Scene_System::accessing().cSS_InputManager->GetKeyValue('0'))
+	//{
+	//	Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+	//}
 
 	UpdateUILogic(dt, CurrentMenuState);
 	UI_Sys.Update(dt);

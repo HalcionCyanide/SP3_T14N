@@ -20,6 +20,7 @@ Defines the battle system within the 2D battle screen
 #include "../Classes/Boundary2D.h"
 #include "../Systems/BillboardManager.h"
 #include "..\\Systems\\UI_System.h"
+#include "../Classes/Item.h"
 
 // Version 2, Complete Overhaul - Ryan
 
@@ -99,6 +100,7 @@ private:
 	void UpdateControls(float dt);
 	void UpdateEnemyLogic(float dt);
 	void RenderBattleScreen();
+	void UpdateInventory(float dt);
 	// Battle Physics Calls
 	void UpdatePhysics(float dt);
 	bool CollisionCheck(const BattleScreenObject&, const BattleScreenObject&, float dt);
@@ -114,6 +116,7 @@ private:
 	float PlayerBaseMovementSpeed;
 	float PlayerCurrentMovementSpeed;
 	UI_Layer* PlayerInventoryUI;
+	std::vector<UI_Element*> InventoryButtons;
 	//bool PlayerIsInvincible = false;
 	//float PlayerIFrameTimer;
 	float FrictionDecrementMultiplier;
@@ -154,6 +157,10 @@ private:
 	bool PlayerWon;
 	int SpellPowerIncrement;
 	// End State End
+
+	// Item Pointers
+	Item* I_Heal; 
+	Item* I_Accel;
 
 	bool RoundOver = false;
 

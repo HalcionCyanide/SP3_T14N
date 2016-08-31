@@ -246,6 +246,9 @@
     <ClCompile Include="Source\Classes\BossBoundary.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scenes\SceneCredits.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Classes\Billboard.h">
@@ -457,6 +460,9 @@
     </ClInclude>
     <ClInclude Include="Source\Classes\BossBoundary.h">
       <Filter>Header Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\SceneCredits.h">
+      <Filter>Header Files\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
