@@ -7,10 +7,12 @@
 #include "SceneTown3.h"
 #include "SceneFreeField.h"
 
-#include "SceneBattleScreen.h"
+#include "..\Misc\SimpleCommand.h"
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\PlayerObject.h"
+#include "..\\Systems\\UI_System.h"
 #include "../Misc/LoadEnemyData.h"
+#include "../Systems/MusicSystem.h"
 
 std::string SceneFreeField2::id_ = "F2_Scene";
 
@@ -32,7 +34,7 @@ void SceneFreeField2::Init()
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 
 	// Set Terrain Size
-	TerrainScale.Set(400.f, 50.f, 400.f);
+	TerrainScale.Set(350.f, 50.f, 350.f);
 
 	Mtx44 perspective;
 	perspective.SetToPerspective(45.0f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 0.1f, 10000.0f);
@@ -40,12 +42,13 @@ void SceneFreeField2::Init()
 
 	camera = new Camera3();
 	camera->Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
+	CenterPosition.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
 	// Initiallise Model Specific Meshes Here
-	Mesh* newMesh = MeshBuilder::GenerateTerrain("FreeField2", "HeightMapFiles//heightmap_FreeField2.raw", m_heightMap);
+	Mesh* newMesh = MeshBuilder::GenerateTerrain("town2", "HeightMapFiles//heightmap_Town2.raw", m_heightMap);
 	newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
-	newMesh->textureArray[0] = LoadTGA("Image//GrassStoneTex.tga");
-	newMesh->textureArray[1] = LoadTGA("Image//BrickWall.tga"); 
+	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
+	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera->position.x / TerrainScale.x, camera->position.z / TerrainScale.z) + camera->PlayerHeight;
@@ -53,8 +56,8 @@ void SceneFreeField2::Init()
 
 	theInteractiveMap = new GameMap();
 	GameMap *theMap = dynamic_cast<GameMap*>(theInteractiveMap);
-	theMap->setName("scene open field 2 logic map");
-	theMap->LoadMap("DrivenFiles//FreeField_2_Layout.csv", m_heightMap, TerrainScale, objVec, BManager);
+	theMap->setName("scene town 2 logic map");
+	theMap->LoadMap("DrivenFiles//Town2Layout.csv", m_heightMap, TerrainScale, objVec, BManager);
 
 	//<!> There can only be 1 Player
 	Player = new PlayerObject();
@@ -64,29 +67,272 @@ void SceneFreeField2::Init()
 	Player->SetMesh(it->second);
 
 	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
-	//PlayerPTR->cameraObject = &camera;
-	PlayerPTR->SetVelocity(Vector3(10.f, 0.f, 0.f));
 	PlayerPTR->SetPosition(Vector3(Player->GetPosition().x, camera->PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPosition().x / TerrainScale.x), (Player->GetPosition().z / TerrainScale.z)), Player->GetPosition().z));
 	PlayerPTR->setPlayerBoundaries(objVec);
 	camera->position = PlayerPTR->GetPosition();
 	//<!> There can only be 1 Player
-
-	CurrentEncounterRateBoost = 0;
-	PreviousPosition = camera->position;
-	PreviousPosition.y = Application::cA_MinimumTerrainY;
-	MonsterFound = false;
-
-	// Codes to swap to bs
-	/*std::map<std::string, Enemy*>::iterator it2 = Scene_System::accessing().EnemyData.begin();
-	Scene_System::accessing().BSys->SetEnemy(*it2->second);
-	Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);*/
 	transitingSceneName = "";
+
+	for (auto it : Scene_System::accessing().NM.allNPCs)
+	{
+		if (it->getName() == "Mysterious Stranger")
+		{
+			it->Init(it->getName(), 1, Vector3(0, 0, 0), Vector3(10, 10, 10), Vector3(0, 0, 0), 0.f, Vector3(0, 1, 0));
+
+			it->SetPosition(
+				Vector3(it->GetPosition().x,
+				TerrainScale.y * ReadHeightMap(m_heightMap, (it->GetPosition().x / TerrainScale.x), (it->GetPosition().z / TerrainScale.x)) + it->GetDimensions().y * 0.5f, it->GetPosition().z
+				));
+
+			it->SetBounds();
+			objVec.push_back(it);
+			npcInThisScene.push_back(it);
+			break;
+		}
+	}
+	UI_Sys = new UI_System();
+	UI_Sys->Init();
+	InitChatUI();
+	transitingSceneName = "";
+}
+
+void SceneFreeField2::InitChatUI()
+{
+	Vector3 ButtonScale(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.20f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.1f, 1);
+	ChatLayer = new UI_Layer();
+	// Name
+	Vector3 DefaultPos(CenterPosition.x  * 0.3f, CenterPosition.y * 0.65f, 0);
+	NPC_Name = new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.25f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Sek Heng");
+	ChatLayer->cUI_Layer.push_back(NPC_Name);
+
+	// Text Box
+	DefaultPos.Set(CenterPosition.x, CenterPosition.y * 0.3f, 0);
+	NPC_TextBox = new UI_Element("UI_ChatBox", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.95f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 7, 1), DefaultPos, "Text Wrapping Test Text Wrapping Test Text Wrapping Test");
+	ChatLayer->cUI_Layer.push_back(NPC_TextBox);
+
+	// Quest Buttons
+	DefaultPos.Set(CenterPosition.x * 1.75f, CenterPosition.y * 0.7f, 0);
+	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Exit"));
+	ChatLayer->cUI_Layer.push_back(NPC_QuestButtons.back());
+
+	DefaultPos.Set(CenterPosition.x * 1.75f, CenterPosition.y * 1.3f, 0);
+	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q1"));
+	ChatLayer->cUI_Layer.push_back(NPC_QuestButtons.back());
+
+	DefaultPos.Set(CenterPosition.x * 1.75f, CenterPosition.y * 1.1f, 0);
+	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q2"));
+	ChatLayer->cUI_Layer.push_back(NPC_QuestButtons.back());
+
+	DefaultPos.Set(CenterPosition.x * 1.75f, CenterPosition.y * 0.9f, 0);
+	NPC_QuestButtons.push_back(new UI_Element("TFB_Button", DefaultPos, DefaultPos, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 5, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 20, 1), DefaultPos, "Q3"));
+	ChatLayer->cUI_Layer.push_back(NPC_QuestButtons.back());
+
+	// Chat Layer Settings
+	ChatLayer->LayerCenterPosition.y = -Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight;
+	ChatLayer->LayerOriginalPosition = 0;
+	ChatLayer->LayerTargetPosition.y = -Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight;
+
+	UI_Sys->cUIS_LayerContainer.push_back(ChatLayer);
+}
+
+std::string SceneFreeField2::HandleChatUIInput(float dt)
+{
+	for (std::vector<UI_Element*>::iterator it = NPC_QuestButtons.begin(); it != NPC_QuestButtons.end(); ++it)
+	{
+		if ((*it)->Active)
+		{
+			(*it)->BoundsActive = true;
+			bool ClickDetection = false;
+			if ((*it)->BoundsActive)
+			{
+				(*it)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickDetection);
+				if (ClickDetection)
+				{
+					(*it)->BoundsActive = false;
+					return (*it)->UI_Text;
+				}
+			}
+		}
+	}
+	return "";
+}
+
+void SceneFreeField2::NPC_chat(float dt)
+{
+	for (std::vector<NPC*>::iterator it = npcInThisScene.begin(); it != npcInThisScene.end(); ++it)
+	{
+		NPC* CurrentNPC = *it;
+
+		// Update and rotate the NPC in accordance to the player[camera]'s position.
+		CurrentNPC->setTarget(camera->position);
+
+		CurrentNPC->Update((float)dt);
+		float DistanceCheck = (camera->position - CurrentNPC->GetPosition()).LengthSquared();
+		if (DistanceCheck < CurrentNPC->GetDetectionRadiusSquared() && Scene_System::accessing().cSS_InputManager->GetKeyValue(SimpleCommand::m_allTheKeys[SimpleCommand::INTERACT_COMMAND]) && !CurrentNPC->getInteracting())
+		{
+			CurrentNPC->setInteracting(true);
+			Scene_System::accessing().cSS_PlayerUIManager->CurrentState = PlayerUIManager::UIS_NO_UI;
+
+			if (ChatLayer->LayerTargetPosition.y < 0)
+				ChatLayer->SwapOriginalWithTarget();
+			break;
+		}
+		// The NPC has interacted with the player successfully.
+		if (CurrentNPC->getInteracting())
+		{
+			NPC_Name->UI_Text = CurrentNPC->getName();
+			NPC_TextBox->UI_Text = CurrentNPC->getFText();
+			NPC_TextBox->WrapText();
+
+			// Enable the mouse.
+			Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+			camera->CameraIsLocked = true;
+
+			// Set the player's target to face the NPC
+			camera->target = Vector3(CurrentNPC->GetPosition().x, Application::cA_CurrentTerrainY + (CurrentNPC->GetPosition().y - Application::cA_CurrentTerrainY) + (CurrentNPC->GetDimensions().y * 0.5f), CurrentNPC->GetPosition().z);
+			camera->CurrentCameraRotation.x = 0;
+			int buttonCount = 1;
+			bool imdone = false;
+			for (std::map<std::string, std::vector<int>>::iterator it = CurrentNPC->NPCcurrQstate.begin(); it != CurrentNPC->NPCcurrQstate.end(); ++it) // go thru the NPC's states
+			{
+				for (std::map<std::string, int>::iterator it2 = Scene_System::accessing().gPlayer->playerCurrQState.begin(); it2 != Scene_System::accessing().gPlayer->playerCurrQState.end(); ++it2) // go thru the player's states
+				{
+					if (it->first == it2->first) // compare the same quests
+					{
+						//loop thru the NPC's vector of quest stages to offer
+						for (std::vector<int>::iterator it3 = it->second.begin(); it3 != it->second.end(); ++it3)
+						{
+							if (*it3 == it2->second)
+							{
+								for (std::vector<Quest*>::iterator it4 = Scene_System::accessing().QM.allQuests.begin(); it4 != Scene_System::accessing().QM.allQuests.end(); ++it4)
+								{
+									Quest* test = *it4;
+									if (test->getName() == it->first)
+									{
+										for (std::map<std::string, int>::iterator it5 = Scene_System::accessing().gPlayer->playerCurrQState.begin(); it5 != Scene_System::accessing().gPlayer->playerCurrQState.end(); ++it5)
+										{
+											if (it5->first == test->getName())
+											{
+												if (test->getActive())
+												{
+													if (test->qStages.at(it5->second - 1)->getComplete())
+													{
+														imdone = true;
+													}
+												}
+											}
+											if (it5->first == test->preReq && it5->second >= test->preReqVal)
+											{
+												for (std::vector<QuestStage*>::iterator it6 = test->qStages.begin(); it6 != test->qStages.end(); ++it6)
+												{
+													QuestStage* temp2 = *it6;
+													if (((temp2->getGiver() == CurrentNPC->getName()) && (buttonCount <= 3)))
+													{
+														if (imdone || it2->second == 0)
+														{
+															NPC_QuestButtons.at(buttonCount)->UI_Text = it->first;
+															buttonCount++;
+															break;
+														}
+													}
+													else
+														break;
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			while (buttonCount <= 3)
+			{
+				NPC_QuestButtons.at(buttonCount)->UI_Text = "";
+				buttonCount++;
+			}
+
+			//Interacting with NPC: Check UI Key Press
+			std::string temp = HandleChatUIInput((float)dt);
+			if (temp == "Exit")
+			{
+				camera->CameraIsLocked = false;
+				if (ChatLayer->LayerTargetPosition.y > -1)
+					ChatLayer->SwapOriginalWithTarget();
+				CurrentNPC->setInteracting(false);
+				Scene_System::accessing().cSS_InputManager->SetMouseToScreenCenter();
+				Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+				Scene_System::accessing().cSS_PlayerUIManager->CurrentState = PlayerUIManager::UIS_HUD;
+				temp.clear();
+			}
+			bool changedFText = false;
+			for (std::vector<UI_Element*>::iterator it = NPC_QuestButtons.begin(); it != NPC_QuestButtons.end(); ++it)
+			{
+				UI_Element* dat = *it;
+				dat->UI_Bounds->ResetValues();
+				if (dat->UI_Bounds->CheckCollision(Scene_System::accessing().cSS_InputManager->GetMousePosition()))
+				{
+					for (std::vector<Quest*>::iterator it2 = Scene_System::accessing().QM.allQuests.begin(); it2 != Scene_System::accessing().QM.allQuests.end(); ++it2)
+					{
+						Quest* dis = *it2;
+						for (std::map<std::string, int>::iterator it3 = Scene_System::accessing().gPlayer->playerCurrQState.begin(); it3 != Scene_System::accessing().gPlayer->playerCurrQState.end(); ++it3)
+						{
+							if (it3->first == dat->UI_Text && dis->getName() == it3->first)
+							{
+								NPC_TextBox->UI_Text = dis->qStages.at(it3->second)->getDesc();
+								NPC_TextBox->WrapText();
+								changedFText = true;
+								break;
+							}
+						}
+					}
+				}
+				else if (changedFText == false)
+				{
+					NPC_TextBox->UI_Text = CurrentNPC->getFText();
+					NPC_TextBox->WrapText();
+				}
+				else
+					break;
+			}
+			for (std::vector<Quest*>::iterator it = Scene_System::accessing().QM.allQuests.begin(); it != Scene_System::accessing().QM.allQuests.end(); ++it)
+			{
+				Quest* dis = *it;
+				if (temp == dis->getName())
+				{
+					if (!dis->getActive())
+					{
+						dis->setActive(true);
+					}
+					int temp2 = dis->getCurrentStage();
+					dis->setCurrStage(temp2 + 1);
+					for (std::map<std::string, int>::iterator it2 = Scene_System::accessing().gPlayer->playerCurrQState.begin(); it2 != Scene_System::accessing().gPlayer->playerCurrQState.end(); ++it2)
+					{
+						if (it2->first == dis->getName())
+						{
+							it2->second++;
+						}
+					}
+					camera->CameraIsLocked = false;
+					if (ChatLayer->LayerTargetPosition.y > -1)
+						ChatLayer->SwapOriginalWithTarget();
+					CurrentNPC->setInteracting(false);
+					Scene_System::accessing().cSS_InputManager->SetMouseToScreenCenter();
+					Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+					Scene_System::accessing().cSS_PlayerUIManager->CurrentState = PlayerUIManager::UIS_HUD;
+					temp.clear();
+				}
+			}
+		}
+	}
 }
 
 void SceneFreeField2::Update(float dt)
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	SceneGraphics->Update(dt);
+	MusicSystem::accessing().playBackgroundMusic("town2");
 
 	//Update Camera's Minimum Possible & Current Y Pos
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera->position.x / TerrainScale.x, camera->position.z / TerrainScale.z) + camera->PlayerHeight;
@@ -101,49 +347,14 @@ void SceneFreeField2::Update(float dt)
 	}
 	Vector3 Center(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 2, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight / 2, 0);
 
-	if ((camera->position - PreviousPosition).LengthSquared() > 25.f) // 5 Units
-	{
-		if (CurrentEncounterRateBoost < MaxEncounterRate)
-			CurrentEncounterRateBoost += 10;
-		PreviousPosition = camera->position;
-		PreviousPosition.y = Application::cA_MinimumTerrainY;
-	}
-	//if (MonsterFound == false && EncounterTimer < EncounterTimeCheck)
-	//{
-	//	EncounterTimer += (float)dt;
-	//}
-	//else if (MonsterFound == false && (camera->position - PreviousPosition).LengthSquared() > 4.f) // 2 Units
-	//{
-	//	EncounterTimer = 0;
-	//	if (Math::RandIntMinMax(0, MaxEncounterRate - CurrentEncounterRateBoost) < MaxEncounterRate * EncounterRatio)
-	//	{
-	//		MonsterFound = true;
-	//		Scene_System::accessing().SetLoadingTime(3.f);
-	//	}
-	//}
-	//else if (MonsterFound && Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
-	//{
-	//	Scene_System::accessing().whatLoadingState = Scene_System::NOT_LOADING;
-	//	MonsterFound = false;
-	//	CurrentEncounterRateBoost = 0;
-	//	std::ostringstream ss;
-	//	ss << Math::RandIntMinMax(1, Scene_System::accessing().EnemyData.size());
-	//	std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find(ss.str());
-	//	Scene_System::accessing().BSys->SetEnemy(*it->second);
-	//	Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
-	//}
-
 	framerates = 1 / dt;
+
 	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
 	if (Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)
 	{
 		if (Scene_System::accessing().cSS_InputManager->GetKeyValue('1'))
 		{
 			Scene_System::accessing().SwitchScene(SceneTown1::id_);
-		}
-		if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
-		{
-			Scene_System::accessing().SwitchScene(SceneTown2::id_);
 		}
 		if (Scene_System::accessing().cSS_InputManager->GetKeyValue('3'))
 		{
@@ -152,6 +363,10 @@ void SceneFreeField2::Update(float dt)
 		if (Scene_System::accessing().cSS_InputManager->GetKeyValue('4'))
 		{
 			Scene_System::accessing().SwitchScene(SceneFreeField::id_);
+		}
+		if (Scene_System::accessing().cSS_InputManager->GetKeyValue('5'))
+		{
+			Scene_System::accessing().SwitchScene(SceneFreeField2::id_);
 		}
 		if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
 		{
@@ -163,20 +378,20 @@ void SceneFreeField2::Update(float dt)
 		{
 			Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
 		}
-
 		BManager.UpdateContainer(dt, camera->position);
-		camera->CameraIsLocked = false;
 	}
-	else
-	{
+	else {
 		camera->CameraIsLocked = true;
 		PlayerPTR->SetVelocity(Vector3(0, 0, 0));
 	}
+
 	PlayerPTR->Update(dt);
 	PlayerPTR->SetRotationAngle(camera->CurrentCameraRotation.y);
+	PlayerPTR->GetBoundary()->ResetValues();
 
 	camera->position = PlayerPTR->GetPosition();
 	camera->Update(dt);
+
 	for (auto it : Scene_System::accessing().QM.allQuests)
 	{
 		for (auto it2 : Scene_System::accessing().gPlayer->playerCurrQState)
@@ -185,7 +400,14 @@ void SceneFreeField2::Update(float dt)
 			{
 				if (it->getActive())
 				{
-					it->Update(dt);
+					if (it2.second >= 1)
+					{
+						it->qStages.at(it2.second - 1)->Update(dt);
+					}
+					if (it->getCurrentStage() >= (int)it->qStages.size())
+					{
+						it->setActive(false);
+					}
 				}
 			}
 		}
@@ -202,7 +424,15 @@ void SceneFreeField2::Update(float dt)
 			else break;
 		}
 	}
+	ChatLayer->Update((float)dt);
+	NPC_chat((float)dt);
+
 	Scene_System::accessing().UpdateLoadingStuff(dt);
+	if (transitingSceneName != "" && Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
+	{
+		camera->CameraIsLocked = false;
+		onNotify("TRANSITIONING");
+	}
 }
 
 void SceneFreeField2::RenderTerrain()
@@ -407,13 +637,20 @@ void SceneFreeField2::Exit()
 		delete theInteractiveMap;
 	for (auto it : objVec)
 	{
-		if (it)
+		NPC *theNPC = dynamic_cast<NPC*>(it);
+		if (!theNPC)
 			delete it;
 	}
+	objVec.clear();
 	if (Player)
 		delete Player;
 	if (camera)
 		delete camera;
+	if (UI_Sys)
+	{
+		UI_Sys->Exit();
+		delete UI_Sys;
+	}
 }
 
 bool SceneFreeField2::onNotify(const std::string &theEvent)
