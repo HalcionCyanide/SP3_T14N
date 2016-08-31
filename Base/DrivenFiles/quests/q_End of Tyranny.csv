@@ -1,5 +1,0 @@
-stage,ConditionName,Value,Description,qOrigin
-0,goto,10;0;10,Put out all the cursed fires around the Crypt,Guard Captain
-1,goto,15;0;5,Put out all the cursed fires around the Crypt,Guard Captain
-2,goto,25;0;40,Put out all the cursed fires around the Crypt,Guard Captain
-3,goto,35;0;20,Put out all the cursed fires around the Crypt,Guard Captain

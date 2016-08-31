@@ -186,7 +186,6 @@ void SceneFreeField2::Update(float dt)
 				if (it->getActive())
 				{
 					it->Update(dt);
-					std::cout << it->theStageAT->getDesc() << std::endl;
 				}
 			}
 		}
@@ -383,31 +382,6 @@ void SceneFreeField2::RenderPassMain()
 
 	if (Scene_System::accessing().theLoadingEffect)
 		Scene_System::accessing().RenderLoadingStuff();
-	std::ostringstream ss;
-	ss.str("");
-	ss << "Scene 1 - FPS:" << framerates;
-	ss.precision(3);
-	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 25);
-
-	ss.str("");
-	ss << "CVel:" << camera->CameraVelocity;
-	ss.precision(3);
-	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
-
-	ss.str("");
-	ss << "Mouse Position:" << Scene_System::accessing().cSS_InputManager->GetMousePosition();
-	ss.precision(3);
-	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
-	//<!> Removing soon
-	ss.str("");
-	ss << "CPos:" << camera->position;
-	ss.precision(3);
-	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 125);
-	//<!> Removing soon
-
-	ss.str("9, 0 - Toggle Mouse Modes");
-	ss.precision(3);
-	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
 
 	SceneGraphics->SetHUD(false);
 }

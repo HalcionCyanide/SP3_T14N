@@ -630,31 +630,6 @@ void SceneTown1::RenderPassMain()
     if (Scene_System::accessing().theLoadingEffect)
         Scene_System::accessing().RenderLoadingStuff();
 
-	std::ostringstream ss;
-	ss.str("");
-	ss << "Scene 1 - FPS:" << framerates;
-	ss.precision(3);
-	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 25);
-
-	ss.str("");
-	ss << "CVel:" << camera->CameraVelocity;
-	ss.precision(3);
-	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 50);
-
-	if (Player)
-	{
-		ss.str("");
-		ss << "PVel:" << Player->GetVelocity();
-		ss.precision(3);
-		SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 75);
-	}
-	
-	ss.str("");
-	ss << "CPos:" << camera->position;
-	ss.precision(3);
-	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 125);
-	//<!> Removing soon
-
 	SceneGraphics->SetHUD(false);
 }
 
