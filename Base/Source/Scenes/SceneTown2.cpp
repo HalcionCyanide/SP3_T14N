@@ -43,6 +43,7 @@ void SceneTown2::Init()
 
     camera = new Camera3();
 	camera->Init(Vector3(0, 5, -5), Vector3(0, 5, 0), Vector3(0, 1, 0));
+	CenterPosition.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
 	// Initiallise Model Specific Meshes Here
 	Mesh* newMesh = MeshBuilder::GenerateTerrain("town2", "HeightMapFiles//heightmap_Town2.raw", m_heightMap);
@@ -77,7 +78,7 @@ void SceneTown2::Init()
 	{
 		if (it->getName() == "Village Chief")
 		{
-			it->Init(it->getName(), 1, Vector3(15.f, 0, -80.f), Vector3(10, 10, 10), Vector3(0, 0, 0), 0.f, Vector3(0, 1, 0));
+			it->Init(it->getName(), 1, Vector3(0, 0, 0), Vector3(10, 10, 10), Vector3(0, 0, 0), 0.f, Vector3(0, 1, 0));
 
 			it->SetPosition(
 				Vector3(it->GetPosition().x,
@@ -86,9 +87,9 @@ void SceneTown2::Init()
 
 			it->SetBounds();
 			objVec.push_back(it);
-		}
-		else
+			npcInThisScene.push_back(it);
 			break;
+		}
 	}
 	UI_Sys = new UI_System();
 	UI_Sys->Init();
@@ -159,7 +160,7 @@ std::string SceneTown2::HandleChatUIInput(float dt)
 
 void SceneTown2::NPC_chat(float dt)
 {
-	for (std::vector<NPC*>::iterator it = Scene_System::accessing().NM.allNPCs.begin(); it != Scene_System::accessing().NM.allNPCs.end(); ++it)
+	for (std::vector<NPC*>::iterator it = npcInThisScene.begin(); it != npcInThisScene.end(); ++it)
 	{
 		NPC* CurrentNPC = *it;
 
@@ -643,13 +644,20 @@ void SceneTown2::Exit()
 		delete theInteractiveMap;
 	for (auto it : objVec)
 	{
-		if (it)
+		NPC *theNPC = dynamic_cast<NPC*>(it);
+		if (!theNPC)
 			delete it;
 	}
+	objVec.clear();
 	if (Player)
 		delete Player;
-    if (camera)
-        delete camera;
+	if (camera)
+		delete camera;
+	if (UI_Sys)
+	{
+		UI_Sys->Exit();
+		delete UI_Sys;
+	}
 }
 
 bool SceneTown2::onNotify(const std::string &theEvent)

@@ -58,6 +58,7 @@ private:
 	Vector3 CenterPosition;
 	UI_System* UI_Sys;
     std::string transitingSceneName;
+	std::vector<NPC*> npcInThisScene;
 };
 
 #endif // _SCENE_TOWN_1_H
