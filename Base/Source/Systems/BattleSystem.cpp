@@ -517,21 +517,15 @@ void BattleSystem::UpdateInventory(float dt)
 			if ((*it)->MeshName == "Item_Heal")
 			{
 				// Heal
-				for (std::map<Item*, bool>::iterator it2 = Scene_System::accessing().cSS_PlayerInventory->ActiveItemMap.begin(); it2 != Scene_System::accessing().cSS_PlayerInventory->ActiveItemMap.end(); ++it2)
+				std::map<Item*, int>::iterator cItem = Scene_System::accessing().gPlayer->PlayerInventory.find(I_Heal);
+				std::map<Item*, bool>::iterator ActiveCheck = Scene_System::accessing().cSS_PlayerInventory->ActiveItemMap.find(I_Heal);
+				if (!ActiveCheck->second && cItem->second > 0)
 				{
-					if (!(*it2).second && (*it2).first->GetItemType() == Item::IT_INSTANT_HEAL)
-					{
-						std::map<Item*, int>::iterator cItem = Scene_System::accessing().gPlayer->PlayerInventory.find((*it2).first);
-						if (cItem->second > 0)
-						{
-							--cItem->second;
-							(*it2).second = true;
-							std::stringstream ss;
-							ss << "<" << cItem->second << "> Left";
-							PlayerInventoryUI->cUI_Layer[2]->UI_Text_Container[1] = ss.str();
-						}
-						break;
-					}
+					--cItem->second;
+					ActiveCheck->second = true;
+					std::stringstream ss;
+					ss << "<" << cItem->second << "> Left";
+					PlayerInventoryUI->cUI_Layer[2]->UI_Text_Container[1] = ss.str();
 				}
 				break;
 			}
