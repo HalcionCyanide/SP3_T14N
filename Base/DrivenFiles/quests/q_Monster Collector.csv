@@ -1,6 +1,6 @@
-stage,ConditionName,Value,Description,qOrigin
-0,collection,10,Capture 10 Monsters!,Guard Captain
-1,collection,15,Capture 15 Monsters!,Guard Captain
-2,collection,20,Capture 20 Monsters!,Guard Captain
-3,collection,25,Capture 25 Monsters!,Guard Captain
-4,collection,30,Capture 30 Monsters!,Guard Captain
+stage,ConditionName,Value,Description,qOrigin,iReward,iRcount
+0,collection,10,Capture 10 Monsters!,Guard Captain,Heal,1
+1,collection,15,Capture 15 Monsters!,Guard Captain,Heal,1
+2,collection,20,Capture 20 Monsters!,Guard Captain,Heal,2
+3,collection,25,Capture 25 Monsters!,Guard Captain,Heal,2
+4,collection,30,Capture 30 Monsters!,Guard Captain,Heal,3
