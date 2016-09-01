@@ -60,7 +60,8 @@ void GameObject::SetBounds()
 			GateBoundary* TempBound = dynamic_cast<GateBoundary*>(Bounds);
 			TempBound->SetQuestData("The Fractal Binding", 5);
 			TempBound->EnemyID = "2";
-			TempBound->SetBossGate(true); TempBound->SetRotationAxis(Vector3(0, 1));
+			TempBound->SetBossGate(true);
+			TempBound->SetRotationAxis(Vector3(0, 1));
 			GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 			std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find("Entrance_TownRemains");
 			if (it != SceneGraphics->meshList.end())
