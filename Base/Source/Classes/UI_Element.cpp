@@ -114,21 +114,21 @@ void UI_Element::CheckInput(const Vector3& MousePosition, bool& ClickSuccess)
 		UI_Bounds->SetDimensions(Dimensions);
 		UI_Bounds->ResetValues();
 
-		if (BoundsActive && UI_Bounds->CheckCollision(MousePosition))
+        if (Application::IsKeyPressed(VK_LBUTTON) && BoundsActive && UI_Bounds->CheckCollision(MousePosition))
 		{
 			// Do Upscale
-			if (Application::IsKeyPressed(VK_LBUTTON))
-			{
+			//if (Application::IsKeyPressed(VK_LBUTTON))
+			//{
 				//BoundsActive = false;
 				ClickSuccess = true;
-			}
-            else if (!Application::IsKeyPressed(VK_LBUTTON))
-            {
-                //BoundsActive = false;
-                ClickSuccess = false;
-            }
+			//}
         }
-	}
+	    else if (!Application::IsKeyPressed(VK_LBUTTON))
+        {
+            //BoundsActive = false;
+            ClickSuccess = false;
+        }
+    }
 }
 
 void UI_Element::Render(const Vector3& LayerPos)
