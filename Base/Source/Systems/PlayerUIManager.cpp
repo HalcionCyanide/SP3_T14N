@@ -294,7 +294,7 @@ void PlayerUIManager::Update(double dt)
 		ss << "Spell Power: " << Scene_System::accessing().gPlayer->GetSpellPower();
 		Menu_Stats->cUI_Layer[4]->UI_Text = ss.str();
 		ss.str("");
-		ss << "Capture Count" << Scene_System::accessing().gPlayer->getMonsterCount();
+		ss << "Capture Count: " << Scene_System::accessing().gPlayer->getMonsterCount();
 		Menu_Stats->cUI_Layer[5]->UI_Text = ss.str();
 		break;
 	case UIS_Menu_Inventory:

@@ -32,14 +32,6 @@ void SceneCredits::Init()
     perspective.SetToPerspective(45.0f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 0.1f, 10000.0f);
     projectionStack->LoadMatrix(perspective);
 
-    //Mesh* newMesh = MeshBuilder::GenerateQuad("Player", Color(1, 1, 1));
-    //newMesh->textureArray[0] = LoadTGA("Image//TFB_GEM.tga");
-    //SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-
-    //newMesh = MeshBuilder::GenerateQuad("GBox", Color(1, 1, 1));
-    //newMesh->textureArray[0] = LoadTGA("Image//GBox.tga");
-    //SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
-
     camera.Init(Vector3(0, 0, 1), 0, Vector3(0, 1, 0));
 
     TheLoadScreenStuff = new UI_System();
@@ -47,35 +39,52 @@ void SceneCredits::Init()
     ComicLayer->LayerTargetPosition.y = 0;
     ComicLayer->LayerCenterPosition.y = 0;
     ComicLayer->AddUIElement("page1_comic", Vector3(600, 600, 0), Vector3(600, 600, 0), Vector3(1000, 800, 1), Vector3(600, 600, 0));
-    ComicLayer->AddUIElement("page2_comic", Vector3(600, -200, 0), Vector3(600, -200, 0), Vector3(1000, 800, 1), Vector3(600, -200, 0));
+	ComicLayer->AddUIElement("page2_comic", Vector3(600, -200, 0), Vector3(600, -200, 0), Vector3(1000, 800, 1), Vector3(600, -200, 0));
     TheLoadScreenStuff->cUIS_LayerContainer.push_back(ComicLayer);
 
     CreditsLayer = new UI_Layer();
     CreditsLayer->LayerTargetPosition.y = 0;
     CreditsLayer->LayerCenterPosition.y = 0;
-    UI_Element *TheCredits = new UI_Element("TextBacking", Vector3(1200, 600, 0), Vector3(1200, 600, 0), Vector3(300, 200, 1), Vector3(1200, 600, 0));
+	UI_Element *TheCredits = new UI_Element("TextBacking", Vector3(1400, 800, 0), Vector3(1400, 800, 0), Vector3(300, 100, 1), Vector3(1400, 800, 0));
     TheCredits->TextWrappingEnabled = true;
     TheCredits->UI_Text_Container.push_back("Credits");
     TheCredits->UI_Text_Container.push_back("");
     TheCredits->UI_Text_Container.push_back("Director:");
     TheCredits->UI_Text_Container.push_back("Ryan Lim Rui An");
+	TheCredits->UI_Text_Container.push_back("");
     TheCredits->UI_Text_Container.push_back("Co-Director:");
     TheCredits->UI_Text_Container.push_back("Lee Sek Heng");
+	TheCredits->UI_Text_Container.push_back("");
     TheCredits->UI_Text_Container.push_back("Secretary:");
     TheCredits->UI_Text_Container.push_back("Tan Teck Ling");
+	TheCredits->UI_Text_Container.push_back("");
     TheCredits->UI_Text_Container.push_back("Office Manager:");
     TheCredits->UI_Text_Container.push_back("Zheng Qing Ping");
     TheCredits->UI_Text_Container.push_back("");
     TheCredits->UI_Text_Container.push_back("Music Taken From:");
-    TheCredits->UI_Text_Container.push_back("<NewGrounds>");
-    TheCredits->UI_Text_Container.push_back("NemesisTheory");
-    TheCredits->UI_Text_Container.push_back("OcularNebula");
+    TheCredits->UI_Text_Container.push_back("NemesisTheory.newgrounds.com");
+    TheCredits->UI_Text_Container.push_back("OcularNebula.newgrounds.com");
     TheCredits->UI_Text_Container.push_back("bensound.com");
+	TheCredits->UI_Text_Container.push_back("");
+	TheCredits->UI_Text_Container.push_back("");
+	TheCredits->UI_Text_Container.push_back("");
+	TheCredits->UI_Text_Container.push_back("");
+	TheCredits->UI_Text_Container.push_back("< Instructions >");
+	TheCredits->UI_Text_Container.push_back("<3D Scene Controls>");
+	TheCredits->UI_Text_Container.push_back("<W-A-S-D> - Movement");
+	TheCredits->UI_Text_Container.push_back("<Spacebar> - Jump");
+	TheCredits->UI_Text_Container.push_back("<Q> - Interact");
+	TheCredits->UI_Text_Container.push_back("<E> - Open/Close Menu");
+	TheCredits->UI_Text_Container.push_back("");
+	TheCredits->UI_Text_Container.push_back("<Battle Scene Controls>");
+	TheCredits->UI_Text_Container.push_back("<W-A-S-D> - Movement");
+	TheCredits->UI_Text_Container.push_back("<Left Click> - Use Items");
+
     CreditsLayer->cUI_Layer.push_back(TheCredits);
     TheLoadScreenStuff->cUIS_LayerContainer.push_back(CreditsLayer);
 
     SkipCreditStuff = new UI_Layer();
-    UI_Element *theClickButton = new UI_Element("TFB_Button", Vector3(700, 100, 0), Vector3(700, 100, 0), Vector3(1200, 150, 1), Vector3(700, 100, 0), "Left Click Here to skip");
+	UI_Element *theClickButton = new UI_Element("TFB_Button", Vector3(1500, 100, 0), Vector3(1500, 100, 0), Vector3(800, 100, 1), Vector3(1500, 100, 0), "Click Here To Skip Intro");
     theClickButton->WrapText();
     SkipCreditStuff->cUI_Layer.push_back(theClickButton);
     TheLoadScreenStuff->cUIS_LayerContainer.push_back(SkipCreditStuff);
