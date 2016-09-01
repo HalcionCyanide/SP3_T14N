@@ -24,10 +24,12 @@ void gotoCondition::setValue(std::string i)
 
 void gotoCondition::Update(double dt)
 {
+	std::string temp;
+	temp = Scene_System::accessing().getCurrScene().getName();
 	//stuff to increase the number, please remember to increase the counter as you go along.
 	if (!complete)
 	{
-		if (Scene_System::accessing().getCurrScene().getName() == theRequirement)
+		if (temp == theRequirement)
 		{
 			complete = true;
 		}
