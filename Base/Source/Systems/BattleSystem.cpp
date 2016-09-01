@@ -39,6 +39,7 @@ void BattleSystem::Init()
 void BattleSystem::QuickInit()
 {
 	// Generic
+	Timer = 0;
 	SpellPowerRatio = EnemySpellPowerRatio = 0;
 	RoundOver = false;
 	RemoveBattleUI = false;
@@ -332,18 +333,33 @@ void BattleSystem::SetEnemy(Enemy& E)
 
 	PlayerInventoryUI->AddUIElement("UI_ChatBox", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 7.f, PlayerScale * 1.25f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 0.625f, 0), "Inventory");
 	PlayerInventoryUI->AddUIElement("TextBacking", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 7.f, PlayerScale * 1.f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 0.58f, 0), "Click to use.");
-	PlayerInventoryUI->AddUIElement("TextBacking", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 2.f, PlayerScale * 2.f, 1), Vector3(CenterPosition.x * 1.65f, CenterPosition.y * 0.4f), "Heal  - ");
-	PlayerInventoryUI->AddUIElement("TextBacking", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 2.f, PlayerScale * 2.f, 1), Vector3(CenterPosition.x * 1.65f, CenterPosition.y * 0.15f), "Speed - ");
 
+	UI_Element* NewE = new UI_Element("TextBacking", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 2.f, PlayerScale * 2.f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 0.4f), "Heal");
+	NewE->TextWrappingEnabled = true;
+	NewE->UI_Text_Container.push_back("Heal");
+	ss.str("");
+	std::map<Item*, int>::iterator cItem = Scene_System::accessing().gPlayer->PlayerInventory.find(I_Heal);
+	ss << "<" << cItem->second << "> Left";
+	NewE->UI_Text_Container.push_back(ss.str());
+	PlayerInventoryUI->cUI_Layer.push_back(NewE);
+
+	NewE = new UI_Element("TextBacking", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 2.f, PlayerScale * 2.f, 1), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * 0.15f), "Speed");
+	NewE->TextWrappingEnabled = true;
+	NewE->UI_Text_Container.push_back("Speed");
+	ss.str("");
+	std::map<Item*, int>::iterator cItem2 = Scene_System::accessing().gPlayer->PlayerInventory.find(I_Accel);
+	ss << "<" << cItem2->second << "> Left";
+	NewE->UI_Text_Container.push_back(ss.str());
+	PlayerInventoryUI->cUI_Layer.push_back(NewE);
 
 	// Buttons
 	// TL
-	UI_Element* NewE = new UI_Element("Item_Heal", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 2.f, PlayerScale * 2.f, 1), Vector3(CenterPosition.x * 1.8f, CenterPosition.y * 0.4f, 0));
+	NewE = new UI_Element("Item_Heal", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 2.f, PlayerScale * 2.f, 1), Vector3(CenterPosition.x * 1.65f, CenterPosition.y * 0.4f, 0));
 	InventoryButtons.push_back(NewE);
 	PlayerInventoryUI->cUI_Layer.push_back(NewE);
 
 	// BL
-	NewE = new UI_Element("Item_Accel", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 2.f, PlayerScale * 2.f, 1), Vector3(CenterPosition.x * 1.8f, CenterPosition.y * 0.15f, 0));
+	NewE = new UI_Element("Item_Accel", Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(CenterPosition.x * 1.75f, CenterPosition.y * -4.f, 0), Vector3(PlayerScale * 2.f, PlayerScale * 2.f, 1), Vector3(CenterPosition.x * 1.65f, CenterPosition.y * 0.15f, 0));
 	InventoryButtons.push_back(NewE);
 	PlayerInventoryUI->cUI_Layer.push_back(NewE);
 
@@ -489,21 +505,31 @@ void BattleSystem::UpdateBattlePhase(float dt)
 
 void BattleSystem::UpdateInventory(float dt)
 {
+	Timer += dt;
 	for (std::vector<UI_Element*>::iterator it = PlayerInventoryUI->cUI_Layer.begin(); it != PlayerInventoryUI->cUI_Layer.end(); ++it)
 	{
 		(*it)->BoundsActive = true;
 		bool CheckSucceeded = false;
 		(*it)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), CheckSucceeded);
-		if (CheckSucceeded)
+		if (Timer > 0.5f && CheckSucceeded)
 		{
+			Timer = 0;
 			if ((*it)->MeshName == "Item_Heal")
 			{
 				// Heal
-				for (std::map<Item*, bool>::iterator it = Scene_System::accessing().cSS_PlayerInventory->ActiveItemMap.begin(); it != Scene_System::accessing().cSS_PlayerInventory->ActiveItemMap.end(); ++it)
+				for (std::map<Item*, bool>::iterator it2 = Scene_System::accessing().cSS_PlayerInventory->ActiveItemMap.begin(); it2 != Scene_System::accessing().cSS_PlayerInventory->ActiveItemMap.end(); ++it2)
 				{
-					if ((*it).first->GetItemType() == Item::IT_INSTANT_HEAL)
+					if (!(*it2).second && (*it2).first->GetItemType() == Item::IT_INSTANT_HEAL)
 					{
-						(*it).second = true; 
+						std::map<Item*, int>::iterator cItem = Scene_System::accessing().gPlayer->PlayerInventory.find((*it2).first);
+						if (cItem->second > 0)
+						{
+							--cItem->second;
+							(*it2).second = true;
+							std::stringstream ss;
+							ss << "<" << cItem->second << "> Left";
+							PlayerInventoryUI->cUI_Layer[2]->UI_Text_Container[1] = ss.str();
+						}
 						break;
 					}
 				}
@@ -511,12 +537,20 @@ void BattleSystem::UpdateInventory(float dt)
 			}
 			else if ((*it)->MeshName == "Item_Accel")
 			{
-				// Heal
-				for (std::map<Item*, bool>::iterator it = Scene_System::accessing().cSS_PlayerInventory->ActiveItemMap.begin(); it != Scene_System::accessing().cSS_PlayerInventory->ActiveItemMap.end(); ++it)
+				// Speed
+				for (std::map<Item*, bool>::iterator it2 = Scene_System::accessing().cSS_PlayerInventory->ActiveItemMap.begin(); it2 != Scene_System::accessing().cSS_PlayerInventory->ActiveItemMap.end(); ++it2)
 				{
-					if ((*it).first->GetItemType() == Item::IT_BOOST_INERTIA)
+					if (!(*it2).second && (*it2).first->GetItemType() == Item::IT_BOOST_INERTIA)
 					{
-						(*it).second = true;
+						std::map<Item*, int>::iterator cItem = Scene_System::accessing().gPlayer->PlayerInventory.find((*it2).first);
+						if (cItem->second > 0)
+						{
+							--cItem->second;
+							(*it2).second = true;
+							std::stringstream ss;
+							ss << "<" << cItem->second << "> Left";
+							PlayerInventoryUI->cUI_Layer[3]->UI_Text_Container[1] = ss.str();
+						}
 						break;
 					}
 				}
@@ -543,6 +577,8 @@ void BattleSystem::UpdateInventory(float dt)
 					float BarPosition = GBarPosition - (HealthBarDefaultScale - GBarWidth) * 0.5f + HealthBarDefaultScale * 0.25f;
 					HealthBarGreen->Dimensions.x = GBarWidth;
 					HealthBarGreen->Position.x = BarPosition;
+
+					
 				}
 				if (cItem->GetItemType() == Item::IT_BOOST_INERTIA)
 				{
@@ -552,7 +588,7 @@ void BattleSystem::UpdateInventory(float dt)
 		}
 		if ((*it).first->GetItemType() == Item::IT_BOOST_INERTIA)
 		{
-			if (!(*it).first->GetActive() || (*it).first->GetCoolDown())
+			if (!(*it).first->GetActive())
 				PlayerObj->SetMass(1);
 			else
 			{
@@ -560,25 +596,6 @@ void BattleSystem::UpdateInventory(float dt)
 			}
 		}
 	}
-	/*std::stringstream ss;
-	if (I_Heal)
-	{
-		if (I_Heal->InternalTimer > I_Heal->GetDuration())
-		{
-			ss.str("");
-			ss << I_Heal->GetCoolDown() + I_Heal->GetDuration() - I_Heal->InternalTimer;
-			InventoryButtons[0]->UI_Text = ss.str();
-		}
-	}
-	if (I_Accel)
-	{
-		if (I_Accel->InternalTimer > I_Accel->GetDuration())
-		{
-			ss.str("");
-			ss << I_Accel->GetCoolDown() + I_Accel->GetDuration() - I_Accel->InternalTimer;
-			InventoryButtons[1]->UI_Text = ss.str();
-		}
-	}*/
 }
 
 void BattleSystem::UpdateEnemyLogic(float dt)
