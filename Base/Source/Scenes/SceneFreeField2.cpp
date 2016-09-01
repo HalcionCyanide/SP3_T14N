@@ -612,6 +612,12 @@ void SceneFreeField2::RenderPassMain()
 	SceneGraphics->SetHUD(true);
 
 	Scene_System::accessing().cSS_PlayerUIManager->Render();
+	for (std::vector<UI_Element*>::iterator it = ChatLayer->cUI_Layer.begin(); it != ChatLayer->cUI_Layer.end(); ++it)
+	{
+		if ((*it)->UI_Text != "" || (*it)->UI_Text_Container.size() > 0)
+			(*it)->Render(ChatLayer->LayerCenterPosition);
+	}
+
 	if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
 	{
 		SceneGraphics->RenderMeshIn2D("TFB_Gem", false, 100, 100, Scene_System::accessing().cSS_InputManager->GetMousePosition().x, Scene_System::accessing().cSS_InputManager->GetMousePosition().y);

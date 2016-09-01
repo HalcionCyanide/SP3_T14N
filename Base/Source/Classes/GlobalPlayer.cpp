@@ -189,14 +189,18 @@ bool GlobalPlayer::LoadPlayerSave(const std::string &fileName)
                 std::string valuesOfQuests = "";
 
 				std::vector<Quest*>::iterator it2 = Scene_System::accessing().QM.allQuests.begin();
+
 				while (getline(iss, valuesOfQuests, ','))
                 {
 					Quest* temp = (Quest*)*it2;
 					temp->setCurrStage(stoi(valuesOfQuests));
-					temp->setActive(true);
+					if (stoi(valuesOfQuests) > 0)
+					{
+						temp->setActive(true);
+					}
                     it->second = stoi(valuesOfQuests);
-                    ++it;
-					++it2;
+                    it++;
+					it2++;
                 }
             }
 			else if (checkWhetherTheWordInThatString("MCOUNT", key))
