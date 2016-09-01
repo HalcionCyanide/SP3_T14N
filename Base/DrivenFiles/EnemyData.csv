@@ -11,7 +11,7 @@ EnemyID,MeshName,EnemyName,EnemyType,SpellPower,MaxEnemyWave,P1MeshName,P1Type,P
 10,Mob_Lizardman,Lizardman,Mob,1,1,Proj_Lizard,Bullet,0.42,10,1,200,2,,,,,,,,,,,,,,,,,,,,,
 11,Mob_MetalGolem,Metal Golem,Mob,1,1,Proj_Metal,Bullet,0.42,10,1,200,2,,,,,,,,,,,,,,,,,,,,,
 12,Mob_Mummy,Mummy,Mob,1,1,Mob_Mummy,Bullet,0.42,10,1,200,2,,,,,,,,,,,,,,,,,,,,,
-13,Mob_OhShit,Oh Shit,Mob,1,1,Dark_Fire,Bullet,0.45,10,2,100,2,,,,,,,,,,,,,,,,,,,,,
+13,Mob_OhShit,Vengeance,Mob,1,1,Dark_Fire,Bullet,0.45,10,2,100,2,,,,,,,,,,,,,,,,,,,,,
 14,Mob_SkeletonWizard,Skeleton Wizard,Mob,1,1,Proj_FireSkull,Bullet,0.45,10,2,100,2,,,,,,,,,,,,,,,,,,,,,
 15,Mob_Snake,Snake,Mob,1,1,Mob_Snake,Bullet,0.45,10,2,100,2,,,,,,,,,,,,,,,,,,,,,
 16,Mob_StoneGolem,Stone Golem,Mob,1,1,Proj_Rock,Bullet,0.45,10,2,100,2,,,,,,,,,,,,,,,,,,,,,

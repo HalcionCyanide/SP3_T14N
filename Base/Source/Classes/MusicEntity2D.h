@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file           MusicEntity2D.h
+\author      Lee Sek Heng
+\par            email: 150629Z@mymail.nyp.edu.sg
+\brief
+MusicEntity2D defines 2D sounds from IrrKlang and making Irrklang sounds more compatible with this project
+*/
+/******************************************************************************/
 #ifndef MUSIC_ENTITY_2D_H
 #define MUSIC_ENTITY_2D_H
 

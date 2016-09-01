@@ -281,9 +281,6 @@
     <ClInclude Include="Source\Classes\PlayerObject.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Classes\Scene.h">
-      <Filter>Header Files\Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Classes\singletontemplate.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>

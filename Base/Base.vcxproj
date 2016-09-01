@@ -94,7 +94,6 @@
     <ClInclude Include="Source\Classes\PlayerObject.h" />
     <ClInclude Include="Source\Classes\BattleScreenObject.h" />
     <ClInclude Include="Source\Classes\Projection.h" />
-    <ClInclude Include="Source\Classes\Scene.h" />
     <ClInclude Include="Source\Classes\SceneEntity.h" />
     <ClInclude Include="Source\Classes\singletontemplate.h" />
     <ClInclude Include="Source\Classes\UI_Element.h" />

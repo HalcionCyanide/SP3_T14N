@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file           SceneCredit.h
+\author Lee Sek Heng
+\par email: 150577L@mymail.nyp.edu.sg, 150629Z@mymail.nyp.edu.sg
+\brief
+The Starting Scene of the game which rolls the story and the credits
+*/
+/******************************************************************************/
 #ifndef SCENE_CREDITS_H
 #define SCENE_CREDITS_H
 

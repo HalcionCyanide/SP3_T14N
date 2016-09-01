@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file           singletontemplate.h
+\author      Lee Sek Heng
+\par            email: 150629Z@mymail.nyp.edu.sg
+\brief
+A template for all classes that needs to be a singleton
+*/
+/******************************************************************************/
 #ifndef SINGLETON_TEMPLATE_H
 #define SINGLETON_TEMPLATE_H
 

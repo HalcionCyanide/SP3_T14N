@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file           MusicSystem.h
+\author Lee Sek Heng
+\par email: 150629Z@mymail.nyp.edu.sg
+\brief
+A Music System that is derived from IrrKlang, and make IrrKlang more compatible with this project
+*/
+/******************************************************************************/
 #ifndef MUSIC_SYSTEM_H
 #define MUSIC_SYSTEM_H
 

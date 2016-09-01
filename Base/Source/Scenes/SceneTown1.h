@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file           SceneTown1.h
+\author Ryan Lim Rui An, Lee Sek Heng, Tan Teck Ling, Zheng Qing Ping
+\par email: 150577L@mymail.nyp.edu.sg, 150629Z@mymail.nyp.edu.sg, pls fill in ur email
+\brief
+Town 1 Scene which displays the overview of town 1
+*/
+/******************************************************************************/
 #ifndef _SCENE_TOWN_1_H
 #define _SCENE_TOWN_1_H
 

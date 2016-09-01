@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file           GameMap.h
+\author      Lee Sek Heng
+\par            email: 150629Z@mymail.nyp.edu.sg
+\brief
+A GameMap so that Users can used it and place 3D items on a 3D terrain easily
+*/
+/******************************************************************************/
 #ifndef GAME_MAP_H
 #define GAME_MAP_H
 
