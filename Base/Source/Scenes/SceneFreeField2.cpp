@@ -237,8 +237,6 @@ void SceneFreeField2::NPC_chat(float dt)
 															break;
 														}
 													}
-													else
-														break;
 												}
 											}
 										}

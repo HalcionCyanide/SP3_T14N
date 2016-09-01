@@ -240,8 +240,6 @@ void SceneTown1::NPC_chat(float dt)
 															break;
 														}
 													}
-													else
-														break;
 												}
 											}
 										}

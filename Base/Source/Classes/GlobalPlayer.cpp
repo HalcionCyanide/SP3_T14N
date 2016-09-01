@@ -41,17 +41,6 @@ void GlobalPlayer::Update(float dt)
 
 void GlobalPlayer::Exit()
 {
-	// SAVE STATS
-    //if (whatSave > 0)
-    //{
-    //    std::ostringstream ss;
-    //    ss << "DrivenFiles//PlayerSave" << whatSave << ".csv";
-    //    RewritePlayerSave(ss.str());
-    //}
-    //else
-    //    RewritePlayerSave("DrivenFiles//PlayerSave1.csv");
-	// CLEAN UP
-
 }
 
 // Getters
@@ -204,6 +193,7 @@ bool GlobalPlayer::LoadPlayerSave(const std::string &fileName)
                 {
 					Quest* temp = (Quest*)*it2;
 					temp->setCurrStage(stoi(valuesOfQuests));
+					temp->setActive(true);
                     it->second = stoi(valuesOfQuests);
                     ++it;
 					++it2;
