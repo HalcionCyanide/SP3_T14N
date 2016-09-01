@@ -1,3 +1,12 @@
+/****************************************************************************/
+/*!
+\file Boundary2D.h
+\author Tan Teck Ling
+\par email: 153782U@mymail.nyp.edu.sg
+\brief
+Inherits from the Boundary class to perform non-axis aligned collision.
+*/
+/****************************************************************************/
 #ifndef BOUNDARY2D_H
 #define BOUNDARY2D_H
 
