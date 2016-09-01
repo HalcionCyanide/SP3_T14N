@@ -1,3 +1,12 @@
+/****************************************************************************/
+/*!
+\file Boundary2D.h
+\author Tan Teck Ling
+\par email: 153782U@mymail.nyp.edu.sg
+\brief
+Inherits from the Boundary class for a custom Collision item.
+*/
+/****************************************************************************/
 #ifndef GATEBOUNDARY_H
 #define GATEBOUNDARY_H
 

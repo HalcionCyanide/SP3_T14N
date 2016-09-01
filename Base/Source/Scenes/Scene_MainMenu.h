@@ -75,10 +75,7 @@ private:
 	double framerates;
 
 	GenericEntity *theInteractiveMap;
-	//<!> will remove soon <!>
 	std::vector<GenericEntity*> testingRenderingStuff;
-	//<!> will remove soon <!>
-    //<?> is thr any other way to prevent hardcoding.....
     std::string whatKeyToChange;
     void writeToGlobalDrivenAndChangeCommand(const unsigned char &command, const std::string &theKey);
 

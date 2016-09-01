@@ -1,3 +1,12 @@
+/****************************************************************************/
+/*!
+\file Quest.h
+\author Zheng Qingping
+\par email: 152063Q@mymail.nyp.edu.sg
+\brief
+Defines the basic values of a quest.
+*/
+/****************************************************************************/
 #pragma once
 #include "..\\Classes\\genericEntity.h"
 #include <vector>

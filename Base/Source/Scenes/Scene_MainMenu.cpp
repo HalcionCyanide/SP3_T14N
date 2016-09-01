@@ -1,7 +1,6 @@
 #include "Scene_MainMenu.h"
 #include <sstream>
 
-#include "Scene_2.h"
 #include "SceneTown1.h"
 #include "SceneTown2.h"
 #include "SceneTown3.h"
@@ -187,7 +186,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                             if (((*it2)->UI_Text == UI_Text[4]))
                             {
                                 // Start
-                                //<!> the most hardcoding method ever!
+                                // the most hardcoding method ever!
                                 transitingSceneName = "DrivenFiles//NewPlayerSave.csv";
                                 Scene_System::accessing().SetLoadingTime(3.f);
                             }
@@ -379,35 +378,6 @@ void Scene_MainMenu::Update(float dt)
 	}
 
 	framerates = 1 / dt;
-
-	//if (Scene_System::accessing().cSS_InputManager->GetKeyValue('1'))
-	//{
-	//	Scene_System::accessing().SwitchScene(SceneTown1::id_);
-	//}
-	//else if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
-	//{
-	//	Scene_System::accessing().SwitchScene(SceneTown2::id_);
-	//}
-	//else if (Scene_System::accessing().cSS_InputManager->GetKeyValue('3'))
-	//{
-	//	Scene_System::accessing().SwitchScene(SceneTown3::id_);
-	//}
-	//else if (Scene_System::accessing().cSS_InputManager->GetKeyValue('4'))
-	//{
-	//	Scene_System::accessing().SwitchScene(Scene_2::id_);
-	//}
-
-	//if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
-	//{
-	//	Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-	//	Scene_System::accessing().cSS_InputManager->cIM_CameraPitch = 0;
-	//	Scene_System::accessing().cSS_InputManager->cIM_CameraYaw = 0;
-	//}
-	//else if (Scene_System::accessing().cSS_InputManager->GetKeyValue('0'))
-	//{
-	//	Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
-	//}
-
 	UpdateUILogic(dt, CurrentMenuState);
 	UI_Sys.Update(dt);
 	BManager.UpdateContainer(dt, camera.position);
@@ -576,17 +546,14 @@ void Scene_MainMenu::RenderPassMain()
 
 	RenderSkybox();
 	RenderShadowCasters();
-
-	//SceneGraphics->RenderMesh("reference", false);
-
-	//<!> will remove soon <!>
+	// will remove soon 
 	for (auto it : testingRenderingStuff)
 	{
 		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
 		if (the3DObject && (camera.position - camera.target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
 			the3DObject->Render();
 	}
-	//<!> will remove soon <!>
+	// will remove soon 
 
 	SceneGraphics->SetHUD(true);
 
@@ -618,13 +585,13 @@ void Scene_MainMenu::Exit()
 {
 	if (theInteractiveMap)
 		delete theInteractiveMap;
-	//<!> will remove soon <!>
+	// will remove soon 
 	for (auto it : testingRenderingStuff)
 	{
 		if (it)
 			delete it;
 	}
-	//<!> will remove soon <!>
+	// will remove soon 
 }
 
 void Scene_MainMenu::writeToGlobalDrivenAndChangeCommand(const unsigned char &command, const std::string &theKey)

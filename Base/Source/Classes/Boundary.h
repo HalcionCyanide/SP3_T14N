@@ -1,3 +1,12 @@
+/****************************************************************************/
+/*!
+\file Boundary.h
+\author Tan Teck Ling
+\par email: 153782U@mymail.nyp.edu.sg
+\brief
+Defines the basic values of a boundary
+*/
+/****************************************************************************/
 #ifndef BOUNDARY_H
 #define BOUNDARY_H
 
