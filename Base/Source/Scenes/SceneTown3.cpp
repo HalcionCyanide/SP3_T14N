@@ -47,7 +47,7 @@ void SceneTown3::Init()
 	Mesh* newMesh = MeshBuilder::GenerateTerrain("Town 3", "HeightMapFiles//heightmap_Town3.raw", m_heightMap);
 	newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
 	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
-	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
+	newMesh->textureArray[1] = LoadTGA("Image//CreepyFloor.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera->position.x / TerrainScale.x, camera->position.z / TerrainScale.z) + camera->PlayerHeight;
@@ -432,27 +432,27 @@ void SceneTown3::RenderSkybox()
 	modelStack->Rotate(90, 0, 1, 0);
 	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
 	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
-	SceneGraphics->RenderMesh("SB_Left", false);
+	SceneGraphics->RenderMesh("Night_Left_S", false);
 	modelStack->PopMatrix();
 
 	modelStack->PushMatrix();
 	modelStack->Rotate(-90, 0, 1, 0);
 	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
 	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
-	SceneGraphics->RenderMesh("SB_Right", false);
+	SceneGraphics->RenderMesh("Night_Right_S", false);
 	modelStack->PopMatrix();
 
 	modelStack->PushMatrix();
 	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
 	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
-	SceneGraphics->RenderMesh("SB_Front", false);
+	SceneGraphics->RenderMesh("Night_Front_S", false);
 	modelStack->PopMatrix();
 
 	modelStack->PushMatrix();
 	modelStack->Rotate(180, 0, 1, 0);
 	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
 	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
-	SceneGraphics->RenderMesh("SB_Back", false);
+	SceneGraphics->RenderMesh("Night_Back_S", false);
 	modelStack->PopMatrix();
 
 	modelStack->PushMatrix();
@@ -460,7 +460,7 @@ void SceneTown3::RenderSkybox()
 	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
 	modelStack->Rotate(90, 0, 0, 1);
 	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
-	SceneGraphics->RenderMesh("SB_Top", false);
+	SceneGraphics->RenderMesh("Night_Top_S", false);
 	modelStack->PopMatrix();
 
 	modelStack->PushMatrix();
@@ -468,7 +468,7 @@ void SceneTown3::RenderSkybox()
 	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
 	modelStack->Rotate(-90, 0, 0, 1);
 	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
-	SceneGraphics->RenderMesh("SB_Bottom", false);
+	SceneGraphics->RenderMesh("Night_Bottom_S", false);
 	modelStack->PopMatrix();
 	modelStack->PopMatrix();
 

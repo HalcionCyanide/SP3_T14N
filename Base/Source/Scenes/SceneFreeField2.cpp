@@ -48,7 +48,7 @@ void SceneFreeField2::Init()
 	Mesh* newMesh = MeshBuilder::GenerateTerrain("FreeField2", "HeightMapFiles//heightmap_FreeField2.raw", m_heightMap);
 	newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
 	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
-	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
+	newMesh->textureArray[1] = LoadTGA("Image//CreepyFloor.tga");
 	SceneGraphics->meshList.insert(std::pair<std::string, Mesh*>(newMesh->name, newMesh));
 
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera->position.x / TerrainScale.x, camera->position.z / TerrainScale.z) + camera->PlayerHeight;

@@ -487,27 +487,27 @@ void SceneTown2::RenderSkybox()
 	modelStack->Rotate(90, 0, 1, 0);
 	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
 	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
-	SceneGraphics->RenderMesh("SB_Left", false);
+	SceneGraphics->RenderMesh("SunSet_Left_S", false);
 	modelStack->PopMatrix();
 
 	modelStack->PushMatrix();
 	modelStack->Rotate(-90, 0, 1, 0);
 	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
 	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
-	SceneGraphics->RenderMesh("SB_Right", false);
+	SceneGraphics->RenderMesh("SunSet_Right_S", false);
 	modelStack->PopMatrix();
 
 	modelStack->PushMatrix();
 	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
 	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
-	SceneGraphics->RenderMesh("SB_Front", false);
+	SceneGraphics->RenderMesh("SunSet_Front_S", false);
 	modelStack->PopMatrix();
 
 	modelStack->PushMatrix();
 	modelStack->Rotate(180, 0, 1, 0);
 	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
 	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
-	SceneGraphics->RenderMesh("SB_Back", false);
+	SceneGraphics->RenderMesh("SunSet_Back_S", false);
 	modelStack->PopMatrix();
 
 	modelStack->PushMatrix();
@@ -515,7 +515,7 @@ void SceneTown2::RenderSkybox()
 	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
 	modelStack->Rotate(90, 0, 0, 1);
 	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
-	SceneGraphics->RenderMesh("SB_Top", false);
+	SceneGraphics->RenderMesh("SunSet_Top_S", false);
 	modelStack->PopMatrix();
 
 	modelStack->PushMatrix();
@@ -523,7 +523,7 @@ void SceneTown2::RenderSkybox()
 	modelStack->Translate(0, 0, -SkyboxSize / 2 + 2.f);
 	modelStack->Rotate(-90, 0, 0, 1);
 	modelStack->Scale(SkyboxSize, SkyboxSize, SkyboxSize);
-	SceneGraphics->RenderMesh("SB_Bottom", false);
+	SceneGraphics->RenderMesh("SunSet_Down_S", false);
 	modelStack->PopMatrix();
 	modelStack->PopMatrix();
 
