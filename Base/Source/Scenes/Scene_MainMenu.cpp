@@ -25,6 +25,7 @@ Scene_MainMenu::Scene_MainMenu()
 	setName(id_);
 	theInteractiveMap = nullptr;
     NewL = Setting1 = SettingKeys = nullptr;
+    theLogo = nullptr;
 }
 
 Scene_MainMenu::~Scene_MainMenu()
@@ -77,7 +78,8 @@ void Scene_MainMenu::InitSceneUIElems()
     NewL->LayerCenterPosition.SetZero();
     NewL->LayerTargetPosition.SetZero();
     NewL->LayerOriginalPosition = -CenterPosition * 4.f;
-	NewL->AddUIElement("TFB_Logo", CenterPosition * 3, CenterPosition * 3, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.55f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.9f, 1), CenterPosition * 1.35f);
+    theLogo = new UI_Element("TFB_Logo", CenterPosition * 3, CenterPosition * 3, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.55f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.9f, 1), CenterPosition * 1.35f);
+	//NewL->AddUIElement("TFB_Logo", CenterPosition * 3, CenterPosition * 3, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.55f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.9f, 1), CenterPosition * 1.35f);
 
 	NewL->AddUIElement("TFB_Button", CenterPosition * -2.f, CenterPosition * -2.f, ButtonScale, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), UI_Text[1]);
 	NewL->AddUIElement("TFB_Button", CenterPosition * -2.5f, CenterPosition * -2.5f, ButtonScale, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), UI_Text[2]);
@@ -125,9 +127,9 @@ void Scene_MainMenu::InitSceneUIElems()
     Setting1 = new UI_Layer();
     Setting1->LayerCenterPosition = Setting1->LayerTargetPosition = CenterPosition * 4.f;
     Setting1->LayerOriginalPosition.SetZero();
-    Setting1->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), ButtonScale, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), "Key");
-    Setting1->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), ButtonScale, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), "Misc");
-    Setting1->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), ButtonScale, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), UI_Text[6]);
+    Setting1->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), ButtonScale, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), "Key");
+    Setting1->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), ButtonScale, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), "Misc");
+    Setting1->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), ButtonScale, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), UI_Text[6]);
     UI_Sys.cUIS_LayerContainer.push_back(Setting1);
 
     SettingKeys = new UI_Layer();
@@ -156,6 +158,7 @@ void Scene_MainMenu::InitSceneUIElems()
 void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cState)
 {
     bool ClickSucceeded = false;
+    theLogo->Update((float)dt);
     for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(); it != UI_Sys.cUIS_LayerContainer.end(); ++it)
     {
         (*it)->Update(dt);
@@ -609,7 +612,7 @@ void Scene_MainMenu::RenderPassMain()
 	// will remove soon 
 
 	SceneGraphics->SetHUD(true);
-
+    theLogo->Render(Vector3(0,0,0));
 	UI_Sys.Render();
 
 	if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
@@ -644,6 +647,8 @@ void Scene_MainMenu::Exit()
 		if (it)
 			delete it;
 	}
+    if (theLogo)
+        delete theLogo;
 	// will remove soon 
 }
 
