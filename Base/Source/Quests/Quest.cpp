@@ -1,4 +1,5 @@
 #include "Quest.h"
+#include "..\\Systems\\Scene_System.h"
 
 Quest::Quest()
 	:qID(0)
@@ -74,6 +75,18 @@ void Quest::LoadFile(std::string& fileName)
 
 	QuestStage* tempQS = nullptr;
 
+	for (std::map<Item*, bool>::iterator it = Scene_System::accessing().cSS_PlayerInventory->ActiveItemMap.begin(); it != Scene_System::accessing().cSS_PlayerInventory->ActiveItemMap.end(); ++it)
+	{
+		if ((*it).first->GetItemType() == Item::IT_INSTANT_HEAL)
+		{
+			I_Heal = (*it).first;
+		}
+		else if ((*it).first->GetItemType() == Item::IT_BOOST_INERTIA)
+		{
+			I_Accel = (*it).first;
+		}
+	}
+
 	std::ifstream file2(fileName);
 	if (file2.is_open())
 	{
@@ -123,6 +136,21 @@ void Quest::LoadFile(std::string& fileName)
 				it = std::find(theKeys.begin(), theKeys.end(), "QORIGIN");
 				pos = it - theKeys.begin();
 				tempQS->setGiver(theValues[pos]);
+
+				it = std::find(theKeys.begin(), theKeys.end(), "IREWARD");
+				pos = it - theKeys.begin();
+				if (theValues[pos] == "Heal")
+				{
+					tempQS->setReward(I_Heal);
+				}
+				else if (theValues[pos] == "Speed")
+				{
+					tempQS->setReward(I_Accel);
+				}
+				
+				it = std::find(theKeys.begin(), theKeys.end(), "IRCOUNT");
+				pos = it - theKeys.begin();
+				tempQS->setRewardCount(stoi(theValues[pos]));
 
 				qStages.push_back(tempQS);
 				theValues.clear();

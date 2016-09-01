@@ -18,8 +18,7 @@ void Item::Update(double dt)
 	{
 		InternalTimer += (float)dt;
 	}
-	float MaxWaitTime = Duration + CoolDown;
-	if (InternalTimer > MaxWaitTime)
+	if (InternalTimer > Duration)
 	{
 		Active = false;
 	}
@@ -35,19 +34,9 @@ void Item::SetActive(const bool &active)
 	this->Active = active;
 }
 
-void Item::SetCoolingDown(const bool &coolingdown)
-{
-	this->CoolingDown = coolingdown;
-}
-
 void Item::SetDuration(const float &duration)
 {
 	this->Duration = duration;
-}
-
-void Item::SetCoolDown(const float &cooldown)
-{
-	this->CoolDown = cooldown;
 }
 
 void Item::SetEffectiveValue(const float &value)
@@ -65,19 +54,9 @@ bool Item::GetActive()const
 	return this->Active;
 }
 
-bool Item::GetCoolingDown()const
-{
-	return this->CoolingDown;
-}
-
 float Item::GetDuration()const
 {
 	return this->Duration;
-}
-
-float Item::GetCoolDown()const
-{
-	return this->CoolDown;
 }
 
 float Item::GetEffectiveValue()const
@@ -89,16 +68,13 @@ void Item::Use(float dt)
 {
 	if (!Active)
 	{
-		float MaxWaitTime = Duration + CoolDown;
+		float MaxWaitTime = Duration;
 		if (InternalTimer < Duration)
 		{
 			Active = true;
-			CoolDown = false;
 		}
-		else CoolDown = true;
-		if (InternalTimer > MaxWaitTime)
+		if (InternalTimer > Duration)
 		{
-			CoolDown = false;
 			InternalTimer = 0;
 			Active = false;
 		}

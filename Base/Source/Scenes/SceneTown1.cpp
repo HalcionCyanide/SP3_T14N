@@ -218,9 +218,12 @@ void SceneTown1::NPC_chat(float dt)
 											{
 												if (test->getActive())
 												{
-													if (test->qStages.at(it5->second - 1)->getComplete())
+													if (it5->second > 0)
 													{
-														imdone = true;
+														if (test->qStages.at(it5->second - 1)->getComplete())
+														{
+															imdone = true;
+														}
 													}
 												}
 											}
@@ -308,6 +311,8 @@ void SceneTown1::NPC_chat(float dt)
 					{
 						dis->setActive(true);
 					}
+					std::map<Item*, int>::iterator cItem = Scene_System::accessing().gPlayer->PlayerInventory.find(dis->theStageAT->getReward());
+					cItem->second += dis->theStageAT->getRewardCount();
 					int temp2 = dis->getCurrentStage();
 					dis->setCurrStage(temp2 + 1);
 					for (std::map<std::string, int>::iterator it2 = Scene_System::accessing().gPlayer->playerCurrQState.begin(); it2 != Scene_System::accessing().gPlayer->playerCurrQState.end(); ++it2)

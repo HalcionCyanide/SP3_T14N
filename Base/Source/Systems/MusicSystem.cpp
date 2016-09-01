@@ -1,6 +1,5 @@
 #include "MusicSystem.h"
 #include <fstream>
-#include "../Classes/MusicEntity3D.h"
 #include "Scene_System.h"
 #include <sstream>
 #include <set>
@@ -69,9 +68,7 @@ bool MusicSystem::beginLoadingMusic(const std::string &fileName)
                     values.push_back(token);
 
                 size_t pos = loopingAndFindKey(keys, "SOUNDTYPE");
-                if (values[pos].find("3D") != std::string::npos)
-                    theMusic = new MusicEntity3D();
-                else if (values[pos] != "")
+                if (values[pos] != "")
                     theMusic = new MusicEntity2D();
                 if (theMusic) {
                     pos = loopingAndFindKey(keys, "SOUNDFILENAME");

@@ -111,6 +111,10 @@ bool GlobalPlayer::LoadPlayerSave(const std::string &fileName)
     if (file.is_open())
     {
         std::string data = "";
+        for (std::map<Item*, int>::iterator it = PlayerInventory.begin(), end = PlayerInventory.end(); it != end; ++it)
+        { 
+            it->second = 0;
+        }
         CurrCamera = new Camera3();
         CurrCamera->Init(Vector3(0, 0, 0), Vector3(0, 0, 10), Vector3(0, 1, 0));
         PlayerObj = new PlayerObject();
@@ -204,17 +208,35 @@ bool GlobalPlayer::LoadPlayerSave(const std::string &fileName)
                     ++it;
 					++it2;
                 }
-				Scene_System::accessing().cSS_PlayerUIManager->CurrentQuestDisplayNumber = -1;
-				Scene_System::accessing().cSS_PlayerUIManager->UpdateQuestsMenu(0);
             }
 			else if (checkWhetherTheWordInThatString("MCOUNT", key))
 			{
 				Scene_System::accessing().gPlayer->setMonsterCount(stoi(value));
 			}
+            else if (checkWhetherTheWordInThatString("ITEM", key))
+            {
+                size_t posOfUnderscore = value.find_first_of('_');
+                std::string nameOfItem = value.substr(0, posOfUnderscore);
+                std::string numOfItem = value.substr(posOfUnderscore + 1);
+                Item::ItemType whatItemType = Item::IT_INSTANT_HEAL;
+                if (checkWhetherTheWordInThatString("INERTIA", nameOfItem))
+                    whatItemType = Item::IT_BOOST_INERTIA;
+                for (std::map<Item*, int>::iterator it = PlayerInventory.begin(), end = PlayerInventory.end(); it != end; ++it)
+                {
+                    if (it->first->GetItemType() == whatItemType)
+                    {
+                        it->second = stoi(numOfItem);
+                        break;
+                    }
+                }
+            }
         }
         file.close();
         Scene_System::accessing().getCurrScene().onNotify("PLAYER_INFO");
+		PlayerUIManager* PUIM = Scene_System::accessing().cSS_PlayerUIManager;
+		
         Scene_System::accessing().cSS_PlayerUIManager->UpdateStats(0);
+		Scene_System::accessing().cSS_PlayerUIManager->UpdateQuestsMenu(0);
         return true;
     }
     return false;
@@ -337,8 +359,20 @@ bool GlobalPlayer::RewritePlayerSave(const std::string &fileName)
 				ss << key << Scene_System::accessing().gPlayer->getMonsterCount();
 				writeFile << ss.str() << std::endl;
 			}
+            else if (checkWhetherTheWordInThatString("ITEM", thatSpecificLine))
+            {
+            }
             else
                 writeFile << (*it) << std::endl;
+        }
+        for (std::map<Item*, int>::iterator it = PlayerInventory.begin(), end = PlayerInventory.end(); it != end; ++it)
+        {
+            if (it->first->GetItemType() == Item::IT_BOOST_INERTIA)
+            {
+                writeFile << "Item,INERTIA_" << it->second << std::endl;
+            }
+            else 
+                writeFile << "Item,HEAL_" << it->second << std::endl;
         }
         writeFile.close();
         return true;

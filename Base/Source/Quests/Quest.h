@@ -30,6 +30,8 @@ public:
 	std::string preReq;
 	int preReqVal;
 private:
+	Item* I_Heal;
+	Item* I_Accel;
 	bool active;
 	int qID;
 };

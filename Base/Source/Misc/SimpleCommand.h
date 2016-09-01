@@ -1,3 +1,12 @@
+/****************************************************************************/
+/*!
+\file SimpleCommand.h
+\author Lee Sek Heng
+\par email: 150629Z@.mymail.nyp.edu.sg
+\brief
+Class to define Commands that the player will be using.
+*/
+/****************************************************************************/
 #ifndef SIMPLE_COMMAND_H
 #define SIMPLE_COMMAND_H
 

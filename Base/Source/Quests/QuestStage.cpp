@@ -78,6 +78,26 @@ void QuestStage::setGiver(std::string i)
 	giver = i;
 }
 
+int QuestStage::getRewardCount()
+{
+	return rewardCount;
+}
+
+void QuestStage::setRewardCount(int i)
+{
+	rewardCount = i;
+}
+
+Item* QuestStage::getReward()
+{
+	return theReward;
+}
+
+void QuestStage::setReward(Item* i)
+{
+	theReward = i;
+}
+
 void QuestStage::Update(double dt)
 {
 	if (!complete)

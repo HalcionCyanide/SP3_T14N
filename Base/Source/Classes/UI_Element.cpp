@@ -122,7 +122,12 @@ void UI_Element::CheckInput(const Vector3& MousePosition, bool& ClickSuccess)
 				//BoundsActive = false;
 				ClickSuccess = true;
 			}
-		}
+            else if (!Application::IsKeyPressed(VK_LBUTTON))
+            {
+                //BoundsActive = false;
+                ClickSuccess = false;
+            }
+        }
 	}
 }
 
@@ -138,7 +143,7 @@ void UI_Element::Render(const Vector3& LayerPos)
 		else if (TextWrappingEnabled)
 			for (unsigned int i = 0; i < UI_Text_Container.size(); ++i)
 			{
-				SceneGraphics->RenderTextOnScreen(UI_Text_Container[i], Color(TextColor.x, TextColor.y, TextColor.z), Dimensions.y * 0.275f, Position.x - Dimensions.x * 0.5f + (Dimensions.y * 0.25f), Position.y + LayerPos.y + (0.5f * Dimensions.y * 0.25f) - (i * Dimensions.y * 0.25f));
+				SceneGraphics->RenderTextOnScreen(UI_Text_Container[i], Color(TextColor.x, TextColor.y, TextColor.z), Dimensions.y * 0.275f, Position.x - Dimensions.x * 0.5f + (Dimensions.y * 0.25f) + LayerPos.x, Position.y + LayerPos.y + (0.5f * Dimensions.y * 0.25f) - (i * Dimensions.y * 0.25f));
 			}
 		glEnable(GL_CULL_FACE);
 	}

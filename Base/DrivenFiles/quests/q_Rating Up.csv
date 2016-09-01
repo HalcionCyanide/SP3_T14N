@@ -1,5 +1,5 @@
 stage,ConditionName,Value,Description,qOrigin,iReward,iRcount
-0,rating,200,Achieve a rating of 200 or higher.,Guard Captain,WEED,1
-1,rating,400,Achieve a rating of 400 or higher.,Guard Captain,WEED,2
-2,rating,600,Achieve a rating of 600 or higher.,Guard Captain,WEED,3
-3,rating,800,Achieve a rating of 800 or higher.,Guard Captain,WEED,4
+0,rating,200,Achieve a Spell Power of 200 or higher.,Guard Captain,Speed,1
+1,rating,400,Achieve a Spell Power of 400 or higher.,Guard Captain,Speed,2
+2,rating,600,Achieve a Spell Power of 600 or higher.,Guard Captain,Speed,3
+3,rating,800,Achieve a Spell Power of 800 or higher.,Guard Captain,Speed,4
