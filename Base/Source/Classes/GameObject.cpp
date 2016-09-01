@@ -70,11 +70,15 @@ void GameObject::SetBounds()
 			}
 		}
     }
-	else if (Bounds->getName() == "Boss_Vengeance")
+	else if (getName() == "Boss_Vengeance")
 	{
 		delete Bounds;
 		Bounds = new BossBoundary();
 		Bounds->setName(getName());
+
+		GateBoundary* TempBound = dynamic_cast<GateBoundary*>(Bounds);
+		TempBound->SetBossOnly(true);
+		TempBound->SetRotationAxis(Vector3(0, 1));
 	}
 	Bounds->SetPosition(this->GetPosition());
 	Bounds->SetDimensions(this->GetDimensions());

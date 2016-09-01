@@ -114,13 +114,18 @@ void GateBoundary::SetBossGate(const bool &state)
 	this->BossGate = state;
 }
 
+void GateBoundary::SetBossOnly(const bool &state)
+{
+	this->BossOnly = state;
+}
+
 void GateBoundary::Render()
 {	
 	if (Active && Visible)
 	{
 		QuestCleared = CheckQuest();
 		GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
-		if (QuestCleared)
+		if (QuestCleared || !BossGate)
 		{
 		Scene_System::accessing().getCurrScene().modelStack->PushMatrix();
 		Scene_System::accessing().getCurrScene().modelStack->Translate(GetPosition().x, GetPosition().y, GetPosition().z);
@@ -129,7 +134,7 @@ void GateBoundary::Render()
 
 			SceneGraphics->RenderMesh(*this->GetMesh(), true);
 		}
-		else
+		else if (!QuestCleared || BossOnly)
 		{
 			Scene_System::accessing().getCurrScene().modelStack->PushMatrix();
 			Scene_System::accessing().getCurrScene().modelStack->Translate(GetPosition().x, GetPosition().y, GetPosition().z);
