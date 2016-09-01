@@ -3,6 +3,7 @@
 #include "..\\Mains\\Application.h"
 #include "..\\Misc\\SimpleCommand.h"
 #include "../Systems/MusicSystem.h"
+#include "BossBoundary.h"
 
 PlayerObject::PlayerObject()
 	: GameObject()
@@ -50,22 +51,16 @@ void PlayerObject::Update(double dt)
 			{
 				for (std::vector<GameObject*>::iterator it = theBoundaries->begin(); it != theBoundaries->end(); ++it)
 				{
-					if (CheckCollision(*(*it)->GetBoundary(), BaseObject::GetPosition()))
-					{
-						SetPosition(this->GetPosition() - ((*it)->GetBoundary()->GetOverlappingDistance() * (*it)->GetBoundary()->GetOverlappingAxis()));
-					}
+
+						if (CheckCollision(*(*it)->GetBoundary(), BaseObject::GetPosition()))
+						{
+							SetPosition(this->GetPosition() - ((*it)->GetBoundary()->GetOverlappingDistance() * (*it)->GetBoundary()->GetOverlappingAxis()));
+						}
+					
 					if (MovementValues.IsZero())
 						break;
 				}
 			}
-			//if (CheckCollision(*(Scene_System::accessing().Boss_Manticore->GetBoundary()), BaseObject::GetPosition()))
-			//{
-			//	SetPosition(this->GetPosition() - (Scene_System::accessing().Boss_Manticore->GetBoundary()->GetOverlappingDistance() * Scene_System::accessing().Boss_Manticore->GetBoundary()->GetOverlappingAxis()));
-			//}
-			//else if (CheckCollision(*(Scene_System::accessing().Boss_Balrog->GetBoundary()), BaseObject::GetPosition()))
-			//{
-			//	SetPosition(this->GetPosition() - (Scene_System::accessing().Boss_Balrog->GetBoundary()->GetOverlappingDistance() * Scene_System::accessing().Boss_Balrog->GetBoundary()->GetOverlappingAxis()));
-			//}
 			SetPosition(GetPosition() + MovementValues);
 			MovementValues.SetZero();
 			MusicSystem::accessing().playMusic("footstep");

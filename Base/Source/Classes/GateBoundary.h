@@ -27,6 +27,7 @@ public:
 	void SetEnemyID(const std::string &);
 	void SetEnemyKilled(const bool &);
 	void SetBossGate(const bool &);
+	void SetBossOnly(const bool &);
 
 	std::string GetEnemyID();
 	bool GetEnemyKilled();
@@ -47,6 +48,7 @@ private:
 
 	bool QuestCleared = false;
 	bool BossGate = false;
+	bool BossOnly = false;
 };
 
 
