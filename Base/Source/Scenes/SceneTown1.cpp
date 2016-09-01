@@ -361,31 +361,31 @@ void SceneTown1::Update(float dt)
 	PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
     if (Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING || Scene_System::accessing().whatLoadingState == Scene_System::NOT_LOADING)
     {
-   //     if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
-   //     {
-   //         Scene_System::accessing().SwitchScene(SceneTown2::id_);
-   //     }
-   //     if (Scene_System::accessing().cSS_InputManager->GetKeyValue('3'))
-   //     {
-   //         Scene_System::accessing().SwitchScene(SceneTown3::id_);
-   //     }
-   //     if (Scene_System::accessing().cSS_InputManager->GetKeyValue('4'))
-   //     {
-   //         Scene_System::accessing().SwitchScene(SceneFreeField::id_);
-   //     }
-   //     if (Scene_System::accessing().cSS_InputManager->GetKeyValue('5'))
-   //     {
-			//Scene_System::accessing().SwitchScene(SceneFreeField2::id_);
-   //     }
-   //     if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
-   //     {
-   //         Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
-			//Scene_System::accessing().cSS_InputManager->SetMouseToScreenCenter();
-   //     }
-   //     if (Scene_System::accessing().cSS_InputManager->GetKeyValue('0'))
-   //     {
-   //         Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
-   //     }
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('2'))
+        {
+            Scene_System::accessing().SwitchScene(SceneTown2::id_);
+        }
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('3'))
+        {
+            Scene_System::accessing().SwitchScene(SceneTown3::id_);
+        }
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('4'))
+        {
+            Scene_System::accessing().SwitchScene(SceneFreeField::id_);
+        }
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('5'))
+        {
+			Scene_System::accessing().SwitchScene(SceneFreeField2::id_);
+        }
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('9'))
+        {
+            Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
+			Scene_System::accessing().cSS_InputManager->SetMouseToScreenCenter();
+        }
+        if (Scene_System::accessing().cSS_InputManager->GetKeyValue('0'))
+        {
+            Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
+        }
 
         BManager.UpdateContainer(dt, camera->position);
     }
