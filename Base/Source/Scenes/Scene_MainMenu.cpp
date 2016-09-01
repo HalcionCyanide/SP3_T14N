@@ -77,7 +77,7 @@ void Scene_MainMenu::InitSceneUIElems()
     Vector3 CenterPosition(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
     NewL->LayerCenterPosition.SetZero();
     NewL->LayerTargetPosition.SetZero();
-    NewL->LayerOriginalPosition = -CenterPosition * 2.f;
+    NewL->LayerOriginalPosition.x = -CenterPosition.x * 1.5f;
     theLogo = new UI_Element("TFB_Logo", CenterPosition * 3, CenterPosition * 3, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.55f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.9f, 1), CenterPosition * 1.35f);
 	//NewL->AddUIElement("TFB_Logo", CenterPosition * 3, CenterPosition * 3, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.55f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.9f, 1), CenterPosition * 1.35f);
 
@@ -115,10 +115,10 @@ void Scene_MainMenu::InitSceneUIElems()
  //   //For Setting Stuff
 
  //   //For Loading Save Stuff
- //   NewL->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[13]);
- //   NewL->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[14]);
- //   NewL->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[15]);
- //   NewL->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[16]);
+    NewL->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[13]);
+    NewL->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[14]);
+    NewL->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[15]);
+    NewL->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.6f, 0), Vector3(0, CenterPosition.y * 3.f, 0), ButtonScale, Vector3(500, CenterPosition.y * 3.f, 0), UI_Text[16]);
     //For Loading Save Stuff
 
 	UI_Sys.cUIS_LayerContainer.push_back(NewL);
@@ -162,7 +162,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
     for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(); it != UI_Sys.cUIS_LayerContainer.end(); ++it)
     {
         (*it)->Update(dt);
-        if (CurrentMenuState != S_SETTING_KEYS && CurrentMenuState != S_SETTING && CurrentMenuState != S_UPDATING_KEYS) 
+        if (CurrentMenuState != S_SETTING_KEYS && CurrentMenuState != S_SETTING && CurrentMenuState != S_UPDATING_KEYS && (*it)->LayerCenterPosition.LengthSquared() <= 1.f) 
         {
             for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
             {
@@ -382,7 +382,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                 }
             }
         }
-        else if (CurrentMenuState == S_SETTING)
+        else if (CurrentMenuState == S_SETTING && (*it)->LayerCenterPosition.LengthSquared() <= 1.f)
         {
             for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
             {
@@ -392,19 +392,25 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                 if (ClickSucceeded) {
                     if ((*it2)->UI_Text == "Key")
                     {
-                        CurrentMenuState = S_FIRSTLEVEL;
-                        Setting1->SwapOriginalWithTarget();
-                    }
-                    else if ((*it2)->UI_Text == UI_Text[6])
-                    {
                         CurrentMenuState = S_SETTING_KEYS;
                         Setting1->SwapOriginalWithTarget();
                         SettingKeys->SwapOriginalWithTarget();
                     }
+                    else if ((*it2)->UI_Text == "Misc")
+                    {
+
+                    }
+                    else if ((*it2)->UI_Text == UI_Text[6])
+                    {
+                        CurrentMenuState = S_FIRSTLEVEL;
+                        Setting1->SwapOriginalWithTarget();
+                        NewL->SwapOriginalWithTarget();
+                    }
+                    break;
                 }
             }
         }
-        else if (CurrentMenuState == S_SETTING_KEYS || CurrentMenuState == S_UPDATING_KEYS)
+        else if ((CurrentMenuState == S_SETTING_KEYS || CurrentMenuState == S_UPDATING_KEYS) && (*it)->LayerCenterPosition.LengthSquared() <= 1.f)
         {
             if (CurrentMenuState == S_SETTING_KEYS) {
                 for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
@@ -413,15 +419,9 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                     (*it2)->BoundsActive = true;
                     (*it2)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
                     if (ClickSucceeded) {
-                        if ((*it2)->UI_Text == "Key")
-                        {
 
-                        }
-                        else
-                        {
-
-                        }
                     }
+                    break;
                 }
             }
             else
