@@ -29,7 +29,7 @@ private:
 	const float EncounterRatio = 0.1f;
 	Vector3 PreviousPosition;
 	float EncounterTimer = 0;
-	float EncounterTimeCheck = 10.;
+	float EncounterTimeCheck = 1000.;
 	int MaxEncounterRate = 1000;
     bool MonsterFound;
 
