@@ -1,3 +1,12 @@
+/****************************************************************************/
+/*!
+\file gotoCondition.h
+\author Zheng Qingping
+\par email: 152063Q@mymail.nyp.edu.sg
+\brief
+Inherited condition, requiring player to go to a certain scene
+*/
+/****************************************************************************/
 #ifndef goto_CONDITION_H_
 #define goto_CONDITION_H_
 #include "genericCondition.h"

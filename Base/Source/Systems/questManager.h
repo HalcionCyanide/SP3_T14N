@@ -1,3 +1,12 @@
+/****************************************************************************/
+/*!
+\file NPC.h
+\author Zheng Qingping
+\par email: 152063Q@mymail.nyp.edu.sg
+\brief
+Container to store all quests
+*/
+/****************************************************************************/
 #pragma once
 #include "..\\Quests\\Quest.h"
 #include <fstream>

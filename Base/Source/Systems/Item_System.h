@@ -1,3 +1,12 @@
+/****************************************************************************/
+/*!
+\file Boundary2D.h
+\author Tan Teck Ling
+\par email: 153782U@mymail.nyp.edu.sg
+\brief
+container for the Item class
+*/
+/****************************************************************************/
 #ifndef ITEM_SYSTEM_H
 #define ITEM_SYSTEM_H
 

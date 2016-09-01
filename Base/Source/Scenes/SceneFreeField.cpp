@@ -1,7 +1,6 @@
 #include "SceneFreeField.h"
 #include <sstream>
 
-#include "Scene_2.h"
 #include "SceneTown1.h"
 #include "SceneTown2.h"
 #include "SceneTown3.h"
@@ -57,7 +56,7 @@ void SceneFreeField::Init()
 	theMap->setName("scene open field logic map");
 	theMap->LoadMap("DrivenFiles//FreeField_1_Layout.csv", m_heightMap, TerrainScale, objVec, BManager);
 
-	//<!> There can only be 1 Player
+	// There can only be 1 Player
 	Player = new PlayerObject();
 	Player->Init("Player", 1, camera->position - Vector3(0, camera->PlayerHeight, 0), Vector3(2, 1, 2), Vector3(), camera->CurrentCameraRotation.y, Vector3(0, 1));
 	std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find("cube");
@@ -70,7 +69,7 @@ void SceneFreeField::Init()
 	PlayerPTR->SetPosition(Vector3(Player->GetPosition().x, camera->PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPosition().x / TerrainScale.x), (Player->GetPosition().z / TerrainScale.z)), Player->GetPosition().z));
 	PlayerPTR->setPlayerBoundaries(objVec);
 	camera->position = PlayerPTR->GetPosition();
-	//<!> There can only be 1 Player
+	// There can only be 1 Player
 
 	CurrentEncounterRateBoost = 0;
 	PreviousPosition = camera->position;
@@ -224,20 +223,28 @@ void SceneFreeField::RenderShadowCasters()
 	RenderTerrain();
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	
-	//<!> will remove soon <!>
+	// will remove soon 
 	for (auto it : objVec)
 	{
-		if (it->GetBoundary()->getName() == "2_Scene" || it->GetBoundary()->getName() == "3_Scene")
-			it->GetBoundary()->Render();
-		else
+		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
+		if (it->getName() == "Boss_Manticore")
 		{
-			GameObject *the3DObject = dynamic_cast<GameObject*>(it);
-			if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
-					the3DObject->Render();
+			BossBoundary *temp = dynamic_cast<BossBoundary*>(it->GetBoundary());
+			if (temp->CheckQuest())
+			{
+				//To be continued
+				objVec.erase(std::find(objVec.begin(), objVec.end(), it));
+				the3DObject = nullptr;
+				//if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
+				//	the3DObject->Render();
+			}
+			else
+				temp->CheckQuest();
 		}
+		if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
+				the3DObject->Render();
 	}
-	//Scene_System::accessing().Boss_Manticore->Render();
-	//<!> will remove soon <!>
+	// will remove soon 
 
 	for (std::vector<Billboard*>::iterator it = BManager.BillboardContainer.begin(); it != BManager.BillboardContainer.end(); ++it)
 	{
@@ -384,9 +391,6 @@ void SceneFreeField::RenderPassMain()
 	//RenderSkyplane();
 	RenderSkybox();
 	RenderShadowCasters();
-
-	SceneGraphics->RenderMesh("reference", false);
-
 	SceneGraphics->SetHUD(true);
 
 	Scene_System::accessing().cSS_PlayerUIManager->Render();
@@ -484,8 +488,8 @@ bool SceneFreeField::onNotify(const std::string &theEvent)
     }
 	else if (checkWhetherTheWordInThatString("BOSSMONSTER", theEvent))
 	{
-		//PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
-		//PlayerPTR->LockMovement();
+		PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
+		PlayerPTR->LockMovement();
 		size_t posOfUnderScore = theEvent.find_first_of('_');
 		std::string preMonsterName = theEvent.substr(posOfUnderScore + 1);
 		std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find("2");

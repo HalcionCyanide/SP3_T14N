@@ -45,10 +45,7 @@ public:
 	//static ISound* Sound_Footstep;
 
 	static bool ExitGame;
-    //<!> testing writing to files
     static bool loadThoseKeyCommandsStuff();
-    //<!> testing writing to files
-
 private:
 	Application();
 	~Application();

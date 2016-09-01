@@ -1,3 +1,12 @@
+/****************************************************************************/
+/*!
+\file NPC.h
+\author Zheng Qingping
+\par email: 152063Q@mymail.nyp.edu.sg
+\brief
+Defines the basic values of a quest stage.
+*/
+/****************************************************************************/
 #ifndef QUESTSTAGE_H_
 #define QUESTSTAGE_H_
 #include "..\\Conditions\\genericCondition.h"

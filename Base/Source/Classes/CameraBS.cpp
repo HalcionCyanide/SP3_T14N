@@ -29,7 +29,6 @@ void CameraBS::Init(const Vector3& Position, const Vector3& Target, const Vector
 
 void CameraBS::Update(float dt)
 {
-	// <!> Side Note - Camera Shake not possible in ortho
 	Vector3 DirectionVector = (DefaultPosition - position);
 	if (!DirectionVector.IsZero())
 	{
