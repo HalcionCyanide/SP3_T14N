@@ -122,7 +122,12 @@ void UI_Element::CheckInput(const Vector3& MousePosition, bool& ClickSuccess)
 				//BoundsActive = false;
 				ClickSuccess = true;
 			}
-		}
+            else if (!Application::IsKeyPressed(VK_LBUTTON))
+            {
+                //BoundsActive = false;
+                ClickSuccess = false;
+            }
+        }
 	}
 }
 

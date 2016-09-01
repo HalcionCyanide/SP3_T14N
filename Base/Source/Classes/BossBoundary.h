@@ -1,10 +1,10 @@
 #ifndef BOSSBOUNDARY_H
 #define BOSSBOUNDARY_H
 
-#include "Boundary.h"
+#include "GateBoundary.h"
 #include "..//Systems/Scene_System.h"
 
-class BossBoundary : public Boundary
+class BossBoundary : public GateBoundary
 {
 public:
 	BossBoundary();
