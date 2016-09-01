@@ -1,3 +1,12 @@
+/****************************************************************************/
+/*!
+\file NPC.h
+\author Zheng Qingping
+\par email: 152063Q@mymail.nyp.edu.sg
+\brief
+Inherits from the generic condition, completes upon player SP reaching a value
+*/
+/****************************************************************************/
 #ifndef RATING_CONDITION_H_
 #define RATING_CONDITION_H_
 #include "genericCondition.h"

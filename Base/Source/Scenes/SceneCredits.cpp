@@ -194,9 +194,6 @@ void SceneCredits::RenderPassMain()
         );
     // Model matrix : an identity matrix (model will be at the origin)
     modelStack->LoadIdentity();
-
-    //SceneGraphics->RenderMesh("reference", false);
-
     SceneGraphics->SetHUD(true);
     TheLoadScreenStuff->Render();
     if (Scene_System::accessing().cSS_InputManager->cIM_inMouseMode)
@@ -206,17 +203,6 @@ void SceneCredits::RenderPassMain()
 
     if (Scene_System::accessing().theLoadingEffect)
         Scene_System::accessing().RenderLoadingStuff();
-
-    std::ostringstream ss;
-    ss.str("");
-    ss << "FPS:" << framerates;
-    ss.precision(3);
-    SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(0, 1, 0), 25, 25, 25);
-
-    //ss.str("");
-    //ss << "LayerPos" << TheLoadScreenStuff->cUIS_LayerContainer[0]->LayerCenterPosition.y;
-    //SceneGraphics->RenderTextOnScreen(ss.str(), Color(0, 1, 0), 25, 25, 50);
-
     SceneGraphics->SetHUD(false);
 }
 

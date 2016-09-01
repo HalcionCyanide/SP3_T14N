@@ -1,3 +1,12 @@
+/****************************************************************************/
+/*!
+\file NPC.h
+\author Zheng Qingping
+\par email: 152063Q@mymail.nyp.edu.sg
+\brief
+Defines all flags for an NPC
+*/
+/****************************************************************************/
 #ifndef NPC_H_
 #define NPC_H_
 #include "..\\Classes\\GameObject.h"

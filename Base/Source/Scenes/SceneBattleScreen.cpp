@@ -1,7 +1,6 @@
 #include "SceneBattleScreen.h"
 #include <sstream>
 
-#include "Scene_2.h"
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\GameObject.h"
 #include "..\\Misc\\LoadEnemyData.h"
@@ -128,9 +127,6 @@ void SceneBattleScreen::RenderPassMain()
 		);
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack->LoadIdentity();
-
-	//SceneGraphics->RenderMesh("reference", false);
-
 	SceneGraphics->SetHUD(true);
 	Scene_System::accessing().BSys->Render();
 
@@ -145,17 +141,6 @@ void SceneBattleScreen::RenderPassMain()
 	}
     if (Scene_System::accessing().theLoadingEffect)
         Scene_System::accessing().RenderLoadingStuff();
-
-	std::ostringstream ss;
-	ss.str("");
-	ss << "FPS:" << framerates;
-	ss.precision(3);
-	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(1, 1, 1), 25, 25, 25);
-
-	ss.str("");
-	ss << "HP" << Scene_System::accessing().gPlayer->GetCurrentHealth();
-	SceneGraphics->RenderTextOnScreen("text", ss.str(), Color(1, 1, 1), 25, 25, 50);
-
 	SceneGraphics->SetHUD(false);
 }
 

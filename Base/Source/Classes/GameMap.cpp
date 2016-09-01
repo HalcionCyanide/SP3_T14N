@@ -48,7 +48,7 @@ bool GameMap::LoadMap(const std::string &mapName, std::vector<unsigned char> &th
 
 bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &theHeightMap, Vector3 &terrainSize, std::vector<GameObject*> &theRenderingStuff, BillboardManager &theBBManager)
 {
-	//<?>
+	
 	int theLineCounter = 0;
 	GraphicsEntity *theGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 
@@ -107,7 +107,7 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
 
 	tileSizeXYZ.x = terrainSize.x / theNumOfTiles_MapWidth;
 	tileSizeXYZ.z = terrainSize.z / theNumOfTiles_MapHeight;
-	//<?>
+	
 
 	for (std::vector<GameObject*>::iterator it = theRenderingStuff.begin(), end = theRenderingStuff.end(); it != end; ++it)
 	{
@@ -121,7 +121,6 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
 			(the3DObj->GetDimensions().y*0.5f) + terrainSize.y * ReadHeightMap(theHeightMap, the3DObj->GetPosition().x / terrainSize.x, the3DObj->GetPosition().z / terrainSize.z) - 0.5f,
 			the3DObj->GetPosition().z
 			));
-		//<!>
 		the3DObj->SetBounds();
 	}
 

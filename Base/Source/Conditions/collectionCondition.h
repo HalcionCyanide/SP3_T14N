@@ -1,3 +1,12 @@
+/****************************************************************************/
+/*!
+\file collectionCondition.h
+\author Zheng Qingping
+\par email: 152063Q@mymail.nyp.edu.sg
+\brief
+Inherits from the Generic Condition, requires the player to catch a certain amount of monsters
+*/
+/****************************************************************************/
 #ifndef COLLECTION_CONDITION_H_
 #define COLLECTION_CONDITION_H_
 #include "genericCondition.h"

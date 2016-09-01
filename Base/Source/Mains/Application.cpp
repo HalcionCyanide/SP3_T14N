@@ -10,7 +10,6 @@
 #include <sstream>
 #include "..\\Misc\\SimpleCommand.h"
 #include "..\\Scenes\\Scene_MainMenu.h"
-#include "..\\Scenes\\Scene_2.h"
 #include "..\\Scenes\\SceneBattleScreen.h"
 #include "..\\Scenes\\SceneFreeField.h"
 #include "..\\Scenes\\SceneFreeField2.h"
@@ -19,9 +18,7 @@
 #include "..\\Scenes\\SceneTown3.h"
 #include "../Scenes/SceneCredits.h"
 #include "../Misc/LoadEnemyData.h"
-//<!> Removing soon due to testing
 #include "../Systems/MusicSystem.h"
-//<!> Removing soon due to testing
 //Include GLEW
 #include <GL/glew.h>
 
@@ -173,10 +170,6 @@ void Application::Init()
 	town3->Init();
 	Scene_System::accessing().AddScene(*town3);
 
-	Scene_2* SecondScene = new Scene_2();
-	SecondScene->Init();
-	Scene_System::accessing().AddScene(*SecondScene);
-
 	SceneFreeField* freefield = new SceneFreeField();
 	freefield->Init();
 	Scene_System::accessing().AddScene(*freefield);
@@ -232,8 +225,6 @@ void Application::Update()
 		Scene_System::accessing().getCurrScene().Update((float)m_dElaspedTime);
 		m_dAccumulatedTime_ThreadOne = 0.0;
 	}
-
-	//<!> This is a huge problem even if you made it to be 2 threaded
 	m_dAccumulatedTime_ThreadTwo += m_dElaspedTime;
 	if (m_dAccumulatedTime_ThreadTwo > 1 / frameTime * 5)
 	{
@@ -241,7 +232,6 @@ void Application::Update()
 		MusicSystem::accessing().Update((float)m_dElaspedTime);
 		m_dAccumulatedTime_ThreadTwo = 0.0;
 	}
-	//<!> This is a huge problem even if you made it to be 2 threaded
 }
 
 void Application::Exit()

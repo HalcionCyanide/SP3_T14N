@@ -1,7 +1,6 @@
 #include "SceneFreeField2.h"
 #include <sstream>
 
-#include "Scene_2.h"
 #include "SceneTown1.h"
 #include "SceneTown2.h"
 #include "SceneTown3.h"
@@ -59,7 +58,7 @@ void SceneFreeField2::Init()
 	theMap->setName("scene town 2 logic map");
 	theMap->LoadMap("DrivenFiles//Town2Layout.csv", m_heightMap, TerrainScale, objVec, BManager);
 
-	//<!> There can only be 1 Player
+	// There can only be 1 Player
 	Player = new PlayerObject();
 	Player->Init("Player", 1, camera->position - Vector3(0, camera->PlayerHeight, 0), Vector3(2, 1, 2), Vector3(), camera->CurrentCameraRotation.y, Vector3(0, 1));
 	std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find("cube");
@@ -70,7 +69,7 @@ void SceneFreeField2::Init()
 	PlayerPTR->SetPosition(Vector3(Player->GetPosition().x, camera->PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPosition().x / TerrainScale.x), (Player->GetPosition().z / TerrainScale.z)), Player->GetPosition().z));
 	PlayerPTR->setPlayerBoundaries(objVec);
 	camera->position = PlayerPTR->GetPosition();
-	//<!> There can only be 1 Player
+	// There can only be 1 Player
 	transitingSceneName = "";
 
 	for (auto it : Scene_System::accessing().NM.allNPCs)
@@ -452,14 +451,14 @@ void SceneFreeField2::RenderShadowCasters()
 	RenderTerrain();
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 
-	//<!> will remove soon <!>
+	// will remove soon 
 	for (auto it : objVec)
 	{
 		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
 		if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
 			the3DObject->Render();
 	}
-	//<!> will remove soon <!>
+	// will remove soon 
 
 	for (std::vector<Billboard*>::iterator it = BManager.BillboardContainer.begin(); it != BManager.BillboardContainer.end(); ++it)
 	{
@@ -606,9 +605,6 @@ void SceneFreeField2::RenderPassMain()
 	//RenderSkyplane();
 	RenderSkybox();
 	RenderShadowCasters();
-
-	SceneGraphics->RenderMesh("reference", false);
-
 	SceneGraphics->SetHUD(true);
 
 	Scene_System::accessing().cSS_PlayerUIManager->Render();
