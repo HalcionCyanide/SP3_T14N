@@ -30,6 +30,9 @@ void UI_Layer::Update(double dt)
 	{
 		if ((*it)->Active)
 		{
+            (*it)->UI_Bounds->SetPosition((*it)->Position + LayerCenterPosition);
+            (*it)->UI_Bounds->SetDimensions((*it)->Dimensions);
+            (*it)->UI_Bounds->ResetValues();
 			(*it)->Update((float)dt);
 		}
 	}
