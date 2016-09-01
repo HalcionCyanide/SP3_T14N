@@ -166,6 +166,7 @@ void Scene_System::clearEverything()
     if (theLoadingEffect)
         delete theLoadingEffect;
     delete cSS_PlayerUIManager;
+    delete cSS_PlayerInventory;
 }
 
 void Scene_System::doingLoadingEffect()

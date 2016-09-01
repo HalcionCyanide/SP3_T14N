@@ -103,6 +103,7 @@ void SceneCredits::Update(float dt)
     Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
     SceneGraphics->Update(dt);
+    MusicSystem::accessing().playBackgroundMusic("mainmenu");
 
     framerates = 1 / dt;
 
