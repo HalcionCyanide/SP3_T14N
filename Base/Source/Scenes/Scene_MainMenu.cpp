@@ -77,7 +77,7 @@ void Scene_MainMenu::InitSceneUIElems()
     Vector3 CenterPosition(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
     NewL->LayerCenterPosition.SetZero();
     NewL->LayerTargetPosition.SetZero();
-    NewL->LayerOriginalPosition = -CenterPosition * 4.f;
+    NewL->LayerOriginalPosition = -CenterPosition * 2.f;
     theLogo = new UI_Element("TFB_Logo", CenterPosition * 3, CenterPosition * 3, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.55f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.9f, 1), CenterPosition * 1.35f);
 	//NewL->AddUIElement("TFB_Logo", CenterPosition * 3, CenterPosition * 3, Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.55f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.9f, 1), CenterPosition * 1.35f);
 
@@ -125,7 +125,7 @@ void Scene_MainMenu::InitSceneUIElems()
 
     //All the keys stuff
     Setting1 = new UI_Layer();
-    Setting1->LayerCenterPosition = Setting1->LayerTargetPosition = CenterPosition * 4.f;
+    Setting1->LayerCenterPosition = Setting1->LayerTargetPosition = CenterPosition * 2.f;
     Setting1->LayerOriginalPosition.SetZero();
     Setting1->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), ButtonScale, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.2f, 0), "Key");
     Setting1->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), ButtonScale, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), "Misc");
@@ -133,7 +133,7 @@ void Scene_MainMenu::InitSceneUIElems()
     UI_Sys.cUIS_LayerContainer.push_back(Setting1);
 
     SettingKeys = new UI_Layer();
-    SettingKeys->LayerCenterPosition = SettingKeys->LayerTargetPosition = CenterPosition * 4.f;
+    SettingKeys->LayerCenterPosition = SettingKeys->LayerTargetPosition = CenterPosition * 2.f;
     SettingKeys->LayerOriginalPosition.SetZero();
     std::string CommandChar = "";
     CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]);
@@ -384,11 +384,21 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
         }
         else if (CurrentMenuState == S_SETTING)
         {
-
+            for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
+            {
+            }
         }
         else if (CurrentMenuState == S_SETTING_KEYS || CurrentMenuState == S_UPDATING_KEYS)
         {
+            if (CurrentMenuState == S_SETTING_KEYS) {
+                for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
+                {
+                }
+            }
+            else
+            {
 
+            }
         }
     }
 
