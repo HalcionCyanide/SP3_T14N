@@ -135,36 +135,70 @@ void Scene_MainMenu::InitSceneUIElems()
     SettingKeys = new UI_Layer();
     SettingKeys->LayerCenterPosition = SettingKeys->LayerTargetPosition = CenterPosition * 2.f;
     SettingKeys->LayerOriginalPosition.SetZero();
+
     std::string CommandChar = "";
     CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]);
     checkThroughTheCharAndChangingThemToASuitableWord(CommandChar);
-    SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.7f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.7f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.7f, 0), CommandChar);
+    UI_Element *CommandCharacters = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.7f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.7f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.7f, 0), CommandChar);
+    SettingKeys->cUI_Layer.push_back(CommandCharacters);
+    UI_Element *theCommand = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.7f, 0), Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.7f, 0), ButtonScale * 1.3f, Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.7f, 0), "Forward_Button");
+    SettingKeys->cUI_Layer.push_back(theCommand);
+    all_the_Command_Keys.insert(std::pair<UI_Element*, UI_Element*>(theCommand, CommandCharacters));
 
     CommandChar = "";
     CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]);
     checkThroughTheCharAndChangingThemToASuitableWord(CommandChar);
-    SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), CommandChar);
+    CommandCharacters = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), CommandChar);
+    SettingKeys->cUI_Layer.push_back(CommandCharacters);
+    theCommand = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.5f, 0), Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.5f, 0), ButtonScale * 1.3f, Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.5f, 0), "Left_Button");
+    SettingKeys->cUI_Layer.push_back(theCommand);
+    all_the_Command_Keys.insert(std::pair<UI_Element*, UI_Element*>(theCommand, CommandCharacters));
 
     CommandChar = "";
     CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]);
     checkThroughTheCharAndChangingThemToASuitableWord(CommandChar);
-    SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.3f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.3f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.3f, 0), CommandChar);
+    CommandCharacters = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.3f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.3f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.3f, 0), CommandChar);
+    SettingKeys->cUI_Layer.push_back(CommandCharacters);
+    theCommand = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.3f, 0), Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.3f, 0), ButtonScale * 1.3f, Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.3f, 0), "Backward_Button");
+    SettingKeys->cUI_Layer.push_back(theCommand);
+    all_the_Command_Keys.insert(std::pair<UI_Element*, UI_Element*>(theCommand, CommandCharacters));
 
     CommandChar = "";
     CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]);
     checkThroughTheCharAndChangingThemToASuitableWord(CommandChar);
-    SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.1f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.1f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.1f, 0), CommandChar);
+    CommandCharacters = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.1f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.1f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.1f, 0), CommandChar);
+    SettingKeys->cUI_Layer.push_back(CommandCharacters);
+    theCommand = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.1f, 0), Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.1f, 0), ButtonScale * 1.3f, Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.1f, 0), "Right_Button");
+    SettingKeys->cUI_Layer.push_back(theCommand);
+    all_the_Command_Keys.insert(std::pair<UI_Element*, UI_Element*>(theCommand, CommandCharacters));
 
     CommandChar = "";
     CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::INTERACT_COMMAND]);
     checkThroughTheCharAndChangingThemToASuitableWord(CommandChar);
-    SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), CommandChar);
+    CommandCharacters = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), CommandChar);
+    SettingKeys->cUI_Layer.push_back(CommandCharacters);
+    theCommand = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 1.f, CenterPosition.y * 0.9f, 0), Vector3(CenterPosition.x * 1.f, CenterPosition.y * 0.9f, 0), ButtonScale * 1.3f, Vector3(CenterPosition.x * 1.f, CenterPosition.y * 0.9f, 0), "Interact_Button");
+    SettingKeys->cUI_Layer.push_back(theCommand);
+    all_the_Command_Keys.insert(std::pair<UI_Element*, UI_Element*>(theCommand, CommandCharacters));
 
     CommandChar = "";
     CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::PAUSE_MENU_COMMAND]);
     checkThroughTheCharAndChangingThemToASuitableWord(CommandChar);
-    SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.7f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.7f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.7f, 0), CommandChar);
+    CommandCharacters = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.7f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.7f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.7f, 0), CommandChar);
+    SettingKeys->cUI_Layer.push_back(CommandCharacters);
+    theCommand = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 1.f, CenterPosition.y * 0.7f, 0), Vector3(CenterPosition.x * 1.f, CenterPosition.y * 0.7f, 0), ButtonScale * 1.3f, Vector3(CenterPosition.x * 1.f, CenterPosition.y * 0.7f, 0), "Pause_Menu_Button");
+    SettingKeys->cUI_Layer.push_back(theCommand);
+    all_the_Command_Keys.insert(std::pair<UI_Element*, UI_Element*>(theCommand, CommandCharacters));
 
+    CommandChar = "";
+    CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::JUMP_COMMAND]);
+    checkThroughTheCharAndChangingThemToASuitableWord(CommandChar);
+    CommandCharacters = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.5f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.5f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.5f, 0), CommandChar);
+    SettingKeys->cUI_Layer.push_back(CommandCharacters);
+    theCommand = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 1.f, CenterPosition.y * 0.5f, 0), Vector3(CenterPosition.x * 1.f, CenterPosition.y * 0.5f, 0), ButtonScale * 1.3f, Vector3(CenterPosition.x * 1.f, CenterPosition.y * 0.5f, 0), "Jump_Button");
+    SettingKeys->cUI_Layer.push_back(theCommand);
+    all_the_Command_Keys.insert(std::pair<UI_Element*, UI_Element*>(theCommand, CommandCharacters));
+    
     SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), ButtonScale, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), UI_Text[6]);
 
     UI_Sys.cUIS_LayerContainer.push_back(SettingKeys);
