@@ -151,6 +151,16 @@ void Scene_MainMenu::InitSceneUIElems()
     CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]);
     SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), CommandChar);
 
+    CommandChar = "";
+    CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::INTERACT_COMMAND]);
+    SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.7f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.7f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.7f, 0), CommandChar);
+
+    CommandChar = "";
+    CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::PAUSE_MENU_COMMAND]);
+    SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.5f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.5f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.5f, 0), CommandChar);
+
+    SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), ButtonScale, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), UI_Text[6]);
+
     UI_Sys.cUIS_LayerContainer.push_back(SettingKeys);
     //All the keys stuff
 }
@@ -162,7 +172,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
     for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(); it != UI_Sys.cUIS_LayerContainer.end(); ++it)
     {
         (*it)->Update(dt);
-        if (CurrentMenuState != S_SETTING_KEYS && CurrentMenuState != S_SETTING && CurrentMenuState != S_UPDATING_KEYS && (*it)->LayerCenterPosition.LengthSquared() <= 1.f) 
+        if (CurrentMenuState != S_SETTING_KEYS && CurrentMenuState != S_SETTING && CurrentMenuState != S_UPDATING_KEYS/* && (*it)->LayerCenterPosition.LengthSquared() <= 1.f*/) 
         {
             for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
             {
@@ -174,7 +184,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                         (*it2)->BoundsActive = true;
                         if (((*it2)->UI_Text == UI_Text[1] || (*it2)->UI_Text == UI_Text[2] || (*it2)->UI_Text == UI_Text[3]))
                         {
-                            (*it2)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+                            (*it2)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded, (*it)->LayerCenterPosition);
                             if (ClickSucceeded)
                             {
                                 if (((*it2)->UI_Text == UI_Text[1]))
@@ -224,7 +234,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                         if (((*it2)->UI_Text == UI_Text[4] || (*it2)->UI_Text == UI_Text[5] || (*it2)->UI_Text == UI_Text[6]))
                         {
                             (*it2)->BoundsActive = true;
-                            (*it2)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+                            (*it2)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded, (*it)->LayerCenterPosition);
                             if (ClickSucceeded)
                             {
                                 if (((*it2)->UI_Text == UI_Text[4]))
@@ -346,7 +356,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                     {
                         if (checkWhetherTheWordInThatString(UI_Text[13], (*it2)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[14], (*it2)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[15], (*it2)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[16], (*it2)->UI_Text))   //Loading Saves Stuff
                         {
-                            (*it2)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+                            (*it2)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded, (*it)->LayerCenterPosition);
                             if (ClickSucceeded)
                             {
                                 if ((*it2)->UI_Text == UI_Text[16])
@@ -382,13 +392,13 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                 }
             }
         }
-        else if (CurrentMenuState == S_SETTING && (*it)->LayerCenterPosition.LengthSquared() <= 1.f)
+        else if (CurrentMenuState == S_SETTING /*&& (*it)->LayerCenterPosition.LengthSquared() <= 1.f*/)
         {
             for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
             {
                 bool ClickSucceeded = false;
                 (*it2)->BoundsActive = true;
-                (*it2)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+                (*it2)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded, (*it)->LayerCenterPosition);
                 if (ClickSucceeded) {
                     if ((*it2)->UI_Text == "Key")
                     {
@@ -410,14 +420,14 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                 }
             }
         }
-        else if ((CurrentMenuState == S_SETTING_KEYS || CurrentMenuState == S_UPDATING_KEYS) && (*it)->LayerCenterPosition.LengthSquared() <= 1.f)
+        else if ((CurrentMenuState == S_SETTING_KEYS || CurrentMenuState == S_UPDATING_KEYS) /*&& (*it)->LayerCenterPosition.LengthSquared() <= 1.f*/)
         {
             if (CurrentMenuState == S_SETTING_KEYS) {
                 for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
                 {
                     bool ClickSucceeded = false;
                     (*it2)->BoundsActive = true;
-                    (*it2)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+                    (*it2)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded, (*it)->LayerCenterPosition);
                     if (ClickSucceeded) {
 
                     }

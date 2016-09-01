@@ -131,6 +131,31 @@ void UI_Element::CheckInput(const Vector3& MousePosition, bool& ClickSuccess)
     }
 }
 
+void UI_Element::CheckInput(const Vector3& MousePosition, bool& ClickSuccess, const Vector3 &theLayerPos)
+{
+    if (Active)
+    {
+        UI_Bounds->SetPosition(Position + theLayerPos);
+        UI_Bounds->SetDimensions(Dimensions);
+        UI_Bounds->ResetValues();
+
+        if (Application::IsKeyPressed(VK_LBUTTON) && BoundsActive && UI_Bounds->CheckCollision(MousePosition))
+        {
+            // Do Upscale
+            //if (Application::IsKeyPressed(VK_LBUTTON))
+            //{
+            //BoundsActive = false;
+            ClickSuccess = true;
+            //}
+        }
+        else if (!Application::IsKeyPressed(VK_LBUTTON))
+        {
+            //BoundsActive = false;
+            ClickSuccess = false;
+        }
+    }
+}
+
 void UI_Element::Render(const Vector3& LayerPos)
 {
 	if (Active)
