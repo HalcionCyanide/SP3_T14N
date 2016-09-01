@@ -1,7 +1,6 @@
 #include "SceneTown1.h"
 #include <sstream>
 
-#include "Scene_2.h"
 #include "SceneTown2.h"
 #include "SceneTown3.h"
 #include "SceneFreeField.h"
@@ -60,7 +59,7 @@ void SceneTown1::Init()
 	theMap->setName("scene town 1 logic map");
 	theMap->LoadMap("DrivenFiles//Town1Layout.csv", m_heightMap, TerrainScale, objVec, BManager);
 
-	//<!> There can only be 1 Player
+	// There can only be 1 Player
 	Player = new PlayerObject();
 	Player->Init("Player", 1, camera->position - Vector3(0, camera->PlayerHeight, 0), Vector3(2, 1, 2), Vector3(), camera->CurrentCameraRotation.y, Vector3(0, 1));
 	std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find("cube");
@@ -73,7 +72,7 @@ void SceneTown1::Init()
 	PlayerPTR->SetPosition(Vector3(Player->GetPosition().x, camera->PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPosition().x / TerrainScale.x), (Player->GetPosition().z / TerrainScale.z)), Player->GetPosition().z));
 	PlayerPTR->setPlayerBoundaries(objVec);
 	camera->position = PlayerPTR->GetPosition();
-	//<!> There can only be 1 Player
+	// There can only be 1 Player
 
 	for (auto it : Scene_System::accessing().NM.allNPCs)
 	{
@@ -218,9 +217,12 @@ void SceneTown1::NPC_chat(float dt)
 											{
 												if (test->getActive())
 												{
-													if (test->qStages.at(it5->second - 1)->getComplete())
+													if (it5->second > 0)
 													{
-														imdone = true;
+														if (test->qStages.at(it5->second - 1)->getComplete())
+														{
+															imdone = true;
+														}
 													}
 												}
 											}
@@ -308,6 +310,8 @@ void SceneTown1::NPC_chat(float dt)
 					{
 						dis->setActive(true);
 					}
+					std::map<Item*, int>::iterator cItem = Scene_System::accessing().gPlayer->PlayerInventory.find(dis->theStageAT->getReward());
+					cItem->second += dis->theStageAT->getRewardCount();
 					int temp2 = dis->getCurrentStage();
 					dis->setCurrStage(temp2 + 1);
 					for (std::map<std::string, int>::iterator it2 = Scene_System::accessing().gPlayer->playerCurrQState.begin(); it2 != Scene_System::accessing().gPlayer->playerCurrQState.end(); ++it2)
@@ -609,9 +613,6 @@ void SceneTown1::RenderPassMain()
 	//RenderSkyplane();
 	RenderSkybox();
 	RenderShadowCasters();
-
-	SceneGraphics->RenderMesh("reference", false);
-
 	SceneGraphics->SetHUD(true);
 
 	Scene_System::accessing().cSS_PlayerUIManager->Render();

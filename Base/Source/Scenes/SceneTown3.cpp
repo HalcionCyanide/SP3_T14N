@@ -1,7 +1,6 @@
 #include "SceneTown3.h"
 #include <sstream>
 
-#include "Scene_2.h"
 #include "SceneTown1.h"
 #include "SceneTown2.h"
 #include "SceneFreeField.h"
@@ -58,7 +57,7 @@ void SceneTown3::Init()
 	theMap->setName("scene town 3 logic map");
 	theMap->LoadMap("DrivenFiles//Town3Layout.csv", m_heightMap, TerrainScale, objVec, BManager);
 
-	//<!> There can only be 1 Player
+	// There can only be 1 Player
 	Player = new PlayerObject();
 	Player->Init("Player", 1, camera->position - Vector3(0, camera->PlayerHeight, 0), Vector3(2, 1, 2), Vector3(), camera->CurrentCameraRotation.y, Vector3(0, 1));
 	std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find("cube");
@@ -71,7 +70,7 @@ void SceneTown3::Init()
 	PlayerPTR->SetPosition(Vector3(Player->GetPosition().x, camera->PlayerHeight + TerrainScale.y * ReadHeightMap(m_heightMap, (Player->GetPosition().x / TerrainScale.x), (Player->GetPosition().z / TerrainScale.z)), Player->GetPosition().z));
 	PlayerPTR->setPlayerBoundaries(objVec);
 	camera->position = PlayerPTR->GetPosition();
-	//<!> There can only be 1 Player
+	// There can only be 1 Player
     transitingSceneName = "";
 }
 
@@ -194,9 +193,12 @@ void SceneTown3::NPC_chat(float dt)
 											{
 												if (test->getActive())
 												{
-													if (test->qStages.at(it5->second - 1)->getComplete())
+													if (it5->second > 0)
 													{
-														imdone = true;
+														if (test->qStages.at(it5->second - 1)->getComplete())
+														{
+															imdone = true;
+														}
 													}
 												}
 											}
@@ -390,14 +392,14 @@ void SceneTown3::RenderShadowCasters()
 	RenderTerrain();
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 
-	//<!> will remove soon <!>
+	// will remove soon 
 	for (auto it : objVec)
 	{
 		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
 		if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
 			the3DObject->Render();
 	}
-	//<!> will remove soon <!>
+	// will remove soon 
 
 	for (std::vector<Billboard*>::iterator it = BManager.BillboardContainer.begin(); it != BManager.BillboardContainer.end(); ++it)
 	{
@@ -548,9 +550,6 @@ void SceneTown3::RenderPassMain()
 	//RenderSkyplane();
 	RenderSkybox();
 	RenderShadowCasters();
-
-	SceneGraphics->RenderMesh("reference", false);
-
 	SceneGraphics->SetHUD(true);
 
 	Scene_System::accessing().cSS_PlayerUIManager->Render();

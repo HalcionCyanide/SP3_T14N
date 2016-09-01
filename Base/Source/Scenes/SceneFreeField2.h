@@ -37,7 +37,7 @@ private:
 	void RenderTerrain();
 	void RenderSkybox();
 
-	// CHAT UI STUFFS <!>
+	// CHAT UI STUFFS
 	void InitChatUI();
 	void NPC_chat(float);
 	std::string HandleChatUIInput(float dt);

@@ -23,7 +23,7 @@ ratingCondition::~ratingCondition()
 void ratingCondition::Update(double dt)
 {
 	//stuff to increase the number, please remember to increase the counter as you go along.
-	/*<!> 
+	/* 
 	//some pseudocode*/
 	if(!complete)
 	{

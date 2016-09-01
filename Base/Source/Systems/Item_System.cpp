@@ -47,11 +47,18 @@ void Item_System::CreateNewItem(const Item::ItemType& TypeOfItem, const float& D
 {
 	Item* NewI = new Item();
 	NewI->SetActive(false);
-	NewI->SetCoolingDown(false);
 	NewI->SetItemType(TypeOfItem);
-	NewI->SetCoolDown(CoolDown);
 	NewI->SetDuration(Duration);
 	NewI->SetEffectiveValue(EffectiveValue);
 	
+	if (TypeOfItem == Item::IT_INSTANT_HEAL)
+	{
+		NewI->setName("Heal");
+	}
+	else if (TypeOfItem == Item::IT_BOOST_INERTIA)
+	{
+		NewI->setName("Speed");
+	}
+
 	ActiveItemMap.insert(std::pair<Item*, bool>(NewI, false));
 }

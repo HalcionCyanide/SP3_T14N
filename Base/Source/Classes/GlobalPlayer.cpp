@@ -208,8 +208,6 @@ bool GlobalPlayer::LoadPlayerSave(const std::string &fileName)
                     ++it;
 					++it2;
                 }
-				Scene_System::accessing().cSS_PlayerUIManager->CurrentQuestDisplayNumber = -1;
-				Scene_System::accessing().cSS_PlayerUIManager->UpdateQuestsMenu(0);
             }
 			else if (checkWhetherTheWordInThatString("MCOUNT", key))
 			{
@@ -235,7 +233,10 @@ bool GlobalPlayer::LoadPlayerSave(const std::string &fileName)
         }
         file.close();
         Scene_System::accessing().getCurrScene().onNotify("PLAYER_INFO");
+		PlayerUIManager* PUIM = Scene_System::accessing().cSS_PlayerUIManager;
+		
         Scene_System::accessing().cSS_PlayerUIManager->UpdateStats(0);
+		Scene_System::accessing().cSS_PlayerUIManager->UpdateQuestsMenu(0);
         return true;
     }
     return false;

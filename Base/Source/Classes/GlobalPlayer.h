@@ -64,9 +64,7 @@ public:
     void settingTheFileToSave(const int&);
     bool automaticallyLoadFile();
     bool automaticallySaveFile();
-    //<!> testing writing to files
     static bool loadThoseKeyCommandsStuff();
-    //<!> testing writing to files
 private:
 	int Spell_Power;
 	int CurrentHealth;

@@ -25,6 +25,7 @@ GraphicsEntity resides here.
 #include "UI_System.h"
 #include "Item_System.h"
 #include "PlayerUIManager.h"
+#include "..\\Misc\\Utility.h"
 
 class GlobalPlayer;
 class InputManager;

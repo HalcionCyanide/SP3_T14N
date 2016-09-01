@@ -126,9 +126,6 @@
     <ClCompile Include="Source\Classes\PlayerObject.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scenes\Scene_2.cpp">
-      <Filter>Source Files\Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Scenes\Scene_MainMenu.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
@@ -321,9 +318,6 @@
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scenes\GraphicsEntity.h">
-      <Filter>Header Files\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\Scene_2.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scenes\Scene_MainMenu.h">

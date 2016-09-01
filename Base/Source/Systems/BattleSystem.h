@@ -59,6 +59,7 @@ public:
 
 private:
 	// Private Variables
+	float Timer = 0;
 	Vector3 CursorPosition;
 	Vector3 CenterPosition;
 	int ActiveBSOCount;
