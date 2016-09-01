@@ -58,6 +58,14 @@ void PlayerObject::Update(double dt)
 						break;
 				}
 			}
+			//if (CheckCollision(*(Scene_System::accessing().Boss_Manticore->GetBoundary()), BaseObject::GetPosition()))
+			//{
+			//	SetPosition(this->GetPosition() - (Scene_System::accessing().Boss_Manticore->GetBoundary()->GetOverlappingDistance() * Scene_System::accessing().Boss_Manticore->GetBoundary()->GetOverlappingAxis()));
+			//}
+			//else if (CheckCollision(*(Scene_System::accessing().Boss_Balrog->GetBoundary()), BaseObject::GetPosition()))
+			//{
+			//	SetPosition(this->GetPosition() - (Scene_System::accessing().Boss_Balrog->GetBoundary()->GetOverlappingDistance() * Scene_System::accessing().Boss_Balrog->GetBoundary()->GetOverlappingAxis()));
+			//}
 			SetPosition(GetPosition() + MovementValues);
 			MovementValues.SetZero();
 			MusicSystem::accessing().playMusic("footstep");

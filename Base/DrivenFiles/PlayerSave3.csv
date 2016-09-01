@@ -1,6 +1,6 @@
-SpellPower,600
-CurrentHealth,600
-MaxHealth,600
+SpellPower,1000
+CurrentHealth,1000
+MaxHealth,1000
 SceneName,2_Scene
 CameraPositionX,-5.43991
 CameraPositionY,7.50001
@@ -14,6 +14,6 @@ PlayerPosY,7.49999
 PlayerPosZ,32.6376
 PlayerYRotation,156.527
 Quests,0,0,0,
-mCount,0
-Item,INERTIA_0
-Item,HEAL_0
+mCount,50
+Item,INERTIA_50
+Item,HEAL_50

@@ -3,3 +3,5 @@ Backward_Button,S
 Right_Button,D
 Left_Button,A
 Jump_Button, 
+Interact_Button,Q
+Pause_Menu_Button,E

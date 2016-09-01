@@ -2,8 +2,9 @@ SoundFileName,SoundType,volume //Set it between 0.1 and 1,TimesToPlay,unlimitedt
 Sounds//Step_Grass.ogg,2D,0.3,1,,,footstep
 Sounds//Battle1.ogg,2D,0.2,1,,1,battle
 Sounds//BattleBoss.ogg,2D,0.2,1,,1,bossbattle
-Sounds//Hey_boy.ogg,2D,0.2,1,,1,town1
-Sounds//521537_Rainworld.ogg,2D,0.2,1,,1,town1Alt
+Sounds//521776_Evolution-of-Motion.ogg,2D,0.2,1,,1,town1
+Sounds//521537_Rainworld.ogg,2D,0.2,1,,1,FreeField1
 Sounds//spun_Fragments.ogg,2D,0.2,1,,1,town3
 Sounds//Reawakening.ogg,2D,0.2,1,,1,town2
 Sounds//Crusade.ogg,2D,0.2,1,,1,mainmenu
+Sounds//108791_Obsideo.ogg,2D,0.2,1,,1,FreeField2

@@ -91,6 +91,7 @@ private:
     SceneEntity *graphics_scene;
     double delayingLoadingTime, m_accumulatedLoadingTime;
     bool ShouldRenderLoadingStuff;
+
 };
 
 #endif

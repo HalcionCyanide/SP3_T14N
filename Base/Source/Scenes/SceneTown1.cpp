@@ -344,7 +344,7 @@ void SceneTown1::Update(float dt)
 
 	Scene_System::accessing().cSS_PlayerUIManager->Update(dt);
 
-    MusicSystem::accessing().playBackgroundMusic("town1Alt");
+    MusicSystem::accessing().playBackgroundMusic("town1");
 
 	//Update Camera's Minimum Possible & Current Y Pos
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera->position.x / TerrainScale.x, camera->position.z / TerrainScale.z) + camera->PlayerHeight;

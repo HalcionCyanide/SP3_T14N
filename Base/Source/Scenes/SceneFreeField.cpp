@@ -11,6 +11,7 @@
 #include "..\\Classes\\PlayerObject.h"
 #include "..\\Classes\\BossBoundary.h"
 #include "../Misc/LoadEnemyData.h"
+#include "../Systems/MusicSystem.h"
 
 std::string SceneFreeField::id_ = "F1_Scene";
 
@@ -82,6 +83,7 @@ void SceneFreeField::Update(float dt)
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	SceneGraphics->Update(dt);
+	MusicSystem::accessing().playBackgroundMusic("FreeField1");
 
 	//Update Camera's Minimum Possible & Current Y Pos
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera->position.x / TerrainScale.x, camera->position.z / TerrainScale.z) + camera->PlayerHeight;
@@ -96,38 +98,6 @@ void SceneFreeField::Update(float dt)
 	}
 	Vector3 Center(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 2, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight / 2, 0);
 
-	//if ((camera->position - PreviousPosition).LengthSquared() > 25.f) // 5 Units
-	//{
-	//	if (CurrentEncounterRateBoost < MaxEncounterRate)
-	//		CurrentEncounterRateBoost += 10;
-	//	PreviousPosition = camera->position;
-	//	PreviousPosition.y = Application::cA_MinimumTerrainY;
-	//}
- //   if (MonsterFound == false && EncounterTimer < EncounterTimeCheck)
-	//{
-	//	EncounterTimer += (float)dt;
-	//}
- //   else if (MonsterFound == false && (camera->position - PreviousPosition).LengthSquared() > 4.f) // 2 Units
-	//{
-	//	EncounterTimer = 0;
- //       if (Math::RandIntMinMax(0, MaxEncounterRate - CurrentEncounterRateBoost) < MaxEncounterRate * EncounterRatio)
-	//	{
- //           MonsterFound = true;
- //           Scene_System::accessing().SetLoadingTime(3.f);
-	//	}
-	//}
- //   else if (MonsterFound && Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
- //   {
- //       Scene_System::accessing().whatLoadingState = Scene_System::NOT_LOADING;
- //       MonsterFound = false;
- //       CurrentEncounterRateBoost = 0;
- //       std::ostringstream ss;
- //       ss << Math::RandIntMinMax(1, Scene_System::accessing().EnemyData.size());
- //       std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find(ss.str());
- //       Scene_System::accessing().BSys->SetEnemy(*it->second);
- //       Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
- //   }
-
 	if ((camera->position - PreviousPosition).LengthSquared() > 25.f) // 5 Units
 	{
 		if (CurrentEncounterRateBoost < MaxEncounterRate)
@@ -135,30 +105,30 @@ void SceneFreeField::Update(float dt)
 		PreviousPosition = camera->position;
 		PreviousPosition.y = Application::cA_MinimumTerrainY;
 	}
-	if (MonsterFound == false && EncounterTimer < EncounterTimeCheck)
+    if (MonsterFound == false && EncounterTimer < EncounterTimeCheck)
 	{
 		EncounterTimer += (float)dt;
 	}
-	else if (Scene_System::accessing().cSS_PlayerUIManager->CurrentState == PlayerUIManager::UIS_HUD && MonsterFound == false && (camera->position - PreviousPosition).LengthSquared() > 25.f) // 2 Units
+    else if (MonsterFound == false && (camera->position - PreviousPosition).LengthSquared() > 4.f) // 2 Units
 	{
 		EncounterTimer = 0;
-		if (Math::RandIntMinMax(0, MaxEncounterRate - CurrentEncounterRateBoost) < MaxEncounterRate * EncounterRatio)
+        if (Math::RandIntMinMax(0, MaxEncounterRate - CurrentEncounterRateBoost) < MaxEncounterRate * EncounterRatio)
 		{
-			MonsterFound = true;
-			Scene_System::accessing().SetLoadingTime(3.f);
+            MonsterFound = true;
+            Scene_System::accessing().SetLoadingTime(3.f);
 		}
 	}
-	else if (MonsterFound && Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
-	{
-		Scene_System::accessing().whatLoadingState = Scene_System::NOT_LOADING;
-		MonsterFound = false;
-		CurrentEncounterRateBoost = 0;
-		std::ostringstream ss;
-		ss << Math::RandIntMinMax(1, Scene_System::accessing().EnemyData.size());
-		std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find(ss.str());
-		Scene_System::accessing().BSys->SetEnemy(*it->second);
-		Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
-	}
+    else if (MonsterFound && Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
+    {
+        Scene_System::accessing().whatLoadingState = Scene_System::NOT_LOADING;
+        MonsterFound = false;
+        CurrentEncounterRateBoost = 0;
+        std::ostringstream ss;
+        ss << Math::RandIntMinMax(4, Scene_System::accessing().EnemyData.size());
+        std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find(ss.str());
+        Scene_System::accessing().BSys->SetEnemy(*it->second);
+        Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
+    }
 
 	framerates = 1 / dt;
     PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
@@ -212,7 +182,10 @@ void SceneFreeField::Update(float dt)
 			{
 				if (it->getActive())
 				{
-					it->qStages.at(it2.second - 1)->Update(dt);
+					if (it2.second >= 1)
+					{
+						it->qStages.at(it2.second - 1)->Update(dt);
+					}
 					if (it->getCurrentStage() >= (int)it->qStages.size())
 					{
 						it->setActive(false);
@@ -258,23 +231,14 @@ void SceneFreeField::RenderShadowCasters()
 	// will remove soon 
 	for (auto it : objVec)
 	{
-		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
-		if (it->getName() == "Boss_Manticore")
+		if (it->GetBoundary()->getName() == "2_Scene" || it->GetBoundary()->getName() == "3_Scene")
+			 it->GetBoundary()->Render();
+		else
 		{
-			BossBoundary *temp = dynamic_cast<BossBoundary*>(it->GetBoundary());
-			if (temp->CheckQuest())
-			{
-				//To be continued
-				objVec.erase(std::find(objVec.begin(), objVec.end(), it));
-				the3DObject = nullptr;
-				//if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
-				//	the3DObject->Render();
-			}
-			else
-				temp->CheckQuest();
-		}
-		if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
+			GameObject *the3DObject = dynamic_cast<GameObject*>(it);
+			if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
 				the3DObject->Render();
+		}
 	}
 	// will remove soon 
 
@@ -520,8 +484,6 @@ bool SceneFreeField::onNotify(const std::string &theEvent)
     }
 	else if (checkWhetherTheWordInThatString("BOSSMONSTER", theEvent))
 	{
-		PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
-		PlayerPTR->LockMovement();
 		size_t posOfUnderScore = theEvent.find_first_of('_');
 		std::string preMonsterName = theEvent.substr(posOfUnderScore + 1);
 		std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find("2");

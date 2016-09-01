@@ -37,7 +37,8 @@ public:
 	virtual void Init(const std::string& name, const Vector3& Position, const Vector3& SpawnPosition, const Vector3& Dimensions, const Vector3& TargetPosition, const std::string& UI_Text);
 	virtual void Update(float dt);
 	void CheckInput(const Vector3& MousePosition, bool& ClickSuccess);
-	virtual void Render(const Vector3& LayerPos);
+    void CheckInput(const Vector3& MousePosition, bool& ClickSuccess, const Vector3 &theLayerPos);
+    virtual void Render(const Vector3& LayerPos);
 	virtual void Exit();
 
 private:
