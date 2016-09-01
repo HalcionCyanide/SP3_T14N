@@ -6,6 +6,7 @@
 #include "SceneTown3.h"
 #include "SceneFreeField.h"
 
+#include "SceneBattleScreen.h"
 #include "..\Misc\SimpleCommand.h"
 #include "..\\Classes\\GameMap.h"
 #include "..\\Classes\\PlayerObject.h"
@@ -44,7 +45,7 @@ void SceneFreeField2::Init()
 	CenterPosition.Set(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
 
 	// Initiallise Model Specific Meshes Here
-	Mesh* newMesh = MeshBuilder::GenerateTerrain("town2", "HeightMapFiles//heightmap_Town2.raw", m_heightMap);
+	Mesh* newMesh = MeshBuilder::GenerateTerrain("FreeField2", "HeightMapFiles//heightmap_FreeField2.raw", m_heightMap);
 	newMesh->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
 	newMesh->textureArray[0] = LoadTGA("Image//RockTex.tga");
 	newMesh->textureArray[1] = LoadTGA("Image//GrassStoneTex.tga");
@@ -544,7 +545,7 @@ void SceneFreeField2::RenderPassGPass()
 	if (SceneGraphics->lights[0].type == Light::LIGHT_DIRECTIONAL)
 	{
 		// based on scene size [below]
-		SceneGraphics->m_lightDepthProj.SetToOrtho(-1200, 1200, -1200, 1200, 0, 4000);
+		SceneGraphics->m_lightDepthProj.SetToOrtho(-1200, 1200, -1200, 1200, 0, 100);
 	}
 	else
 	{
@@ -692,6 +693,14 @@ bool SceneFreeField2::onNotify(const std::string &theEvent)
 		}
 		Scene_System::accessing().gPlayer->currSceneID = id_;
 		return true;
+	}
+	else if (checkWhetherTheWordInThatString("BOSSMONSTER", theEvent))
+	{
+		size_t posOfUnderScore = theEvent.find_first_of('_');
+		std::string preMonsterName = theEvent.substr(posOfUnderScore + 1);
+		std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find("2");
+		Scene_System::accessing().BSys->SetEnemy(*it->second);
+		Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
 	}
 	return false;
 }

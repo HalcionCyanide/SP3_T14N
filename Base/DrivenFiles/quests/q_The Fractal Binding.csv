@@ -8,5 +8,5 @@ stage,ConditionName,Value,Description,qOrigin,iReward,iRcount
 6,goto,2_Scene,Talk to the village chief in the Village,Guard Captain,Heal,1
 7,goto,F2_Scene,Talk to the Mysterious Stranger outside the Village,Village Chief,Heal,1
 8,goto,1_Scene,Return to the City's Guard Captain,Mysterious Stranger,Speed,1
-9,goto,3_Scene,Reach the Cursed Woods.,Guard Captain,Heal,1
-10,rating,900,Capture the Balrog.,Guard Captain,Speed,4
+9,goto,3_Scene,Reach the Town Remains.,Guard Captain,Heal,1
+10,rating,1000,Capture the Vengeace Spirit.,Guard Captain,Speed,4

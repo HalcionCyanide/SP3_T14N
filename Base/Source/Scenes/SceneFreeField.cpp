@@ -487,7 +487,7 @@ bool SceneFreeField::onNotify(const std::string &theEvent)
 	{
 		size_t posOfUnderScore = theEvent.find_first_of('_');
 		std::string preMonsterName = theEvent.substr(posOfUnderScore + 1);
-		std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find("2");
+		std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find("1");
 		Scene_System::accessing().BSys->SetEnemy(*it->second);
 		Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
 	}

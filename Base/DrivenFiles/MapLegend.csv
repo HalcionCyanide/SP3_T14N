@@ -29,3 +29,4 @@ Ruin_Wall2,Z,Ruin_Wall2,15,25,1,,,,1,0
 Ruin_CornerWall1,x,Ruin_CornerWall1,15,25,15,,,,1,0
 Ruin_CornerWall2,X,Ruin_CornerWall2,15,25,15,,,,1,0
 Gate,G,door,50,40,10,,,,1,0
+Boss_Vengeance,N,Boss_Vengeance,50,50,10,,,,1,0
