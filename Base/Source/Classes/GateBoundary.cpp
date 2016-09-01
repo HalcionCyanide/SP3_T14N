@@ -1,4 +1,6 @@
 #include "GateBoundary.h"
+#include "..//Systems/Scene_System.h"
+#include "..//Scenes/GraphicsEntity.h"
 
 GateBoundary::GateBoundary()
 {
@@ -40,9 +42,16 @@ bool GateBoundary::CheckCollision(const Vector3 &point)
 	SetOverlappingDistance(overlap);
 	SetOverlappingAxis(overlappedAxis);
 	
-	if (CheckQuest())
+	QuestCleared = CheckQuest();
+
+	if (BossGate && !QuestCleared)
 	{
-		CheckQuest();
+		std::ostringstream ss;
+		ss << "BOSSMONSTER_" << name_;
+		Scene_System::accessing().getCurrScene().onNotify(ss.str());
+	}
+	else if (!BossGate || QuestCleared)
+	{
 		std::ostringstream ss;
 		ss << "LOADING_" << name_;
 		Scene_System::accessing().getCurrScene().onNotify(ss.str());
@@ -98,4 +107,40 @@ bool GateBoundary::CheckQuest()
 		return (stageToCheck->getComplete() && stageToCheck->getStageNO() < questToCheck->getCurrentStage());
 	}
 	return false;
+}
+
+void GateBoundary::SetBossGate(const bool &state)
+{
+	this->BossGate = state;
+}
+
+void GateBoundary::Render()
+{	
+	if (Active && Visible)
+	{
+		QuestCleared = CheckQuest();
+		GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
+		if (QuestCleared)
+		{
+		Scene_System::accessing().getCurrScene().modelStack->PushMatrix();
+		Scene_System::accessing().getCurrScene().modelStack->Translate(GetPosition().x, GetPosition().y, GetPosition().z);
+		Scene_System::accessing().getCurrScene().modelStack->Rotate(GetRotationAngle(), GetRotationAxis().x, GetRotationAxis().y, GetRotationAxis().z);
+		Scene_System::accessing().getCurrScene().modelStack->Scale(GetDimensions().x, GetDimensions().y, GetDimensions().z);
+
+			SceneGraphics->RenderMesh(*this->GetMesh(), true);
+		}
+		else
+		{
+			Scene_System::accessing().getCurrScene().modelStack->PushMatrix();
+			Scene_System::accessing().getCurrScene().modelStack->Translate(GetPosition().x, GetPosition().y, GetPosition().z);
+			Scene_System::accessing().getCurrScene().modelStack->Rotate(GetRotationAngle(), GetRotationAxis().x, GetRotationAxis().y, GetRotationAxis().z);
+			Scene_System::accessing().getCurrScene().modelStack->Scale(GetDimensions().z, GetDimensions().y, GetDimensions().x);
+
+			Mesh* temp = Scene_System::accessing().EnemyData.find(EnemyID)->second->EnemyMesh;
+			Scene_System::accessing().EnemyData.find(EnemyID);
+			SceneGraphics->RenderMesh(*(Scene_System::accessing().EnemyData.find(EnemyID)->second->EnemyMesh), true);
+		}
+			
+		Scene_System::accessing().getCurrScene().modelStack->PopMatrix();
+	}
 }

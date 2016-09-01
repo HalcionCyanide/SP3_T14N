@@ -123,6 +123,12 @@ bool GameMap::LoadFile(const std::string &mapName, std::vector<unsigned char> &t
 			));
 		//<!>
 		the3DObj->SetBounds();
+		if (the3DObj->getName() == "Boss_Reaper")
+			Scene_System::accessing().Boss_Reaper = the3DObj;
+		else if (the3DObj->getName() == "Boss_Manticore")
+			Scene_System::accessing().Boss_Manticore = the3DObj;
+		else if (the3DObj->getName() == "Boss_Balrog")
+			Scene_System::accessing().Boss_Balrog= the3DObj;
 	}
 
 	for (std::vector<Billboard*>::iterator it = theBBManager.BillboardContainer.begin(), end = theBBManager.BillboardContainer.end(); it != end; ++it)

@@ -45,21 +45,23 @@ void GameObject::SetBounds()
 		{
 			GateBoundary* TempBound = dynamic_cast<GateBoundary*>(Bounds);
 			TempBound->SetQuestData("The Fractal Binding", 1);
+			TempBound->EnemyID = "2";
+			TempBound->SetBossGate(true);
+			GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
+			std::map<std::string, Mesh*>::iterator it = SceneGraphics->meshList.find("Entrance_Village");
+			if (it != SceneGraphics->meshList.end())
+			{
+				TempBound->SetMesh(it->second);
+			}
 		}
 		if (Bounds->getName() == "3_Scene")
 		{
 			GateBoundary* TempBound = dynamic_cast<GateBoundary*>(Bounds);
 			TempBound->SetQuestData("The Fractal Binding", 5);
+			TempBound->EnemyID = "2";
+			TempBound->SetBossGate(true);
 		}
     }
-	else if (checkWhetherTheWordInThatString("Boss", getName()))
-	{
-		delete Bounds;
-		Bounds = new BossBoundary();
-		Bounds->setName(getName());
-		BossBoundary* TempBound = dynamic_cast<BossBoundary*>(Bounds);
-		TempBound->SetQuestData("Rating up", 1);
-	}
 
 	Bounds->SetPosition(this->GetPosition());
 	Bounds->SetDimensions(this->GetDimensions());

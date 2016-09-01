@@ -10,7 +10,7 @@ BossBoundary::~BossBoundary()
 
 float BossBoundary::GetOverlappingDistance()const
 {
-	return this->OverlappingDistance * 2.f;
+	return this->OverlappingDistance * 75.f;
 }
 
 bool BossBoundary::CheckCollision(const Vector3 &point)

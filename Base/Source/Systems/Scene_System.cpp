@@ -10,6 +10,9 @@ void Scene_System::Init()
 	cSS_PlayerInventory = new Item_System();
 	cSS_InputManager = new InputManager();
 	cSS_PlayerUIManager = new PlayerUIManager();
+	Boss_Reaper = nullptr;
+	Boss_Manticore = nullptr;
+	Boss_Balrog = nullptr;
 	gPlayer = new GlobalPlayer(10, 100, 100, false);
 	gPlayer->setName("Player");
 	for (std::map<Item*, bool>::iterator it = cSS_PlayerInventory->ActiveItemMap.begin(); it != cSS_PlayerInventory->ActiveItemMap.end(); ++it)
