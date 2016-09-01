@@ -424,11 +424,6 @@ void PlayerUIManager::Update(double dt)
 					// Statistics
 					CurrentState = UIS_Menu_Stats;
 				}
-				//else if ((*it)->UI_Text == UI_Text[2])
-				//{
-				//	// Inventory
-				//	CurrentState = UIS_Menu_Inventory;
-				//}
 				else if ((*it)->UI_Text == UI_Text[3])
 				{
 					// Quests
@@ -538,5 +533,6 @@ void PlayerUIManager::Render()
 
 void PlayerUIManager::Exit()
 {
-
+	UI_Menu.Exit();
+	UI_HUD.Exit();
 }
