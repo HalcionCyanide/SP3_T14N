@@ -386,6 +386,22 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
         {
             for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
             {
+                bool ClickSucceeded = false;
+                (*it2)->BoundsActive = true;
+                (*it2)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+                if (ClickSucceeded) {
+                    if ((*it2)->UI_Text == "Key")
+                    {
+                        CurrentMenuState = S_FIRSTLEVEL;
+                        Setting1->SwapOriginalWithTarget();
+                    }
+                    else if ((*it2)->UI_Text == UI_Text[6])
+                    {
+                        CurrentMenuState = S_SETTING_KEYS;
+                        Setting1->SwapOriginalWithTarget();
+                        SettingKeys->SwapOriginalWithTarget();
+                    }
+                }
             }
         }
         else if (CurrentMenuState == S_SETTING_KEYS || CurrentMenuState == S_UPDATING_KEYS)
@@ -393,6 +409,19 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
             if (CurrentMenuState == S_SETTING_KEYS) {
                 for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
                 {
+                    bool ClickSucceeded = false;
+                    (*it2)->BoundsActive = true;
+                    (*it2)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded);
+                    if (ClickSucceeded) {
+                        if ((*it2)->UI_Text == "Key")
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
+                    }
                 }
             }
             else
@@ -421,8 +450,6 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
         Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = false;
         transitingSceneName = "";
     }
-    //Setting1->Update(dt);
-    //SettingKeys->Update(dt);
 }
 
 void Scene_MainMenu::Update(float dt)
