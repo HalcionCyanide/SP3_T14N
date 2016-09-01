@@ -19,7 +19,6 @@
     <ClCompile Include="Source\Classes\GlobalPlayer.cpp" />
     <ClCompile Include="Source\Classes\Item.cpp" />
     <ClCompile Include="Source\Classes\MusicEntity2D.cpp" />
-    <ClCompile Include="Source\Classes\MusicEntity3D.cpp" />
     <ClCompile Include="Source\Classes\Projection.cpp" />
     <ClCompile Include="Source\Classes\UI_Layer.cpp" />
     <ClCompile Include="Source\Conditions\gotoCondition.cpp" />
@@ -36,12 +35,9 @@
     <ClCompile Include="Source\Systems\BillboardManager.cpp" />
     <ClCompile Include="Source\Classes\Boundary.cpp" />
     <ClCompile Include="Source\Classes\Boundary2D.cpp" />
-    <ClCompile Include="Source\Misc\BoundsBuilder.cpp" />
     <ClCompile Include="Source\Classes\Camera.cpp" />
     <ClCompile Include="Source\Classes\Camera3.cpp" />
-    <ClCompile Include="Source\Classes\CItem.cpp" />
     <ClCompile Include="Source\Classes\GameObject.cpp" />
-    <ClCompile Include="Source\Misc\GameObjectBuilder.cpp" />
     <ClCompile Include="Source\Systems\InputManager.cpp" />
     <ClCompile Include="Source\Misc\DepthFBO.cpp" />
     <ClCompile Include="Source\Scenes\GraphicsEntity.cpp" />
@@ -83,7 +79,6 @@
     <ClInclude Include="Source\Classes\Camera.h" />
     <ClInclude Include="Source\Classes\Camera3.h" />
     <ClInclude Include="Source\Classes\CameraBS.h" />
-    <ClInclude Include="Source\Classes\CItem.h" />
     <ClInclude Include="Source\Classes\Enemy.h" />
     <ClInclude Include="Source\Classes\EnemyProjectile.h" />
     <ClInclude Include="Source\Classes\GameMap.h" />
@@ -96,7 +91,6 @@
     <ClInclude Include="Source\Classes\Material.h" />
     <ClInclude Include="Source\Classes\Mesh.h" />
     <ClInclude Include="Source\Classes\MusicEntity2D.h" />
-    <ClInclude Include="Source\Classes\MusicEntity3D.h" />
     <ClInclude Include="Source\Classes\PlayerObject.h" />
     <ClInclude Include="Source\Classes\BattleScreenObject.h" />
     <ClInclude Include="Source\Classes\Projection.h" />
@@ -110,10 +104,8 @@
     <ClInclude Include="Source\Conditions\gotoCondition.h" />
     <ClInclude Include="Source\Conditions\ratingCondition.h" />
     <ClInclude Include="Source\Mains\Application.h" />
-    <ClInclude Include="Source\Misc\BoundsBuilder.h" />
     <ClInclude Include="Source\Misc\DepthFBO.h" />
     <ClInclude Include="Source\Misc\DetectMemoryLeak.h" />
-    <ClInclude Include="Source\Misc\GameObjectBuilder.h" />
     <ClInclude Include="Source\Misc\LoadEnemyData.h" />
     <ClInclude Include="Source\Misc\LoadHmap.h" />
     <ClInclude Include="Source\Misc\LoadOBJ.h" />

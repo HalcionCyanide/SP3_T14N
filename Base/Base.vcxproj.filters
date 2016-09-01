@@ -81,16 +81,10 @@
     <ClCompile Include="Source\Classes\Boundary2D.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Misc\BoundsBuilder.cpp">
-      <Filter>Source Files\Misc</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Classes\Camera.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
     <ClCompile Include="Source\Classes\Camera3.cpp">
-      <Filter>Source Files\Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Classes\CItem.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
     <ClCompile Include="Source\Conditions\collectionCondition.cpp">
@@ -104,9 +98,6 @@
     </ClCompile>
     <ClCompile Include="Source\Classes\GameObject.cpp">
       <Filter>Source Files\Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Misc\GameObjectBuilder.cpp">
-      <Filter>Source Files\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scenes\GraphicsEntity.cpp">
       <Filter>Source Files\Scenes</Filter>
@@ -192,9 +183,6 @@
     <ClCompile Include="Source\Classes\MusicEntity2D.cpp">
       <Filter>Source Files\Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Classes\MusicEntity3D.cpp">
-      <Filter>Source Files\Classes</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Conditions\ratingCondition.cpp">
       <Filter>Source Files\Conditions</Filter>
     </ClCompile>
@@ -269,9 +257,6 @@
     <ClInclude Include="Source\Classes\Camera3.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Classes\CItem.h">
-      <Filter>Header Files\Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Classes\GameMap.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
@@ -311,16 +296,10 @@
     <ClInclude Include="Source\Mains\Application.h">
       <Filter>Header Files\Mains</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Misc\BoundsBuilder.h">
-      <Filter>Header Files\Misc</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Misc\DepthFBO.h">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
     <ClInclude Include="Source\Misc\DetectMemoryLeak.h">
-      <Filter>Header Files\Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Misc\GameObjectBuilder.h">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
     <ClInclude Include="Source\Misc\LoadHmap.h">
@@ -399,9 +378,6 @@
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
     <ClInclude Include="Source\Classes\MusicEntity2D.h">
-      <Filter>Header Files\Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Classes\MusicEntity3D.h">
       <Filter>Header Files\Classes</Filter>
     </ClInclude>
     <ClInclude Include="Source\Conditions\ratingCondition.h">
