@@ -140,65 +140,72 @@ void Scene_MainMenu::InitSceneUIElems()
     CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]);
     checkThroughTheCharAndChangingThemToASuitableWord(CommandChar);
     UI_Element *CommandCharacters = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.7f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.7f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.7f, 0), CommandChar);
+    theCommandKeys.push_back(CommandCharacters);
     SettingKeys->cUI_Layer.push_back(CommandCharacters);
     UI_Element *theCommand = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.7f, 0), Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.7f, 0), ButtonScale * 1.3f, Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.7f, 0), "Forward_Button");
     SettingKeys->cUI_Layer.push_back(theCommand);
-    all_the_Command_Keys.insert(std::pair<UI_Element*, UI_Element*>(theCommand, CommandCharacters));
+    theCommandWord.push_back((theCommand));
 
     CommandChar = "";
     CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]);
     checkThroughTheCharAndChangingThemToASuitableWord(CommandChar);
     CommandCharacters = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), CommandChar);
+    theCommandKeys.push_back(CommandCharacters);
     SettingKeys->cUI_Layer.push_back(CommandCharacters);
     theCommand = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.5f, 0), Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.5f, 0), ButtonScale * 1.3f, Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.5f, 0), "Left_Button");
     SettingKeys->cUI_Layer.push_back(theCommand);
-    all_the_Command_Keys.insert(std::pair<UI_Element*, UI_Element*>(theCommand, CommandCharacters));
+    theCommandWord.push_back((theCommand));
 
     CommandChar = "";
     CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]);
     checkThroughTheCharAndChangingThemToASuitableWord(CommandChar);
     CommandCharacters = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.3f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.3f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.3f, 0), CommandChar);
     SettingKeys->cUI_Layer.push_back(CommandCharacters);
+    theCommandKeys.push_back(CommandCharacters);
     theCommand = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.3f, 0), Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.3f, 0), ButtonScale * 1.3f, Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.3f, 0), "Backward_Button");
     SettingKeys->cUI_Layer.push_back(theCommand);
-    all_the_Command_Keys.insert(std::pair<UI_Element*, UI_Element*>(theCommand, CommandCharacters));
+    theCommandWord.push_back((theCommand));
 
     CommandChar = "";
     CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]);
     checkThroughTheCharAndChangingThemToASuitableWord(CommandChar);
     CommandCharacters = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.1f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.1f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.1f, 0), CommandChar);
     SettingKeys->cUI_Layer.push_back(CommandCharacters);
+    theCommandKeys.push_back(CommandCharacters);
     theCommand = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.1f, 0), Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.1f, 0), ButtonScale * 1.3f, Vector3(CenterPosition.x * 1.f, CenterPosition.y * 1.1f, 0), "Right_Button");
     SettingKeys->cUI_Layer.push_back(theCommand);
-    all_the_Command_Keys.insert(std::pair<UI_Element*, UI_Element*>(theCommand, CommandCharacters));
+    theCommandWord.push_back((theCommand));
 
     CommandChar = "";
     CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::INTERACT_COMMAND]);
     checkThroughTheCharAndChangingThemToASuitableWord(CommandChar);
     CommandCharacters = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), CommandChar);
+    theCommandKeys.push_back(CommandCharacters);
     SettingKeys->cUI_Layer.push_back(CommandCharacters);
     theCommand = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 1.f, CenterPosition.y * 0.9f, 0), Vector3(CenterPosition.x * 1.f, CenterPosition.y * 0.9f, 0), ButtonScale * 1.3f, Vector3(CenterPosition.x * 1.f, CenterPosition.y * 0.9f, 0), "Interact_Button");
     SettingKeys->cUI_Layer.push_back(theCommand);
-    all_the_Command_Keys.insert(std::pair<UI_Element*, UI_Element*>(theCommand, CommandCharacters));
+    theCommandWord.push_back((theCommand));
 
     CommandChar = "";
     CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::PAUSE_MENU_COMMAND]);
     checkThroughTheCharAndChangingThemToASuitableWord(CommandChar);
     CommandCharacters = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.7f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.7f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.7f, 0), CommandChar);
+    theCommandKeys.push_back(CommandCharacters);
     SettingKeys->cUI_Layer.push_back(CommandCharacters);
     theCommand = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 1.f, CenterPosition.y * 0.7f, 0), Vector3(CenterPosition.x * 1.f, CenterPosition.y * 0.7f, 0), ButtonScale * 1.3f, Vector3(CenterPosition.x * 1.f, CenterPosition.y * 0.7f, 0), "Pause_Menu_Button");
     SettingKeys->cUI_Layer.push_back(theCommand);
-    all_the_Command_Keys.insert(std::pair<UI_Element*, UI_Element*>(theCommand, CommandCharacters));
+    theCommandWord.push_back((theCommand));
 
     CommandChar = "";
     CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::JUMP_COMMAND]);
     checkThroughTheCharAndChangingThemToASuitableWord(CommandChar);
     CommandCharacters = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.5f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.5f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.5f, 0), CommandChar);
     SettingKeys->cUI_Layer.push_back(CommandCharacters);
+    theCommandKeys.push_back(CommandCharacters);
     theCommand = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 1.f, CenterPosition.y * 0.5f, 0), Vector3(CenterPosition.x * 1.f, CenterPosition.y * 0.5f, 0), ButtonScale * 1.3f, Vector3(CenterPosition.x * 1.f, CenterPosition.y * 0.5f, 0), "Jump_Button");
     SettingKeys->cUI_Layer.push_back(theCommand);
-    all_the_Command_Keys.insert(std::pair<UI_Element*, UI_Element*>(theCommand, CommandCharacters));
-    
+    theCommandWord.push_back((theCommand));
+
     SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), ButtonScale, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), UI_Text[6]);
 
     UI_Sys.cUIS_LayerContainer.push_back(SettingKeys);
@@ -365,30 +372,30 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                     //Updating of the keys
                     else if (CurrentMenuState == S_UPDATING_KEYS)
                     {
-                        for (unsigned char theChar = 0; theChar < UCHAR_MAX; ++theChar)
-                        {
-                            if (Application::IsKeyPressed(theChar) && !Application::IsKeyPressed(VK_LBUTTON))
-                            {
-                                CurrentMenuState = S_SETTING;
-                                theChar = toupper(theChar);
-                                writeToGlobalDrivenAndChangeCommand(theChar, whatKeyToChange);
-                                Application::loadThoseKeyCommandsStuff();
-                                for (std::vector<UI_Element*>::iterator it3 = (*it)->cUI_Layer.begin(); it3 != (*it)->cUI_Layer.end(); ++it3)
-                                {
-                                    if ((*it3)->UI_Text == UI_Text[6] || checkWhetherTheWordInThatString(UI_Text[7], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[8], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[9], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[10], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[11], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[12], (*it3)->UI_Text))   //Setting Stuff
-                                    {
-                                        (*it3)->SwapOriginalWithTarget();
-                                        if (checkWhetherTheWordInThatString(whatKeyToChange, (*it3)->UI_Text))
-                                        {
-                                            std::ostringstream ss2;
-                                            ss2 << whatKeyToChange << ":" << theChar;
-                                            (*it3)->UI_Text = ss2.str();
-                                        }
-                                    }
-                                }
-                                break;
-                            }
-                        }
+                        //for (unsigned char theChar = 0; theChar < UCHAR_MAX; ++theChar)
+                        //{
+                        //    if (Application::IsKeyPressed(theChar) && !Application::IsKeyPressed(VK_LBUTTON))
+                        //    {
+                        //        CurrentMenuState = S_SETTING;
+                        //        theChar = toupper(theChar);
+                        //        writeToGlobalDrivenAndChangeCommand(theChar, whatKeyToChange);
+                        //        Application::loadThoseKeyCommandsStuff();
+                        //        for (std::vector<UI_Element*>::iterator it3 = (*it)->cUI_Layer.begin(); it3 != (*it)->cUI_Layer.end(); ++it3)
+                        //        {
+                        //            if ((*it3)->UI_Text == UI_Text[6] || checkWhetherTheWordInThatString(UI_Text[7], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[8], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[9], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[10], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[11], (*it3)->UI_Text) || checkWhetherTheWordInThatString(UI_Text[12], (*it3)->UI_Text))   //Setting Stuff
+                        //            {
+                        //                (*it3)->SwapOriginalWithTarget();
+                        //                if (checkWhetherTheWordInThatString(whatKeyToChange, (*it3)->UI_Text))
+                        //                {
+                        //                    std::ostringstream ss2;
+                        //                    ss2 << whatKeyToChange << ":" << theChar;
+                        //                    (*it3)->UI_Text = ss2.str();
+                        //                }
+                        //            }
+                        //        }
+                        //        break;
+                        //    }
+                        //}
                     }
                     //Updating of the keys
                     //Loading of Save Stuff
@@ -478,13 +485,46 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                             SettingKeys->SwapOriginalWithTarget();
                             theLogo->SwapOriginalWithTarget();
                         }
+                        else
+                            for (std::vector<UI_Element*>::iterator it3 = theCommandWord.begin(), end3 = theCommandWord.end(); it3 != end3; ++it3)
+                            {
+                                if ((*it2)->UI_Text == (*it3)->UI_Text)
+                                {
+                                    CurrentMenuState = S_UPDATING_KEYS;
+                                    size_t posOfKeyCommand = it3 - theCommandWord.begin();
+                                    whatKeyToChange = (*it3)->UI_Text;
+                                    theCommandKeys[posOfKeyCommand]->UI_Text = "";
+                                    break;
+                                }
+                            }
                         break;
                     }
                 }
             }
             else
             {
-
+                for (unsigned char theChar = 0; theChar < UCHAR_MAX; ++theChar)
+                {
+                    if (Application::IsKeyPressed(theChar) && !Application::IsKeyPressed(VK_LBUTTON))
+                    {
+                        CurrentMenuState = S_SETTING_KEYS;
+                        theChar = toupper(theChar);
+                        writeToGlobalDrivenAndChangeCommand(theChar, whatKeyToChange);
+                        Application::loadThoseKeyCommandsStuff();
+                        for (std::vector<UI_Element*>::iterator it3 = theCommandWord.begin(), end3 = theCommandWord.end(); it3 != end3; ++it3)
+                        {
+                            if (whatKeyToChange == (*it3)->UI_Text)
+                            {
+                                size_t posOfKeyCommand = it3 - theCommandWord.begin();
+                                whatKeyToChange = "";
+                                theCommandKeys[posOfKeyCommand]->UI_Text = theChar;
+                                checkThroughTheCharAndChangingThemToASuitableWord(theCommandKeys[posOfKeyCommand]->UI_Text);
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
             }
         }
     }

@@ -83,7 +83,8 @@ private:
     std::string transitingSceneName;
     UI_Layer *NewL, *Setting1, *SettingKeys;
     UI_Element *theLogo;
-    std::map<UI_Element*, UI_Element*> all_the_Command_Keys;
+    std::vector<UI_Element*> theCommandKeys;
+    std::vector<UI_Element*> theCommandWord;
     void checkThroughTheCharAndChangingThemToASuitableWord(std::string &theChar);
 };
 
