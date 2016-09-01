@@ -112,7 +112,7 @@ void SceneFreeField::Update(float dt)
     else if (MonsterFound == false && (camera->position - PreviousPosition).LengthSquared() > 4.f) // 2 Units
 	{
 		EncounterTimer = 0;
-        if (Math::RandIntMinMax(0, MaxEncounterRate - CurrentEncounterRateBoost) < MaxEncounterRate * EncounterRatio)
+		if (Scene_System::accessing().cSS_PlayerUIManager->CurrentState == PlayerUIManager::UIS_HUD && Math::RandIntMinMax(0, MaxEncounterRate - CurrentEncounterRateBoost) < MaxEncounterRate * EncounterRatio)
 		{
             MonsterFound = true;
             Scene_System::accessing().SetLoadingTime(3.f);
