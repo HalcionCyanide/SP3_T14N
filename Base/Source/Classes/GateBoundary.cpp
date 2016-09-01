@@ -124,7 +124,7 @@ void GateBoundary::Render()
 		{
 		Scene_System::accessing().getCurrScene().modelStack->PushMatrix();
 		Scene_System::accessing().getCurrScene().modelStack->Translate(GetPosition().x, GetPosition().y, GetPosition().z);
-		Scene_System::accessing().getCurrScene().modelStack->Rotate(GetRotationAngle(), GetRotationAxis().x, GetRotationAxis().y, GetRotationAxis().z);
+		Scene_System::accessing().getCurrScene().modelStack->Rotate(GetRotationAngle() - 90.f, GetRotationAxis().x, GetRotationAxis().y, GetRotationAxis().z);
 		Scene_System::accessing().getCurrScene().modelStack->Scale(GetDimensions().x, GetDimensions().y, GetDimensions().z);
 
 			SceneGraphics->RenderMesh(*this->GetMesh(), true);

@@ -70,10 +70,6 @@ public:
 	NPCManager NM;
     UI_System *theLoadingEffect;
 
-	GameObject* Boss_Reaper;
-	GameObject* Boss_Manticore;
-	GameObject* Boss_Balrog;
-
     void SetLoadingTime(const double &dt);
     void UpdateLoadingStuff(double dt);
     void doingLoadingEffect();
