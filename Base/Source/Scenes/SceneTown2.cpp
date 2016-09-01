@@ -216,9 +216,12 @@ void SceneTown2::NPC_chat(float dt)
 											{
 												if (test->getActive())
 												{
-													if (test->qStages.at(it5->second - 1)->getComplete())
+													if (it5->second > 0)
 													{
-														imdone = true;
+														if (test->qStages.at(it5->second - 1)->getComplete())
+														{
+															imdone = true;
+														}
 													}
 												}
 											}
