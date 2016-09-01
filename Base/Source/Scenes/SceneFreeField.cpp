@@ -96,6 +96,38 @@ void SceneFreeField::Update(float dt)
 	}
 	Vector3 Center(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / 2, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight / 2, 0);
 
+	//if ((camera->position - PreviousPosition).LengthSquared() > 25.f) // 5 Units
+	//{
+	//	if (CurrentEncounterRateBoost < MaxEncounterRate)
+	//		CurrentEncounterRateBoost += 10;
+	//	PreviousPosition = camera->position;
+	//	PreviousPosition.y = Application::cA_MinimumTerrainY;
+	//}
+ //   if (MonsterFound == false && EncounterTimer < EncounterTimeCheck)
+	//{
+	//	EncounterTimer += (float)dt;
+	//}
+ //   else if (MonsterFound == false && (camera->position - PreviousPosition).LengthSquared() > 4.f) // 2 Units
+	//{
+	//	EncounterTimer = 0;
+ //       if (Math::RandIntMinMax(0, MaxEncounterRate - CurrentEncounterRateBoost) < MaxEncounterRate * EncounterRatio)
+	//	{
+ //           MonsterFound = true;
+ //           Scene_System::accessing().SetLoadingTime(3.f);
+	//	}
+	//}
+ //   else if (MonsterFound && Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
+ //   {
+ //       Scene_System::accessing().whatLoadingState = Scene_System::NOT_LOADING;
+ //       MonsterFound = false;
+ //       CurrentEncounterRateBoost = 0;
+ //       std::ostringstream ss;
+ //       ss << Math::RandIntMinMax(1, Scene_System::accessing().EnemyData.size());
+ //       std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find(ss.str());
+ //       Scene_System::accessing().BSys->SetEnemy(*it->second);
+ //       Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
+ //   }
+
 	if ((camera->position - PreviousPosition).LengthSquared() > 25.f) // 5 Units
 	{
 		if (CurrentEncounterRateBoost < MaxEncounterRate)
@@ -103,30 +135,30 @@ void SceneFreeField::Update(float dt)
 		PreviousPosition = camera->position;
 		PreviousPosition.y = Application::cA_MinimumTerrainY;
 	}
-    if (MonsterFound == false && EncounterTimer < EncounterTimeCheck)
+	if (MonsterFound == false && EncounterTimer < EncounterTimeCheck)
 	{
 		EncounterTimer += (float)dt;
 	}
-    else if (MonsterFound == false && (camera->position - PreviousPosition).LengthSquared() > 4.f) // 2 Units
+	else if (Scene_System::accessing().cSS_PlayerUIManager->CurrentState == PlayerUIManager::UIS_HUD && MonsterFound == false && (camera->position - PreviousPosition).LengthSquared() > 25.f) // 2 Units
 	{
 		EncounterTimer = 0;
-        if (Math::RandIntMinMax(0, MaxEncounterRate - CurrentEncounterRateBoost) < MaxEncounterRate * EncounterRatio)
+		if (Math::RandIntMinMax(0, MaxEncounterRate - CurrentEncounterRateBoost) < MaxEncounterRate * EncounterRatio)
 		{
-            MonsterFound = true;
-            Scene_System::accessing().SetLoadingTime(3.f);
+			MonsterFound = true;
+			Scene_System::accessing().SetLoadingTime(3.f);
 		}
 	}
-    else if (MonsterFound && Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
-    {
-        Scene_System::accessing().whatLoadingState = Scene_System::NOT_LOADING;
-        MonsterFound = false;
-        CurrentEncounterRateBoost = 0;
-        std::ostringstream ss;
-        ss << Math::RandIntMinMax(1, Scene_System::accessing().EnemyData.size());
-        std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find(ss.str());
-        Scene_System::accessing().BSys->SetEnemy(*it->second);
-        Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
-    }
+	else if (MonsterFound && Scene_System::accessing().whatLoadingState == Scene_System::FINISHED_LOADING)
+	{
+		Scene_System::accessing().whatLoadingState = Scene_System::NOT_LOADING;
+		MonsterFound = false;
+		CurrentEncounterRateBoost = 0;
+		std::ostringstream ss;
+		ss << Math::RandIntMinMax(1, Scene_System::accessing().EnemyData.size());
+		std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find(ss.str());
+		Scene_System::accessing().BSys->SetEnemy(*it->second);
+		Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
+	}
 
 	framerates = 1 / dt;
     PlayerObject* PlayerPTR = dynamic_cast<PlayerObject*>(Player);
