@@ -683,16 +683,34 @@ bool SceneFreeField2::onNotify(const std::string &theEvent)
 	}
 	else if (checkWhetherTheWordInThatString("TRANSITIONING", theEvent))
 	{
+		Scene_System::accessing().SwitchScene(transitingSceneName);
+		std::ostringstream ss;
+		ss << "SWITCHING_" << id_;
+		transitingSceneName = "";
+		Scene_System::accessing().getCurrScene().onNotify(ss.str());
+		return true;
+	}
+	else if (checkWhetherTheWordInThatString("LOADING", theEvent))
+	{
+		Scene_System::accessing().SetLoadingTime(3.0);
+		size_t posOfUnderScore = theEvent.find_first_of('_');
+		transitingSceneName = theEvent.substr(posOfUnderScore + 1);
+		return true;
+	}
+	else if (checkWhetherTheWordInThatString("SWITCHING", theEvent))
+	{
 		PlayerObject *PlayerPTR = Scene_System::accessing().gPlayer->PlayerObj = dynamic_cast<PlayerObject*>(Player);
 		PlayerPTR->SetVelocity(Vector3(0, 0, 0));
 		Scene_System::accessing().gPlayer->CurrCamera = camera;
+		size_t posOfUnderScore = theEvent.find_first_of('_');
+		std::string preSceneId = theEvent.substr(posOfUnderScore + 1);
 		for (std::vector<GameObject*>::iterator it = objVec.begin(), end = objVec.end(); it != end; ++it)
 		{
-			if (checkWhetherTheWordInThatString(Scene_System::accessing().gPlayer->currSceneID, (*it)->getName()))
+			if (checkWhetherTheWordInThatString(preSceneId, (*it)->getName()))
 			{
 				Vector3 theGatePos = (*it)->GetPosition();
 				Vector3 theDirectionalPosBetweenPlayerGate = (PlayerPTR->GetPosition() - theGatePos).Normalize();
-				theDirectionalPosBetweenPlayerGate *= (((*it)->GetDimensions().x + (*it)->GetDimensions().y) * 0.5f);
+				theDirectionalPosBetweenPlayerGate *= (((*it)->GetDimensions().x + (*it)->GetDimensions().y));
 				PlayerPTR->SetPosition(theGatePos + theDirectionalPosBetweenPlayerGate);
 				break;
 			}
