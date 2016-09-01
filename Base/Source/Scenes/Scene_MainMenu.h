@@ -83,6 +83,7 @@ private:
     std::string transitingSceneName;
     UI_Layer *NewL, *Setting1, *SettingKeys;
     UI_Element *theLogo;
+    void checkThroughTheCharAndChangingThemToASuitableWord(std::string &theChar);
 };
 
 #endif //_SCENE_MAINMENU_H

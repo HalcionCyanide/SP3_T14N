@@ -137,27 +137,33 @@ void Scene_MainMenu::InitSceneUIElems()
     SettingKeys->LayerOriginalPosition.SetZero();
     std::string CommandChar = "";
     CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::FORWARD_COMMAND]);
-    SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), CommandChar);
+    checkThroughTheCharAndChangingThemToASuitableWord(CommandChar);
+    SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.7f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.7f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.7f, 0), CommandChar);
 
     CommandChar = "";
     CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::LEFT_COMMAND]);
-    SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.3f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.3f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.3f, 0), CommandChar);
+    checkThroughTheCharAndChangingThemToASuitableWord(CommandChar);
+    SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.5f, 0), CommandChar);
 
     CommandChar = "";
     CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::BACK_COMMAND]);
-    SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.1f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.1f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.1f, 0), CommandChar);
+    checkThroughTheCharAndChangingThemToASuitableWord(CommandChar);
+    SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.3f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.3f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.3f, 0), CommandChar);
 
     CommandChar = "";
     CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::RIGHT_COMMAND]);
-    SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), CommandChar);
+    checkThroughTheCharAndChangingThemToASuitableWord(CommandChar);
+    SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.1f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.1f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 1.1f, 0), CommandChar);
 
     CommandChar = "";
     CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::INTERACT_COMMAND]);
-    SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.7f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.7f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.7f, 0), CommandChar);
+    checkThroughTheCharAndChangingThemToASuitableWord(CommandChar);
+    SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.9f, 0), CommandChar);
 
     CommandChar = "";
     CommandChar.append(1, SimpleCommand::m_allTheKeys[SimpleCommand::PAUSE_MENU_COMMAND]);
-    SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.5f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.5f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.5f, 0), CommandChar);
+    checkThroughTheCharAndChangingThemToASuitableWord(CommandChar);
+    SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.7f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.7f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.09f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.09f, 1), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.7f, 0), CommandChar);
 
     SettingKeys->AddUIElement("TFB_Button", Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), ButtonScale, Vector3(CenterPosition.x * 0.5f, CenterPosition.y * 0.3f, 0), UI_Text[6]);
 
@@ -172,7 +178,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
     for (std::vector<UI_Layer*>::iterator it = UI_Sys.cUIS_LayerContainer.begin(); it != UI_Sys.cUIS_LayerContainer.end(); ++it)
     {
         (*it)->Update(dt);
-        if (CurrentMenuState != S_SETTING_KEYS && CurrentMenuState != S_SETTING && CurrentMenuState != S_UPDATING_KEYS/* && (*it)->LayerCenterPosition.LengthSquared() <= 1.f*/) 
+        if (CurrentMenuState != S_SETTING_KEYS && CurrentMenuState != S_SETTING && CurrentMenuState != S_UPDATING_KEYS/* && (*it)->LayerCenterPosition.LengthSquared() <= 1.f*/ && (*it) == NewL)
         {
             for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
             {
@@ -405,6 +411,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                         CurrentMenuState = S_SETTING_KEYS;
                         Setting1->SwapOriginalWithTarget();
                         SettingKeys->SwapOriginalWithTarget();
+                        theLogo->SwapOriginalWithTarget();
                     }
                     else if ((*it2)->UI_Text == "Misc")
                     {
@@ -420,7 +427,7 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                 }
             }
         }
-        else if ((CurrentMenuState == S_SETTING_KEYS || CurrentMenuState == S_UPDATING_KEYS) /*&& (*it)->LayerCenterPosition.LengthSquared() <= 1.f*/)
+        else if ((CurrentMenuState == S_SETTING_KEYS || CurrentMenuState == S_UPDATING_KEYS) && (*it) == SettingKeys)
         {
             if (CurrentMenuState == S_SETTING_KEYS) {
                 for (std::vector<UI_Element*>::iterator it2 = (*it)->cUI_Layer.begin(); it2 != (*it)->cUI_Layer.end(); ++it2)
@@ -430,8 +437,15 @@ void Scene_MainMenu::UpdateUILogic(float dt, Scene_MainMenu::STATE_MAIN_MENU cSt
                     (*it2)->CheckInput(Scene_System::accessing().cSS_InputManager->GetMousePosition(), ClickSucceeded, (*it)->LayerCenterPosition);
                     if (ClickSucceeded) {
 
+                        if ((*it2)->UI_Text == UI_Text[6])
+                        {
+                            CurrentMenuState = S_SETTING;
+                            Setting1->SwapOriginalWithTarget();
+                            SettingKeys->SwapOriginalWithTarget();
+                            theLogo->SwapOriginalWithTarget();
+                        }
+                        break;
                     }
-                    break;
                 }
             }
             else
@@ -721,5 +735,14 @@ void Scene_MainMenu::writeToGlobalDrivenAndChangeCommand(const unsigned char &co
                 writeFile << (*it) << std::endl;
         }
         writeFile.close();
+    }
+}
+
+void Scene_MainMenu::checkThroughTheCharAndChangingThemToASuitableWord(std::string &theChar)
+{
+    if (theChar[0] == ' ')
+    {
+        theChar = "";
+        theChar = "SPACE";
     }
 }
