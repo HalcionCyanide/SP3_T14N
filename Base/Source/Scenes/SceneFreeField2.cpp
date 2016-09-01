@@ -55,8 +55,8 @@ void SceneFreeField2::Init()
 
 	theInteractiveMap = new GameMap();
 	GameMap *theMap = dynamic_cast<GameMap*>(theInteractiveMap);
-	theMap->setName("scene town 2 logic map");
-	theMap->LoadMap("DrivenFiles//Town2Layout.csv", m_heightMap, TerrainScale, objVec, BManager);
+	theMap->setName("scene open field 2 logic map");
+	theMap->LoadMap("DrivenFiles//FreeField_2_Layout.csv", m_heightMap, TerrainScale, objVec, BManager);
 
 	// There can only be 1 Player
 	Player = new PlayerObject();
@@ -334,7 +334,7 @@ void SceneFreeField2::Update(float dt)
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	SceneGraphics->Update(dt);
-	MusicSystem::accessing().playBackgroundMusic("town2");
+	MusicSystem::accessing().playBackgroundMusic("FreeField2");
 
 	//Update Camera's Minimum Possible & Current Y Pos
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera->position.x / TerrainScale.x, camera->position.z / TerrainScale.z) + camera->PlayerHeight;
@@ -454,9 +454,14 @@ void SceneFreeField2::RenderShadowCasters()
 	// will remove soon 
 	for (auto it : objVec)
 	{
-		GameObject *the3DObject = dynamic_cast<GameObject*>(it);
-		if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
-			the3DObject->Render();
+		if (it->GetBoundary()->getName() == "2_Scene" || it->GetBoundary()->getName() == "3_Scene")
+			it->GetBoundary()->Render();
+		else
+		{
+			GameObject *the3DObject = dynamic_cast<GameObject*>(it);
+			if (the3DObject && (camera->position - camera->target).Normalize().Dot(the3DObject->GetPosition().Normalized()) < 1.f)
+				the3DObject->Render();
+		}
 	}
 	// will remove soon 
 

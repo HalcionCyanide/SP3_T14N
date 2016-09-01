@@ -11,6 +11,7 @@
 #include "..\\Classes\\PlayerObject.h"
 #include "..\\Classes\\BossBoundary.h"
 #include "../Misc/LoadEnemyData.h"
+#include "../Systems/MusicSystem.h"
 
 std::string SceneFreeField::id_ = "F1_Scene";
 
@@ -82,6 +83,7 @@ void SceneFreeField::Update(float dt)
 {
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	SceneGraphics->Update(dt);
+	MusicSystem::accessing().playBackgroundMusic("FreeField1");
 
 	//Update Camera's Minimum Possible & Current Y Pos
 	Application::cA_MinimumTerrainY = TerrainScale.y * ReadHeightMap(m_heightMap, camera->position.x / TerrainScale.x, camera->position.z / TerrainScale.z) + camera->PlayerHeight;
@@ -122,7 +124,7 @@ void SceneFreeField::Update(float dt)
         MonsterFound = false;
         CurrentEncounterRateBoost = 0;
         std::ostringstream ss;
-        ss << Math::RandIntMinMax(1, Scene_System::accessing().EnemyData.size());
+        ss << Math::RandIntMinMax(4, Scene_System::accessing().EnemyData.size());
         std::map<std::string, Enemy*>::iterator it = Scene_System::accessing().EnemyData.find(ss.str());
         Scene_System::accessing().BSys->SetEnemy(*it->second);
         Scene_System::accessing().SwitchScene(SceneBattleScreen::id_);
