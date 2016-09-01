@@ -487,7 +487,7 @@ void PlayerUIManager::UpdateQuestsMenu(float dt)
 	{
 		CurrentQuest = Quest->second;
 		bool Check = false;
-		for (std::vector<QuestStage*>::iterator it = CurrentQuest->qStages.begin(); it != CurrentQuest->qStages.end(); ++it)
+		for (std::vector<QuestStage*>::iterator it = CurrentQuest->qStages.begin(); it != CurrentQuest->qStages.end(); it++)
 		{
 			std::map<std::string, int>::iterator StateCheck = PlayerStates.find(CurrentQuest->getName());
 			if (Quest->second->getCurrentStage() > 0)
@@ -496,12 +496,12 @@ void PlayerUIManager::UpdateQuestsMenu(float dt)
 				{
 					CurrentStage = *it;
 					Menu_QuestTextElements[0]->UI_Text = Quest->second->getName();
-					Menu_QuestTextElements[1]->UI_Text = (*it)->getDesc();
+					Menu_QuestTextElements[1]->UI_Text = CurrentStage->getDesc();
 					Menu_QuestTextElements[1]->WrapText();
 					std::stringstream ss;
-					ss << (*it)->getRewardCount();
-					Menu_QuestTextElements[2]->UI_Text = "Reward: " + (*it)->getReward()->getName() + " x " + ss.str();
-					Menu_QuestTextElements[3]->UI_Text = "Given By: " + (*it)->getGiver();
+					ss << CurrentStage->getRewardCount();
+					Menu_QuestTextElements[2]->UI_Text = "Reward: " + CurrentStage->getReward()->getName() + " x " + ss.str();
+					Menu_QuestTextElements[3]->UI_Text = "Given By: " + CurrentStage->getGiver();
 					Check = true;
 					break;
 				}
@@ -512,6 +512,7 @@ void PlayerUIManager::UpdateQuestsMenu(float dt)
 				Menu_QuestTextElements[1]->UI_Text = "Description: -";
 				Menu_QuestTextElements[2]->UI_Text = "Reward: -";
 				Menu_QuestTextElements[3]->UI_Text = "Given By: -";
+				break;
 			}
 		}
 		if (!Check)
