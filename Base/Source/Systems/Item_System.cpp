@@ -38,7 +38,7 @@ void Item_System::Exit()
 	if (ActiveItemMap.empty() == false)
 	{
 		for (auto it : ActiveItemMap)
-			delete &(it.first);		
+			delete (it.first);		
 		ActiveItemMap.clear();
 	}
 }
