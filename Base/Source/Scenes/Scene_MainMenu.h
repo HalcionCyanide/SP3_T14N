@@ -44,6 +44,7 @@ private:
         S_SETTING,
         S_UPDATING_KEYS,
         S_LOADING_SAVE,
+        S_SETTING_KEYS,
         S_TOTAL,
 	};
 
@@ -80,6 +81,7 @@ private:
     void writeToGlobalDrivenAndChangeCommand(const unsigned char &command, const std::string &theKey);
 
     std::string transitingSceneName;
+    UI_Layer *NewL, *Setting1, *SettingKeys;
 };
 
 #endif //_SCENE_MAINMENU_H
