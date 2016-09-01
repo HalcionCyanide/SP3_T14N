@@ -28,6 +28,8 @@ void SceneCredits::Init()
 {
     GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 
+    Vector3 CenterPosition(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.5f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * 0.5f, 0);
+
     Mtx44 perspective;
     perspective.SetToPerspective(45.0f, Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth / Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight, 0.1f, 10000.0f);
     projectionStack->LoadMatrix(perspective);
@@ -38,14 +40,18 @@ void SceneCredits::Init()
     ComicLayer = new UI_Layer();
     ComicLayer->LayerTargetPosition.y = 0;
     ComicLayer->LayerCenterPosition.y = 0;
-    ComicLayer->AddUIElement("page1_comic", Vector3(600, 600, 0), Vector3(600, 600, 0), Vector3(1000, 800, 1), Vector3(600, 600, 0));
-	ComicLayer->AddUIElement("page2_comic", Vector3(600, -200, 0), Vector3(600, -200, 0), Vector3(1000, 800, 1), Vector3(600, -200, 0));
+    float screenWidth = Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth;
+    float screenHeight = Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight;
+ //   ComicLayer->AddUIElement("page1_comic", Vector3(600, 600, 0), Vector3(600, 600, 0), Vector3(1000, 800, 1), Vector3(600, 600, 0));
+	//ComicLayer->AddUIElement("page2_comic", Vector3(600, -200, 0), Vector3(600, -200, 0), Vector3(1000, 800, 1), Vector3(600, -200, 0));
+    ComicLayer->AddUIElement("page1_comic", Vector3(CenterPosition.x * 0.6f, screenHeight* 0.3f, 0), Vector3(CenterPosition.x * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.3f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.55f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.9f, 1), Vector3(CenterPosition.x * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.3f, 0));
+    ComicLayer->AddUIElement("page2_comic", Vector3(CenterPosition.x * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* -0.7f, 0), Vector3(CenterPosition.x * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* -0.7f, 0), Vector3(Scene_System::accessing().cSS_InputManager->cIM_ScreenWidth * 0.55f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight* 0.9f, 1), Vector3(CenterPosition.x * 0.6f, Scene_System::accessing().cSS_InputManager->cIM_ScreenHeight * -0.7f, 0));
     TheLoadScreenStuff->cUIS_LayerContainer.push_back(ComicLayer);
 
     CreditsLayer = new UI_Layer();
     CreditsLayer->LayerTargetPosition.y = 0;
     CreditsLayer->LayerCenterPosition.y = 0;
-	UI_Element *TheCredits = new UI_Element("TextBacking", Vector3(1400, 800, 0), Vector3(1400, 800, 0), Vector3(300, 100, 1), Vector3(1400, 800, 0));
+    UI_Element *TheCredits = new UI_Element("TextBacking", Vector3(CenterPosition.x * 1.2f, screenHeight * 0.5f, 0), Vector3(CenterPosition.x * 1.2f, screenHeight * 0.3f, 0), Vector3(CenterPosition.x * 0.25f, CenterPosition.y * 0.25f, 1), Vector3(CenterPosition.x * 1.2f, screenHeight * 0.5f, 0));
     TheCredits->TextWrappingEnabled = true;
     TheCredits->UI_Text_Container.push_back("Credits");
     TheCredits->UI_Text_Container.push_back("");
@@ -84,7 +90,7 @@ void SceneCredits::Init()
     TheLoadScreenStuff->cUIS_LayerContainer.push_back(CreditsLayer);
 
     SkipCreditStuff = new UI_Layer();
-	UI_Element *theClickButton = new UI_Element("TFB_Button", Vector3(1500, 100, 0), Vector3(1500, 100, 0), Vector3(800, 100, 1), Vector3(1500, 100, 0), "Click Here To Skip Intro");
+    UI_Element *theClickButton = new UI_Element("TFB_Button", Vector3(CenterPosition.x * 1.6f, screenHeight * 0.1f, 0), Vector3(CenterPosition.x * 1.6f, screenHeight * 0.1f, 0), Vector3(CenterPosition.x * 0.75f, CenterPosition.y * 0.4f, 1), Vector3(CenterPosition.x * 1.6f, screenHeight * 0.1f, 0), "Click Here To Skip Intro");
     theClickButton->WrapText();
     SkipCreditStuff->cUI_Layer.push_back(theClickButton);
     TheLoadScreenStuff->cUIS_LayerContainer.push_back(SkipCreditStuff);
