@@ -99,8 +99,8 @@ void Application::Init()
 	glfwWindowHint(GLFW_DECORATED, GL_FALSE);						//Create the window without a border
 
 	const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());	//Obtain Width and Height values from the monitor;
-	cA_WindowWidth = /*1280;*/mode->width;
-	cA_WindowHeight = /*720;*/mode->height;
+	cA_WindowWidth = 1280;//mode->width;
+	cA_WindowHeight = 720;//mode->height;
 	Scene_System::accessing().cSS_InputManager->SetScreenSize((float)cA_WindowWidth, (float)cA_WindowHeight);
 	m_window = glfwCreateWindow(cA_WindowWidth, cA_WindowHeight, "SP3 Framework", NULL, NULL); // Create a window with attained values.
 
