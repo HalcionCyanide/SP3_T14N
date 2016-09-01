@@ -1,12 +1,12 @@
 stage,ConditionName,Value,Description,qOrigin,iReward,iRcount
-0,collection,1,Capture a monster.,Guard Captain,SEKHENG,1
-1,rating,300,Achieve a rating of 300 or higher,Guard Captain,SEKHENG,3
-2,goto,2_Scene,Find the village chief in the Village,Guard Captain,SEKHENG,5
-3,collection,20,Capture 20 monsters,Village Chief,SEKHENG,6
-4,goto,1_Scene,Talk to the Guard Captain in the City,Village Chief,SEKHENG,7
-5,rating,600,Achieve a rating of 600 or higher,Guard Captain,SEKHENG,8
-6,goto,2_Scene,Talk to the village chief in the Village,Guard Captain,SEKHENG,9
-7,goto,F2_Scene,Talk to the Mysterious Stranger outside the Village,Village Chief,SEKHENG,0
-8,goto,1_Scene,Return to the City's Guard Captain,Mysterious Stranger,SEKHENG,11
-9,goto,3_Scene,Reach the Cursed Woods.,Guard Captain,SEKHENG,-5
-10,rating,900,Capture the Balrog.,Guard Captain,SEKHENG,1
+0,collection,1,Capture a monster.,Guard Captain,Heal,1
+1,rating,300,Achieve a rating of 300 or higher,Guard Captain,I_Accel,2
+2,goto,2_Scene,Find the village chief in the Village,Guard Captain,Heal,1
+3,collection,20,Capture 20 monsters,Village Chief,I_Accel,2
+4,goto,1_Scene,Talk to the Guard Captain in the City,Village Chief,Heal,1
+5,rating,600,Achieve a rating of 600 or higher,Guard Captain,I_Accel,3
+6,goto,2_Scene,Talk to the village chief in the Village,Guard Captain,Heal,1
+7,goto,F2_Scene,Talk to the Mysterious Stranger outside the Village,Village Chief,Heal,1
+8,goto,1_Scene,Return to the City's Guard Captain,Mysterious Stranger,I_Accel,1
+9,goto,3_Scene,Reach the Cursed Woods.,Guard Captain,Heal,1
+10,rating,900,Capture the Balrog.,Guard Captain,I_Accel,4

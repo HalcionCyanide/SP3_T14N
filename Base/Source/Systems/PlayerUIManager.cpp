@@ -498,6 +498,9 @@ void PlayerUIManager::UpdateQuestsMenu(float dt)
 					Menu_QuestTextElements[0]->UI_Text = Quest->second->getName();
 					Menu_QuestTextElements[1]->UI_Text = (*it)->getDesc();
 					Menu_QuestTextElements[1]->WrapText();
+					std::stringstream ss;
+					ss << (*it)->getRewardCount();
+					Menu_QuestTextElements[2]->UI_Text = "Reward: " + (*it)->getReward()->getName() + " x " + ss.str();
 					Menu_QuestTextElements[3]->UI_Text = "Given By: " + (*it)->getGiver();
 					Check = true;
 					break;
