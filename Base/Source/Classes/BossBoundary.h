@@ -12,6 +12,10 @@ public:
 
 	virtual float GetOverlappingDistance()const;
 	virtual bool CheckCollision(const Vector3 &point);
+	void SetEnemyID(const std::string &);
+
+	std::string EnemyID;
+	bool EnemyKilled = false;
 };
 
 
