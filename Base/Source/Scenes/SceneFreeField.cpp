@@ -225,7 +225,7 @@ void SceneFreeField::RenderTerrain()
 
 void SceneFreeField::RenderShadowCasters()
 {
-	RenderTerrain();
+	//RenderTerrain();
 	GraphicsEntity *SceneGraphics = dynamic_cast<GraphicsEntity*>(&Scene_System::accessing().getGraphicsScene());
 	
 	// will remove soon 
@@ -385,6 +385,7 @@ void SceneFreeField::RenderPassMain()
 
 	//RenderTerrain();
 	//RenderSkyplane();
+	RenderTerrain();
 	RenderSkybox();
 	RenderShadowCasters();
 	SceneGraphics->SetHUD(true);
@@ -474,7 +475,7 @@ bool SceneFreeField::onNotify(const std::string &theEvent)
             {
                 Vector3 theGatePos = (*it)->GetPosition();
                 Vector3 theDirectionalPosBetweenPlayerGate = (PlayerPTR->GetPosition() - theGatePos).Normalize();
-                theDirectionalPosBetweenPlayerGate *= (((*it)->GetDimensions().x + (*it)->GetDimensions().y) * 0.5f);
+                theDirectionalPosBetweenPlayerGate *= (((*it)->GetDimensions().x + (*it)->GetDimensions().y));
                 PlayerPTR->SetPosition(theGatePos + theDirectionalPosBetweenPlayerGate);
                 break;
             }
