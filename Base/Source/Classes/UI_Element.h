@@ -1,3 +1,13 @@
+/****************************************************************************/
+/*!
+\file UI_Element.cpp
+\author Ryan Lim Rui An
+\par email: 150577L@mymail.nyp.edu.sg
+\brief
+Defines the a UI_Layer that holds UI_Elements
+*/
+/****************************************************************************/
+
 #ifndef _UI_ELEMENT_H
 #define _UI_ELEMENT_H
 

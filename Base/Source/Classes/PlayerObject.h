@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file   PlayerObject.h
+\author Ryan Lim Rui An, Lee Sek Heng, Tan Teck Ling
+\par email: 150577L@mymail.nyp.edu.sg, 150629Z@mymail.nyp.edu.sg
+\brief
+Defines a PlayerObject
+*/
+/******************************************************************************/
+
 #ifndef PLAYEROBJECT_H
 #define PLAYEROBJECT_H
 

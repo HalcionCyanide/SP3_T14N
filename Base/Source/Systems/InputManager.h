@@ -1,3 +1,14 @@
+/****************************************************************************/
+/*!
+\file InputManager.h
+\author Ryan Lim Rui An
+\par email: 150577L@mymail.nyp.edu.sg
+\brief
+Defines the Input Manager that handles all forms of input
+*/
+/****************************************************************************/
+
+
 #ifndef _INPUTMANAGER_H
 #define _INPUTMANAGER_H
 

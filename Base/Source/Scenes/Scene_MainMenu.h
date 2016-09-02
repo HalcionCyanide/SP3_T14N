@@ -1,12 +1,13 @@
 /******************************************************************************/
 /*!
-\file           Scene_MainMenu.h
+\file   Scene_MainMenu.h
 \author Ryan Lim Rui An, Lee Sek Heng
 \par email: 150577L@mymail.nyp.edu.sg, 150629Z@mymail.nyp.edu.sg
 \brief
 The Main Menu Scene for the game
 */
 /******************************************************************************/
+
 #ifndef _SCENE_MAINMENU_H
 #define _SCENE_MAINMENU_H
 

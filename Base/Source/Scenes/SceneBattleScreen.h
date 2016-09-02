@@ -1,8 +1,3 @@
-#ifndef _SCENE_BATTLE_SCREEN_H
-#define _SCENE_BATTLE_SCREEN_H
-
-#include "..\\Classes\\SceneEntity.h"
-#include "..\\Systems\\Scene_System.h"
 /****************************************************************************/
 /*!
 \file SceneBattleScreen.cpp
@@ -12,6 +7,12 @@
 Defines the battle screen scene
 */
 /****************************************************************************/
+
+#ifndef _SCENE_BATTLE_SCREEN_H
+#define _SCENE_BATTLE_SCREEN_H
+
+#include "..\\Classes\\SceneEntity.h"
+#include "..\\Systems\\Scene_System.h"
 
 #include "GraphicsEntity.h"
 #include "..\\Classes\\GameObject.h"

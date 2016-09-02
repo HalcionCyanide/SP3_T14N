@@ -332,7 +332,7 @@ void PlayerUIManager::Update(double dt)
 			ButtonTimer = 0;
 			QuestDisplayNumber++;
 		}
-		if (CurrentQuestDisplayNumber != QuestDisplayNumber)
+		//if (CurrentQuestDisplayNumber != QuestDisplayNumber)
 		{
 			if (CurrentQuestDisplayNumber < 0)
 				CurrentQuestDisplayNumber = ActiveQuestList.size();

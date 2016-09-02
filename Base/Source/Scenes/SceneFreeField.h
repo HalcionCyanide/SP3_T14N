@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file   SceneFreeField.h
+\author Ryan Lim Rui An, Lee Sek Heng, Tan Teck Ling, Zheng Qing Ping
+\par email: 150577L@mymail.nyp.edu.sg, 150629Z@mymail.nyp.edu.sg, 152063Q@mymail.nyp.edu.sg
+\brief
+FreeField Scene which displays the overview of Free Field 
+*/
+/******************************************************************************/
+
 #ifndef _SCENE_FREE_FIELD_H
 #define _SCENE_FREE_FIELD_H
 

@@ -1,3 +1,14 @@
+/****************************************************************************/
+/*!
+\file Billboard.h
+\author Ryan Lim Rui An
+\par email: 150577L@mymail.nyp.edu.sg
+\brief
+Defines a billboard
+*/
+/****************************************************************************/
+
+
 #ifndef BILLBOARD_H
 #define BILLBOARD_H
 
