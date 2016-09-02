@@ -1,3 +1,14 @@
+/****************************************************************************/
+/*!
+\file BillboardManager.h
+\author Ryan Lim Rui An
+\par email: 150577L@mymail.nyp.edu.sg
+\brief
+Defines the Billboard manager that holds billboards
+*/
+/****************************************************************************/
+
+
 #ifndef BILLBOARDMANAGER_H
 #define BILLBOARDMANAGER_H
 

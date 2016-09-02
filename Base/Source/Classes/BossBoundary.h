@@ -1,3 +1,13 @@
+/****************************************************************************/
+/*!
+\file BossBoundary.h
+\author Tan Teck Ling
+\par email: 153782U@mymail.nyp.edu.sg
+\brief
+Defines the basic values of a boundary
+*/
+/****************************************************************************/
+
 #ifndef BOSSBOUNDARY_H
 #define BOSSBOUNDARY_H
 

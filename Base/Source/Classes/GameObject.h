@@ -1,3 +1,13 @@
+/****************************************************************************/
+/*!
+\file GameObject.h
+\author Ryan Lim Rui An, Lee Sek Heng
+\par email: 150577L@mymail.nyp.edu.sg, 150629Z@mymail.nyp.edu.sg
+\brief
+Defines a game object
+*/
+/****************************************************************************/
+
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 

@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file           SceneTown3.h
+\file   SceneTown3.h
 \author Ryan Lim Rui An, Lee Sek Heng, Tan Teck Ling, Zheng Qing Ping
 \par email: 150577L@mymail.nyp.edu.sg, 150629Z@mymail.nyp.edu.sg, 152063Q@mymail.nyp.edu.sg
 \brief

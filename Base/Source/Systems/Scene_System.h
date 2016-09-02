@@ -8,6 +8,7 @@ A System that handles all the scene as well as most of the global variables.
 GraphicsEntity resides here.
 */
 /******************************************************************************/
+
 #ifndef SCENE_SYSTEM_H
 #define SCENE_SYSTEM_H
 

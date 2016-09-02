@@ -1,3 +1,14 @@
+/****************************************************************************/
+/*!
+\file EnemyProjectile.h
+\author Ryan Lim Rui An, Lee Sek Heng
+\par email: 150577L@mymail.nyp.edu.sg, 150629Z@mymail.nyp.edu.sg
+\brief
+Defines an Enemy Projectile
+*/
+/****************************************************************************/
+
+
 #ifndef _ENEMY_PROJECTILE_H
 #define _ENEMY_PROJECTILE_H
 

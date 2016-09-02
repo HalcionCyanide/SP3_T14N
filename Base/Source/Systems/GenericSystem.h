@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file           GenericSystem.h
+\file   GenericSystem.h
 \author Lee Sek Heng
 \par email: 150629Z@mymail.nyp.edu.sg
 \brief

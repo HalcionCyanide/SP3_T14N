@@ -94,6 +94,7 @@ void SceneFreeField2::Init()
 	UI_Sys->Init();
 	InitChatUI();
 	transitingSceneName = "";
+	MonsterFound = false;
 }
 
 void SceneFreeField2::InitChatUI()
@@ -412,6 +413,7 @@ void SceneFreeField2::Update(float dt)
 		//	Scene_System::accessing().cSS_InputManager->cIM_inMouseMode = true;
 		//}
 		BManager.UpdateContainer(dt, camera->position);
+		camera->CameraIsLocked = false;
 	}
 	else {
 		camera->CameraIsLocked = true;

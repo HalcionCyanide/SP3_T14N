@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file           MusicSystem.h
+\file	MusicSystem.h
 \author Lee Sek Heng
 \par email: 150629Z@mymail.nyp.edu.sg
 \brief

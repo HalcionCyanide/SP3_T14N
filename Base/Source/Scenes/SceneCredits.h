@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file           SceneCredit.h
+\file   SceneCredit.h
 \author Lee Sek Heng
 \par email: 150577L@mymail.nyp.edu.sg, 150629Z@mymail.nyp.edu.sg
 \brief

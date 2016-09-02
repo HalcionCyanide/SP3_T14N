@@ -1,3 +1,13 @@
+/****************************************************************************/
+/*!
+\file UI_System.h
+\author Ryan Lim Rui An
+\par email: 150577L@mymail.nyp.edu.sg
+\brief
+Defines the UI system that holds layers of UI elements
+*/
+/****************************************************************************/
+
 #ifndef _UI_SYSTEM_H
 #define _UI_SYSTEM_H
 
