@@ -150,10 +150,10 @@ void Camera3::Update(float dt)
 
 	UpdateCameraVectors();
 
-	if (Scene_System::accessing().cSS_InputManager->GetKeyValue('R'))
-	{
-		Reset();
-	}
+	//if (Scene_System::accessing().cSS_InputManager->GetKeyValue('R'))
+	//{
+	//	Reset();
+	//}
 }
 
 void Camera3::DecomposePlayerInertia(float dt)
